@@ -1,5 +1,10 @@
 package com.github.christophpickl.urclubs
 
+import ch.qos.logback.classic.Level
+import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.github.christophpickl.kpotpourri.common.logging.LOG
+import com.github.christophpickl.kpotpourri.logback4k.Logback4k
 import org.apache.http.client.entity.UrlEncodedFormEntity
 import org.apache.http.client.methods.CloseableHttpResponse
 import org.apache.http.client.methods.HttpPost
@@ -22,12 +27,23 @@ object UrClubs {
 
     @JvmStatic
     fun main(args: Array<String>) {
+        configureLogging()
         val email = args[0]
         val password = args[1]
 
         val myclubs = MyClubsApi(email, password)
-        myclubs.login()
+//        myclubs.login()
         myclubs.loggedUser()
+    }
+
+    private fun configureLogging() {
+        Logback4k.reconfigure {
+            rootLevel = Level.ALL
+            packageLevel(Level.WARN, "org.apache.http")
+            addConsoleAppender {
+                pattern = "[%-5level] %logger{60} - %msg%n"
+            }
+        }
     }
 
 }
@@ -36,12 +52,13 @@ class MyClubsApi(
         private val email: String,
         private val password: String
 ) {
-
+    private val log = LOG {}
     private val baseUrl = "https://www.myclubs.com/api"
     private val session = Session()
+    private val jackson = jacksonObjectMapper()
 
     fun login() {
-        println("login()")
+        log.info("login()")
 
         val response = session.execute(HttpPost("$baseUrl/login").apply {
             entity = UrlEncodedFormEntity(listOf(
@@ -53,32 +70,38 @@ class MyClubsApi(
 
         val responseString = EntityUtils.toString(response.entity).trim()
         if (responseString != "success") {
-            println("Response: $response")
-            println("Entity:")
-            println(responseString)
+            log.warn { response.toString() }
+            log.warn(responseString)
             throw Exception("Login failed!")
         }
     }
 
     fun loggedUser() {
-        println("loggedUser()")
+        log.info("loggedUser()")
         val response = session.execute(HttpPost("$baseUrl/getLoggedUser"))
-        val responseString = EntityUtils.toString(response.entity)
-        println(response)
-        println(responseString)
-        //  {"user_id":"dtEkYdhGIF","email":"christoph.pickl@gmail.com","firstname":"Christoph","lastname":"Pickl"}
+        val responseString = EntityUtils.toString(response.entity).trim()
+        if (responseString == "0") {
+            log.warn { response.toString() }
+            log.warn(responseString)
+            throw Exception("Invalid response!")
+        }
         // return User()
     }
 }
 
 data class User(
+        @JsonProperty("user_id")
         val id: String,
+        @JsonProperty("email")
         val email: String,
+        @JsonProperty("firstname")
         val firstName: String,
+        @JsonProperty("lastname")
         val lastName: String
 )
 
 class Session {
+
     private val httpClient = HttpClientBuilder.create().build()
     private val httpContext = BasicHttpContext().apply {
         setAttribute(HttpClientContext.COOKIE_STORE, BasicCookieStore())
@@ -87,6 +110,5 @@ class Session {
     fun execute(request: HttpUriRequest): CloseableHttpResponse {
         return httpClient.execute(request, httpContext)
     }
-
 
 }
