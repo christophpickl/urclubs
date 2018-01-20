@@ -1,14 +1,12 @@
 package com.github.christophpickl.urclubs
 
-import com.fasterxml.jackson.annotation.JsonProperty
 
-data class User(
-        @JsonProperty("user_id")
-        val id: String,
-        @JsonProperty("email")
+data class Credentials(
         val email: String,
-        @JsonProperty("firstname")
-        val firstName: String,
-        @JsonProperty("lastname")
-        val lastName: String
+        val password: String
+)
+
+data class Partner(
+        val id: String,
+        val title: String
 )

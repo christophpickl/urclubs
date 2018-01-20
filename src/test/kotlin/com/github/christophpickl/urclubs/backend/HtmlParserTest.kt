@@ -1,10 +1,11 @@
-package com.github.christophpickl.urclubs
+package com.github.christophpickl.urclubs.backend
 
+import com.github.christophpickl.urclubs.Partner
 import org.assertj.core.api.Assertions.assertThat
 import org.testng.annotations.Test
 
 @Test
-class ParseTests {
+class HtmlParserTest {
 
     fun `parsePartners - read valid entry`() {
         assertThat(parse("""<option value="myId" data-slug="ignored-slug">my title</option>"""))

@@ -1,19 +1,15 @@
-package com.github.christophpickl.urclubs
+package com.github.christophpickl.urclubs.backend
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.github.christophpickl.kpotpourri.common.logging.LOG
+import com.github.christophpickl.urclubs.Credentials
+import com.github.christophpickl.urclubs.Partner
 import org.apache.http.client.entity.UrlEncodedFormEntity
 import org.apache.http.client.methods.CloseableHttpResponse
 import org.apache.http.client.methods.HttpPost
-import org.apache.http.client.methods.HttpUriRequest
-import org.apache.http.client.protocol.HttpClientContext
-import org.apache.http.impl.client.BasicCookieStore
-import org.apache.http.impl.client.HttpClientBuilder
 import org.apache.http.message.BasicNameValuePair
-import org.apache.http.protocol.BasicHttpContext
 import org.apache.http.util.EntityUtils
-import org.jsoup.Jsoup
 
 class MyClubsApi(
         private val credentials: Credentials
@@ -69,37 +65,5 @@ class MyClubsApi(
     }
 
     private val CloseableHttpResponse.body: String get() = EntityUtils.toString(entity).trim()
-
-}
-
-class HtmlParser {
-
-    fun parsePartners(html: String) =
-            Jsoup.parse(html).select("option").mapNotNull {
-                val id = it.attr("value")
-                if (id == "") return@mapNotNull null
-                Partner(
-                        id = id,
-                        title = it.text()
-                )
-            }
-
-}
-
-data class Partner(
-        val id: String,
-        val title: String
-)
-
-private class Http {
-
-    private val httpClient = HttpClientBuilder.create().build()
-    private val httpContext = BasicHttpContext().apply {
-        setAttribute(HttpClientContext.COOKIE_STORE, BasicCookieStore())
-    }
-
-    fun execute(request: HttpUriRequest): CloseableHttpResponse {
-        return httpClient.execute(request, httpContext)
-    }
 
 }

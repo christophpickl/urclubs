@@ -3,6 +3,7 @@ package com.github.christophpickl.urclubs
 import ch.qos.logback.classic.Level
 import com.github.christophpickl.kpotpourri.common.collection.prettyPrint
 import com.github.christophpickl.kpotpourri.logback4k.Logback4k
+import com.github.christophpickl.urclubs.backend.MyClubsApi
 
 object UrClubs {
 
@@ -39,8 +40,3 @@ object UrClubs {
     }
 
 }
-
-data class Credentials(
-        val email: String,
-        val password: String
-)
