@@ -15,8 +15,7 @@ import org.apache.http.protocol.BasicHttpContext
 import org.apache.http.util.EntityUtils
 
 class MyClubsApi(
-        private val email: String,
-        private val password: String
+        private val credentials: Credentials
 ) {
     private val log = LOG {}
     private val baseUrl = "https://www.myclubs.com/api"
@@ -28,8 +27,8 @@ class MyClubsApi(
 
         val response = http.execute(HttpPost("$baseUrl/login").apply {
             entity = UrlEncodedFormEntity(listOf(
-                    BasicNameValuePair("email", email),
-                    BasicNameValuePair("password", password),
+                    BasicNameValuePair("email", credentials.email),
+                    BasicNameValuePair("password", credentials.password),
                     BasicNameValuePair("staylogged", "true")
             ))
         })
@@ -54,38 +53,17 @@ class MyClubsApi(
         return jackson.readValue(body)
     }
 
-    fun foo() {
-        log.info("foo()")
-        val response = http.execute(HttpPost("$baseUrl/categories-response").apply {
-            addHeader("accept", "application/json")
+    fun partners() {
+        log.info("partners()")
+        val response = http.execute(HttpPost("$baseUrl/activities-get-partners").apply {
+            entity = UrlEncodedFormEntity(listOf(
+                    BasicNameValuePair("country", "at"),
+                    BasicNameValuePair("city", "wien"),
+                    BasicNameValuePair("language", "de")
+            ))
         })
         val body = response.body
-        println(response)
         println(body)
-    }
-
-    fun partners() {
-        /*
-        Request URL:https://www.myclubs.com/api/activities-get-partners
-
-        city:niederoesterreich
-        language:de
-        country:at
-
-
-
-        activities-list-response
-filters:{"categories":[],
-"date":["07.01.2018"],"time":["05:00","23:00"],
-"favourite":"false","city":"niederoesterreich",
-"partner":"","type":["infrastructure","course"]}
-country:at
-language:de
-
-https://www.myclubs.com/api/categories-response
-    country:at
-    language:de
-         */
     }
 
     private val CloseableHttpResponse.body: String get() = EntityUtils.toString(entity).trim()
