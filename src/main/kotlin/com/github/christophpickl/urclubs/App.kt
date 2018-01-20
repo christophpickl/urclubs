@@ -1,6 +1,7 @@
 package com.github.christophpickl.urclubs
 
 import ch.qos.logback.classic.Level
+import com.github.christophpickl.kpotpourri.common.collection.prettyPrint
 import com.github.christophpickl.kpotpourri.logback4k.Logback4k
 
 object UrClubs {
@@ -14,7 +15,7 @@ object UrClubs {
         val myclubs = MyClubsApi(parseCredentials(args))
 
         myclubs.login()
-        myclubs.partners()
+        myclubs.partners().prettyPrint()
     }
 
     private fun parseCredentials(args: Array<String>): Credentials {

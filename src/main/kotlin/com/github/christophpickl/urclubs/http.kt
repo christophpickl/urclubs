@@ -13,6 +13,7 @@ import org.apache.http.impl.client.HttpClientBuilder
 import org.apache.http.message.BasicNameValuePair
 import org.apache.http.protocol.BasicHttpContext
 import org.apache.http.util.EntityUtils
+import org.jsoup.Jsoup
 
 class MyClubsApi(
         private val credentials: Credentials
@@ -21,6 +22,7 @@ class MyClubsApi(
     private val baseUrl = "https://www.myclubs.com/api"
     private val http = Http()
     private val jackson = jacksonObjectMapper()
+    private val parser = HtmlParser()
 
     fun login() {
         log.info("login()")
@@ -53,7 +55,7 @@ class MyClubsApi(
         return jackson.readValue(body)
     }
 
-    fun partners() {
+    fun partners(): List<Partner> {
         log.info("partners()")
         val response = http.execute(HttpPost("$baseUrl/activities-get-partners").apply {
             entity = UrlEncodedFormEntity(listOf(
@@ -62,13 +64,32 @@ class MyClubsApi(
                     BasicNameValuePair("language", "de")
             ))
         })
-        val body = response.body
-        println(body)
+        return parser.parsePartners(response.body)
+
     }
 
     private val CloseableHttpResponse.body: String get() = EntityUtils.toString(entity).trim()
 
 }
+
+class HtmlParser {
+
+    fun parsePartners(html: String) =
+            Jsoup.parse(html).select("option").mapNotNull {
+                val id = it.attr("value")
+                if (id == "") return@mapNotNull null
+                Partner(
+                        id = id,
+                        title = it.text()
+                )
+            }
+
+}
+
+data class Partner(
+        val id: String,
+        val title: String
+)
 
 private class Http {
 
