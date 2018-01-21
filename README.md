@@ -59,6 +59,21 @@ This is a custom client to manage [MyClubs](https://www.myclubs) offers.
     * city: wien
     * language: de
 
+## Activities
+
+* `POST /activities-list-response`
+* Form data:
+    * filters: (JSON string)
+        * categories:[]
+        * date 20.01.2018
+        * time 16:00, 23:00
+        * favourite: false
+        * city: wien
+        * partner:
+        * type: infrastructure, course
+    * country: at
+    * language: de
+
 ## Other endpoints
 
 * `/categories-response`

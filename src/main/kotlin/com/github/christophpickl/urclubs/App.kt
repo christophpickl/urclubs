@@ -16,7 +16,8 @@ object UrClubs {
         val myclubs = MyClubsApi(parseCredentials(args))
 
         myclubs.login()
-        myclubs.partners().prettyPrint()
+//        myclubs.partners().prettyPrint()
+        myclubs.activities().prettyPrint()
     }
 
     private fun parseCredentials(args: Array<String>): Credentials {
