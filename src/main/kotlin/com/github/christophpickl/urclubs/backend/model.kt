@@ -39,7 +39,9 @@ data class FilterMycJson(
 data class PartnerMyc(
         val id: String,
         val title: String
-)
+) {
+    companion object
+}
 
 data class ActivityMyc(
         val id: String,

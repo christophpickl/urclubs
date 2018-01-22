@@ -4,7 +4,6 @@ import com.github.christophpickl.kpotpourri.common.logging.LOG
 import com.github.christophpickl.urclubs.QuitEvent
 import com.google.common.eventbus.EventBus
 import com.google.common.eventbus.Subscribe
-import com.google.inject.AbstractModule
 import com.google.inject.Provider
 import javax.inject.Inject
 import javax.persistence.EntityManager
@@ -13,13 +12,6 @@ import javax.persistence.Persistence
 
 // could enhance DB classes: http://www.objectdb.com/java/jpa/tool/enhancer
 // Enhancer.enhance("com.github.christophpickl.urclubs.persistence.*")
-
-class PersistenceModule : AbstractModule() {
-    override fun configure() {
-        bind(EntityManager::class.java).toProvider(EntityManagerManager::class.java)
-        bind(PartnerDao::class.java).to(PartnerObjectDbDao::class.java).asEagerSingleton()
-    }
-}
 
 class EntityManagerManager @Inject constructor(
         bus: EventBus
@@ -45,7 +37,7 @@ class EntityManagerManager @Inject constructor(
     }
 
     @Subscribe
-    fun onQuitEvent(event: QuitEvent) {
+    fun onQuitEvent(@Suppress("UNUSED_PARAMETER") event: QuitEvent) {
         log.debug { "onQuitEvent(event) ... shutting down database" }
         em?.close()
         emFactory?.close()
@@ -66,5 +58,11 @@ interface HasId {
 fun HasId.ensureNotPersisted() {
     if (id != null && id != 0L) {
         throw IllegalStateException("ID must be 0 for: $this")
+    }
+}
+
+fun HasId.ensurePersisted() {
+    if (id == null || id == 0L) {
+        throw IllegalStateException("ID must be set for: $this")
     }
 }

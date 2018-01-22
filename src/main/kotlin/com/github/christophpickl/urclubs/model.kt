@@ -7,6 +7,7 @@ data class Credentials(
 
 data class Partner(
         val idDbo: Long,
+        val idMyc: String,
         val name: String
         // rating
         // note

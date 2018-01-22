@@ -5,24 +5,36 @@ import com.github.christophpickl.urclubs.persistence.PartnerDao
 import com.github.christophpickl.urclubs.persistence.PartnerDbo
 import javax.inject.Inject
 
-class PartnerService @Inject constructor(
+interface PartnerService {
+    fun insert(partner: Partner): Partner
+    fun fetchAll(): List<Partner>
+    fun delete(partner: Partner)
+}
+
+class PartnerServiceImpl @Inject constructor(
         private val partnerDao: PartnerDao
-) {
+): PartnerService {
 
-    fun insert(partner: Partner) {
-        partnerDao.insert(partner.toPartnerDbo())
+    override fun insert(partner: Partner) =
+            partnerDao.insert(partner.toPartnerDbo()).toPartner()
+
+    override fun fetchAll() =
+            partnerDao.fetchAll().map { it.toPartner() }
+
+    override fun delete(partner: Partner) {
+        partnerDao.delete(partner.toPartnerDbo())
     }
-
-    fun fetchAll() = partnerDao.fetchAll().map { it.toPartner() }
 
 }
 
 fun Partner.toPartnerDbo() = PartnerDbo(
         id = idDbo,
+        idMyc = idMyc,
         name = name
 )
 
 fun PartnerDbo.toPartner() = Partner(
         idDbo = id,
+        idMyc = idMyc,
         name = name
 )

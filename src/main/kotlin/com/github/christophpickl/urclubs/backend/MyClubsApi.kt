@@ -17,9 +17,16 @@ import org.apache.http.protocol.BasicHttpContext
 import org.apache.http.util.EntityUtils
 import javax.inject.Inject
 
-class MyClubsApi @Inject constructor(
+interface MyClubsApi{
+    fun login()
+    fun loggedUser(): UserMycJson
+    fun partners(): List<PartnerMyc>
+    fun activities(): List<ActivityMyc>
+}
+
+class MyClubsHttpApi @Inject constructor(
         private val credentials: Credentials
-) {
+): MyClubsApi {
     private val log = LOG {}
     private val baseUrl = "https://www.myclubs.com/api"
     private val http = Http()
@@ -28,7 +35,7 @@ class MyClubsApi @Inject constructor(
     }
     private val parser = HtmlParser()
 
-    fun login() {
+    override fun login() {
         log.info("login()")
 
         val response = http.execute(HttpPost("$baseUrl/login").apply {
@@ -47,7 +54,7 @@ class MyClubsApi @Inject constructor(
         }
     }
 
-    fun loggedUser(): UserMycJson {
+    override fun loggedUser(): UserMycJson {
         log.info("loggedUser()")
         val response = http.execute(HttpPost("$baseUrl/getLoggedUser"))
         val body = response.body
@@ -59,7 +66,7 @@ class MyClubsApi @Inject constructor(
         return jackson.readValue(body)
     }
 
-    fun partners(): List<PartnerMyc> {
+    override fun partners(): List<PartnerMyc> {
         log.info("partners()")
         val response = http.execute(HttpPost("$baseUrl/activities-get-partners").apply {
             entity = UrlEncodedFormEntity(listOf(
@@ -68,10 +75,12 @@ class MyClubsApi @Inject constructor(
                     BasicNameValuePair("language", "de")
             ))
         })
-        return parser.parsePartners(response.body)
+        val partners = parser.parsePartners(response.body)
+        log.trace { "Found ${partners.size} partners." }
+        return partners
     }
 
-    fun activities(): List<ActivityMyc> {
+    override fun activities(): List<ActivityMyc> {
         log.info("activities()")
         val filter = FilterMycJson(
                 date = listOf("21.01.2018"),
@@ -88,7 +97,7 @@ class MyClubsApi @Inject constructor(
         val json = jackson.readValue<ActivitiesMycJson>(response.body)
         val courses = parser.parseActivities(json.coursesHtml)
         val infrastructure = parser.parseActivities(json.infrastructuresHtml)
-        log.debug { "Found ${courses.size} courses and ${infrastructure.size} infrastructure activities." }
+        log.trace { "Found ${courses.size} courses and ${infrastructure.size} infrastructure activities." }
         return mutableListOf<ActivityMyc>().apply {
             addAll(courses)
             addAll(infrastructure)

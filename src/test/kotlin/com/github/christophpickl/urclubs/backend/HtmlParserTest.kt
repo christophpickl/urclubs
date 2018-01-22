@@ -3,7 +3,7 @@ package com.github.christophpickl.urclubs.backend
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import com.github.christophpickl.urclubs.testInfra.assertSingleElement
+import com.github.christophpickl.urclubs.testInfra.assertThatSingleElement
 import org.assertj.core.api.Assertions.assertThat
 import org.testng.annotations.Test
 
@@ -15,7 +15,7 @@ class HtmlParserTest {
     }
 
     fun `parsePartners - read valid entry`() {
-        assertSingleElement(HtmlParser().parsePartners("""<option value="myId" data-slug="ignored-slug">my title</option>"""),
+        assertThatSingleElement(HtmlParser().parsePartners("""<option value="myId" data-slug="ignored-slug">my title</option>"""),
                 PartnerMyc(
                         id = "myId",
                         title = "my title"
@@ -56,7 +56,7 @@ class HtmlParserTest {
         """.trimIndent(), infrastructuresHtml = "")
         val activities = HtmlParser().parseActivities(json.coursesHtml)
 
-        assertSingleElement(activities, ActivityMyc(
+        assertThatSingleElement(activities, ActivityMyc(
                 id = "SEdFOCOPkF",
                 category = "Fitnesskurs",
                 title = "Doshinkan Karatedo",
@@ -100,7 +100,7 @@ class HtmlParserTest {
             """.trimIndent())
         val activities = HtmlParser().parseActivities(json.infrastructuresHtml)
 
-        assertSingleElement(activities, ActivityMyc(
+        assertThatSingleElement(activities, ActivityMyc(
                 id = "jLDnA1B0Ea",
                 category = "Beachvolleyball",
                 title = "Beachvolleyball",
