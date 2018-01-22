@@ -2,26 +2,7 @@
 
 This is a custom client to manage [MyClubs](https://www.myclubs) offers.
 
-## TODOs
-
-### Business
-
-* List upcoming workouts
-* List past workouts
-* List available workouts
-* Concept of datamodel based on google docs doc
-* Workout recommendation
-    * Use DB and sync partners/workouts (on startup)
-    * Store some metadata (preferred partner)
-    * Simple suggestion of workout based on metadata
-
-### Technical
-
-* Use htt4pk lib
-* Configure: Travis, Versioneye
-* Use tornadoFX UI
-* use Guice
-* Integrate in GCal (introduce gcal4k)
+See [requirements page](requirements.html) for what this client has to offer additionally to the original website/apps.
 
 # API reverse engineered
 
