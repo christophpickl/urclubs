@@ -1,10 +1,11 @@
 package com.github.christophpickl.urclubs.service
 
 import com.github.christophpickl.kpotpourri.common.logging.LOG
-import com.github.christophpickl.urclubs.Partner
-import com.github.christophpickl.urclubs.Rating
-import com.github.christophpickl.urclubs.backend.MyClubsApi
-import com.github.christophpickl.urclubs.backend.PartnerMyc
+import com.github.christophpickl.urclubs.domain.partner.Partner
+import com.github.christophpickl.urclubs.domain.partner.PartnerService
+import com.github.christophpickl.urclubs.domain.partner.Rating
+import com.github.christophpickl.urclubs.myclubs.MyClubsApi
+import com.github.christophpickl.urclubs.myclubs.PartnerMyc
 import javax.inject.Inject
 
 class Syncer @Inject constructor(
@@ -49,6 +50,7 @@ data class SyncerReport(
 fun PartnerMyc.toPartner() = Partner(
         idDbo = 0L,
         idMyc = id,
-        name = title,
+        name = name,
+        shortName = shortName,
         rating = Rating.UNKNOWN
 )

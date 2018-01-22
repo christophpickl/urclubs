@@ -1,8 +1,9 @@
 package com.github.christophpickl.urclubs.service
 
-import com.github.christophpickl.urclubs.backend.MyClubsApi
-import com.github.christophpickl.urclubs.backend.PartnerMyc
-import com.github.christophpickl.urclubs.backend.testInstance
+import com.github.christophpickl.urclubs.myclubs.MyClubsApi
+import com.github.christophpickl.urclubs.myclubs.PartnerMyc
+import com.github.christophpickl.urclubs.myclubs.testInstance
+import com.github.christophpickl.urclubs.domain.partner.PartnerService
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.verifyNoMoreInteractions

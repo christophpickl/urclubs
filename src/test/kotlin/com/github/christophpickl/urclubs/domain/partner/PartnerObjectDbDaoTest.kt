@@ -1,5 +1,6 @@
-package com.github.christophpickl.urclubs.persistence
+package com.github.christophpickl.urclubs.domain.partner
 
+import com.github.christophpickl.urclubs.persistence.transactional
 import com.github.christophpickl.urclubs.testInfra.DatabaseTest
 import com.github.christophpickl.urclubs.testInfra.assertThatSingleElement
 import com.github.christophpickl.urclubs.testInfra.singleEntryIsEqualToIgnoringGivenProps
@@ -33,6 +34,22 @@ class PartnerObjectDbDaoTest : DatabaseTest() {
         val partners = dao().readAll()
 
         assertThat(partners).singleEntryIsEqualToIgnoringGivenProps(partner, PartnerDbo::id)
+    }
+
+    fun `READ - Given partner When find by short name Then find`() {
+        save(partner.copy(shortName = "foo"))
+
+        val found = dao().findByShortName("foo")
+
+        assertThat(found).isNotNull()
+    }
+
+    fun `READ - Given partner When find by wrong short name Then return null`() {
+        save(partner.copy(shortName = "foo"))
+
+        val found = dao().findByShortName("wrong")
+
+        assertThat(found).isNull()
     }
 
     fun `UPDATE - Given saved partner When update that partner Then database contains updated partner`() {
@@ -75,10 +92,3 @@ class PartnerObjectDbDaoTest : DatabaseTest() {
     private fun dao() = PartnerObjectDbDao(em)
 
 }
-
-fun PartnerDbo.Companion.testInstance() = PartnerDbo(
-        id = 0L,
-        idMyc = "testIdMyc",
-        name = "testName",
-        rating = RatingDbo.UNKNOWN
-)

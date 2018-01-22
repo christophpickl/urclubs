@@ -1,4 +1,4 @@
-package com.github.christophpickl.urclubs.backend
+package com.github.christophpickl.urclubs.myclubs
 
 import com.fasterxml.jackson.databind.node.ArrayNode
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper

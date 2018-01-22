@@ -1,4 +1,4 @@
-package com.github.christophpickl.urclubs.backend
+package com.github.christophpickl.urclubs.myclubs
 
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
@@ -15,10 +15,11 @@ class HtmlParserTest {
     }
 
     fun `parsePartners - read valid entry`() {
-        assertThatSingleElement(HtmlParser().parsePartners("""<option value="myId" data-slug="ignored-slug">my title</option>"""),
+        assertThatSingleElement(HtmlParser().parsePartners("""<option value="myId" data-slug="short-name">my name</option>"""),
                 PartnerMyc(
                         id = "myId",
-                        title = "my title"
+                        name = "my name",
+                        shortName = "short-name"
                 ))
     }
 
@@ -32,7 +33,7 @@ class HtmlParserTest {
                 .hasSize(174)
     }
 
-    fun `parseActivities - courses - simple`() {
+    fun `parseCourses - simple`() {
         val json = ActivitiesMycJson(coursesHtml = """
             <div class="activities__list__content  js-activities-list-content">
                 <ul>
@@ -54,26 +55,26 @@ class HtmlParserTest {
                 <div class="activities__list__no-results" id="no-results-message-courses">Keine Treffer für Ihre Anfrage</div>
             </div>
         """.trimIndent(), infrastructuresHtml = "")
-        val activities = HtmlParser().parseActivities(json.coursesHtml)
+        val activities = HtmlParser().parseCourses(json.coursesHtml)
 
-        assertThatSingleElement(activities, ActivityMyc(
+        assertThatSingleElement(activities, CourseMyc(
                 id = "SEdFOCOPkF",
                 category = "Fitnesskurs",
                 title = "Doshinkan Karatedo",
                 time = "16:00",
-                partner = "City & Country Club Wienerberg, 1100 Wien",
-                type = ActivityTypeMyc.Course
+                timestamp = "1516446000",
+                partner = "City & Country Club Wienerberg, 1100 Wien"
         ))
     }
 
-    @Test(dependsOnMethods = ["parseActivities - courses - simple"])
-    fun `parseActivities - courses - integration`() {
+    @Test(dependsOnMethods = ["parseCourses - simple"])
+    fun `parseCourses - courses - integration`() {
         val json = jackson.readValue<ActivitiesMycJson>(readResponse("activities-list-response.html.json"))
-        val activities = HtmlParser().parseActivities(json.coursesHtml)
+        val activities = HtmlParser().parseCourses(json.coursesHtml)
         assertThat(activities).hasSize(5)
     }
 
-    fun `parseActivities - infrastructures - simple`() {
+    fun `parseInfrastructure - simple`() {
         val json = ActivitiesMycJson(coursesHtml = "", infrastructuresHtml = """
             <li class="js-activities-item js-activities-item--infra " data-type="infrastructure" data-activity="jLDnA1B0Ea" data-location="0" data-date="1516446000">
                undefined
@@ -98,23 +99,31 @@ class HtmlParserTest {
                </span>
             </li>
             """.trimIndent())
-        val activities = HtmlParser().parseActivities(json.infrastructuresHtml)
+        val activities = HtmlParser().parseInfrastructure(json.infrastructuresHtml)
 
-        assertThatSingleElement(activities, ActivityMyc(
+        assertThatSingleElement(activities, InfrastructureMyc(
                 id = "jLDnA1B0Ea",
                 category = "Beachvolleyball",
                 title = "Beachvolleyball",
                 time = "Book Now",
-                partner = "Sportzentrum Marswiese, 1170 Wien",
-                type = ActivityTypeMyc.Infrastructure
+                partner = "Sportzentrum Marswiese, 1170 Wien"
         ))
     }
 
-    @Test(dependsOnMethods = ["parseActivities - infrastructures - simple"])
-    fun `parseActivities - infrastructures - integration`() {
+    @Test(dependsOnMethods = ["parseInfrastructure - simple"])
+    fun `parseInfrastructure - integration`() {
         val json = jackson.readValue<ActivitiesMycJson>(readResponse("activities-list-response.html.json"))
-        val activities = HtmlParser().parseActivities(json.infrastructuresHtml)
+        val activities = HtmlParser().parseInfrastructure(json.infrastructuresHtml)
         assertThat(activities).hasSize(60)
+    }
+
+    fun `parseActivity - integration`() {
+        val activity = HtmlParser().parseActivity(readResponse("activityDetail.json"))
+
+        assertThat(activity).isEqualTo(ActivityMyc(
+                partnerShortName = "triller-crossfit",
+                description = "Crosstraining ist viele \u00dcbungen."
+        ))
     }
 
     private fun readResponse(fileName: String) =

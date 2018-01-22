@@ -14,7 +14,7 @@
 
 ## Technical
 
-* database migration concept
+* database migration concept (when adding new property, when changing package/typename, ...)
 * Use htt4pk lib
 * Configure: Travis, Versioneye
 * Use tornadoFX UI

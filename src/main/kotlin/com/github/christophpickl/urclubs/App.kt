@@ -1,71 +1,60 @@
 package com.github.christophpickl.urclubs
 
-import ch.qos.logback.classic.Level
-import com.github.christophpickl.kpotpourri.common.collection.prettyPrint
 import com.github.christophpickl.kpotpourri.common.collection.toPrettyString
-import com.github.christophpickl.kpotpourri.logback4k.Logback4k
-import com.github.christophpickl.urclubs.backend.MyClubsApi
-import com.github.christophpickl.urclubs.backend.MyClubsHttpApi
-import com.github.christophpickl.urclubs.persistence.PersistenceModule
-import com.github.christophpickl.urclubs.service.PartnerService
-import com.github.christophpickl.urclubs.service.PartnerServiceImpl
+import com.github.christophpickl.urclubs.domain.activity.ActivityType
+import com.github.christophpickl.urclubs.domain.partner.PartnerService
+import com.github.christophpickl.urclubs.myclubs.ActivityFilter
+import com.github.christophpickl.urclubs.myclubs.CourseFilter
+import com.github.christophpickl.urclubs.myclubs.MyClubsApi
 import com.github.christophpickl.urclubs.service.Syncer
 import com.github.christophpickl.urclubs.service.SyncerReport
 import com.google.common.eventbus.EventBus
-import com.google.inject.AbstractModule
-import com.google.inject.Guice
-import com.google.inject.Provider
+import java.time.LocalDateTime
 import javax.inject.Inject
 
-object AppStarter {
-
-    init {
-        configureLogging()
-    }
-
-    @JvmStatic
-    fun main(args: Array<String>) {
-        val guice = Guice.createInjector(MainModule(args))
-        val app = guice.getInstance(UrClubsApp::class.java)
-        app.start()
-    }
-
-    private fun configureLogging() {
-        Logback4k.reconfigure {
-            rootLevel = Level.ALL
-            packageLevel(Level.WARN, "org.apache.http")
-            addConsoleAppender {
-                pattern = "[%-5level] %logger{60} - %msg%n"
-            }
-        }
-    }
-
-}
-
-class UrClubsApp @Inject constructor(
+class App @Inject constructor(
         private val syncer: Syncer,
         private val myclubs: MyClubsApi,
         private val partnerService: PartnerService,
         private val bus: EventBus
 ) {
     fun start() {
-        // Partner(idDbo=118, idMyc=yzWykzkxDX, name=Schwimmschule Wien, rating=UNKNOWN)
+//        println(syncer.sync().toPrettyString())
+        myclubsPlayground()
 
-//       myclubs.login()
-//       println(myclubs.loggedUser())
 //       val partnersMyc = myclubs.partners()
 
 //       partnerService.create(Partner(idDbo = 0L, name = "foobar"))
 
-//        println(syncer.sync().toPrettyString())
 
+        // Partner(idDbo=118, idMyc=yzWykzkxDX, name=Schwimmschule Wien, rating=UNKNOWN)
 //        val schwimmschule = partnerService.read(id = 118)!!
 //        partnerService.update(schwimmschule.copy(rating = Rating.SUPERB))
 
-        partnerService.readAll().prettyPrint()
+//        partnerService.readAll().prettyPrint()
 
 //       myclubs.activities().prettyPrint()
         bus.post(QuitEvent)
+    }
+
+    private fun myclubsPlayground() {
+        myclubs.login()
+        val courses = myclubs.courses(CourseFilter(
+                start = LocalDateTime.now().minusHours(2),
+                end = LocalDateTime.now()
+        ))
+        if (courses.isNotEmpty()) {
+            val course = courses[0]
+            println(course)
+            val activity = myclubs.activity(ActivityFilter(
+                    activityId = course.id,
+                    timestamp = course.timestamp,
+                    type = ActivityType.Course
+            ))
+            println(activity)
+            val partner = partnerService.findByShortName(activity.partnerShortName)
+            println(partner)
+        }
     }
 }
 
@@ -80,31 +69,3 @@ Deleted(${deletedPartners.size}):
 --------------------------
 ${deletedPartners.toPrettyString()}
 """
-
-class MainModule(private val args: Array<String>) : AbstractModule() {
-    override fun configure() {
-        bind(EventBus::class.java).toInstance(EventBus())
-        bind(Credentials::class.java).toProvider(CredentialsProvider(args))
-
-        install(PersistenceModule())
-
-        bind(PartnerService::class.java).to(PartnerServiceImpl::class.java)
-        bind(MyClubsApi::class.java).to(MyClubsHttpApi::class.java)
-        bind(UrClubsApp::class.java)
-        bind(Syncer::class.java)
-    }
-}
-
-class CredentialsProvider(private val args: Array<String>) : Provider<Credentials> {
-    override fun get(): Credentials {
-        if (args.size != 2) {
-            throw Exception("Please provide credentials via CLI arguments!")
-        }
-        return Credentials(
-                email = args[0],
-                password = args[1]
-        )
-    }
-}
-
-object QuitEvent
