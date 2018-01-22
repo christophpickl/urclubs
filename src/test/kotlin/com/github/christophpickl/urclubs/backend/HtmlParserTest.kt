@@ -33,7 +33,7 @@ class HtmlParserTest {
     }
 
     fun `parseActivities - courses - simple`() {
-        val json = ActivitiesJson(coursesHtml = """
+        val json = ActivitiesMycJson(coursesHtml = """
             <div class="activities__list__content  js-activities-list-content">
                 <ul>
                     <li class="js-activities-item  " data-type="course" data-activity="SEdFOCOPkF" data-location="23" data-date="1516446000">
@@ -56,25 +56,25 @@ class HtmlParserTest {
         """.trimIndent(), infrastructuresHtml = "")
         val activities = HtmlParser().parseActivities(json.coursesHtml)
 
-        assertSingleElement(activities, Activity(
+        assertSingleElement(activities, ActivityMyc(
                 id = "SEdFOCOPkF",
                 category = "Fitnesskurs",
                 title = "Doshinkan Karatedo",
                 time = "16:00",
                 partner = "City & Country Club Wienerberg, 1100 Wien",
-                type = ActivityType.Course
+                type = ActivityTypeMyc.Course
         ))
     }
 
     @Test(dependsOnMethods = ["parseActivities - courses - simple"])
     fun `parseActivities - courses - integration`() {
-        val json = jackson.readValue<ActivitiesJson>(readResponse("activities-list-response.html.json"))
+        val json = jackson.readValue<ActivitiesMycJson>(readResponse("activities-list-response.html.json"))
         val activities = HtmlParser().parseActivities(json.coursesHtml)
         assertThat(activities).hasSize(5)
     }
 
     fun `parseActivities - infrastructures - simple`() {
-        val json = ActivitiesJson(coursesHtml = "", infrastructuresHtml = """
+        val json = ActivitiesMycJson(coursesHtml = "", infrastructuresHtml = """
             <li class="js-activities-item js-activities-item--infra " data-type="infrastructure" data-activity="jLDnA1B0Ea" data-location="0" data-date="1516446000">
                undefined
                <span class="text">
@@ -100,19 +100,19 @@ class HtmlParserTest {
             """.trimIndent())
         val activities = HtmlParser().parseActivities(json.infrastructuresHtml)
 
-        assertSingleElement(activities, Activity(
+        assertSingleElement(activities, ActivityMyc(
                 id = "jLDnA1B0Ea",
                 category = "Beachvolleyball",
                 title = "Beachvolleyball",
                 time = "Book Now",
                 partner = "Sportzentrum Marswiese, 1170 Wien",
-                type = ActivityType.Infrastructure
+                type = ActivityTypeMyc.Infrastructure
         ))
     }
 
     @Test(dependsOnMethods = ["parseActivities - infrastructures - simple"])
     fun `parseActivities - infrastructures - integration`() {
-        val json = jackson.readValue<ActivitiesJson>(readResponse("activities-list-response.html.json"))
+        val json = jackson.readValue<ActivitiesMycJson>(readResponse("activities-list-response.html.json"))
         val activities = HtmlParser().parseActivities(json.infrastructuresHtml)
         assertThat(activities).hasSize(60)
     }

@@ -14,12 +14,12 @@ class JsonSerializingTest {
     private val jackson = jacksonObjectMapper()
 
     fun `ActivityType enum serializes with custom json property value`() {
-        val filter = FilterJson.testInstance().copy(type = ActivityType.all)
+        val filter = FilterMycJson.testInstance().copy(type = ActivityTypeMyc.all)
 
         val json = jackson.readTree(jackson.writeValueAsString(filter))
 
         val typeJson = json.get("type") as ArrayNode
-        assertThat(typeJson.textValues()).containsExactly(ActivityType.all.map { it.json })
+        assertThat(typeJson.textValues()).containsExactly(ActivityTypeMyc.all.map { it.json })
     }
 
 }

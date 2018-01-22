@@ -46,7 +46,7 @@ class MyClubsApi(
         }
     }
 
-    fun loggedUser(): UserJson {
+    fun loggedUser(): UserMycJson {
         log.info("loggedUser()")
         val response = http.execute(HttpPost("$baseUrl/getLoggedUser"))
         val body = response.body
@@ -58,7 +58,7 @@ class MyClubsApi(
         return jackson.readValue(body)
     }
 
-    fun partners(): List<Partner> {
+    fun partners(): List<PartnerMyc> {
         log.info("partners()")
         val response = http.execute(HttpPost("$baseUrl/activities-get-partners").apply {
             entity = UrlEncodedFormEntity(listOf(
@@ -70,9 +70,9 @@ class MyClubsApi(
         return parser.parsePartners(response.body)
     }
 
-    fun activities(): List<Activity> {
+    fun activities(): List<ActivityMyc> {
         log.info("activities()")
-        val filter = FilterJson(
+        val filter = FilterMycJson(
                 date = listOf("21.01.2018"),
                 time = listOf("09:00", "15:00")
         )
@@ -84,11 +84,11 @@ class MyClubsApi(
             ))
         })
 
-        val json = jackson.readValue<ActivitiesJson>(response.body)
+        val json = jackson.readValue<ActivitiesMycJson>(response.body)
         val courses = parser.parseActivities(json.coursesHtml)
         val infrastructure = parser.parseActivities(json.infrastructuresHtml)
         log.debug { "Found ${courses.size} courses and ${infrastructure.size} infrastructure activities." }
-        return mutableListOf<Activity>().apply {
+        return mutableListOf<ActivityMyc>().apply {
             addAll(courses)
             addAll(infrastructure)
         }

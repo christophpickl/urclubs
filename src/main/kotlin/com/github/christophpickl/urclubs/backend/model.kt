@@ -3,7 +3,7 @@ package com.github.christophpickl.urclubs.backend
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonValue
 
-data class UserJson(
+data class UserMycJson(
         @JsonProperty("user_id")
         val id: String,
         @JsonProperty("email")
@@ -14,7 +14,7 @@ data class UserJson(
         val lastName: String
 )
 
-data class ActivitiesJson(
+data class ActivitiesMycJson(
         // boundingBox
         // currentRegion
         // pins
@@ -24,33 +24,33 @@ data class ActivitiesJson(
         val infrastructuresHtml: String
 )
 
-data class FilterJson(
+data class FilterMycJson(
         val categories: List<String> = emptyList(),
         val date: List<String>,
         val time: List<String>,
         val favourite: Boolean = false,
         val city: String = "wien",
         val partner: String = "",
-        val type: List<ActivityType> = ActivityType.all
+        val type: List<ActivityTypeMyc> = ActivityTypeMyc.all
 ) {
     companion object
 }
 
-data class Partner(
+data class PartnerMyc(
         val id: String,
         val title: String
 )
 
-data class Activity (
+data class ActivityMyc(
         val id: String,
         val time: String,
         val title: String,
         val partner: String,
         val category: String,
-        val type: ActivityType
+        val type: ActivityTypeMyc
 )
 
-enum class ActivityType(
+enum class ActivityTypeMyc(
         @get:JsonValue val json: String
 ) {
 
@@ -62,7 +62,7 @@ enum class ActivityType(
         val all = values().toList()
 
         private val typesByJson by lazy {
-            ActivityType.values().associateBy { it.json }
+            ActivityTypeMyc.values().associateBy { it.json }
         }
 
         fun byJson(search: String) = typesByJson[search] ?:

@@ -1,6 +1,7 @@
 package com.github.christophpickl.urclubs.persistence
 
 import com.github.christophpickl.kpotpourri.common.logging.LOG
+import javax.inject.Inject
 import javax.persistence.Entity
 import javax.persistence.EntityManager
 import javax.persistence.GeneratedValue
@@ -12,7 +13,7 @@ interface PartnerDao {
     fun fetchAll(): List<PartnerDbo>
 }
 
-class PartnerObjectDbDao(
+class PartnerObjectDbDao @Inject constructor(
         private val em: EntityManager
 ) : PartnerDao {
 
