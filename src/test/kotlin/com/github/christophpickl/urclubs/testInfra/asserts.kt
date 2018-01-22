@@ -29,3 +29,4 @@ fun <T> ListAssert<T>.singleEntryIsEqualToIgnoringGivenProps(expected: T, vararg
     hasSize(1)
     element(0).isEqualToIgnoringGivenProps(expected, *propsToIgnore)
 }
+

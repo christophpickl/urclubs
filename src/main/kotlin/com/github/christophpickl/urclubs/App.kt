@@ -1,6 +1,7 @@
 package com.github.christophpickl.urclubs
 
 import ch.qos.logback.classic.Level
+import com.github.christophpickl.kpotpourri.common.collection.prettyPrint
 import com.github.christophpickl.kpotpourri.common.collection.toPrettyString
 import com.github.christophpickl.kpotpourri.logback4k.Logback4k
 import com.github.christophpickl.urclubs.backend.MyClubsApi
@@ -48,16 +49,20 @@ class UrClubsApp @Inject constructor(
         private val bus: EventBus
 ) {
     fun start() {
+        // Partner(idDbo=118, idMyc=yzWykzkxDX, name=Schwimmschule Wien, rating=UNKNOWN)
 
 //       myclubs.login()
 //       println(myclubs.loggedUser())
 //       val partnersMyc = myclubs.partners()
 
-//       partnerService.insert(Partner(idDbo = 0L, name = "foobar"))
-//        val partners = partnerService.fetchAll()
-//        println(partners)
+//       partnerService.create(Partner(idDbo = 0L, name = "foobar"))
 
-        println(syncer.sync().toPrettyString())
+//        println(syncer.sync().toPrettyString())
+
+//        val schwimmschule = partnerService.read(id = 118)!!
+//        partnerService.update(schwimmschule.copy(rating = Rating.SUPERB))
+
+        partnerService.readAll().prettyPrint()
 
 //       myclubs.activities().prettyPrint()
         bus.post(QuitEvent)

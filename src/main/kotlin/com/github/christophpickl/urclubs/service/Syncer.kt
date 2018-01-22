@@ -2,6 +2,7 @@ package com.github.christophpickl.urclubs.service
 
 import com.github.christophpickl.kpotpourri.common.logging.LOG
 import com.github.christophpickl.urclubs.Partner
+import com.github.christophpickl.urclubs.Rating
 import com.github.christophpickl.urclubs.backend.MyClubsApi
 import com.github.christophpickl.urclubs.backend.PartnerMyc
 import javax.inject.Inject
@@ -16,7 +17,7 @@ class Syncer @Inject constructor(
     fun sync(): SyncerReport {
         log.info { "sync()" }
         val partnersMyc = myclubs.partners()
-        val partnersDbo = partnerService.fetchAll()
+        val partnersDbo = partnerService.readAll()
 
         val mycsById = partnersMyc.associateBy { it.id }
         val idOfMycs = mycsById.keys
@@ -24,7 +25,7 @@ class Syncer @Inject constructor(
         val idMycOfDbos = dbosByIdMyc.keys
 
         val insertedPartners = mycsById.minus(idMycOfDbos).values.map { partnerMyc ->
-            partnerService.insert(partnerMyc.toPartner())
+            partnerService.create(partnerMyc.toPartner())
         }
 
         val deletedPartners = dbosByIdMyc.minus(idOfMycs).values.apply {
@@ -48,5 +49,6 @@ data class SyncerReport(
 fun PartnerMyc.toPartner() = Partner(
         idDbo = 0L,
         idMyc = id,
-        name = title
+        name = title,
+        rating = Rating.UNKNOWN
 )

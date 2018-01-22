@@ -14,8 +14,8 @@
 
 ## Technical
 
+* database migration concept
 * Use htt4pk lib
 * Configure: Travis, Versioneye
 * Use tornadoFX UI
-* use Guice
 * Integrate in GCal (introduce gcal4k)

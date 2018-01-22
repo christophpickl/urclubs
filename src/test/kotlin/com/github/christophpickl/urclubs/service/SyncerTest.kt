@@ -28,29 +28,29 @@ class SyncerTest {
     }
 
     fun `Partners Insert - Given empty database and one myclubs partner When sync Then insert and return it`() {
-        whenever(partnerService.fetchAll()).thenReturn(emptyList())
+        whenever(partnerService.readAll()).thenReturn(emptyList())
         whenever(myclubs.partners()).thenReturn(listOf(partnerMyc))
-        whenever(partnerService.insert(partner)).thenReturn(insertedPartner)
+        whenever(partnerService.create(partner)).thenReturn(insertedPartner)
 
         val result = sync()
 
-        verify(partnerService).insert(partner)
+        verify(partnerService).create(partner)
         assertThat(result.insertedPartners).containsExactly(insertedPartner)
     }
 
     fun `Partners Insert - Given partner already in database When sync Then do nothing`() {
-        whenever(partnerService.fetchAll()).thenReturn(listOf(insertedPartner))
+        whenever(partnerService.readAll()).thenReturn(listOf(insertedPartner))
         whenever(myclubs.partners()).thenReturn(listOf(partnerMyc))
 
         val result = sync()
 
-        verify(partnerService).fetchAll()
+        verify(partnerService).readAll()
         verifyNoMoreInteractions(partnerService)
         assertThat(result.insertedPartners).isEmpty()
     }
 
     fun `Partners Delete - Given partner in database but empty myclubs partner When sync Then delete and return it`() {
-        whenever(partnerService.fetchAll()).thenReturn(listOf(insertedPartner))
+        whenever(partnerService.readAll()).thenReturn(listOf(insertedPartner))
         whenever(myclubs.partners()).thenReturn(emptyList())
 
         val result = sync()
