@@ -16,7 +16,7 @@ class HtmlParserTest {
 
     fun `parsePartners - read valid entry`() {
         assertSingleElement(HtmlParser().parsePartners("""<option value="myId" data-slug="ignored-slug">my title</option>"""),
-                Partner(
+                PartnerMyc(
                         id = "myId",
                         title = "my title"
                 ))

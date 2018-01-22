@@ -8,6 +8,7 @@ import com.github.christophpickl.urclubs.service.PartnerService
 import com.google.common.eventbus.EventBus
 import com.google.inject.AbstractModule
 import com.google.inject.Guice
+import com.google.inject.Provider
 import javax.inject.Inject
 
 object AppStarter {
@@ -18,19 +19,9 @@ object AppStarter {
 
     @JvmStatic
     fun main(args: Array<String>) {
-        val credentials = parseCredentials(args)
-        val guice = Guice.createInjector(MainModule(credentials))
-        guice.getInstance(UrClubsApp::class.java).start()
-    }
-
-    private fun parseCredentials(args: Array<String>): Credentials {
-        if (args.size != 2) {
-            throw Exception("Expected exactly two arguments to be passed to the application!")
-        }
-        return Credentials(
-                email = args[0],
-                password = args[1]
-        )
+        val guice = Guice.createInjector(MainModule(args))
+        val app = guice.getInstance(UrClubsApp::class.java)
+        app.start()
     }
 
     private fun configureLogging() {
@@ -56,7 +47,7 @@ class UrClubsApp @Inject constructor(
 //       println(myclubs.loggedUser())
 //       val partnersMyc = myclubs.partners()
 
-       // partnerService.insert(Partner(name = "mein partner"))
+//       partnerService.insert(Partner(idDbo = 0L, name = "foobar"))
        val partners = partnerService.fetchAll()
        println(partners)
 
@@ -65,16 +56,26 @@ class UrClubsApp @Inject constructor(
     }
 }
 
-class MainModule(private val credentials: Credentials) : AbstractModule() {
+class MainModule(private val args: Array<String>) : AbstractModule() {
     override fun configure() {
+        bind(Credentials::class.java).toProvider(CredentialsProvider(args))
         bind(EventBus::class.java).toInstance(EventBus())
         install(PersistenceModule())
-
-        bind(MyClubsApi::class.java).toInstance(MyClubsApi(credentials))
+        bind(MyClubsApi::class.java)
         bind(UrClubsApp::class.java)
     }
+}
 
+class CredentialsProvider(private val args: Array<String>) : Provider<Credentials> {
+    override fun get(): Credentials {
+        if (args.size != 2) {
+            throw Exception("Expected exactly two arguments to be passed to the application!")
+        }
+        return Credentials(
+                email = args[0],
+                password = args[1]
+        )
+    }
 }
 
 object QuitEvent
-

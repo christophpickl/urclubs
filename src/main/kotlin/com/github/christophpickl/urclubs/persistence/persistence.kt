@@ -58,3 +58,13 @@ fun EntityManager.transactional(action: EntityManager.() -> Unit) {
     action(this)
     transaction.commit()
 }
+
+interface HasId {
+    val id: Long?
+}
+
+fun HasId.ensureNotPersisted() {
+    if (id != null && id != 0L) {
+        throw IllegalStateException("ID must be 0 for: $this")
+    }
+}

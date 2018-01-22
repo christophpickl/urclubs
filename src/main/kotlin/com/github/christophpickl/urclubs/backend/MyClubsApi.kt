@@ -15,8 +15,9 @@ import org.apache.http.impl.client.HttpClientBuilder
 import org.apache.http.message.BasicNameValuePair
 import org.apache.http.protocol.BasicHttpContext
 import org.apache.http.util.EntityUtils
+import javax.inject.Inject
 
-class MyClubsApi(
+class MyClubsApi @Inject constructor(
         private val credentials: Credentials
 ) {
     private val log = LOG {}

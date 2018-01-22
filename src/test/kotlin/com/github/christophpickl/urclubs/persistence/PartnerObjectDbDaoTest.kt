@@ -14,7 +14,6 @@ class PartnerObjectDbDaoTest : DatabaseTest() {
         em.transactional { persist(partner) }
 
         val partners = PartnerObjectDbDao(em).fetchAll()
-
         assertThat(partners).singleEntryIsEqualToIgnoringGivenProps(partner, PartnerDbo::id)
     }
 
@@ -28,5 +27,6 @@ class PartnerObjectDbDaoTest : DatabaseTest() {
 }
 
 fun PartnerDbo.Companion.testInstance() = PartnerDbo(
+        id = 0L,
         name = "testName"
 )

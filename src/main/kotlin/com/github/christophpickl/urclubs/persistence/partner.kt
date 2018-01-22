@@ -21,12 +21,13 @@ class PartnerObjectDbDao @Inject constructor(
 
     override fun insert(partner: PartnerDbo) {
         log.debug { "insert(partner=$partner)" }
+        partner.ensureNotPersisted()
         em.transactional { em.persist(partner) }
     }
 
     override fun fetchAll(): List<PartnerDbo> {
         log.debug { "fetchAll()" }
-        val query = em.createQuery("SELECT p FROM PartnerDbo p", PartnerDbo::class.java)
+        val query = em.createQuery("SELECT p FROM ${PartnerDbo::class.simpleName} p", PartnerDbo::class.java)
         return query.resultList
     }
 
@@ -34,11 +35,13 @@ class PartnerObjectDbDao @Inject constructor(
 
 @Entity
 data class PartnerDbo(
-        @Id
-        @GeneratedValue(strategy = IDENTITY)
-        var id: Long? = null,
 
-        var name: String? = null
-) {
+        @Id @GeneratedValue(strategy = IDENTITY)
+        override val id: Long,
+
+        var name: String
+
+): HasId {
+
     companion object
 }
