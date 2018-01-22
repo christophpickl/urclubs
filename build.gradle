@@ -23,13 +23,11 @@ compileTestKotlin {
 
 repositories {
     mavenCentral()
-    maven {
-        url "http://dl.bintray.com/christophpickl/cpickl"
-    }
+    maven { url "http://dl.bintray.com/christophpickl/cpickl" }
 }
 
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:${kotlinVersion}"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}"
     compile "org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}"
 
     compile "io.github.microutils:kotlin-logging:1.4.9"
