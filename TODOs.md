@@ -14,8 +14,10 @@
 
 ## Technical
 
-* Use htt4pk lib
+* split into several modules (myclubs SDK, persistence, logic (recommend, gcal), UI)
+* database migration concept (when adding new property, when changing package/typename, ...)
+* Use http4k lib
 * Configure: Travis, Versioneye
 * Use tornadoFX UI
-* use Guice
 * Integrate in GCal (introduce gcal4k)
+* debug HTTP traffic on android

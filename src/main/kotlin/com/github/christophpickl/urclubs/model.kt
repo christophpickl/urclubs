@@ -1,13 +1,9 @@
 package com.github.christophpickl.urclubs
 
-data class Credentials(
-        val email: String,
-        val password: String
-)
+interface HasOrder {
+    val order: Int
+}
 
-data class Partner(
-        val idDbo: Long,
-        val name: String
-        // rating
-        // note
-)
+abstract class OrderedEnumCompanion<out E : HasOrder>(values: Array<E>) {
+    val allOrdered by lazy { values.toMutableList().apply { sortBy { it.order } }.toList() }
+}

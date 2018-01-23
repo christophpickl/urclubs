@@ -42,6 +42,8 @@ See [requirements page](requirements.html) for what this client has to offer add
 
 ## Activities
 
+### List all
+
 * `POST /activities-list-response`
 * Form data:
     * filters: (JSON string)
@@ -52,6 +54,16 @@ See [requirements page](requirements.html) for what this client has to offer add
         * city: wien
         * partner:
         * type: infrastructure, course
+    * country: at
+    * language: de
+
+### Detail
+
+* `POST /activityDetail`
+* Form data:
+    * activityData: Pf5FowjC0n
+    * type: course
+    * date: 1516705200
     * country: at
     * language: de
 

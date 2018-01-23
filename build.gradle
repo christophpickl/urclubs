@@ -46,4 +46,5 @@ dependencies {
 
     testCompile "org.testng:testng:6.13.1"
     testCompile "org.assertj:assertj-core:3.9.0"
+    testCompile "com.nhaarman:mockito-kotlin:1.5.0"
 }

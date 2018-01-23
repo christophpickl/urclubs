@@ -1,10 +1,10 @@
-package com.github.christophpickl.urclubs.backend
+package com.github.christophpickl.urclubs.myclubs
 
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.github.christophpickl.kpotpourri.common.logging.LOG
-import com.github.christophpickl.urclubs.Credentials
+import com.github.christophpickl.urclubs.service.Credentials
 import org.apache.http.client.entity.UrlEncodedFormEntity
 import org.apache.http.client.methods.CloseableHttpResponse
 import org.apache.http.client.methods.HttpPost
@@ -17,9 +17,19 @@ import org.apache.http.protocol.BasicHttpContext
 import org.apache.http.util.EntityUtils
 import javax.inject.Inject
 
-class MyClubsApi @Inject constructor(
+interface MyClubsApi {
+    fun login()
+    fun loggedUser(): UserMycJson
+    fun partners(): List<PartnerMyc>
+    fun courses(filter: CourseFilter): List<CourseMyc>
+//    fun infrastructure(): List<InfrastructureMyc>
+    fun activity(filter: ActivityFilter): ActivityMyc
+}
+
+class MyClubsHttpApi @Inject constructor(
         private val credentials: Credentials
-) {
+) : MyClubsApi {
+
     private val log = LOG {}
     private val baseUrl = "https://www.myclubs.com/api"
     private val http = Http()
@@ -28,7 +38,7 @@ class MyClubsApi @Inject constructor(
     }
     private val parser = HtmlParser()
 
-    fun login() {
+    override fun login() {
         log.info("login()")
 
         val response = http.execute(HttpPost("$baseUrl/login").apply {
@@ -47,7 +57,7 @@ class MyClubsApi @Inject constructor(
         }
     }
 
-    fun loggedUser(): UserMycJson {
+    override fun loggedUser(): UserMycJson {
         log.info("loggedUser()")
         val response = http.execute(HttpPost("$baseUrl/getLoggedUser"))
         val body = response.body
@@ -59,7 +69,7 @@ class MyClubsApi @Inject constructor(
         return jackson.readValue(body)
     }
 
-    fun partners(): List<PartnerMyc> {
+    override fun partners(): List<PartnerMyc> {
         log.info("partners()")
         val response = http.execute(HttpPost("$baseUrl/activities-get-partners").apply {
             entity = UrlEncodedFormEntity(listOf(
@@ -68,36 +78,46 @@ class MyClubsApi @Inject constructor(
                     BasicNameValuePair("language", "de")
             ))
         })
-        return parser.parsePartners(response.body)
+        val partners = parser.parsePartners(response.body)
+        log.trace { "Found ${partners.size} partners." }
+        return partners
     }
 
-    fun activities(): List<ActivityMyc> {
-        log.info("activities()")
-        val filter = FilterMycJson(
-                date = listOf("21.01.2018"),
-                time = listOf("09:00", "15:00")
-        )
+    override fun courses(filter: CourseFilter): List<CourseMyc> {
+        log.info("courses(filter=$filter)")
         val response = http.execute(HttpPost("$baseUrl/activities-list-response").apply {
             entity = UrlEncodedFormEntity(listOf(
-                    BasicNameValuePair("filters", jackson.writeValueAsString(filter)),
+                    BasicNameValuePair("filters", jackson.writeValueAsString(filter.toFilterMycJson())),
+                    BasicNameValuePair("country", "at"),
+                    BasicNameValuePair("language", "de")
+            ))
+        })
+        val json = jackson.readValue<ActivitiesMycJson>(response.body)
+        val courses = parser.parseCourses(json.coursesHtml)
+        log.trace { "Found ${courses.size} courses." }
+        return courses
+    }
+
+    override fun activity(filter: ActivityFilter): ActivityMyc {
+        log.info("activity(filter=$filter)")
+        val response = http.execute(HttpPost("$baseUrl/activityDetail").apply {
+            entity = UrlEncodedFormEntity(listOf(
+                    BasicNameValuePair("activityData", filter.activityId),
+                    BasicNameValuePair("type", filter.type.toActivityTypeMyc().json),
+                    BasicNameValuePair("date", filter.timestamp),
                     BasicNameValuePair("country", "at"),
                     BasicNameValuePair("language", "de")
             ))
         })
 
-        val json = jackson.readValue<ActivitiesMycJson>(response.body)
-        val courses = parser.parseActivities(json.coursesHtml)
-        val infrastructure = parser.parseActivities(json.infrastructuresHtml)
-        log.debug { "Found ${courses.size} courses and ${infrastructure.size} infrastructure activities." }
-        return mutableListOf<ActivityMyc>().apply {
-            addAll(courses)
-            addAll(infrastructure)
-        }
+        // TODO test for not found activity
+        return parser.parseActivity(response.body)
     }
 
     private val CloseableHttpResponse.body: String get() = EntityUtils.toString(entity).trim()
 
 }
+
 
 private class Http {
 

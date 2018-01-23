@@ -8,7 +8,7 @@ import kotlin.reflect.KProperty1
 
 // MINOR create assert4k library
 
-fun <E> assertSingleElement(list: List<E>, expected: E) {
+fun <E> assertThatSingleElement(list: List<E>, expected: E) {
     Assertions.assertThat(list).hasSize(1)
     Assertions.assertThat(list[0]).isEqualTo(expected)
 }
@@ -29,3 +29,4 @@ fun <T> ListAssert<T>.singleEntryIsEqualToIgnoringGivenProps(expected: T, vararg
     hasSize(1)
     element(0).isEqualToIgnoringGivenProps(expected, *propsToIgnore)
 }
+
