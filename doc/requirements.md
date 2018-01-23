@@ -24,4 +24,4 @@
 
 ## Google Docs Reference
 
-![google_docs](https://github.com/christophpickl/UltimateKotlinWorkshop/blob/master/doc/img/google_docs.png "Google Docs")
+![google_docs](https://raw.githubusercontent.com/christophpickl/urclubs/master/doc/img/google_docs.png "Google Docs")
