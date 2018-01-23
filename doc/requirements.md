@@ -15,3 +15,7 @@
 1. Calendar integration
     * Only display activities which are possible due to free timeslot
     * Automatically create calendar entry (location, web address)
+
+## Google Docs Reference
+
+![google_docs](https://github.com/christophpickl/UltimateKotlinWorkshop/blob/master/doc/img/google_docs.png "Google Docs")
