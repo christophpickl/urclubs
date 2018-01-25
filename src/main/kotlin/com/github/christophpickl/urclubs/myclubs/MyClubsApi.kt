@@ -98,6 +98,7 @@ class MyClubsHttpApi @Inject constructor(
         return courses
     }
 
+    // MINOR if would remove the timestamp filter, we could cache the response, right?!
     override fun activity(filter: ActivityFilter): ActivityMyc {
         log.info("activity(filter=$filter)")
         val response = http.execute(HttpPost("$baseUrl/activityDetail").apply {

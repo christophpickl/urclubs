@@ -7,6 +7,7 @@ interface PartnerService {
     fun readAll(): List<Partner>
     fun read(id: Long): Partner?
     fun findByShortName(shortName: String): Partner?
+    fun findByShortNameOrThrow(shortName: String): Partner
     fun update(partner: Partner)
     fun delete(partner: Partner)
 }
@@ -14,6 +15,7 @@ interface PartnerService {
 class PartnerServiceImpl @Inject constructor(
         private val partnerDao: PartnerDao
 ) : PartnerService {
+
     override fun create(partner: Partner) =
             partnerDao.create(partner.toPartnerDbo()).toPartner()
 
@@ -25,6 +27,9 @@ class PartnerServiceImpl @Inject constructor(
 
     override fun findByShortName(shortName: String) =
             partnerDao.findByShortName(shortName)?.toPartner()
+
+    override fun findByShortNameOrThrow(shortName: String) =
+            findByShortName(shortName) ?: throw IllegalArgumentException("Could not find partner by short name '$shortName'!")
 
     override fun update(partner: Partner) {
         partnerDao.update(partner.toPartnerDbo())

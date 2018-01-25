@@ -9,6 +9,9 @@ data class Partner(
         val shortName: String, // "triller-crossfit" ... used for links
         val name: String, // "Triller CrossFit"
         val rating: Rating
+        // URL
+        // category
+        // categoryMyc ... maybe introduce myclubsMetadata object??
 )
 
 enum class Rating(
