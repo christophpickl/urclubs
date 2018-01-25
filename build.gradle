@@ -37,6 +37,7 @@ dependencies {
     compile "com.github.christophpickl.kpotpourri:common4k:$versionKPotpourri"
     compile "com.github.christophpickl.kpotpourri:logback4k:$versionKPotpourri"
 
+    compile "no.tornado:tornadofx:1.7.14"
     compile "com.google.inject:guice:4.1.0"
     compile "org.apache.httpcomponents:httpclient:4.5.4"
     compile "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.2"
