@@ -5,7 +5,8 @@ fun Partner.toPartnerDbo() = PartnerDbo(
         idMyc = idMyc,
         name = name,
         shortName = shortName,
-        rating = rating.toRatingDbo()
+        rating = rating.toRatingDbo(),
+        deletedByMyc = deletedByMyc
 )
 
 fun Rating.toRatingDbo() = when(this) {
@@ -21,7 +22,8 @@ fun PartnerDbo.toPartner() = Partner(
         idMyc = idMyc,
         name = name,
         shortName = shortName,
-        rating = rating.toRating()
+        rating = rating.toRating(),
+        deletedByMyc = deletedByMyc
 )
 
 fun RatingDbo.toRating() = when(this) {

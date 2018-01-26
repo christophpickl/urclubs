@@ -5,5 +5,6 @@ fun PartnerDbo.Companion.testInstance() = PartnerDbo(
         idMyc = "testIdMyc",
         name = "testName",
         shortName = "testShortName",
-        rating = RatingDbo.UNKNOWN
+        rating = RatingDbo.UNKNOWN,
+        deletedByMyc = false
 )

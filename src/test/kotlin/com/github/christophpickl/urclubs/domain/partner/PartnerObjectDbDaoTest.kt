@@ -36,6 +36,14 @@ class PartnerObjectDbDaoTest : DatabaseTest() {
         assertThat(partners).singleEntryIsEqualToIgnoringGivenProps(partner, PartnerDbo::id)
     }
 
+    fun `READ - Given deleted partner When fetch all partners Then nothing is returned`() {
+        save(partner.copy(deletedByMyc = true))
+
+        val partners = dao().readAll()
+
+        assertThat(partners).isEmpty()
+    }
+
     fun `READ - Given partner When find by short name Then find`() {
         save(partner.copy(shortName = "foo"))
 
@@ -60,22 +68,6 @@ class PartnerObjectDbDaoTest : DatabaseTest() {
         dao().update(updatedPartner)
 
         assertThatSingleElement(fetchAll(), updatedPartner)
-    }
-
-    fun `DELETE - Given one partner When delete him Then no partners exist`() {
-        save(partner)
-
-        dao().delete(partner)
-
-        assertThat(fetchAll()).isEmpty()
-    }
-
-    fun `DELETE - Given two partners When delete single Then one should be still left`() {
-        save(partner1, partner2)
-
-        dao().delete(partner1)
-
-        assertThat(fetchAll()).hasSize(1)
     }
 
     private fun save(vararg partners: PartnerDbo) {

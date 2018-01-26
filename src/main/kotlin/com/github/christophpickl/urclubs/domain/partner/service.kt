@@ -9,7 +9,6 @@ interface PartnerService {
     fun findByShortName(shortName: String): Partner?
     fun findByShortNameOrThrow(shortName: String): Partner
     fun update(partner: Partner)
-    fun delete(partner: Partner)
 }
 
 class PartnerServiceImpl @Inject constructor(
@@ -35,7 +34,4 @@ class PartnerServiceImpl @Inject constructor(
         partnerDao.update(partner.toPartnerDbo())
     }
 
-    override fun delete(partner: Partner) {
-        partnerDao.delete(partner.toPartnerDbo())
-    }
 }

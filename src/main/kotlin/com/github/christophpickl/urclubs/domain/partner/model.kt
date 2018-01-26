@@ -8,11 +8,19 @@ data class Partner(
         val idMyc: String, // "JYSvEcpVCR"
         val shortName: String, // "triller-crossfit" ... used for links
         val name: String, // "Triller CrossFit"
-        val rating: Rating
+        val rating: Rating,
+        val deletedByMyc: Boolean
         // URL
         // category
         // categoryMyc ... maybe introduce myclubsMetadata object??
-)
+) {
+    companion object {
+        val dummies = listOf(
+                Partner(idDbo = 1, idMyc = "myc1", shortName = "tj", name = "Taiji", rating = Rating.GOOD, deletedByMyc = false),
+                Partner(idDbo = 2, idMyc = "myc2", shortName = "ems", name = "EMS", rating = Rating.OK, deletedByMyc = false)
+        )
+    }
+}
 
 enum class Rating(
         override val order: Int

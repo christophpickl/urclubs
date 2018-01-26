@@ -30,11 +30,13 @@ class PartnerSyncer @Inject constructor(
             partnerService.create(partnerMyc.toPartner())
         }
 
-        val deletedPartners = dbosByIdMyc.minus(idOfMycs).values.apply {
-            forEach {
-                partnerService.delete(it)
-            }
-        }.toList()
+        val deletedPartners = dbosByIdMyc.minus(idOfMycs).values
+                .map { it.copy(deletedByMyc = true) }
+                .apply {
+                    forEach {
+                        partnerService.update(it)
+                    }
+                }.toList()
 
         return PartnerSyncReport(
                 insertedPartners = insertedPartners,
@@ -66,5 +68,6 @@ fun PartnerHtmlModel.toPartner() = Partner(
         idMyc = id,
         name = name,
         shortName = shortName,
-        rating = Rating.UNKNOWN
+        rating = Rating.UNKNOWN,
+        deletedByMyc = false
 )

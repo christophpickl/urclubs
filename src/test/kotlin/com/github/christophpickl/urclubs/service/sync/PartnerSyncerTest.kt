@@ -56,8 +56,9 @@ class PartnerSyncerTest {
 
         val result = sync()
 
-        verify(partnerService).delete(insertedPartner)
-        assertThat(result.deletedPartners).containsExactly(insertedPartner)
+        val deletedPartner = insertedPartner.copy(deletedByMyc = true)
+        verify(partnerService).update(deletedPartner)
+        assertThat(result.deletedPartners).containsExactly(deletedPartner)
 
     }
 

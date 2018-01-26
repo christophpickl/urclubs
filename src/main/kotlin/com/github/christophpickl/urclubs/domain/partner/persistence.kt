@@ -20,7 +20,6 @@ interface PartnerDao {
     fun readAll(): List<PartnerDbo>
     fun read(id: Long): PartnerDbo?
     fun findByShortName(shortName: String): PartnerDbo?
-    fun delete(partner: PartnerDbo)
     fun update(partner: PartnerDbo)
 }
 
@@ -38,7 +37,7 @@ class PartnerObjectDbDao @Inject constructor(
 
     override fun readAll(): List<PartnerDbo> {
         log.debug { "readAll()" }
-        val query = em.createQuery("SELECT p FROM ${PartnerDbo::class.simpleName} p", PartnerDbo::class.java)
+        val query = em.createQuery("SELECT p FROM ${PartnerDbo::class.simpleName} p WHERE ${PartnerDbo::deletedByMyc.name} = false", PartnerDbo::class.java)
         return query.resultList
     }
 
@@ -61,12 +60,6 @@ class PartnerObjectDbDao @Inject constructor(
         }
     }
 
-    override fun delete(partner: PartnerDbo) {
-        log.debug { "delete(partner=$partner)" }
-        partner.ensurePersisted()
-        em.transactional { remove(partner) }
-    }
-
     private fun readOrThrow(id: Long) =
             read(id) ?: throw Exception("Partner not found by ID: $id")
 
@@ -78,17 +71,20 @@ data class PartnerDbo(
         override val id: Long,
 
         @Column(nullable = false, unique = true)
-        var idMyc: String, // TODO change to val
+        var idMyc: String = "",
 
         @Column(nullable = false, unique = false)
-        var name: String,
+        var name: String = "",
 
         @Column(nullable = false, unique = true)
-        var shortName: String,
+        var shortName: String = "",
 
         @Column(nullable = false)
         @Enumerated(EnumType.STRING)
-        var rating: RatingDbo
+        var rating: RatingDbo = RatingDbo.UNKNOWN,
+
+        @Column(nullable = false)
+        var deletedByMyc: Boolean = false
 
 ) : HasId {
     companion object

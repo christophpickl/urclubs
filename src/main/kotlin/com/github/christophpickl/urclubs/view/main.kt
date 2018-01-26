@@ -1,7 +1,6 @@
 package com.github.christophpickl.urclubs.view
 
 import com.github.christophpickl.urclubs.domain.partner.Partner
-import com.github.christophpickl.urclubs.domain.partner.Rating
 import javafx.application.Application
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.collections.FXCollections
@@ -92,10 +91,8 @@ class PartnersController : Controller() {
     }
 
     private fun listPartners(): List<Partner> =
-            listOf(
-                    Partner(idDbo = 1, idMyc = "myc1", shortName = "tj", name = "Taiji", rating = Rating.GOOD),
-                    Partner(idDbo = 2, idMyc = "myc2", shortName = "ems", name = "EMS", rating = Rating.OK)
-            ).apply {
+            Partner.dummies.apply {
+                // add artificial delay ;)
                 Thread.sleep(1000)
             }
 }
