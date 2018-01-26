@@ -1,6 +1,8 @@
 package com.github.christophpickl.urclubs.myclubs
 
-fun PartnerMyc.Companion.testInstance() = PartnerMyc(
+import com.github.christophpickl.urclubs.myclubs.parser.PartnerHtmlModel
+
+fun PartnerHtmlModel.Companion.testInstance() = PartnerHtmlModel(
         id = "testMycId",
         name = "testTitle",
         shortName = "testShortName"

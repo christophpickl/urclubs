@@ -1,9 +1,9 @@
-package com.github.christophpickl.urclubs.service
+package com.github.christophpickl.urclubs.service.sync
 
-import com.github.christophpickl.urclubs.myclubs.MyClubsApi
-import com.github.christophpickl.urclubs.myclubs.PartnerMyc
-import com.github.christophpickl.urclubs.myclubs.testInstance
 import com.github.christophpickl.urclubs.domain.partner.PartnerService
+import com.github.christophpickl.urclubs.myclubs.MyClubsApi
+import com.github.christophpickl.urclubs.myclubs.parser.PartnerHtmlModel
+import com.github.christophpickl.urclubs.myclubs.testInstance
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.verifyNoMoreInteractions
@@ -13,9 +13,9 @@ import org.testng.annotations.BeforeMethod
 import org.testng.annotations.Test
 
 @Test
-class SyncerTest {
+class PartnerSyncerTest {
 
-    private val partnerMyc = PartnerMyc.testInstance()
+    private val partnerMyc = PartnerHtmlModel.testInstance()
     private val partner = partnerMyc.toPartner()
     private val insertedPartner = partner.copy(idDbo = 42L)
 
@@ -61,6 +61,6 @@ class SyncerTest {
 
     }
 
-    private fun sync() = Syncer(myclubs, partnerService).sync()
+    private fun sync() = PartnerSyncer(myclubs, partnerService).sync()
 
 }

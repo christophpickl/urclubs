@@ -4,9 +4,15 @@ import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.github.christophpickl.kpotpourri.common.logging.LOG
+import com.github.christophpickl.urclubs.myclubs.parser.ActivityHtmlModel
+import com.github.christophpickl.urclubs.myclubs.parser.CourseHtmlModel
+import com.github.christophpickl.urclubs.myclubs.parser.FinishedActivityHtmlModel
+import com.github.christophpickl.urclubs.myclubs.parser.HtmlParser
+import com.github.christophpickl.urclubs.myclubs.parser.PartnerHtmlModel
 import com.github.christophpickl.urclubs.service.Credentials
 import org.apache.http.client.entity.UrlEncodedFormEntity
 import org.apache.http.client.methods.CloseableHttpResponse
+import org.apache.http.client.methods.HttpGet
 import org.apache.http.client.methods.HttpPost
 import org.apache.http.client.methods.HttpUriRequest
 import org.apache.http.client.protocol.HttpClientContext
@@ -20,28 +26,29 @@ import javax.inject.Inject
 interface MyClubsApi {
     fun login()
     fun loggedUser(): UserMycJson
-    fun partners(): List<PartnerMyc>
-    fun courses(filter: CourseFilter): List<CourseMyc>
-//    fun infrastructure(): List<InfrastructureMyc>
-    fun activity(filter: ActivityFilter): ActivityMyc
+    fun partners(): List<PartnerHtmlModel>
+    fun courses(filter: CourseFilter): List<CourseHtmlModel>
+    //    fun infrastructure(): List<InfrastructureMyc>
+    fun activity(filter: ActivityFilter): ActivityHtmlModel
+    fun finishedActivities(): List<FinishedActivityHtmlModel>
 }
 
 class MyClubsHttpApi @Inject constructor(
         private val credentials: Credentials
 ) : MyClubsApi {
-
     private val log = LOG {}
-    private val baseUrl = "https://www.myclubs.com/api"
+
+    private val baseUrl = "https://www.myclubs.com"
+    private val baseApiUrl = "$baseUrl/api"
     private val http = Http()
     private val jackson = jacksonObjectMapper().apply {
         disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
     }
     private val parser = HtmlParser()
-
     override fun login() {
         log.info("login()")
 
-        val response = http.execute(HttpPost("$baseUrl/login").apply {
+        val response = http.execute(HttpPost("$baseApiUrl/login").apply {
             entity = UrlEncodedFormEntity(listOf(
                     BasicNameValuePair("email", credentials.email),
                     BasicNameValuePair("password", credentials.password),
@@ -59,7 +66,7 @@ class MyClubsHttpApi @Inject constructor(
 
     override fun loggedUser(): UserMycJson {
         log.info("loggedUser()")
-        val response = http.execute(HttpPost("$baseUrl/getLoggedUser"))
+        val response = http.execute(HttpPost("$baseApiUrl/getLoggedUser"))
         val body = response.body
         if (body == "0") {
             log.warn { response.toString() }
@@ -69,9 +76,9 @@ class MyClubsHttpApi @Inject constructor(
         return jackson.readValue(body)
     }
 
-    override fun partners(): List<PartnerMyc> {
+    override fun partners(): List<PartnerHtmlModel> {
         log.info("partners()")
-        val response = http.execute(HttpPost("$baseUrl/activities-get-partners").apply {
+        val response = http.execute(HttpPost("$baseApiUrl/activities-get-partners").apply {
             entity = UrlEncodedFormEntity(listOf(
                     BasicNameValuePair("country", "at"),
                     BasicNameValuePair("city", "wien"),
@@ -83,9 +90,9 @@ class MyClubsHttpApi @Inject constructor(
         return partners
     }
 
-    override fun courses(filter: CourseFilter): List<CourseMyc> {
+    override fun courses(filter: CourseFilter): List<CourseHtmlModel> {
         log.info("courses(filter=$filter)")
-        val response = http.execute(HttpPost("$baseUrl/activities-list-response").apply {
+        val response = http.execute(HttpPost("$baseApiUrl/activities-list-response").apply {
             entity = UrlEncodedFormEntity(listOf(
                     BasicNameValuePair("filters", jackson.writeValueAsString(filter.toFilterMycJson())),
                     BasicNameValuePair("country", "at"),
@@ -99,9 +106,9 @@ class MyClubsHttpApi @Inject constructor(
     }
 
     // MINOR if would remove the timestamp filter, we could cache the response, right?!
-    override fun activity(filter: ActivityFilter): ActivityMyc {
+    override fun activity(filter: ActivityFilter): ActivityHtmlModel {
         log.info("activity(filter=$filter)")
-        val response = http.execute(HttpPost("$baseUrl/activityDetail").apply {
+        val response = http.execute(HttpPost("$baseApiUrl/activityDetail").apply {
             entity = UrlEncodedFormEntity(listOf(
                     BasicNameValuePair("activityData", filter.activityId),
                     BasicNameValuePair("type", filter.type.toActivityTypeMyc().json),
@@ -113,6 +120,12 @@ class MyClubsHttpApi @Inject constructor(
 
         // TODO test for not found activity
         return parser.parseActivity(response.body)
+    }
+
+    override fun finishedActivities(): List<FinishedActivityHtmlModel> {
+        log.debug { "finishedActivities()" }
+        val response = http.execute(HttpGet("$baseUrl/at/de/profile"))
+        return parser.parseProfile(response.body).finishedActivities
     }
 
     private val CloseableHttpResponse.body: String get() = EntityUtils.toString(entity).trim()

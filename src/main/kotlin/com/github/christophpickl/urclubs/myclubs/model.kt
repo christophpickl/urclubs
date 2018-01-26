@@ -27,17 +27,6 @@ data class ActivitiesMycJson(
         val infrastructuresHtml: String
 )
 
-data class ActivityMycJson(
-        @JsonProperty("html")
-        val descriptionHtml: String,
-        @JsonProperty("booking")
-        val bookingHtml: String
-)
-
-data class ActivityMyc(
-        val partnerShortName: String,
-        val description: String
-)
 
 data class FilterMycJson(
         val categories: List<String> = emptyList(),
@@ -50,31 +39,6 @@ data class FilterMycJson(
 ) {
     companion object
 }
-
-data class PartnerMyc(
-        val id: String,
-        val shortName: String,
-        val name: String
-) {
-    companion object
-}
-
-data class CourseMyc(
-        val id: String,
-        val time: String,
-        val timestamp: String,
-        val title: String,
-        val partner: String,
-        val category: String
-)
-
-data class InfrastructureMyc(
-        val id: String,
-        val time: String, // TODO "Book Now", "Drop In"
-        val title: String,
-        val partner: String,
-        val category: String
-)
 
 enum class ActivityTypeMyc(
         @get:JsonValue val json: String

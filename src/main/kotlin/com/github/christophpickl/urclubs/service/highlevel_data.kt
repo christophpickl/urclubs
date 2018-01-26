@@ -6,10 +6,10 @@ import com.github.christophpickl.urclubs.domain.activity.ActivityType
 import com.github.christophpickl.urclubs.domain.partner.Partner
 import com.github.christophpickl.urclubs.domain.partner.PartnerService
 import com.github.christophpickl.urclubs.myclubs.ActivityFilter
-import com.github.christophpickl.urclubs.myclubs.ActivityMyc
 import com.github.christophpickl.urclubs.myclubs.CourseFilter
-import com.github.christophpickl.urclubs.myclubs.CourseMyc
 import com.github.christophpickl.urclubs.myclubs.MyClubsApi
+import com.github.christophpickl.urclubs.myclubs.parser.ActivityHtmlModel
+import com.github.christophpickl.urclubs.myclubs.parser.CourseHtmlModel
 import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.runBlocking
 import java.time.LocalDateTime
@@ -33,7 +33,7 @@ class DataEnhancer @Inject constructor(
         }
     }
 
-    private fun enhanceCourses(courses: List<CourseMyc>): List<EnhancedCourse> =
+    private fun enhanceCourses(courses: List<CourseHtmlModel>): List<EnhancedCourse> =
             runBlocking {
                 courses.map { course ->
                     async {
@@ -42,7 +42,7 @@ class DataEnhancer @Inject constructor(
                 }.map { it.await() }
             }
 
-    private fun enhanceCourse(course: CourseMyc): EnhancedCourse {
+    private fun enhanceCourse(course: CourseHtmlModel): EnhancedCourse {
         log.trace { "enhanceCourse(course=$course)" }
         val activity = myclubs.activity(ActivityFilter(
                 activityId = course.id,
@@ -58,6 +58,6 @@ class DataEnhancer @Inject constructor(
 }
 
 data class EnhancedCourse(
-        val activity: ActivityMyc,
+        val activity: ActivityHtmlModel,
         val partner: Partner
 )
