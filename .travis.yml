@@ -1,3 +1,5 @@
+# see: https://travis-ci.org/christophpickl/urclubs
+
 language: kotlin
 sudo: false
 
