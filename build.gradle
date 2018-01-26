@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        kotlinVersion = "1.2.20"
+        kotlinVersion = "1.2.21"
         versionKPotpourri = "1.7"
     }
     repositories {
@@ -23,6 +23,7 @@ compileTestKotlin {
 
 repositories {
     mavenCentral()
+    jcenter()
     maven { url "http://dl.bintray.com/christophpickl/cpickl" }
     maven { url "http://m2.objectdb.com" }
 }
@@ -30,11 +31,13 @@ repositories {
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}"
     compile "org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}"
+    compile "org.jetbrains.kotlinx:kotlinx-coroutines-core:0.21"
 
     compile "io.github.microutils:kotlin-logging:1.4.9"
     compile "com.github.christophpickl.kpotpourri:common4k:$versionKPotpourri"
     compile "com.github.christophpickl.kpotpourri:logback4k:$versionKPotpourri"
 
+    compile "no.tornado:tornadofx:1.7.14"
     compile "com.google.inject:guice:4.1.0"
     compile "org.apache.httpcomponents:httpclient:4.5.4"
     compile "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.2"
@@ -47,4 +50,10 @@ dependencies {
     testCompile "org.testng:testng:6.13.1"
     testCompile "org.assertj:assertj-core:3.9.0"
     testCompile "com.nhaarman:mockito-kotlin:1.5.0"
+}
+
+kotlin {
+    experimental {
+        coroutines 'enable'
+    }
 }

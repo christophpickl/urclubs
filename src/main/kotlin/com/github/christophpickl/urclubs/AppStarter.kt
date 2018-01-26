@@ -22,7 +22,7 @@ object AppStarter {
             rootLevel = Level.ALL
             packageLevel(Level.WARN, "org.apache.http")
             addConsoleAppender {
-                pattern = "[%-5level] %logger{60} - %msg%n"
+                pattern = "%highlight(%-5level) [%-32thread] %cyan(%logger{60}) - %msg%n"
             }
         }
     }
