@@ -25,3 +25,33 @@
 ## Google Docs Reference
 
 ![google_docs](https://raw.githubusercontent.com/christophpickl/urclubs/master/doc/img/google_docs.png "Google Docs")
+
+# Additional Metadata for partners
+
+* there should be a "good" overview of all relevant partners
+* a table would suit that need best, as it gives you an overview over many partners at a single screen
+* there needs to be a special grouping
+    * the predefined groupings are not sufficient, each partner should be possible to assign a custom group
+    * based on that group, other fields apply, e.g.:
+        * gym => room available
+        * yoga => atmosphere, training
+        * ems => phone number
+        * ~infrastructure (EMS, gym) => opening hours
+* the following fields should be available:
+    * name (custom, and myclubs default)
+    * link (myclubs site + individual site)
+    * picture
+    * rating + short comment
+    * location + short comment
+    * notes (support HTML)
+    * concerning activities:
+        * how many credits left this month (out of X)
+        * ~past history so far
+
+# Recommendation System
+
+TODO
+
+# GCal integration
+
+TODO
