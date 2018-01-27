@@ -234,6 +234,18 @@ class HtmlParserTest {
         assertThat(profile.finishedActivities).hasSize(67)
     }
 
+    fun `parsePartner - integration`() {
+        val partner = HtmlParser().parsePartner(readResponse("partner.html"))
+
+        assertThat(partner).isEqualTo(PartnerDetailHtmlModel(
+                name = "Hotpod Yoga Vienna",
+                description = "Some description.",
+                link = "www.hotpodyoga.com",
+                address = "Margaretenstraße 70/2/2, 1050 Wien",
+                flags = listOf("Bikram & Hot Yoga", "Yoga")
+        ))
+    }
+
     private fun readResponse(fileName: String) =
             javaClass.getResource("/urclubs/responses/$fileName").readText()
 

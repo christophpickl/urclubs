@@ -28,11 +28,18 @@
 
 ## Partners
 
+### List all
+
 * `POST /api/activities-get-partners`
 * Form data:
     * country: at
     * city: wien
     * language: de
+
+### Details
+
+* `GET /at/de/partner/{shortName}`
+* returns big HTML file
 
 ## Activities
 

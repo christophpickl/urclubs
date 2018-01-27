@@ -3,7 +3,7 @@ package com.github.christophpickl.urclubs
 import com.github.christophpickl.kpotpourri.common.collection.prettyPrint
 import com.github.christophpickl.urclubs.domain.partner.PartnerService
 import com.github.christophpickl.urclubs.myclubs.MyClubsApi
-import com.github.christophpickl.urclubs.service.DataEnhancer
+import com.github.christophpickl.urclubs.service.CourseEnhancer
 import com.github.christophpickl.urclubs.service.sync.PartnerSyncer
 import com.github.christophpickl.urclubs.service.sync.PastActivitySyncer
 import com.google.common.eventbus.EventBus
@@ -15,7 +15,7 @@ class App @Inject constructor(
         private val myclubs: MyClubsApi,
         private val partnerService: PartnerService,
         private val bus: EventBus,
-        private val enhancer: DataEnhancer
+        private val enhancer: CourseEnhancer
 ) {
     fun start() {
         myclubs.login() // TODO refactor that always login at startup

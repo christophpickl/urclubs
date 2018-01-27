@@ -10,6 +10,14 @@ data class PartnerHtmlModel(
     companion object
 }
 
+data class PartnerDetailHtmlModel(
+        val name: String,
+        val description: String,
+        val link: String,
+        val address: String,
+        val flags: List<String>
+)
+
 data class CourseHtmlModel(
         val id: String,
         val time: String,
@@ -21,7 +29,7 @@ data class CourseHtmlModel(
 
 data class InfrastructureHtmlModel(
         val id: String,
-        val time: String, // TODO "Book Now", "Drop In"
+        val time: String,
         val title: String,
         val partner: String,
         val category: String

@@ -41,7 +41,7 @@ class HtmlParser {
             Jsoup.parse(html).select("li").map { li ->
                 InfrastructureHtmlModel(
                         id = li.attr("data-activity"),
-                        time = li.select(".time").text(), // TODO parse proper time
+                        time = li.select(".time").text(),  // TODO "Book Now", "Drop In" => used to infer type (OPEN, RESERVATION_NEEDED => show phone number)
                         title = li.select("h3").text(),
                         category = li.select(".cat").text(),
                         partner = li.select(".text__partner").text()
@@ -82,7 +82,17 @@ class HtmlParser {
                     locationHtml = it.select("div.profile__cards__item__location").html()
             )
         }
+    }
 
+    fun parsePartner(html: String): PartnerDetailHtmlModel {
+        val doc = Jsoup.parse(html)
+        return PartnerDetailHtmlModel(
+                name = doc.safeSelectFirst("div.storyhl > h1").text(),
+                description = doc.safeSelectFirst("p.partner__intro__info__text").text(),
+                address = doc.safeSelectFirst("a.partner__places__list__item").text(),
+                link = doc.safeSelectFirst("a.partner__intro__info__data__web").text(),
+                flags = doc.select("div.tags--small > span.tags__tag").map { it.text() }
+        )
     }
 
     private fun parseFinishedActivityDate(dateString: String, div: Element): LocalDateTime {
@@ -91,6 +101,9 @@ class HtmlParser {
     }
 
 }
+
+private fun Element.safeSelectFirst(selector: String): Element =
+        selectFirst(selector) ?: throw Exception("Could not find HTML part by selector: $selector\n$this")
 
 private data class ActivityMycJson(
         @JsonProperty("html")
