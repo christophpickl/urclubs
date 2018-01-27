@@ -29,6 +29,7 @@ class MainView : View() {
     }
     init {
         root.bottom = bottomView.root
+        title = "UrClubs"
     }
 }
 
