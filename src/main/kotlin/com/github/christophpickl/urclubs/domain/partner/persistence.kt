@@ -24,7 +24,7 @@ interface PartnerDao {
 }
 
 class PartnerObjectDbDao @Inject constructor(
-        private val em: EntityManager
+    private val em: EntityManager
 ) : PartnerDao {
     private val log = LOG {}
 
@@ -42,7 +42,7 @@ class PartnerObjectDbDao @Inject constructor(
     }
 
     override fun read(id: Long): PartnerDbo? =
-            em.find(PartnerDbo::class.java, id)
+        em.find(PartnerDbo::class.java, id)
 
     override fun findByShortName(shortName: String): PartnerDbo? {
         val query = em.createQuery("SELECT p FROM ${PartnerDbo::class.simpleName} p WHERE p.shortName = :shortName", PartnerDbo::class.java)
@@ -61,30 +61,33 @@ class PartnerObjectDbDao @Inject constructor(
     }
 
     private fun readOrThrow(id: Long) =
-            read(id) ?: throw Exception("Partner not found by ID: $id")
+        read(id) ?: throw Exception("Partner not found by ID: $id")
 
 }
 
 @Entity
 data class PartnerDbo(
-        @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-        override val id: Long,
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    override val id: Long,
 
-        @Column(nullable = false, unique = true)
-        var idMyc: String = "",
+    @Column(nullable = false, unique = true)
+    var idMyc: String = "",
 
-        @Column(nullable = false, unique = false)
-        var name: String = "",
+    @Column(nullable = false, unique = false)
+    var name: String = "",
 
-        @Column(nullable = false, unique = true)
-        var shortName: String = "",
+    @Column(nullable = false, unique = true)
+    var shortName: String = "",
 
-        @Column(nullable = false)
-        @Enumerated(EnumType.STRING)
-        var rating: RatingDbo = RatingDbo.UNKNOWN,
+    @Column(nullable = false)
+    var address: String = "",
 
-        @Column(nullable = false)
-        var deletedByMyc: Boolean = false
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    var rating: RatingDbo = RatingDbo.UNKNOWN,
+
+    @Column(nullable = false)
+    var deletedByMyc: Boolean = false
 
 ) : HasId {
     companion object

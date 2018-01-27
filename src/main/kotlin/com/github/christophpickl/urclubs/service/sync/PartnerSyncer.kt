@@ -6,6 +6,7 @@ import com.github.christophpickl.urclubs.domain.partner.Partner
 import com.github.christophpickl.urclubs.domain.partner.PartnerService
 import com.github.christophpickl.urclubs.domain.partner.Rating
 import com.github.christophpickl.urclubs.myclubs.MyClubsApi
+import com.github.christophpickl.urclubs.myclubs.parser.PartnerDetailHtmlModel
 import com.github.christophpickl.urclubs.myclubs.parser.PartnerHtmlModel
 import javax.inject.Inject
 
@@ -26,8 +27,11 @@ class PartnerSyncer @Inject constructor(
         val dbosByIdMyc = partnersDbo.associateBy { it.idMyc }
         val idMycOfDbos = dbosByIdMyc.keys
 
+        // TODO introduce coroutines for syncing each partner
         val insertedPartners = mycsById.minus(idMycOfDbos).values.map { partnerMyc ->
-            partnerService.create(partnerMyc.toPartner())
+            val rawPartner = partnerMyc.toPartner()
+            val partner = rawPartner.enhance(myclubs.partner(rawPartner.shortName))
+            partnerService.create(partner)
         }
 
         val deletedPartners = dbosByIdMyc.minus(idOfMycs).values
@@ -44,6 +48,13 @@ class PartnerSyncer @Inject constructor(
         )
     }
 }
+
+private fun Partner.enhance(detailed: PartnerDetailHtmlModel) = copy(
+    address = detailed.address
+    // description
+    // link
+    // flags
+)
 
 data class PartnerSyncReport(
         val insertedPartners: List<Partner>,
@@ -68,6 +79,7 @@ fun PartnerHtmlModel.toPartner() = Partner(
         idMyc = id,
         name = name,
         shortName = shortName,
+        address = "", // needs additional GET /partner request
         rating = Rating.UNKNOWN,
         deletedByMyc = false
 )

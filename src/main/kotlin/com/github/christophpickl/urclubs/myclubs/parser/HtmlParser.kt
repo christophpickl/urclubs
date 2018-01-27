@@ -79,17 +79,19 @@ class HtmlParser {
                     date = parseFinishedActivityDate(dateString, it),
                     category = it.select("div.profile__cards__item__cat").text(),
                     title = it.select("div.profile__cards__item__title").text(),
-                    locationHtml = it.select("div.profile__cards__item__location").html()
+                    locationHtml = cleanLocationHtml(it.select("div.profile__cards__item__location").html())
             )
         }
     }
+
+    private fun cleanLocationHtml(html: String) = html.split("<br>").map { it.trim() }.joinToString("<br>")
 
     fun parsePartner(html: String): PartnerDetailHtmlModel {
         val doc = Jsoup.parse(html)
         return PartnerDetailHtmlModel(
                 name = doc.safeSelectFirst("div.storyhl > h1").text(),
                 description = doc.safeSelectFirst("p.partner__intro__info__text").text(),
-                address = doc.safeSelectFirst("a.partner__places__list__item").text(),
+                address = doc.selectFirst("a.partner__places__list__item")?.text() ?: "", // some guys don't provide an address
                 link = doc.safeSelectFirst("a.partner__intro__info__data__web").text(),
                 flags = doc.select("div.tags--small > span.tags__tag").map { it.text() }
         )

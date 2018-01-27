@@ -1,15 +1,16 @@
 package com.github.christophpickl.urclubs.domain.partner
 
 fun Partner.toPartnerDbo() = PartnerDbo(
-        id = idDbo,
-        idMyc = idMyc,
-        name = name,
-        shortName = shortName,
-        rating = rating.toRatingDbo(),
-        deletedByMyc = deletedByMyc
+    id = idDbo,
+    idMyc = idMyc,
+    name = name,
+    shortName = shortName,
+    address = address,
+    rating = rating.toRatingDbo(),
+    deletedByMyc = deletedByMyc
 )
 
-fun Rating.toRatingDbo() = when(this) {
+fun Rating.toRatingDbo() = when (this) {
     Rating.UNKNOWN -> RatingDbo.UNKNOWN
     Rating.BAD -> RatingDbo.BAD
     Rating.OK -> RatingDbo.OK
@@ -18,15 +19,16 @@ fun Rating.toRatingDbo() = when(this) {
 }
 
 fun PartnerDbo.toPartner() = Partner(
-        idDbo = id,
-        idMyc = idMyc,
-        name = name,
-        shortName = shortName,
-        rating = rating.toRating(),
-        deletedByMyc = deletedByMyc
+    idDbo = id,
+    idMyc = idMyc,
+    name = name,
+    address = address,
+    shortName = shortName,
+    rating = rating.toRating(),
+    deletedByMyc = deletedByMyc
 )
 
-fun RatingDbo.toRating() = when(this) {
+fun RatingDbo.toRating() = when (this) {
     RatingDbo.UNKNOWN -> Rating.UNKNOWN
     RatingDbo.BAD -> Rating.BAD
     RatingDbo.OK -> Rating.OK

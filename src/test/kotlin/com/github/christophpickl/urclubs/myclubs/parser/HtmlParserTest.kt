@@ -238,12 +238,18 @@ class HtmlParserTest {
         val partner = HtmlParser().parsePartner(readResponse("partner.html"))
 
         assertThat(partner).isEqualTo(PartnerDetailHtmlModel(
-                name = "Hotpod Yoga Vienna",
-                description = "Some description.",
-                link = "www.hotpodyoga.com",
-                address = "Margaretenstraße 70/2/2, 1050 Wien",
-                flags = listOf("Bikram & Hot Yoga", "Yoga")
+            name = "Hotpod Yoga Vienna",
+            description = "Some description.",
+            link = "www.hotpodyoga.com",
+            address = "Margaretenstraße 70/2/2, 1050 Wien",
+            flags = listOf("Bikram & Hot Yoga", "Yoga")
         ))
+    }
+
+    fun `parsePartner - integration without address`() {
+        val partner = HtmlParser().parsePartner(readResponse("partner_without_address.html"))
+
+        assertThat(partner.address).isEqualTo("")
     }
 
     private fun readResponse(fileName: String) =

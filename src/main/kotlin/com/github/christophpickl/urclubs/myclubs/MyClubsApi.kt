@@ -8,6 +8,7 @@ import com.github.christophpickl.urclubs.myclubs.parser.ActivityHtmlModel
 import com.github.christophpickl.urclubs.myclubs.parser.CourseHtmlModel
 import com.github.christophpickl.urclubs.myclubs.parser.FinishedActivityHtmlModel
 import com.github.christophpickl.urclubs.myclubs.parser.HtmlParser
+import com.github.christophpickl.urclubs.myclubs.parser.PartnerDetailHtmlModel
 import com.github.christophpickl.urclubs.myclubs.parser.PartnerHtmlModel
 import com.github.christophpickl.urclubs.service.Credentials
 import org.apache.http.client.entity.UrlEncodedFormEntity
@@ -27,6 +28,7 @@ interface MyClubsApi {
     fun login()
     fun loggedUser(): UserMycJson
     fun partners(): List<PartnerHtmlModel>
+    fun partner(shortName: String): PartnerDetailHtmlModel
     fun courses(filter: CourseFilter): List<CourseHtmlModel>
     //    fun infrastructure(): List<InfrastructureMyc>
     fun activity(filter: ActivityFilter): ActivityHtmlModel
@@ -36,6 +38,7 @@ interface MyClubsApi {
 class MyClubsHttpApi @Inject constructor(
         private val credentials: Credentials
 ) : MyClubsApi {
+
     private val log = LOG {}
 
     private val baseUrl = "https://www.myclubs.com"
@@ -126,6 +129,15 @@ class MyClubsHttpApi @Inject constructor(
         log.debug { "finishedActivities()" }
         val response = http.execute(HttpGet("$baseUrl/at/de/profile"))
         return parser.parseProfile(response.body).finishedActivities
+    }
+
+    override fun partner(shortName: String): PartnerDetailHtmlModel {
+        log.debug { "partner(shortName=$shortName)" }
+        val response = http.execute(HttpGet("$baseUrl/at/de/partner/$shortName"))
+
+        val partner = parser.parsePartner(response.body)
+        log.trace { "Found: $partner" }
+        return partner
     }
 
     private val CloseableHttpResponse.body: String get() = EntityUtils.toString(entity).trim()
