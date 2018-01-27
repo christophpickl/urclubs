@@ -15,12 +15,7 @@ data class Partner(
     // category
     // categoryMyc ... maybe introduce myclubsMetadata object??
 ) {
-    companion object {
-        val dummies = listOf(
-            Partner(idDbo = 1, idMyc = "myc1", shortName = "taiji", name = "Taiji", rating = Rating.GOOD, deletedByMyc = false, address = "Wienerstrasse 66, 1010 Wien"),
-            Partner(idDbo = 2, idMyc = "myc2", shortName = "ems", name = "EMS", rating = Rating.OK, deletedByMyc = false, address = "Margaratenguertel 12, 1030 Wien")
-        )
-    }
+    companion object
 }
 
 enum class Rating(

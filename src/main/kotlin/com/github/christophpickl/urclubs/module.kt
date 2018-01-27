@@ -7,15 +7,13 @@ import com.github.christophpickl.urclubs.service.ServiceModule
 import com.google.common.eventbus.EventBus
 import com.google.inject.AbstractModule
 
-class MainModule(private val args: Array<String>) : AbstractModule() {
+class MainModule : AbstractModule() {
     override fun configure() {
         bind(EventBus::class.java).toInstance(EventBus())
 
         install(PersistenceModule())
         install(PartnerModule())
         install(MyclubsModule())
-        install(ServiceModule(args))
-
-        bind(App::class.java)
+        install(ServiceModule())
     }
 }
