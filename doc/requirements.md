@@ -7,7 +7,7 @@
 1. "Better" recommendation system
     * Don't just display all activities, but rather filter based on personal preference
     * Make use of metadata (rating) to get some kind of ranking (score system)
-    * Hide "bad" partners and "unwanted" categories
+    * Hide "bad" partners and "unwanted" categories (marked as such by me)
     * Hide activities too far away (e.g. trans-danube)
     * Proper location based search
     * Different recommendation styles, e.g.: "Exploration" - list all yoga partner's if not yet visited
@@ -33,25 +33,41 @@
 * there needs to be a special grouping
     * the predefined groupings are not sufficient, each partner should be possible to assign a custom group
     * based on that group, other fields apply, e.g.:
-        * gym => room available
+        * gym => room available, wellness
         * yoga => atmosphere, training
         * ems => phone number
         * ~infrastructure (EMS, gym) => opening hours
+    * some of them have an even further sub-category, e.g.:
+        * wushu => WT/TJ/...
+        * crossfit => all-natural/stressy-hip/coordination
 * the following fields should be available:
     * name (custom, and myclubs default)
-    * link (myclubs site + individual site)
+    * link (myclubs site + individual site; clickable)
     * picture
+    * address
     * rating + short comment
     * location + short comment
+    * ignored (don't want to see anymore)
     * notes (support HTML)
+    * credits (available + left)
+    * how many days since last activity visited
+    * how many activities in total
     * concerning activities:
         * how many credits left this month (out of X)
         * ~past history so far
 
 # Recommendation System
 
-TODO
+* sophisticated algorithm which proposes only relevant activities
+    * make heave use of metadata and past history (maybe even geo location)
+* when simply scrolling through all activities, enable filters:
+    * category
+    * available because of gcal empty timeslot
+    * yet unvisited (when looking for new adventure ;)
+    * favourite rating
 
 # GCal integration
 
-TODO
+* in order to know which activities to propose (when "strict time filter" is enabled) because of availability
+* create gcal entry automatically with all necessary metadata and URLs in description
+    * for those with booking: first enter with "xxx ???" and then remove "???" when confirmed
