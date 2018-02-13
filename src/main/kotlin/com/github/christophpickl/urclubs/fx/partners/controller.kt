@@ -1,12 +1,12 @@
-package com.github.christophpickl.urclubs.view
+package com.github.christophpickl.urclubs.fx.partners
 
 import com.github.christophpickl.kpotpourri.common.logging.LOG
 import com.github.christophpickl.urclubs.domain.partner.Partner
 import com.github.christophpickl.urclubs.domain.partner.PartnerService
 import javafx.collections.FXCollections
-import tornadofx.*
+import tornadofx.Controller
 
-class PartnersController : Controller() {
+class PartnersFxController : Controller() {
 
     private val logg = LOG {}
     private val partnerService: PartnerService by di()
@@ -15,7 +15,7 @@ class PartnersController : Controller() {
 
     init {
         subscribe<PartnerListRequest> {
-            val partners = listPartners()
+            val partners = partnerService.readAll()
             fire(PartnerListEvent(partners))
         }
     }
@@ -27,11 +27,6 @@ class PartnersController : Controller() {
 //            partners.setAll(it)
 //        }
 //    }
-
-    private fun listPartners(): List<Partner> {
-        logg.debug { "listPartners()" }
-        return partnerService.readAll()
-    }
 
 
 }

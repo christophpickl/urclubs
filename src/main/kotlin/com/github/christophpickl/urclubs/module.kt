@@ -10,6 +10,7 @@ import com.google.inject.AbstractModule
 class MainModule : AbstractModule() {
     override fun configure() {
         bind(EventBus::class.java).toInstance(EventBus())
+        bind(AllEventCatcher::class.java).asEagerSingleton()
 
         install(PersistenceModule())
         install(PartnerModule())

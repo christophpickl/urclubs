@@ -1,4 +1,4 @@
-package com.github.christophpickl.urclubs.view
+package com.github.christophpickl.urclubs.fx
 
 import tornadofx.*
 

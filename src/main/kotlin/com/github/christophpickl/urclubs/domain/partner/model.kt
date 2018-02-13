@@ -11,6 +11,9 @@ data class Partner(
     val address: String,
     val rating: Rating,
     val deletedByMyc: Boolean
+    // val favourited: Boolean,
+    // val wishlisted: Boolean
+
     // URL
     // category
     // categoryMyc ... maybe introduce myclubsMetadata object??

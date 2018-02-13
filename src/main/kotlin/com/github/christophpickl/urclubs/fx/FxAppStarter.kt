@@ -1,16 +1,20 @@
-package com.github.christophpickl.urclubs.view
+package com.github.christophpickl.urclubs.fx
 
 import com.github.christophpickl.kpotpourri.common.logging.LOG
 import com.github.christophpickl.urclubs.MainModule
 import com.github.christophpickl.urclubs.QuitEvent
 import com.github.christophpickl.urclubs.configureLogging
+import com.github.christophpickl.urclubs.fx.partners.PartnersFxController
 import com.github.christophpickl.urclubs.service.Credentials
 import com.github.christophpickl.urclubs.service.SystemPropertyCredentialsProvider
 import com.google.common.eventbus.EventBus
 import com.google.inject.AbstractModule
 import com.google.inject.Guice
 import javafx.application.Application
-import tornadofx.*
+import tornadofx.App
+import tornadofx.DIContainer
+import tornadofx.FX
+import tornadofx.find
 import kotlin.reflect.KClass
 
 // official page ... https://github.com/edvin/tornadofx
@@ -64,7 +68,8 @@ class UrclubsFxApp : App(
     }
 
     private fun registerEagerSingletons() {
-        find(PartnersController::class)
+        find(PartnersFxController::class)
+        find(SyncFxController::class)
     }
 
 }
