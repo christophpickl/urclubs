@@ -87,7 +87,25 @@ data class PartnerDbo(
     var rating: RatingDbo = RatingDbo.UNKNOWN,
 
     @Column(nullable = false)
-    var deletedByMyc: Boolean = false
+    var deletedByMyc: Boolean = false,
+
+    @Column(nullable = false)
+    var favourited: Boolean = false,
+
+    @Column(nullable = false)
+    var wishlisted: Boolean = false,
+
+    @Column(nullable = false)
+    var ignored: Boolean = false,
+
+    @Column(nullable = false)
+    var category: CategoryDbo = CategoryDbo.UNKNOWN,
+
+    @Column(nullable = false)
+    var linkMyclubsSite: String = "",
+
+    @Column(nullable = false)
+    var linkPartnerSite: String = ""
 
 ) : HasId {
     companion object
@@ -105,4 +123,15 @@ enum class RatingDbo {
     OK,
     GOOD,
     SUPERB
+}
+
+enum class CategoryDbo {
+    EMS,
+    GYM,
+    YOGA,
+    WUSHU,
+    WORKOUT,
+    HEALTH,
+    OTHER,
+    UNKNOWN
 }

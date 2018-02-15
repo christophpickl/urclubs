@@ -11,11 +11,11 @@ data class PartnerHtmlModel(
 }
 
 data class PartnerDetailHtmlModel(
-        val name: String,
-        val description: String,
-        val link: String,
-        val address: String,
-        val flags: List<String>
+    val name: String,
+    val description: String,
+    val linkPartnerSite: String,
+    val address: String,
+    val flags: List<String>
 )
 
 data class CourseHtmlModel(

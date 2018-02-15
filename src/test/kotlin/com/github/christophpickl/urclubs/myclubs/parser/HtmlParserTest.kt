@@ -240,7 +240,7 @@ class HtmlParserTest {
         assertThat(partner).isEqualTo(PartnerDetailHtmlModel(
             name = "Hotpod Yoga Vienna",
             description = "Some description.",
-            link = "www.hotpodyoga.com",
+            linkPartnerSite = "http://www.hotpodyoga.com/at/yoga-classes/vienna/",
             address = "Margaretenstraße 70/2/2, 1050 Wien",
             flags = listOf("Bikram & Hot Yoga", "Yoga")
         ))

@@ -5,5 +5,6 @@ import com.google.inject.AbstractModule
 class MyclubsModule : AbstractModule() {
     override fun configure() {
         bind(MyClubsApi::class.java).to(MyClubsHttpApi::class.java)
+        bind(MyclubsUtil::class.java).asEagerSingleton()
     }
 }

@@ -10,13 +10,18 @@ data class Partner(
     val name: String, // "Triller CrossFit"
     val address: String,
     val rating: Rating,
-    val deletedByMyc: Boolean
-    // val favourited: Boolean,
-    // val wishlisted: Boolean
+    val deletedByMyc: Boolean,
+    val favourited: Boolean,
+    val wishlisted: Boolean,
+    val ignored: Boolean,
+    val category: Category,
+    val linkMyclubsSite: String,
+    val linkPartnerSite: String
 
     // URL
     // category
-    // categoryMyc ... maybe introduce myclubsMetadata object??
+    // categoryMyc ...
+// maybe introduce myclubsMetadata object??
 ) {
     companion object
 }
@@ -31,4 +36,17 @@ enum class Rating(
     SUPERB(4);
 
     object Ordered : OrderedEnumCompanion<Rating>(Rating.values())
+}
+
+enum class Category(
+    val label: String
+) {
+    EMS("EMS"),
+    GYM("Gym"),
+    YOGA("Yoga"),
+    WUSHU("Wushu"),
+    WORKOUT("Workout"),
+    HEALTH("Health"),
+    OTHER("Other"),
+    UNKNOWN("Unknown")
 }

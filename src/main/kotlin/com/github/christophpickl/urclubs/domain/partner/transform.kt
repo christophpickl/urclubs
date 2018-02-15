@@ -7,7 +7,13 @@ fun Partner.toPartnerDbo() = PartnerDbo(
     shortName = shortName,
     address = address,
     rating = rating.toRatingDbo(),
-    deletedByMyc = deletedByMyc
+    deletedByMyc = deletedByMyc,
+    favourited = favourited,
+    wishlisted = wishlisted,
+    ignored = ignored,
+    category = category.toCategoryDbo(),
+    linkMyclubsSite = linkMyclubsSite,
+    linkPartnerSite = linkPartnerSite
 )
 
 fun Rating.toRatingDbo() = when (this) {
@@ -18,6 +24,17 @@ fun Rating.toRatingDbo() = when (this) {
     Rating.SUPERB -> RatingDbo.SUPERB
 }
 
+fun Category.toCategoryDbo() = when (this) {
+    Category.EMS -> CategoryDbo.EMS
+    Category.GYM -> CategoryDbo.EMS
+    Category.YOGA -> CategoryDbo.YOGA
+    Category.WUSHU -> CategoryDbo.WUSHU
+    Category.WORKOUT -> CategoryDbo.WORKOUT
+    Category.HEALTH -> CategoryDbo.HEALTH
+    Category.OTHER -> CategoryDbo.OTHER
+    Category.UNKNOWN -> CategoryDbo.UNKNOWN
+}
+
 fun PartnerDbo.toPartner() = Partner(
     idDbo = id,
     idMyc = idMyc,
@@ -25,7 +42,13 @@ fun PartnerDbo.toPartner() = Partner(
     address = address,
     shortName = shortName,
     rating = rating.toRating(),
-    deletedByMyc = deletedByMyc
+    deletedByMyc = deletedByMyc,
+    favourited = favourited,
+    wishlisted = wishlisted,
+    ignored = ignored,
+    category = category.toCategory(),
+    linkMyclubsSite = linkMyclubsSite,
+    linkPartnerSite = linkPartnerSite
 )
 
 fun RatingDbo.toRating() = when (this) {
@@ -34,4 +57,15 @@ fun RatingDbo.toRating() = when (this) {
     RatingDbo.OK -> Rating.OK
     RatingDbo.GOOD -> Rating.GOOD
     RatingDbo.SUPERB -> Rating.SUPERB
+}
+
+fun CategoryDbo.toCategory() = when (this) {
+    CategoryDbo.EMS -> Category.EMS
+    CategoryDbo.GYM -> Category.EMS
+    CategoryDbo.YOGA -> Category.YOGA
+    CategoryDbo.WUSHU -> Category.WUSHU
+    CategoryDbo.WORKOUT -> Category.WORKOUT
+    CategoryDbo.HEALTH -> Category.HEALTH
+    CategoryDbo.OTHER -> Category.OTHER
+    CategoryDbo.UNKNOWN -> Category.UNKNOWN
 }

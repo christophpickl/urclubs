@@ -36,12 +36,13 @@ interface MyClubsApi {
 }
 
 class MyClubsHttpApi @Inject constructor(
-        private val credentials: Credentials
+        private val credentials: Credentials,
+        private val util: MyclubsUtil
 ) : MyClubsApi {
 
     private val log = LOG {}
 
-    private val baseUrl = "https://www.myclubs.com"
+    private val baseUrl = "https://www.myclubs.com" // TODO inject, in order to make it fakeable/testable (integration tests with wiremock)
     private val baseApiUrl = "$baseUrl/api"
     private val http = Http()
     private val jackson = jacksonObjectMapper().apply {
@@ -133,7 +134,7 @@ class MyClubsHttpApi @Inject constructor(
 
     override fun partner(shortName: String): PartnerDetailHtmlModel {
         log.debug { "partner(shortName=$shortName)" }
-        val response = http.execute(HttpGet("$baseUrl/at/de/partner/$shortName"))
+        val response = http.execute(HttpGet(util.createMyclubsPartnerUrl(shortName)))
 
         val partner = parser.parsePartner(response.body)
         log.trace { "Found: $partner" }
@@ -144,6 +145,11 @@ class MyClubsHttpApi @Inject constructor(
 
 }
 
+class MyclubsUtil {
+    private val baseUrl = "https://www.myclubs.com" // TODO inject, in order to make it fakeable/testable (integration tests with wiremock)
+
+    fun createMyclubsPartnerUrl(shortName: String) = "$baseUrl/at/de/partner/$shortName"
+}
 
 private class Http {
 
