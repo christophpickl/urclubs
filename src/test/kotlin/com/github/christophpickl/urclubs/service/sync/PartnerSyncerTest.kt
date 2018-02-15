@@ -2,6 +2,7 @@ package com.github.christophpickl.urclubs.service.sync
 
 import com.github.christophpickl.urclubs.domain.partner.PartnerService
 import com.github.christophpickl.urclubs.myclubs.MyClubsApi
+import com.github.christophpickl.urclubs.myclubs.MyclubsUtil
 import com.github.christophpickl.urclubs.myclubs.parser.PartnerHtmlModel
 import com.github.christophpickl.urclubs.myclubs.testInstance
 import com.nhaarman.mockito_kotlin.mock
@@ -59,9 +60,8 @@ class PartnerSyncerTest {
         val deletedPartner = insertedPartner.copy(deletedByMyc = true)
         verify(partnerService).update(deletedPartner)
         assertThat(result.deletedPartners).containsExactly(deletedPartner)
-
     }
 
-    private fun sync() = PartnerSyncer(myclubs, partnerService).sync()
+    private fun sync() = PartnerSyncer(myclubs, partnerService, MyclubsUtil()).sync()
 
 }
