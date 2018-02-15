@@ -1,24 +1,21 @@
 buildscript {
     ext {
-        kotlinVersion = "1.2.21"
+        versionKotlin = "1.2.21"
+        versionJava = "1.8"
         versionKPotpourri = "1.7"
     }
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-    }
 }
 
-apply plugin: "kotlin"
+plugins {
+    id "org.jetbrains.kotlin.jvm" version "1.2.21"
+}
 
-sourceCompatibility = 1.8
+sourceCompatibility = versionJava
 compileKotlin {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.jvmTarget = versionJava.toString()
 }
 compileTestKotlin {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.jvmTarget = versionJava.toString()
 }
 
 repositories {
@@ -29,8 +26,8 @@ repositories {
 }
 
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}"
-    compile "org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versionKotlin}"
+    compile "org.jetbrains.kotlin:kotlin-reflect:${versionKotlin}"
     compile "org.jetbrains.kotlinx:kotlinx-coroutines-core:0.21"
 
     compile "io.github.microutils:kotlin-logging:1.4.9"
@@ -54,6 +51,6 @@ dependencies {
 
 kotlin {
     experimental {
-        coroutines 'enable'
+        coroutines "enable"
     }
 }
