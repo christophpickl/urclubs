@@ -18,3 +18,6 @@
 * Use http4k lib
 * Integrate in GCal (introduce gcal4k)
 * debug HTTP traffic on android
+
+
+* create own view model? => https://github.com/edvin/tornadofx/wiki/Type-Safe-Builders

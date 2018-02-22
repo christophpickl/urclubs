@@ -2,6 +2,7 @@ package com.github.christophpickl.urclubs.domain.partner
 
 import com.github.christophpickl.urclubs.HasOrder
 import com.github.christophpickl.urclubs.OrderedEnumCompanion
+import com.google.common.base.MoreObjects
 
 data class Partner(
     val idDbo: Long,
@@ -10,20 +11,25 @@ data class Partner(
     val name: String, // "Triller CrossFit"
     val address: String,
     val rating: Rating,
-    val deletedByMyc: Boolean,
+    val deletedByMyc: Boolean, // keep in DB still locally
     val favourited: Boolean,
-    val wishlisted: Boolean,
-    val ignored: Boolean,
+    val wishlisted: Boolean, // want to go there soon (nevertheless whether i've been there already)
+    val ignored: Boolean, // kind-a delete (don't display at all anymore anywhere, but keep in DB)
     val category: Category,
     val linkMyclubsSite: String,
     val linkPartnerSite: String
 
-    // URL
-    // category
-    // categoryMyc ...
+    // categoryMyc ?
+
 // maybe introduce myclubsMetadata object??
 ) {
-    companion object
+    companion object {}
+
+    override fun toString() = MoreObjects.toStringHelper(this)
+            .add("idDbo", idDbo)
+            .add("shortName", shortName)
+            .add("name", name)
+            .toString()
 }
 
 enum class Rating(

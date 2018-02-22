@@ -4,6 +4,7 @@ import com.github.christophpickl.kpotpourri.common.logging.LOG
 import com.github.christophpickl.urclubs.MainModule
 import com.github.christophpickl.urclubs.QuitEvent
 import com.github.christophpickl.urclubs.configureLogging
+import com.github.christophpickl.urclubs.fx.partner.PartnerFxController
 import com.github.christophpickl.urclubs.fx.partners.PartnersFxController
 import com.github.christophpickl.urclubs.service.Credentials
 import com.github.christophpickl.urclubs.service.SystemPropertyCredentialsProvider
@@ -69,6 +70,7 @@ class UrclubsFxApp : App(
 
     private fun registerEagerSingletons() {
         find(PartnersFxController::class)
+        find(PartnerFxController::class)
         find(SyncFxController::class)
     }
 

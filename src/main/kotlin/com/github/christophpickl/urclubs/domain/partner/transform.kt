@@ -38,28 +38,29 @@ fun Category.toCategoryDbo() = when (this) {
 fun PartnerDbo.toPartner() = Partner(
     idDbo = id,
     idMyc = idMyc,
-    name = name,
-    address = address,
     shortName = shortName,
+    name = name ?: "",
+    address = address ?: "",
     rating = rating.toRating(),
-    deletedByMyc = deletedByMyc,
-    favourited = favourited,
-    wishlisted = wishlisted,
-    ignored = ignored,
+    deletedByMyc = deletedByMyc ?: false,
+    favourited = favourited ?: false,
+    wishlisted = wishlisted ?: false,
+    ignored = ignored ?: false,
     category = category.toCategory(),
-    linkMyclubsSite = linkMyclubsSite,
-    linkPartnerSite = linkPartnerSite
+    linkMyclubsSite = linkMyclubsSite ?: "",
+    linkPartnerSite = linkPartnerSite ?: ""
 )
 
-fun RatingDbo.toRating() = when (this) {
+fun RatingDbo?.toRating() = when (this) {
     RatingDbo.UNKNOWN -> Rating.UNKNOWN
     RatingDbo.BAD -> Rating.BAD
     RatingDbo.OK -> Rating.OK
     RatingDbo.GOOD -> Rating.GOOD
     RatingDbo.SUPERB -> Rating.SUPERB
+    null -> Rating.UNKNOWN
 }
 
-fun CategoryDbo.toCategory() = when (this) {
+fun CategoryDbo?.toCategory() = when (this) {
     CategoryDbo.EMS -> Category.EMS
     CategoryDbo.GYM -> Category.EMS
     CategoryDbo.YOGA -> Category.YOGA
@@ -68,4 +69,5 @@ fun CategoryDbo.toCategory() = when (this) {
     CategoryDbo.HEALTH -> Category.HEALTH
     CategoryDbo.OTHER -> Category.OTHER
     CategoryDbo.UNKNOWN -> Category.UNKNOWN
+    null -> Category.UNKNOWN
 }
