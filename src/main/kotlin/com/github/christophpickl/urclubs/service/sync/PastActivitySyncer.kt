@@ -12,8 +12,8 @@ class PastActivitySyncer @Inject constructor(
 
     fun sync(): PastActivitySyncReport {
         log.info { "sync()" }
-        val activities = myclubs.finishedActivities()
-
+//        val activities = myclubs.finishedActivities()
+        // FIXME implement sync past activities
         return PastActivitySyncReport("")
     }
 }

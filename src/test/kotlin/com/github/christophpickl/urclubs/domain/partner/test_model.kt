@@ -1,10 +1,19 @@
 package com.github.christophpickl.urclubs.domain.partner
 
+import com.github.christophpickl.urclubs.domain.partner.CategoryDbo.EMS
+
 fun PartnerDbo.Companion.testInstance() = PartnerDbo(
         id = 0L,
         idMyc = "testIdMyc",
         name = "testName",
         shortName = "testShortName",
         rating = RatingDbo.UNKNOWN,
-        deletedByMyc = false
+        deletedByMyc = false,
+        address = "testStreet",
+        category = EMS,
+        favourited = true,
+        ignored = false,
+        wishlisted = true,
+        linkMyclubsSite = "http://test.myclubs.at",
+        linkPartnerSite = "http://test.partner.at"
 )

@@ -8,6 +8,7 @@ import com.github.christophpickl.urclubs.testInfra.assertThatSingleElement
 import org.assertj.core.api.Assertions.assertThat
 import org.jsoup.Jsoup
 import org.testng.annotations.Test
+import java.time.LocalDate
 import java.time.LocalDateTime
 
 @Test
@@ -238,18 +239,45 @@ class HtmlParserTest {
         val partner = HtmlParser().parsePartner(readResponse("partner.html"))
 
         assertThat(partner).isEqualTo(PartnerDetailHtmlModel(
-            name = "Hotpod Yoga Vienna",
-            description = "Some description.",
-            linkPartnerSite = "http://www.hotpodyoga.com/at/yoga-classes/vienna/",
-            address = "Margaretenstraße 70/2/2, 1050 Wien",
-            flags = listOf("Bikram & Hot Yoga", "Yoga")
+                name = "Hotpod Yoga Vienna",
+                description = "Some description.",
+                linkPartnerSite = "http://www.hotpodyoga.com/at/yoga-classes/vienna/",
+                address = "Margaretenstraße 70/2/2, 1050 Wien",
+                flags = listOf("Bikram & Hot Yoga", "Yoga"),
+                upcomingActivities = listOf(PartnerDetailActivityHtmlModel(
+                        idMyc = "meqR6C5d0m",
+                        detailLink = "https://www.myclubs.com/at/de/aktivitaeten/at/wien/meqR6C5d0mc",
+                        date = LocalDateTime.parse("2018-01-27T10:30:00"),
+                        title = "Hotpod Flow English - Beginner/Intermediate",
+                        address = "Hotpod Yoga Vienna, Margaretenstraße 70/2/2, 1050 Wien"
+                ))
         ))
+    }
+
+    fun `parsePartner - multi activities`() {
+        val partner = HtmlParser().parsePartner(readResponse("partner.multi_activities.html"))
+
+        assertThat(partner.upcomingActivities).hasSize(9)
     }
 
     fun `parsePartner - integration without address`() {
         val partner = HtmlParser().parsePartner(readResponse("partner_without_address.html"))
 
         assertThat(partner.address).isEqualTo("")
+    }
+
+    fun `parseDateFromUpcomingActivityTitle`() {
+        mapOf(
+                "Heute, 27.01.2018" to LocalDate.parse("2018-01-27"),
+                "Morgen, 24.02.2018" to LocalDate.parse("2018-02-24"),
+                "Montag, 26.02.2018" to LocalDate.parse("2018-02-26")
+        ).forEach { inputString, expectedDate ->
+            assertThat(HtmlParser().parseDateFromUpcomingActivityTitle(inputString)).`as`("Failed to parse '$inputString'.").isEqualTo(expectedDate)
+        }
+    }
+
+    fun `parseAndCombineDateTime`() {
+        assertThat(HtmlParser().parseAndCombineDateTime(LocalDate.parse("2018-01-27"), "10:30")).isEqualTo(LocalDateTime.parse("2018-01-27T10:30:00"))
     }
 
     private fun readResponse(fileName: String) =

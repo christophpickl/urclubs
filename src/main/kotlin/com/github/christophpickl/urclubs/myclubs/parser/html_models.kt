@@ -15,7 +15,16 @@ data class PartnerDetailHtmlModel(
     val description: String,
     val linkPartnerSite: String,
     val address: String,
-    val flags: List<String>
+    val flags: List<String>,
+    val upcomingActivities: List<PartnerDetailActivityHtmlModel>
+)
+
+data class PartnerDetailActivityHtmlModel(
+        val idMyc: String,
+        val detailLink: String,
+        val date: LocalDateTime,
+        val title: String,
+        val address: String
 )
 
 data class CourseHtmlModel(

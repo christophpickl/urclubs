@@ -2,17 +2,14 @@ package com.github.christophpickl.urclubs.fx
 
 import com.github.christophpickl.urclubs.fx.partners.PartnerListRequest
 import com.github.christophpickl.urclubs.fx.partners.PartnersView
-import javafx.beans.property.SimpleIntegerProperty
+import com.github.christophpickl.urclubs.service.sync.UpcomingActivitySyncer
 import tornadofx.View
 import tornadofx.action
-import tornadofx.bind
 import tornadofx.borderpane
 import tornadofx.button
 import tornadofx.center
 import tornadofx.hbox
 import tornadofx.label
-import tornadofx.px
-import tornadofx.style
 import tornadofx.top
 
 class MainView : View() {
@@ -39,25 +36,18 @@ class MainView : View() {
 
 class BottomView : View() {
 
-    private val counter = SimpleIntegerProperty()
+    private val syncer: UpcomingActivitySyncer by di()
 
     override val root = hbox {
-        label {
-            bind(counter)
-            style { fontSize = 25.px }
+        button("Foobar").setOnAction {
+            syncer.sync()
         }
-        button("Increment").setOnAction {
-            increment()
-        }
-        button("reload").action {
-            fire(PartnerListRequest)
-        }
-        button("resync").action {
+        button("Resync Partners").action {
             fire(SyncRequest)
+        }
+        button("Reload from DB").action {
+            fire(PartnerListRequest)
         }
     }
 
-    private fun increment() {
-        counter.value += 1
-    }
 }

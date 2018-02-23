@@ -5,7 +5,8 @@ import javax.inject.Inject
 
 class SyncService @Inject constructor(
         private val partnerSyncer: PartnerSyncer,
-        private val pastActivitySyncer: PastActivitySyncer
+        private val pastActivitySyncer: PastActivitySyncer,
+        private val upcomingActivitySyncer: UpcomingActivitySyncer
 ) {
 
     private val log = LOG {}

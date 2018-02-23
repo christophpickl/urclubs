@@ -1,5 +1,6 @@
 package com.github.christophpickl.urclubs.domain.partner
 
+import com.google.common.eventbus.EventBus
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
 import org.assertj.core.api.Assertions.assertThat
@@ -34,6 +35,6 @@ class PartnerServiceImplTest {
         assertThat(found).isNull()
     }
 
-    private fun service() = PartnerServiceImpl(partnerDao)
+    private fun service() = PartnerServiceImpl(partnerDao, EventBus())
 
 }

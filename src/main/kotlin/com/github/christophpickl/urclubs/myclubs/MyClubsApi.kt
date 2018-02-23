@@ -28,10 +28,21 @@ interface MyClubsApi {
     fun login()
     fun loggedUser(): UserMycJson
     fun partners(): List<PartnerHtmlModel>
+    /**
+     * Goes to: https://www.myclubs.com/at/de/partner/
+     */
     fun partner(shortName: String): PartnerDetailHtmlModel
+
     fun courses(filter: CourseFilter): List<CourseHtmlModel>
     //    fun infrastructure(): List<InfrastructureMyc>
+
+    /**
+     * Goes to: https://www.myclubs.com/at/de/partner/sporthalle-wien
+     */
+    //fun singleActivity() ...
+
     fun activity(filter: ActivityFilter): ActivityHtmlModel
+
     fun finishedActivities(): List<FinishedActivityHtmlModel>
 }
 
@@ -50,7 +61,7 @@ class MyClubsHttpApi @Inject constructor(
     }
     private val parser = HtmlParser()
     override fun login() {
-        log.info("login()")
+        log.info { "login() as user: ${credentials.email}" }
 
         val response = http.execute(HttpPost("$baseApiUrl/login").apply {
             entity = UrlEncodedFormEntity(listOf(

@@ -6,6 +6,7 @@ import com.github.christophpickl.urclubs.QuitEvent
 import com.github.christophpickl.urclubs.configureLogging
 import com.github.christophpickl.urclubs.fx.partner.PartnerFxController
 import com.github.christophpickl.urclubs.fx.partners.PartnersFxController
+import com.github.christophpickl.urclubs.myclubs.MyClubsApi
 import com.github.christophpickl.urclubs.service.Credentials
 import com.github.christophpickl.urclubs.service.SystemPropertyCredentialsProvider
 import com.google.common.eventbus.EventBus
@@ -40,14 +41,14 @@ object FxAppStarter {
 }
 
 class UrclubsFxApp : App(
-    primaryView = MainView::class,
-    stylesheet = Styles::class
+        primaryView = MainView::class,
+        stylesheet = Styles::class
 ) {
 
     private val log = LOG {}
 
     private val guice = Guice.createInjector(
-        MainModule(), FxModule()
+            MainModule(), FxModule()
     )
 
     init {
@@ -56,6 +57,9 @@ class UrclubsFxApp : App(
             override fun <T : Any> getInstance(type: KClass<T>) = guice.getInstance(type.java)
         }
         registerEagerSingletons()
+        val myclubs = guice.getInstance(MyClubsApi::class.java)
+        myclubs.login() // TODO do a lazy login when requested first, instead eager here
+        log.info { "Logged in user: ${myclubs.loggedUser()}" }
     }
 
 //    override fun start(stage: Stage) {

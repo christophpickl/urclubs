@@ -1,6 +1,9 @@
 package com.github.christophpickl.urclubs
 
 import com.github.christophpickl.kpotpourri.common.logging.LOG
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.temporal.TemporalAccessor
 
 // enhanced Timing as measureTimeMillis isn't good enough ;)
 object Stopwatch {
@@ -16,3 +19,6 @@ object Stopwatch {
     }
 
 }
+
+fun TemporalAccessor.toLocalDate() = LocalDate.from(this)!!
+fun TemporalAccessor.toLocalDateTime() = LocalDateTime.from(this)!!
