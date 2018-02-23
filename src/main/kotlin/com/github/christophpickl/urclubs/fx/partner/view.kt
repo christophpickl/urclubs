@@ -1,5 +1,6 @@
 package com.github.christophpickl.urclubs.fx.partner
 
+import com.github.christophpickl.kpotpourri.common.logging.LOG
 import tornadofx.View
 import tornadofx.borderpane
 import tornadofx.bottom
@@ -16,6 +17,7 @@ import tornadofx.textfield
 
 class PartnerView : View() {
 
+    private val logg = LOG {}
     val nameField = textfield()
 
     override val root = borderpane {
@@ -34,14 +36,13 @@ class PartnerView : View() {
                     padding = box(20.px)
                 }
                 button("Save").setOnAction {
-                    println("save partner")
+                    logg.trace { "Save button clicked." }
+                    fire(PartnerSaveEvent)
                 }
             }
         }
     }
-
     init {
         title = "Partner Details"
     }
-
 }

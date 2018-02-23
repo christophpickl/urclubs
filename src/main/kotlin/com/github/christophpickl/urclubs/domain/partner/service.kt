@@ -1,6 +1,7 @@
 package com.github.christophpickl.urclubs.domain.partner
 
 import com.github.christophpickl.kpotpourri.common.logging.LOG
+import com.google.common.eventbus.EventBus
 import javax.inject.Inject
 
 interface PartnerService {
@@ -14,7 +15,8 @@ interface PartnerService {
 }
 
 class PartnerServiceImpl @Inject constructor(
-        private val partnerDao: PartnerDao
+        private val partnerDao: PartnerDao,
+        private val bus: EventBus
 ) : PartnerService {
 
     val log = LOG {}
@@ -48,6 +50,7 @@ class PartnerServiceImpl @Inject constructor(
     override fun update(partner: Partner) {
         log.trace { "update(partner=$partner)" }
         partnerDao.update(partner.toPartnerDbo())
+        bus.post(PartnerUpdatedEvent(partner))
     }
 
     override fun searchPartner(locationHtml: String): Partner? {
@@ -59,3 +62,5 @@ class PartnerServiceImpl @Inject constructor(
     }
 
 }
+
+class PartnerUpdatedEvent(val partner: Partner)
