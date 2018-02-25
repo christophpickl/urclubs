@@ -4,9 +4,9 @@ import com.github.christophpickl.kpotpourri.common.logging.LOG
 import com.github.christophpickl.urclubs.MainModule
 import com.github.christophpickl.urclubs.QuitEvent
 import com.github.christophpickl.urclubs.configureLogging
-import com.github.christophpickl.urclubs.fx.partners.detail.PartnerFxController
-import com.github.christophpickl.urclubs.fx.partners.PartnersFxController
-import com.github.christophpickl.urclubs.fx.partners.filter.FilterPartnersController
+import com.github.christophpickl.urclubs.fx.partner.detail.PartnerFxController
+import com.github.christophpickl.urclubs.fx.partner.PartnersFxController
+import com.github.christophpickl.urclubs.fx.partner.filter.FilterPartnersController
 import com.github.christophpickl.urclubs.myclubs.MyClubsApi
 import com.github.christophpickl.urclubs.service.Credentials
 import com.github.christophpickl.urclubs.service.SystemPropertyCredentialsProvider

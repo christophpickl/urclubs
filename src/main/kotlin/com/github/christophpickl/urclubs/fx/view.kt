@@ -1,7 +1,7 @@
 package com.github.christophpickl.urclubs.fx
 
-import com.github.christophpickl.urclubs.fx.partners.PartnerListRequest
-import com.github.christophpickl.urclubs.fx.partners.PartnersView
+import com.github.christophpickl.urclubs.fx.partner.PartnerListRequest
+import com.github.christophpickl.urclubs.fx.partner.PartnersView
 import com.github.christophpickl.urclubs.service.sync.UpcomingActivitySyncer
 import tornadofx.View
 import tornadofx.action

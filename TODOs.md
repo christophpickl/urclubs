@@ -1,6 +1,12 @@
 
 # TODOs
 
+## High Prio
+
+* MyClubs API caching + deferred login
+* observable entities
+* BUG: when filter, update meanwhile => change observable in background
+
 ## Business
 
 * List upcoming workouts

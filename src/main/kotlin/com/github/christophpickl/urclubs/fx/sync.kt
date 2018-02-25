@@ -1,7 +1,7 @@
 package com.github.christophpickl.urclubs.fx
 
 import com.github.christophpickl.kpotpourri.common.logging.LOG
-import com.github.christophpickl.urclubs.fx.partners.PartnerListRequest
+import com.github.christophpickl.urclubs.fx.partner.PartnerListRequest
 import com.github.christophpickl.urclubs.service.sync.PartnerSyncReport
 import com.github.christophpickl.urclubs.service.sync.SyncService
 import javafx.scene.control.ButtonType
