@@ -6,6 +6,7 @@ import com.github.christophpickl.urclubs.QuitEvent
 import com.github.christophpickl.urclubs.configureLogging
 import com.github.christophpickl.urclubs.fx.partner.PartnerFxController
 import com.github.christophpickl.urclubs.fx.partners.PartnersFxController
+import com.github.christophpickl.urclubs.fx.partners.filter.FilterPartnersController
 import com.github.christophpickl.urclubs.myclubs.MyClubsApi
 import com.github.christophpickl.urclubs.service.Credentials
 import com.github.christophpickl.urclubs.service.SystemPropertyCredentialsProvider
@@ -13,10 +14,7 @@ import com.google.common.eventbus.EventBus
 import com.google.inject.AbstractModule
 import com.google.inject.Guice
 import javafx.application.Application
-import tornadofx.App
-import tornadofx.DIContainer
-import tornadofx.FX
-import tornadofx.find
+import tornadofx.*
 import kotlin.reflect.KClass
 
 // official page ... https://github.com/edvin/tornadofx
@@ -58,8 +56,8 @@ class UrclubsFxApp : App(
         }
         registerEagerSingletons()
         val myclubs = guice.getInstance(MyClubsApi::class.java)
-        myclubs.login() // TODO do a lazy login when requested first, instead eager here
-        log.info { "Logged in user: ${myclubs.loggedUser()}" }
+//        myclubs.login() // FIXME do a lazy login when requested first, instead eager here
+//        log.info { "Logged in user: ${myclubs.loggedUser()}" }
     }
 
 //    override fun start(stage: Stage) {
@@ -76,6 +74,7 @@ class UrclubsFxApp : App(
         find(PartnersFxController::class)
         find(PartnerFxController::class)
         find(SyncFxController::class)
+        find(FilterPartnersController::class)
     }
 
 }

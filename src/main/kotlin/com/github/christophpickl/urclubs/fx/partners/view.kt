@@ -4,19 +4,16 @@ import com.github.christophpickl.kpotpourri.common.logging.LOG
 import com.github.christophpickl.urclubs.domain.partner.Partner
 import com.github.christophpickl.urclubs.fx.partner.PartnerSelectedEvent
 import com.github.christophpickl.urclubs.fx.partner.PartnerUpdatedFXEvent
-import tornadofx.SmartResize
-import tornadofx.View
-import tornadofx.borderpane
-import tornadofx.center
-import tornadofx.column
-import tornadofx.onUserSelect
-import tornadofx.tableview
+import com.github.christophpickl.urclubs.fx.partners.filter.FilterPartnersView
+import tornadofx.*
 
 class PartnersView : View() {
 
     private val logg = LOG {}
 
-    private val table = tableview<Partner> {
+    private val partnersFilter: FilterPartnersView by inject()
+
+    val table = tableview<Partner> {
         column("Name", Partner::name)
         column("Rating", Partner::rating)
         column("Address", Partner::address)
@@ -26,6 +23,9 @@ class PartnersView : View() {
     }
 
     override val root = borderpane {
+        top {
+            add(partnersFilter)
+        }
         center {
             add(table)
         }
@@ -34,6 +34,7 @@ class PartnersView : View() {
     init {
         subscribe<PartnerListEvent> { event ->
             logg.trace { "Received PartnerListEvent (partners.size=${event.partners.size}), updating table items." }
+            // TODO go through controller instead and apply filter
             table.items.setAll(event.partners)
         }
         subscribe<PartnerUpdatedFXEvent> { event ->
