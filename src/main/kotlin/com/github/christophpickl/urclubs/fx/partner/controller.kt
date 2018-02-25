@@ -6,7 +6,7 @@ import com.github.christophpickl.urclubs.domain.partner.PartnerService
 import com.github.christophpickl.urclubs.domain.partner.PartnerUpdatedEvent
 import com.google.common.eventbus.EventBus
 import com.google.common.eventbus.Subscribe
-import tornadofx.Controller
+import tornadofx.*
 
 class PartnerFxController : Controller() {
 
@@ -38,10 +38,12 @@ class PartnerFxController : Controller() {
 
     private fun PartnerView.initPartner(partner: Partner) {
         nameField.text = partner.name
+        category.selectionModel.select(partner.category)
     }
 
     private fun PartnerView.readPartner(partner: Partner) = partner.copy(
-            name = nameField.text.trim()
+        name = nameField.text.trim(),
+        category = category.selectedItem!!
     )
 
 }

@@ -15,10 +15,9 @@ class PartnersView : View() {
 
     val table = tableview<Partner> {
         column("Name", Partner::name)
+        column("Category", Partner::category)
         column("Rating", Partner::rating)
         column("Address", Partner::address)
-        column("WWW partner", Partner::linkPartnerSite)
-        column("WWW myclubs", Partner::linkMyclubsSite)
         columnResizePolicy = SmartResize.POLICY
     }
 
@@ -42,7 +41,7 @@ class PartnersView : View() {
             logg.trace { "Updating partner in table: $partner" }
             val index = table.items.indexOfFirst { it.idDbo == partner.idDbo }
             if (index == -1) throw IllegalStateException("Could not find updated partner in table: $partner") // TODO when search (=filter) is active this will fail??
-            table.items[index] = partner
+            table.items[index] = partner // FIXME when filtering, saving doesnt work... need to set on original list somehow...
         }
         table.onUserSelect { partner ->
             logg.trace { "User selected partner in table: $partner" }

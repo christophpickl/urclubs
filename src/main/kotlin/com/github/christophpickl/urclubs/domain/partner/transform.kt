@@ -26,7 +26,7 @@ fun Rating.toRatingDbo() = when (this) {
 
 fun Category.toCategoryDbo() = when (this) {
     Category.EMS -> CategoryDbo.EMS
-    Category.GYM -> CategoryDbo.EMS
+    Category.GYM -> CategoryDbo.GYM
     Category.YOGA -> CategoryDbo.YOGA
     Category.WUSHU -> CategoryDbo.WUSHU
     Category.WORKOUT -> CategoryDbo.WORKOUT
@@ -62,7 +62,7 @@ fun RatingDbo?.toRating() = when (this) {
 
 fun CategoryDbo?.toCategory() = when (this) {
     CategoryDbo.EMS -> Category.EMS
-    CategoryDbo.GYM -> Category.EMS
+    CategoryDbo.GYM -> Category.GYM
     CategoryDbo.YOGA -> Category.YOGA
     CategoryDbo.WUSHU -> Category.WUSHU
     CategoryDbo.WORKOUT -> Category.WORKOUT

@@ -1,24 +1,21 @@
 package com.github.christophpickl.urclubs.fx.partner
 
 import com.github.christophpickl.kpotpourri.common.logging.LOG
-import tornadofx.View
-import tornadofx.borderpane
-import tornadofx.bottom
-import tornadofx.box
-import tornadofx.button
-import tornadofx.center
-import tornadofx.field
-import tornadofx.fieldset
-import tornadofx.form
-import tornadofx.hbox
-import tornadofx.px
-import tornadofx.style
-import tornadofx.textfield
+import com.github.christophpickl.urclubs.domain.partner.Category
+import com.github.christophpickl.urclubs.fx.CategoryCell
+import tornadofx.*
+
 
 class PartnerView : View() {
 
     private val logg = LOG {}
     val nameField = textfield()
+    val category = combobox(values = Category.values().toList()) {
+        buttonCell = CategoryCell()
+        setCellFactory {
+            CategoryCell()
+        }
+    }
 
     override val root = borderpane {
         center {
@@ -26,6 +23,9 @@ class PartnerView : View() {
                 fieldset("General Info") {
                     field("Name") {
                         add(nameField)
+                    }
+                    field("Category") {
+                        add(category)
                     }
                 }
             }

@@ -20,11 +20,11 @@ interface PartnerDao {
     fun readAll(): List<PartnerDbo>
     fun read(id: Long): PartnerDbo?
     fun findByShortName(shortName: String): PartnerDbo?
-    fun update(partner: PartnerDbo)
+    fun update(partner: PartnerDbo): PartnerDbo
 }
 
 class PartnerObjectDbDao @Inject constructor(
-        private val em: EntityManager
+    private val em: EntityManager
 ) : PartnerDao {
     private val log = LOG {}
 
@@ -42,7 +42,7 @@ class PartnerObjectDbDao @Inject constructor(
     }
 
     override fun read(id: Long): PartnerDbo? =
-            em.find(PartnerDbo::class.java, id)
+        em.find(PartnerDbo::class.java, id)
 
     override fun findByShortName(shortName: String): PartnerDbo? {
         val query = em.createQuery("SELECT p FROM ${PartnerDbo::class.simpleName} p WHERE p.shortName = :shortName", PartnerDbo::class.java)
@@ -51,61 +51,64 @@ class PartnerObjectDbDao @Inject constructor(
         return if (result.isEmpty()) null else result[0]
     }
 
-    override fun update(partner: PartnerDbo) {
+    override fun update(partner: PartnerDbo): PartnerDbo {
         log.debug { "update(partner=$partner)" }
         partner.ensurePersisted()
+
+        val persisted = readOrThrow(partner.id)
+        persisted.updateBy(partner)
         em.transactional {
-            val persisted = readOrThrow(partner.id)
-            persisted.updateBy(partner)
+            persist(persisted)
         }
+        return persisted
     }
 
     private fun readOrThrow(id: Long) =
-            read(id) ?: throw Exception("Partner not found by ID: $id")
+        read(id) ?: throw Exception("Partner not found by ID: $id")
 
 }
 
 @Entity
 data class PartnerDbo(
-        @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-        override val id: Long,
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    override val id: Long,
 
-        @Column(nullable = false, unique = true)
-        var idMyc: String,
+    @Column(nullable = false, unique = true)
+    var idMyc: String,
 
-        @Column(nullable = false, unique = false)
-        var name: String?,
+    @Column(nullable = false, unique = false)
+    var name: String?,
 
-        @Column(nullable = false, unique = true)
-        var shortName: String,
+    @Column(nullable = false, unique = true)
+    var shortName: String,
 
-        @Column(nullable = false)
-        var address: String?,
+    @Column(nullable = false)
+    var address: String?,
 
-        @Column(nullable = false)
-        @Enumerated(EnumType.STRING)
-        var rating: RatingDbo?,
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    var rating: RatingDbo?,
 
-        @Column(nullable = false)
-        var deletedByMyc: Boolean?,
+    @Column(nullable = false)
+    var deletedByMyc: Boolean?,
 
-        @Column(nullable = false)
-        var favourited: Boolean?,
+    @Column(nullable = false)
+    var favourited: Boolean?,
 
-        @Column(nullable = false)
-        var wishlisted: Boolean?,
+    @Column(nullable = false)
+    var wishlisted: Boolean?,
 
-        @Column(nullable = false)
-        var ignored: Boolean?,
+    @Column(nullable = false)
+    var ignored: Boolean?,
 
-        @Column(nullable = false)
-        var category: CategoryDbo?,
+    @Column(nullable = false)
+    var category: CategoryDbo?,
 
-        @Column(nullable = false)
-        var linkMyclubsSite: String?,
+    @Column(nullable = false)
+    var linkMyclubsSite: String?,
 
-        @Column(nullable = false)
-        var linkPartnerSite: String?
+    @Column(nullable = false)
+    var linkPartnerSite: String?
 
 ) : HasId {
     companion object
@@ -114,6 +117,7 @@ data class PartnerDbo(
         if (name != other.name) name = other.name
         if (shortName != other.shortName) shortName = other.shortName
         if (rating != other.rating) rating = other.rating
+        if (category != other.category) category = other.category
     }
 }
 

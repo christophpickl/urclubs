@@ -11,6 +11,7 @@
     * Use DB and sync partners/workouts (on startup)
     * Store some metadata (preferred partner)
     * Simple suggestion of workout based on metadata
+* show number of displayed partners "10/170" based on current filter 
 
 ## Technical
 
