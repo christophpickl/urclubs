@@ -1,4 +1,4 @@
-package com.github.christophpickl.urclubs.fx.partner
+package com.github.christophpickl.urclubs.fx.partners.detail
 
 import com.github.christophpickl.urclubs.domain.partner.Partner
 import tornadofx.FXEvent

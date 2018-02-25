@@ -2,8 +2,8 @@ package com.github.christophpickl.urclubs.fx.partners
 
 import com.github.christophpickl.kpotpourri.common.logging.LOG
 import com.github.christophpickl.urclubs.domain.partner.Partner
-import com.github.christophpickl.urclubs.fx.partner.PartnerSelectedEvent
-import com.github.christophpickl.urclubs.fx.partner.PartnerUpdatedFXEvent
+import com.github.christophpickl.urclubs.fx.partners.detail.PartnerSelectedEvent
+import com.github.christophpickl.urclubs.fx.partners.detail.PartnerUpdatedFXEvent
 import com.github.christophpickl.urclubs.fx.partners.filter.FilterPartnersView
 import tornadofx.*
 
