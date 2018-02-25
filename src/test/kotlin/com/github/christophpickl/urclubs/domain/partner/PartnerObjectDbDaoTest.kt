@@ -1,5 +1,8 @@
 package com.github.christophpickl.urclubs.domain.partner
 
+import com.github.christophpickl.urclubs.persistence.domain.PartnerDbo
+import com.github.christophpickl.urclubs.persistence.domain.PartnerObjectDbDao
+import com.github.christophpickl.urclubs.persistence.domain.RatingDbo
 import com.github.christophpickl.urclubs.persistence.transactional
 import com.github.christophpickl.urclubs.testInfra.DatabaseTest
 import com.github.christophpickl.urclubs.testInfra.assertThatSingleElement

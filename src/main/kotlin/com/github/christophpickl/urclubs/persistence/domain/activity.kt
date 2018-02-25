@@ -1,4 +1,4 @@
-package com.github.christophpickl.urclubs.domain.activity
+package com.github.christophpickl.urclubs.persistence.domain
 
 import com.github.christophpickl.urclubs.persistence.HasId
 import javax.persistence.Column

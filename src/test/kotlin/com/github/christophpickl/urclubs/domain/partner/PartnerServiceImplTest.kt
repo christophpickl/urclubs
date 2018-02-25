@@ -1,5 +1,7 @@
 package com.github.christophpickl.urclubs.domain.partner
 
+import com.github.christophpickl.urclubs.persistence.domain.PartnerDao
+import com.github.christophpickl.urclubs.persistence.domain.PartnerDbo
 import com.google.common.eventbus.EventBus
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever

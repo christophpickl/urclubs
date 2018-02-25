@@ -1,4 +1,4 @@
-package com.github.christophpickl.urclubs.domain.partner
+package com.github.christophpickl.urclubs.persistence.domain
 
 import com.github.christophpickl.kpotpourri.common.logging.LOG
 import com.github.christophpickl.urclubs.persistence.HasId

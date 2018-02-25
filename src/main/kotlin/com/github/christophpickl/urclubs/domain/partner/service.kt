@@ -1,7 +1,7 @@
 package com.github.christophpickl.urclubs.domain.partner
 
-import com.github.christophpickl.kpotpourri.common.io.println
 import com.github.christophpickl.kpotpourri.common.logging.LOG
+import com.github.christophpickl.urclubs.persistence.domain.PartnerDao
 import com.google.common.eventbus.EventBus
 import javax.inject.Inject
 
@@ -16,8 +16,8 @@ interface PartnerService {
 }
 
 class PartnerServiceImpl @Inject constructor(
-        private val partnerDao: PartnerDao,
-        private val bus: EventBus
+    private val partnerDao: PartnerDao,
+    private val bus: EventBus
 ) : PartnerService {
 
     val log = LOG {}

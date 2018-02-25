@@ -1,5 +1,7 @@
 package com.github.christophpickl.urclubs.domain.partner
 
+import com.github.christophpickl.urclubs.persistence.domain.PartnerDao
+import com.github.christophpickl.urclubs.persistence.domain.PartnerObjectDbDao
 import com.google.inject.AbstractModule
 
 class PartnerModule : AbstractModule() {
