@@ -63,5 +63,3 @@ class PartnerServiceImpl @Inject constructor(
     }
 
 }
-
-class PartnerUpdatedEvent(val partner: Partner)

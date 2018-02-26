@@ -3,29 +3,32 @@ package com.github.christophpickl.urclubs.fx.partner.detail
 import com.github.christophpickl.kpotpourri.common.logging.LOG
 import com.github.christophpickl.urclubs.domain.partner.Category
 import com.github.christophpickl.urclubs.fx.CategoryCell
+import com.github.christophpickl.urclubs.fx.partner.CurrentPartnerFx
+import javafx.collections.FXCollections
 import tornadofx.*
-
 
 class PartnerView : View() {
 
     private val logg = LOG {}
-    val nameField = textfield()
-    val category = combobox(values = Category.values().toList()) {
-        buttonCell = CategoryCell()
-        setCellFactory {
-            CategoryCell()
-        }
-    }
+    private val currentPartner: CurrentPartnerFx by inject()
 
     override val root = borderpane {
         center {
             form {
                 fieldset("General Info") {
                     field("Name") {
-                        add(nameField)
+                        textfield().textProperty().bindBidirectional(currentPartner.name)
                     }
                     field("Category") {
-                        add(category)
+                        combobox(
+                            property = currentPartner.category,
+                            values = FXCollections.observableArrayList(*Category.values())
+                        ) {
+                            buttonCell = CategoryCell()
+                            setCellFactory {
+                                CategoryCell()
+                            }
+                        }
                     }
                 }
             }
@@ -42,6 +45,7 @@ class PartnerView : View() {
             }
         }
     }
+
     init {
         title = "Partner Details"
     }

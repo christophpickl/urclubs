@@ -26,7 +26,24 @@ data class Partner(
 
 // maybe introduce myclubsMetadata object??
 ) {
-    companion object {}
+
+    companion object {
+        fun prototype() = Partner(
+            idDbo = 0,
+            idMyc = "",
+            shortName = "",
+            name = "",
+            address = "",
+            rating = Rating.UNKNOWN,
+            deletedByMyc = false,
+            favourited = false,
+            wishlisted = false,
+            ignored = false,
+            category = Category.UNKNOWN,
+            linkMyclubsSite = "",
+            linkPartnerSite = ""
+        )
+    }
 
     override fun toString() = MoreObjects.toStringHelper(this)
         .add("idDbo", idDbo)
@@ -34,6 +51,7 @@ data class Partner(
         .add("name", name)
         .toString()
 }
+
 
 enum class Rating(
     override val order: Int

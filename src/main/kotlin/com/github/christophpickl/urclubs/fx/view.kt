@@ -3,33 +3,32 @@ package com.github.christophpickl.urclubs.fx
 import com.github.christophpickl.urclubs.fx.partner.PartnerListRequest
 import com.github.christophpickl.urclubs.fx.partner.PartnersView
 import com.github.christophpickl.urclubs.service.sync.UpcomingActivitySyncer
-import tornadofx.View
-import tornadofx.action
-import tornadofx.borderpane
-import tornadofx.button
-import tornadofx.center
-import tornadofx.hbox
-import tornadofx.label
-import tornadofx.top
+import javafx.scene.control.MenuBar
+import tornadofx.*
 
 class MainView : View() {
 
     private val bottomView: BottomView by inject()
     private val partnersView: PartnersView by inject()
+    private val menuBarController: MenuBarController by inject()
 
-    override val root = borderpane {
-        top {
-            label("hello urclubs")
-        }
-        center {
-            add(partnersView)
+    override val root = vbox {
+        add(MyMenuBar(menuBarController))
+        borderpane {
+            top {
+                label("hello urclubs")
+            }
+            center {
+                add(partnersView)
+            }
+            bottom {
+                add(bottomView)
+            }
         }
     }
 
     init {
-        root.bottom = bottomView.root
         title = "UrClubs"
-
         fire(PartnerListRequest)
     }
 }

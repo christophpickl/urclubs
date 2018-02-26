@@ -11,7 +11,9 @@ class PartnersView : View() {
 
     private val logg = LOG {}
 
+    // https://github.com/edvin/tornadofx/wiki/Utilities
     private val partnersFilter: FilterPartnersView by inject()
+    private val currentPartner: CurrentPartnerFx by inject()
 
     val table = tableview<Partner> {
         column("Name", Partner::name)
@@ -45,6 +47,8 @@ class PartnersView : View() {
         }
         table.onUserSelect { partner ->
             logg.trace { "User selected partner in table: $partner" }
+//            currentPartner.partner.set(partner.toPartnerFx())
+            currentPartner.initPartner(partner)
             fire(PartnerSelectedEvent(partner))
         }
     }

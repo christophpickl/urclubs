@@ -3,8 +3,9 @@
 
 ## High Prio
 
-* MyClubs API caching + deferred login
 * observable entities
+* MyClubs API caching + deferred login
+* MenuBar => Develop / Create dummy data
 * BUG: when filter, update meanwhile => change observable in background
 
 ## Business

@@ -13,7 +13,9 @@ class CategoryFilterCell : ListCell<CategoryFilter>() {
 
 class FilterPartnersView : View() {
 
-    val nameField = textfield()
+    val nameField = textfield() {
+        promptText = "Enter Name"
+    }
     val category = combobox(values = CategoryFilter.all) {
         buttonCell = CategoryFilterCell()
         setCellFactory {
