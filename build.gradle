@@ -43,6 +43,8 @@ dependencies {
     compile "com.objectdb:objectdb:2.7.4"
     compile "org.eclipse.persistence:javax.persistence:2.1.0"
     compile "javax.transaction:jta:1.1"
+    compile "org.ehcache:ehcache:3.5.0"
+    compile "com.esotericsoftware:kryo:4.0.1"
 
     testCompile "org.testng:testng:6.13.1"
     testCompile "org.assertj:assertj-core:3.9.0"
