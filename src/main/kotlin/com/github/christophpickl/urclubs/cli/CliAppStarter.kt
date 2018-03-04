@@ -27,8 +27,6 @@ class CliApp @Inject constructor(
     private val activityEnhancer: FinishedActivityEnhancer
 ) {
     fun start() {
-        myclubs.login() // TODO refactor that always login at startup, use proper Connector to ensure state
-
         playground()
 
         bus.post(QuitEvent)

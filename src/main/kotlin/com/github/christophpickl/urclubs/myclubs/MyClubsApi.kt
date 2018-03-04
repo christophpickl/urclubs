@@ -24,31 +24,32 @@ import org.apache.http.protocol.BasicHttpContext
 import org.apache.http.util.EntityUtils
 import javax.inject.Inject
 
+
 interface MyClubsApi {
-    fun login()
+
     fun loggedUser(): UserMycJson
+
     fun partners(): List<PartnerHtmlModel>
-    /**
-     * Goes to: https://www.myclubs.com/at/de/partner/
-     */
+
+    // Requests: https://www.myclubs.com/at/de/partner/
     fun partner(shortName: String): PartnerDetailHtmlModel
 
     fun courses(filter: CourseFilter): List<CourseHtmlModel>
+
     //    fun infrastructure(): List<InfrastructureMyc>
 
-    /**
-     * Goes to: https://www.myclubs.com/at/de/partner/sporthalle-wien
-     */
+    // Requests: https://www.myclubs.com/at/de/partner/sporthalle-wien
     //fun singleActivity() ...
 
     fun activity(filter: ActivityFilter): ActivityHtmlModel
 
     fun finishedActivities(): List<FinishedActivityHtmlModel>
+
 }
 
 class MyClubsHttpApi @Inject constructor(
-        private val credentials: Credentials,
-        private val util: MyclubsUtil
+    private val credentials: Credentials,
+    private val util: MyclubsUtil
 ) : MyClubsApi {
 
     private val log = LOG {}
@@ -60,27 +61,12 @@ class MyClubsHttpApi @Inject constructor(
         disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
     }
     private val parser = HtmlParser()
-    override fun login() {
-        log.info { "login() as user: ${credentials.email}" }
-
-        val response = http.execute(HttpPost("$baseApiUrl/login").apply {
-            entity = UrlEncodedFormEntity(listOf(
-                    BasicNameValuePair("email", credentials.email),
-                    BasicNameValuePair("password", credentials.password),
-                    BasicNameValuePair("staylogged", "true")
-            ))
-        })
-
-        val body = response.body
-        if (body != "success") {
-            log.warn { response.toString() }
-            log.warn(body)
-            throw Exception("Login failed!")
-        }
-    }
+    private var loggedIn = false
 
     override fun loggedUser(): UserMycJson {
-        log.info("loggedUser()")
+        log.info { "loggedUser()" }
+        loginIfNecessary()
+
         val response = http.execute(HttpPost("$baseApiUrl/getLoggedUser"))
         val body = response.body
         if (body == "0") {
@@ -92,12 +78,14 @@ class MyClubsHttpApi @Inject constructor(
     }
 
     override fun partners(): List<PartnerHtmlModel> {
-        log.info("partners()")
+        log.info { "partners()" }
+        loginIfNecessary()
+
         val response = http.execute(HttpPost("$baseApiUrl/activities-get-partners").apply {
             entity = UrlEncodedFormEntity(listOf(
-                    BasicNameValuePair("country", "at"),
-                    BasicNameValuePair("city", "wien"),
-                    BasicNameValuePair("language", "de")
+                BasicNameValuePair("country", "at"),
+                BasicNameValuePair("city", "wien"),
+                BasicNameValuePair("language", "de")
             ))
         })
         val partners = parser.parsePartners(response.body)
@@ -106,12 +94,14 @@ class MyClubsHttpApi @Inject constructor(
     }
 
     override fun courses(filter: CourseFilter): List<CourseHtmlModel> {
-        log.info("courses(filter=$filter)")
+        log.info { "courses(filter=$filter)" }
+        loginIfNecessary()
+
         val response = http.execute(HttpPost("$baseApiUrl/activities-list-response").apply {
             entity = UrlEncodedFormEntity(listOf(
-                    BasicNameValuePair("filters", jackson.writeValueAsString(filter.toFilterMycJson())),
-                    BasicNameValuePair("country", "at"),
-                    BasicNameValuePair("language", "de")
+                BasicNameValuePair("filters", jackson.writeValueAsString(filter.toFilterMycJson())),
+                BasicNameValuePair("country", "at"),
+                BasicNameValuePair("language", "de")
             ))
         })
         val json = jackson.readValue<ActivitiesMycJson>(response.body)
@@ -122,14 +112,16 @@ class MyClubsHttpApi @Inject constructor(
 
     // MINOR if would remove the timestamp filter, we could cache the response, right?!
     override fun activity(filter: ActivityFilter): ActivityHtmlModel {
-        log.info("activity(filter=$filter)")
+        log.info { "activity(filter=$filter)" }
+        loginIfNecessary()
+
         val response = http.execute(HttpPost("$baseApiUrl/activityDetail").apply {
             entity = UrlEncodedFormEntity(listOf(
-                    BasicNameValuePair("activityData", filter.activityId),
-                    BasicNameValuePair("type", filter.type.toActivityTypeMyc().json),
-                    BasicNameValuePair("date", filter.timestamp),
-                    BasicNameValuePair("country", "at"),
-                    BasicNameValuePair("language", "de")
+                BasicNameValuePair("activityData", filter.activityId),
+                BasicNameValuePair("type", filter.type.toActivityTypeMyc().json),
+                BasicNameValuePair("date", filter.timestamp),
+                BasicNameValuePair("country", "at"),
+                BasicNameValuePair("language", "de")
             ))
         })
 
@@ -139,12 +131,16 @@ class MyClubsHttpApi @Inject constructor(
 
     override fun finishedActivities(): List<FinishedActivityHtmlModel> {
         log.debug { "finishedActivities()" }
+        loginIfNecessary()
+
         val response = http.execute(HttpGet("$baseUrl/at/de/profile"))
         return parser.parseProfile(response.body).finishedActivities
     }
 
     override fun partner(shortName: String): PartnerDetailHtmlModel {
         log.debug { "partner(shortName=$shortName)" }
+        loginIfNecessary()
+
         val response = http.execute(HttpGet(util.createMyclubsPartnerUrl(shortName)))
 
         val partner = parser.parsePartner(response.body)
@@ -153,6 +149,36 @@ class MyClubsHttpApi @Inject constructor(
     }
 
     private val CloseableHttpResponse.body: String get() = EntityUtils.toString(entity).trim()
+
+
+    private fun loginIfNecessary() {
+        if (!loggedIn) {
+            login()
+        }
+    }
+
+    private fun login() {
+        log.info { "login() as user: ${credentials.email}" }
+        if (loggedIn) {
+            throw IllegalStateException("already logged in!")
+        }
+
+        val response = http.execute(HttpPost("$baseApiUrl/login").apply {
+            entity = UrlEncodedFormEntity(listOf(
+                BasicNameValuePair("email", credentials.email),
+                BasicNameValuePair("password", credentials.password),
+                BasicNameValuePair("staylogged", "true")
+            ))
+        })
+
+        val body = response.body
+        if (body != "success") {
+            log.warn { response.toString() }
+            log.warn(body)
+            throw Exception("Login failed!")
+        }
+        loggedIn = true
+    }
 
 }
 
