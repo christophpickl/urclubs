@@ -4,10 +4,9 @@ import com.github.christophpickl.kpotpourri.common.logging.LOG
 import com.github.christophpickl.urclubs.MainModule
 import com.github.christophpickl.urclubs.QuitEvent
 import com.github.christophpickl.urclubs.configureLogging
-import com.github.christophpickl.urclubs.fx.partner.detail.PartnerFxController
 import com.github.christophpickl.urclubs.fx.partner.PartnersFxController
+import com.github.christophpickl.urclubs.fx.partner.detail.PartnerFxController
 import com.github.christophpickl.urclubs.fx.partner.filter.FilterPartnersController
-import com.github.christophpickl.urclubs.myclubs.MyClubsApi
 import com.github.christophpickl.urclubs.service.Credentials
 import com.github.christophpickl.urclubs.service.SystemPropertyCredentialsProvider
 import com.google.common.eventbus.EventBus
@@ -15,6 +14,7 @@ import com.google.inject.AbstractModule
 import com.google.inject.Guice
 import javafx.application.Application
 import tornadofx.*
+import javax.swing.JOptionPane
 import kotlin.reflect.KClass
 
 // official page ... https://github.com/edvin/tornadofx
@@ -29,6 +29,11 @@ object FxAppStarter {
 
     init {
         configureLogging()
+
+        Thread.setDefaultUncaughtExceptionHandler { thread, throwable ->
+            log.error("Uncaught exception in thread '${thread.name}'!", throwable)
+            JOptionPane.showMessageDialog(null, "App Crash!!! Aaaaaarg :-]", "UrClubs Crash", JOptionPane.ERROR_MESSAGE)
+        }
     }
 
     @JvmStatic
@@ -55,9 +60,6 @@ class UrclubsFxApp : App(
             override fun <T : Any> getInstance(type: KClass<T>) = guice.getInstance(type.java)
         }
         registerEagerSingletons()
-        val myclubs = guice.getInstance(MyClubsApi::class.java)
-//        myclubs.login() // FIXME do a lazy login when requested first, instead eager here
-//        log.info { "Logged in user: ${myclubs.loggedUser()}" }
     }
 
 //    override fun start(stage: Stage) {

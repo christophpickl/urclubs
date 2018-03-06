@@ -3,17 +3,16 @@
 
 ## New Order
 
-1. Hibernate
-2. Migration
-3. App package
+1. Replace google docs
+    * colored lines based on rating
+1. Add credits leftover
+1. Activities list
 
-Long term:
-Replace google docs
-Add credits leftover
-Activities list
-Book activities
-Recommend activities
-Google cal integration
+### Long term:
+
+* Book activities
+* Recommend activities
+* Google cal integration
 
 ## High Prio
 

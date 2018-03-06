@@ -1,14 +1,12 @@
 package com.github.christophpickl.urclubs.fx.partner
 
-import com.github.christophpickl.kpotpourri.common.logging.LOG
 import com.github.christophpickl.urclubs.domain.partner.Partner
 import com.github.christophpickl.urclubs.domain.partner.PartnerService
 import javafx.collections.FXCollections
-import tornadofx.Controller
+import tornadofx.*
 
 class PartnersFxController : Controller() {
 
-    private val logg = LOG {}
     private val partnerService: PartnerService by di()
 
     val partners = FXCollections.observableArrayList<Partner>()!!
@@ -19,14 +17,6 @@ class PartnersFxController : Controller() {
             fire(PartnerListEvent(partners))
         }
     }
-//    fun reloadPartners() {
-//        logg.debug { "reloadPartners()" }
-//        runAsync {
-//            listPartners()
-//        } ui {
-//            partners.setAll(it)
-//        }
-//    }
 
 
 }

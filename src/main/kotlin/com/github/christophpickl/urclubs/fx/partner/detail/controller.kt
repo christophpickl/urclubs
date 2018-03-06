@@ -17,7 +17,7 @@ class PartnerFxController : Controller() {
     private val currentPartner: CurrentPartnerFx by inject()
 
     init {
-        subscribe<PartnerSelectedEvent> { event ->
+        subscribe<PartnerSelectedEvent> { _ ->
 //            val partner = event.partner
 //            logg.debug { "Partner got selected: $partner" }
 //            currentPartner.partner.set(partner.toPartnerFx())

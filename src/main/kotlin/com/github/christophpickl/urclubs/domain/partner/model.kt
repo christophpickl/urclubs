@@ -121,16 +121,16 @@ fun PartnerDbo.toPartner() = Partner(
     idDbo = id,
     idMyc = idMyc,
     shortName = shortName,
-    name = name ?: "",
-    address = address ?: "",
+    name = name,
+    address = address,
     rating = rating.toRating(),
-    deletedByMyc = deletedByMyc ?: false,
-    favourited = favourited ?: false,
-    wishlisted = wishlisted ?: false,
-    ignored = ignored ?: false,
+    deletedByMyc = deletedByMyc,
+    favourited = favourited,
+    wishlisted = wishlisted,
+    ignored = ignored,
     category = category.toCategory(),
-    linkMyclubsSite = linkMyclubsSite ?: "",
-    linkPartnerSite = linkPartnerSite ?: ""
+    linkMyclubsSite = linkMyclubsSite,
+    linkPartnerSite = linkPartnerSite
 )
 
 fun RatingDbo?.toRating() = when (this) {

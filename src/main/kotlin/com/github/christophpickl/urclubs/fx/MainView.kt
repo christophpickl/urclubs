@@ -1,9 +1,9 @@
 package com.github.christophpickl.urclubs.fx
 
+import com.github.christophpickl.urclubs.IS_DEVELOPMENT
 import com.github.christophpickl.urclubs.fx.partner.PartnerListRequest
 import com.github.christophpickl.urclubs.fx.partner.PartnersView
 import com.github.christophpickl.urclubs.service.sync.UpcomingActivitySyncer
-import javafx.scene.control.MenuBar
 import tornadofx.*
 
 class MainView : View() {
@@ -28,7 +28,7 @@ class MainView : View() {
     }
 
     init {
-        title = "UrClubs"
+        title = "UrClubs" + if (IS_DEVELOPMENT) " - DEVELOPMENT" else ""
         fire(PartnerListRequest)
     }
 }

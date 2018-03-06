@@ -5,11 +5,20 @@ buildscript {
         versionJava = "1.8"
         versionKPotpourri = "1.7"
     }
+    dependencies {
+        classpath "gradle.plugin.edu.sc.seis:macAppBundle:2.1.8"
+    }
 }
 
 plugins {
     id "org.jetbrains.kotlin.jvm" version "1.2.30"
     id "org.jetbrains.kotlin.plugin.jpa" version "1.2.30"
+}
+
+ext {
+    myMainClassName = "com.github.christophpickl.urclubs.fx.FxAppStarter"
+    myAppName = "UrClubs"
+    myAppVersion = "1.0"
 }
 
 dependencies {
@@ -68,4 +77,37 @@ repositories {
     mavenCentral()
     jcenter()
     maven { url "http://dl.bintray.com/christophpickl/cpickl" }
+}
+
+// =====================================================================================================================
+// PACKAGING MAC
+// =====================================================================================================================
+
+// $ ./gradlew createApp -Durclubs.enableMacBundle=true
+// $ ./gradlew createDmg -Durclubs.enableMacBundle=true
+
+// travis lacks hdiutil binary, so only enabled by explicit sysproperty
+if (System.properties.getProperty("urclubs.enableMacBundle") == "true") {
+    println "[URCLUBS] enabling mac bundle"
+    apply plugin: "edu.sc.seis.macAppBundle"
+
+    macAppBundle {
+        appName = myAppName
+        dmgName = myAppName + "-" + myAppVersion
+
+        mainClassName = myMainClassName
+        icon = "src/main/buildMac/logo.icns"
+        jvmVersion = "1.8+"
+
+        javaProperties.put("apple.laf.useScreenMenuBar", "true")
+        javaProperties.put("urclubs.isMacApp", "true")
+//        javaExtras.put("-splash:\$APP_ROOT/Contents/Resources/splashscreen.jpg", null)
+    }
+
+    //noinspection GroovyAssignabilityCheck
+//    task copySplashscreenForMacApp(type: Copy) {
+//        from 'src/main/resources/urclubs/images/splashscreen.jpg'
+//        into "build/macApp/${myAppName}.app/Contents/Resources"
+//    }
+//    createApp.dependsOn copySplashscreenForMacApp
 }
