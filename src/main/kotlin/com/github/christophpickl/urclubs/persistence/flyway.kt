@@ -19,15 +19,8 @@ class FlywayManager(
     private val log = LOG {}
     private val migrationLocation = "/urclubs/migrations"
 
-//    init {
-//        Runtime.getRuntime().addShutdownHook(Thread(Runnable {
-//            log.debug("Database shutdown hook is running and dancing around.")
-//            closeConnection()
-//        }, "DatabaseShutdownHookThread"))
-//    }
-
-    fun migrateDatabase() {
-        log.info("migrateDatabase()")
+    fun migrate() {
+        log.info("migrate()")
 
         val flyway = buildFlyway()
         try {
