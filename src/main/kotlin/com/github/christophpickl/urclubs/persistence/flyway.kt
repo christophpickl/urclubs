@@ -1,8 +1,6 @@
 package com.github.christophpickl.urclubs.persistence
 
 import com.github.christophpickl.kpotpourri.common.logging.LOG
-import com.github.christophpickl.urclubs.QuitEvent
-import com.google.common.eventbus.Subscribe
 import org.flywaydb.core.Flyway
 import org.flywaydb.core.api.FlywayException
 import org.flywaydb.core.api.MigrationInfo
@@ -21,14 +19,12 @@ class FlywayManager(
     private val log = LOG {}
     private val migrationLocation = "/urclubs/migrations"
 
-    init {
-        Runtime.getRuntime().addShutdownHook(Thread(Runnable {
-            log.debug("Database shutdown hook is running and dancing around.")
-            closeConnection()
-        }, "DatabaseShutdownHookThread"))
-    }
-
-    private var databaseConnected: Boolean = false
+//    init {
+//        Runtime.getRuntime().addShutdownHook(Thread(Runnable {
+//            log.debug("Database shutdown hook is running and dancing around.")
+//            closeConnection()
+//        }, "DatabaseShutdownHookThread"))
+//    }
 
     fun migrateDatabase() {
         log.info("migrateDatabase()")
@@ -47,8 +43,6 @@ class FlywayManager(
                 throw dbLockException ?: e
             }
         }
-        databaseConnected = true
-
         log.debug("Good luck, DB migration was successfull.")
     }
 
@@ -61,25 +55,6 @@ class FlywayManager(
             }
         }
         setCallbacks(*callbacks.toMutableList().apply { add(myCallback) }.toTypedArray())
-    }
-
-    @Subscribe
-    fun onQuit(event: QuitEvent) {
-        closeConnection()
-    }
-
-    private fun closeConnection() {
-        if (!databaseConnected) {
-            log.warn("Not going to close database connection as it was never successfully opened")
-            return
-        }
-        log.debug("Closing database connection.")
-        try {
-            ds.connection.close()
-        } catch (e: Exception) {
-            // when there is a lock, the shutdown hook will fail, avoid this!
-            log.error("Could not close database connection.", e)
-        }
     }
 
 }

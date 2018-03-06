@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-echo "Deleting ... build/prod_db.odb"
+echo "Deleting ... /Users/wu/.urclubs_dev/database"
 
-rm -f build/prod_db.odb
-rm -f build/prod_db.odb$
+rm -f /Users/wu/.urclubs_dev/database

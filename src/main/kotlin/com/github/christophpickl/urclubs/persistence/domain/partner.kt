@@ -77,38 +77,38 @@ data class PartnerDbo(
     var idMyc: String,
 
     @Column(nullable = false, unique = false)
-    var name: String?,
+    var name: String,
 
     @Column(nullable = false, unique = true)
     var shortName: String,
 
     @Column(nullable = false)
-    var address: String?,
+    var address: String,
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    var rating: RatingDbo?,
+    var rating: RatingDbo,
 
     @Column(nullable = false)
-    var deletedByMyc: Boolean?,
+    var deletedByMyc: Boolean,
 
     @Column(nullable = false)
-    var favourited: Boolean?,
+    var favourited: Boolean,
 
     @Column(nullable = false)
-    var wishlisted: Boolean?,
+    var wishlisted: Boolean,
 
     @Column(nullable = false)
-    var ignored: Boolean?,
+    var ignored: Boolean,
 
     @Column(nullable = false)
-    var category: CategoryDbo?,
+    var category: CategoryDbo,
 
     @Column(nullable = false)
-    var linkMyclubsSite: String?,
+    var linkMyclubsSite: String,
 
     @Column(nullable = false)
-    var linkPartnerSite: String?
+    var linkPartnerSite: String
 
 ) : HasId {
     companion object

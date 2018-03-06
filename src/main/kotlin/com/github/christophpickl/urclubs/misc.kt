@@ -11,7 +11,7 @@ fun configureLogging() {
     Logback4k.reconfigure {
         rootLevel = Level.WARN
         packageLevel(Level.ALL, "com.github.christophpickl"
-        , "org.hibernate"
+//        , "org.hibernate"
         )
         addConsoleAppender {
             pattern = "%highlight(%-5level) [%-32thread] %cyan(%logger{60}) - %msg%n"

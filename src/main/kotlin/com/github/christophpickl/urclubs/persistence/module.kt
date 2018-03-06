@@ -1,8 +1,11 @@
 package com.github.christophpickl.urclubs.persistence
 
 import com.github.christophpickl.kpotpourri.common.logging.LOG
+import com.github.christophpickl.urclubs.QuitEvent
 import com.github.christophpickl.urclubs.URCLUBS_DATABASE_DIRECTORY
 import com.github.christophpickl.urclubs.configureLogging
+import com.google.common.eventbus.EventBus
+import com.google.common.eventbus.Subscribe
 import com.google.inject.AbstractModule
 import com.google.inject.BindingAnnotation
 import com.google.inject.Guice
@@ -14,15 +17,9 @@ import org.hsqldb.jdbc.JDBCDataSource
 import java.io.File
 import java.util.Properties
 import javax.inject.Inject
-import javax.persistence.Column
-import javax.persistence.Entity
 import javax.persistence.EntityManager
 import javax.persistence.EntityManagerFactory
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
 import javax.persistence.Persistence
-import javax.persistence.Table
 import javax.sql.DataSource
 
 
@@ -35,34 +32,55 @@ fun main(args: Array<String>) {
 
 //    Guice.createInjector(P2Mod(inMem))
 //    Guice.createInjector(PersistenceModule("jdbc:hsqldb:mem:mymemdb;hsqldb.tx=mvcc"))
-//    System.setProperty(SYSPROP_IS_DEV, "1")
+//    System.setProperty(SYSPROP_DEVELOPMENT, "1")
 //    Guice.createInjector(PersistenceModule())
 
 }
 
 class DbInitializer @Inject constructor(
     service: PersistService,
-    @DatabaseUrl databaseUrl: String
+    @DatabaseUrl private val databaseUrl: String
 ) {
     private val log = LOG {}
+
     init {
         log.debug { "Starting persist unit." }
 
+        migrateDb()
+
+        service.start()
+    }
+
+
+    private fun migrateDb() {
+        log.debug { "migrateDb()" }
         val dataSource = JDBCDataSource()
         dataSource.url = databaseUrl
-//        dataSource.user = DB_USER
         FlywayManager(dataSource).migrateDatabase()
-
-        /*
-
-            <property name="javax.persistence.jdbc.driver" value="org.hsqldb.jdbcDriver"/>
-            <property name="javax.persistence.jdbc.user" value="sa"/>
-            <property name="javax.persistence.jdbc.password" value=""/>
-         */
-        service.start()
+        dataSource.connection.close()
     }
 }
 
+class DbExitializer @Inject constructor(
+    bus: EventBus,
+    private val em: EntityManager,
+    private val emf: EntityManagerFactory
+) {
+
+    private val log = LOG {}
+    init {
+        bus.register(this)
+    }
+
+    @Subscribe
+    fun onQuitEvent(@Suppress("UNUSED_PARAMETER") event: QuitEvent) {
+        log.debug { "onQuitEvent(event) ... shutting down database" }
+        em.close()
+        emf.close()
+    }
+}
+
+// jdbc:hsqldb:file:/Users/wu/.urclubs_dev/database/database
 @Retention
 @Target(AnnotationTarget.VALUE_PARAMETER)
 @BindingAnnotation
@@ -77,39 +95,21 @@ class P3Mod(definedDatabaseUrl: String? = null) : AbstractModule() {
     private val persistenceProperties = Properties().apply {
         put("javax.persistence.jdbc.url", databaseUrl)
         put("hibernate.show_sql", true)
+
+        // https://stackoverflow.com/questions/438146/hibernate-hbm2ddl-auto-possible-values-and-what-they-do
+//        put("hibernate.hbm2ddl.auto", "create") // in order to get hibernate printing out its own SQL to create DDL (dont forget to disable flyway!)
+        put("hibernate.hbm2ddl.auto", "validate")
     }
 
     override fun configure() {
         log.info { "Configuring JPA with URL: '$databaseUrl'" }
         install(JpaPersistModule(URCLUBS_PERSISTENCE_UNIT).properties(persistenceProperties))
         bind(DbInitializer::class.java).asEagerSingleton()
+        bind(DbExitializer::class.java).asEagerSingleton()
         bindConstant().annotatedWith(DatabaseUrl::class.java).to(databaseUrl)
     }
 
 }
-
-@Entity
-@Table(name = "tbl_man")
-data class Man(
-    @Id
-    @Column(name = "col_id")
-//    @GeneratedValue(generator="increment")
-//    @GenericGenerator(name="increment", strategy = "increment")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long,
-
-    @Column(name = "col_foo", nullable = false, length = 255)
-    val foo: String
-)
-
-
-
-// TODO @Subscribe
-//fun onQuitEvent(@Suppress("UNUSED_PARAMETER") event: QuitEvent) {
-//    log.debug { "onQuitEvent(event) ... shutting down database" }
-//    em?.close()
-//    emFactory?.close()
-//}
 
 
 /**
