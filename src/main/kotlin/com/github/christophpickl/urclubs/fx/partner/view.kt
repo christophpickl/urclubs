@@ -1,6 +1,7 @@
 package com.github.christophpickl.urclubs.fx.partner
 
 import com.github.christophpickl.kpotpourri.common.logging.LOG
+import com.github.christophpickl.urclubs.DEVELOPMENT_COLORS
 import com.github.christophpickl.urclubs.domain.partner.Partner
 import com.github.christophpickl.urclubs.fx.partner.detail.PartnerSelectedEvent
 import com.github.christophpickl.urclubs.fx.partner.detail.PartnerUpdatedFXEvent
@@ -16,14 +17,17 @@ class PartnersView : View() {
     private val currentPartner: CurrentPartnerFx by inject()
 
     val table = tableview<Partner> {
-        column("Name", Partner::name)
-        column("Category", Partner::category)
-        column("Rating", Partner::rating)
+        column("Name", Partner::name) // .pctWidth(25.0)  .weigthedWidth(1.0)
+        column("Category", Partner::category).fixedWidth(50.0)
+        column("Rating", Partner::rating).fixedWidth(50.0)//.contentWidth(width = 50.0, useAsMin = true, useAsMax = true)
         column("Address", Partner::address)
         columnResizePolicy = SmartResize.POLICY
     }
 
     override val root = borderpane {
+        style {
+            if (DEVELOPMENT_COLORS) backgroundColor += javafx.scene.paint.Color.AQUA
+        }
         top {
             add(partnersFilter)
         }

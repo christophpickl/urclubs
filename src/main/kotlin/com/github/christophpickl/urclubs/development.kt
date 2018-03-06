@@ -13,3 +13,7 @@ val IS_DEVELOPMENT = (System.getProperty(SystemProperties.SYSPROP_DEVELOPMENT) !
 val DEVELOPMENT_FAST_SYNC = (IS_DEVELOPMENT && false).also {
     if (it) log.info { "Using fast sync mode." }
 }
+
+val DEVELOPMENT_COLORS = (IS_DEVELOPMENT && true).also {
+    if (it) log.info { "Using colors mode." }
+}

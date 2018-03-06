@@ -1,10 +1,11 @@
 
+```-Durclubs.email=foo@bar.com -Durclubs.password=xxx -Durclubs.development```
+
 # TODOs
 
 ## New Order
 
 * minor UI
-    * table fill vertical
     * detail pack height
 
 1. Replace google docs
