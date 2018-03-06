@@ -1,0 +1,1275 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="de">
+<head>
+
+
+
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+
+    <meta name="apple-itunes-app" content="app-id=1069039590">
+
+
+
+
+
+    <title>City & Country Club Wienerberg | myClubs Partner</title>
+    <meta name="description" content='Der City & Country Club Wienerberg bietet Golf, Fitness und das größte Racketsport-Angebot der Stadt mit Tennis, Badminton, Squash, Tischtennis und NEU: Padel-Tennis. ' />
+    <meta property="og:image" content="https://files.myclubs.com/img_fababc7c2956a1e5f14c254c8868bc8d.jpg" />
+    <meta property="og:title" content="City & Country Club Wienerberg | myClubs Partner" />
+
+
+
+
+
+
+
+
+
+
+
+
+    <link rel="stylesheet" href="https://www.myclubs.com/assets/web/css/styles.min.css?v=1.9.31.4">
+
+
+
+    <link rel="icon" type="image/ico" href="https://www.myclubs.com/assets/web/img/favicon.ico">
+    <!--[if (gte IE 6)&(lte IE 9)]>
+    <script src="https://www.myclubs.com/assets/web/js/ie8andlower.min.js"></script>
+    <![endif]-->
+    <script src="https://www.myclubs.com/assets/web/js/modernizr.min.js" defer="defer"></script>
+
+
+    <script type="text/javascript">
+        var set_lang = 'de';
+        var set_country = 'AT';
+
+        var link_activities = 'https://www.myclubs.com/at/de/aktivitaeten';
+        var link_locations = 'https://www.myclubs.com/at/de/locations';
+        var link_gift = 'https://www.myclubs.com/at/de/geschenkkarten';
+        var link_profile = 'https://www.myclubs.com/at/de/profile';
+    </script>
+
+
+
+
+
+
+
+
+    <!-- NEEDED TRANSLATIONS -->
+    <script>
+        // gifting/profile
+        var trans_register_agree_terms_required = 'Bitte akzeptiere die AGBs und Datenschutzbestimmungen.';
+        var trans_register_select_plan = 'Bitte wählen sie einen Tarif aus.';
+        var trans_general_payment_type_required = 'Bitte wählen Sie eine Bezahlungsart.';
+        var trans_register_select_plan_before = 'Sie müssen zuvor einen Tarif wählen.';
+        var trans_general_cancellation_failed = 'Stornierung nicht möglich';
+        var trans_register_failed = 'Registrierung fehlgeschlagen.';
+    </script>
+
+
+    <!-- OVERLAY TEMPLATES -->
+    <script id="ovl_register_login" type="text/html">
+
+
+        <div class="overlay overlay--default overlay--registerLogin">
+
+            <a href="/" class="icon icon--close overlay__close noAction"></a>
+
+            <div class="part part--info">
+                <h3>Jetzt kostenlos  <span>registrieren</span></h3>
+                <p>Registriere dich jetzt kostenlos und erhalte Zugang zur Kurs- und Sportsuche. Mit der Sportsuche kannst du alle Workouts und Stundenpläne unserer Sportanbieter einsehen.</p>
+                <p class="gotologin">
+                    Du hast schon einen Account?
+                    <a href="#" class="regLogSwitch">
+                        <span class="icon icon--arrow-right"></span>
+                        <span class="text" data-other="Zur Registrierung">Zum Login</span>
+                    </a>
+
+                </p>
+            </div>
+
+            <div class="part part--reg">
+
+                <div class="part--reg--registration">
+
+                    <form class="registrationform" data-redirect="http://www.myclubs.com/at/de/partner/city-country-club-wienerberg">
+
+                        <div class="fail">
+                            <p></p>
+                        </div>
+
+                        <input class="email" type="text" name="email" placeholder="E-Mail" />
+                        <input class="password" type="password" name="password" placeholder="Passwort" />
+                        <input class="confirmPassword" type="password" name="confirmPassword" placeholder="Passwort wiederholen" />
+
+                        <div class="sectionset--agb">
+                            <input type="checkbox" class="checkboxButton" name="termsAccount" id="termsAccount_overlay" value="1" />
+                            <label for="termsAccount_overlay" class="checkboxLabel">
+                                Ich stimme den <a href="https://www.myclubs.com/at/de/agb" target="_blank" class="js-tosurl">AGBs</a> und <a href="https://www.myclubs.com/at/de/datenschutz" target="_blank">Datenschutzbestimmungen</a> zu.						</label>
+                        </div>
+
+                        <a class="button submit" href="#">Anmelden</a>
+                    </form>
+
+                    <span class="divider">
+					<span>oder</span>
+				</span>
+
+                    <a href="#" class="button button--fb" onclick="checkLoginState('regLog');">
+                        <span class="icon icon--fb"></span>
+                        Mit Facebook anmelden				</a>
+
+                </div>
+
+
+
+                <div class="part--reg--login formwrap" id="sportLogin">
+
+                    <form class="loginform" action="/api/login" data-redirect="http://www.myclubs.com/at/de/partner/city-country-club-wienerberg">
+
+                        <div class="fail">
+                            <p>Anmeldung fehlgeschlagen</p>
+                        </div>
+
+                        <input type="text" name="email" placeholder="E-Mail" class="email" />
+                        <input type="password" name="password" placeholder="Passwort" class="password" />
+                        <a class="button submit" href="">Anmelden</a>
+
+                        <a class="passwort_reset" href="https://www.myclubs.com/at/de/password-reset">
+                            <span>?</span>
+                            Passwort vergessen					</a>
+
+                    </form>
+
+                    <span class="divider">
+					<span>oder</span>
+				</span>
+
+                    <a href="#" class="button button--fb" onclick="checkLoginState('regLog');">
+                        <span class="icon icon--fb"></span>
+                        Mit Facebook anmelden				</a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </script>
+
+
+
+
+
+
+
+
+    <script>
+        var ga_available = true;
+
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-72646518-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+    <!-- Google Tag Manager -->
+    <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-WW989F"
+                      height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-WW989F');</script>
+    <!-- End Google Tag Manager -->
+
+
+    <!-- Facebook Pixel Code -->
+    <script>
+        !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+            n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+            n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+            t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+            document,'script','https://connect.facebook.net/en_US/fbevents.js');
+
+        fbq('init', '211758835882684');
+        fbq('track', "PageView");
+
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+                   src="https://www.facebook.com/tr?id=211758835882684&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- End Facebook Pixel Code -->
+
+</head>
+<body data-country-param1="at" data-lang-param2="de" data-activitieslink="https://www.myclubs.com/at/de/aktivitaeten">
+
+<div id="fb-root"></div>
+<script type="text/javascript">
+    window.fbAsyncInit = function(){
+        FB.init({
+            appId: "1650801728506022",
+            status: true,
+            cookie: true,
+            xfbml: true,
+            oauth: true
+        });
+    };
+
+    (function(){
+        var e = document.createElement('script'); e.async = true;
+        e.src = document.location.protocol + '//connect.facebook.net/de_DE/all.js';
+        document.getElementById('fb-root').appendChild(e);
+    }());
+</script>
+
+
+
+<div class="countryselector">
+    <div class="countryselector__background"></div>
+    <div class="countryselector__overlay">
+
+        <div class="countryselector__top">
+            <div class="countryselector__headline">
+                <h2>Wähle dein Land</h2>
+            </div>
+            <div class="countryselector__description">
+                <p>In welchem Land möchtest du myClubs nutzen?</p>
+            </div>
+        </div>
+
+        <div class="countryselector__body">
+
+            <div class="countryselector__list">
+                <ul>
+                    <li value="at" class="active">Österreich</li>
+                    <li value="ch">Schweiz</li>
+                </ul>
+            </div>
+
+            <div class="countryselector__action">
+                <a href="/api/setCountry/at" class="button">OK</a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<div class="mobile navigation__mobile">
+    <a href="" class="icon open_navi icon--burger"></a>
+    <a href="https://www.myclubs.com/at" class="icon home icon--logo"></a>
+    <a href="" class="icon open_profile icon--profile"></a>
+</div>
+
+
+<div class="navigation block  ">
+
+    <a href="#" class="mobile navigation__close icon icon--close"></a>
+    <a href="#" class="mobile navigation__close__login icon icon--close"></a>
+
+    <a class="logo" href="/at/de">
+        <img src="https://www.myclubs.com/assets/web/img/logo.svg" alt="myClubs" />
+        <span class="icon icon--logo-small"></span>
+    </a>
+
+    <ul class="navigation__main navigation__main--logged">
+        <li><a href="https://www.myclubs.com/at/de/locations">Sportpartner</a></li>
+        <li><a href="https://www.myclubs.com/at/de/aktivitaeten">Sportsuche</a></li>
+        <li><a href="https://www.myclubs.com/at/de/b2b">Corporate Fitness</a></li>
+
+        <li><a href="https://www.myclubs.com/at/de/profile#upcoming">Meine Workouts</a></li>
+
+        <li class="loginpoint">
+            <a class="btn_profile" href="">
+
+                <span class="logged_name">Hallo, Christoph&nbsp;&nbsp;&nbsp;</span>				<span class="profile-image" style="background-image:url(https://files.myclubs.com/img_cacf97ede0260414dee33a532f2409af.jpg);">
+
+					<span class="profile_credits_icon">
+													 							 	∞
+							 											</span>
+
+				</span>
+
+            </a>
+        </li>
+    </ul>
+
+
+    <div class="info mobile">
+        <div class="social">
+            <a href="https://instagram.com/my_clubs" target="_blank" class="icon icon-social icon--ig"></a>
+            <a href="https://twitter.com/my_clubs" target="_blank" class="icon icon-social icon--tw"></a>
+            <a href="https://www.facebook.com/myclubs" target="_blank" class="icon icon-social icon--fb"></a>
+        </div>
+        <p>
+            <span class="icon icon--logo"></span>
+            &copy; 2018 | Alle Rechte vorbehalten		</p>
+    </div>
+
+    <div class="profile_menu">
+
+        <span class="arrow-up "></span>
+
+        <ul>
+            <li><a target="_self" href="https://www.myclubs.com/at/de/profile#edit">Mein Profil</a></li>
+            <li><a target="_self" href="https://www.myclubs.com/at/de/profile#membership">Meine Mitgliedschaft</a></li>
+            <li>
+                <a target="_self" href="https://www.myclubs.com/at/de/profile#recommend">myClubs empfehlen					<span class="icon icon--present"></span>
+                </a>
+            </li>
+            <li><a target="_self" href="https://www.myclubs.com/at/de/profile#upcoming">Meine Workouts</a></li>
+            <li><a class="logout" href="">Ausloggen</a></li>
+        </ul>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+<div class="sitecontainer site_stories site_partner">
+
+    <div class="top" style="background-image:url(https://files.myclubs.com/img_fababc7c2956a1e5f14c254c8868bc8d.jpg);">
+
+        <div class="gradient"></div>
+
+        <div class="storyhl block">
+            <img class="partner__logo" src="https://files.myclubs.com/img_0f287a348caf3fe7680adf583e0e4028.png" alt="City & Country Club Wienerberg" />
+
+            <h1>City & Country Club Wienerberg</h1>
+        </div>
+
+    </div>
+
+    <div class="share  btn_share  btn_share--top">
+        <div class="share__front">
+            <span class="icon icon-social icon--share  share__front__icon"></span>
+        </div>
+        <div class="share__back">
+            <span class="icon  icon--fb  share__back__icon js-share" data-type="facebook"></span>
+            <span class="icon  icon--twitter  share__back__icon js-share"  data-type="twitter"></span>
+        </div>
+    </div>
+
+    <a href="#" data-title-add="Favorit hinzufügen" data-title-remove="Favorit entfernen" title="Favorit entfernen" data-id="7vVwdJWNt5" data-liked="1" class="togglePartnerLike  js-togglePartnerLike  icon icon-social icon--heart-full btn_heart"></a>
+
+    <div class="story-content__wrap">
+        <div class="block partner__block  partner__block--top  partner__intro">
+            <div class="partner__intro__info">
+                <p class='partner__intro__info__text'>Der City & Country Club Wienerberg bietet Golf, Fitness und das größte Racketsport-Angebot der Stadt mit Tennis, Badminton, Squash, Tischtennis und NEU: Padel-Tennis. <br/></p>
+                <div class="partner__intro__info__data">
+                    <a href="http://www.cityandcountry.at/" target="_blank" class="partner__intro__info__data__web">www.cityandcountry.at</a>
+                    <div class="partner__intro__info__data__tags">
+                        <div class="tags tags--small">
+                            <span class="tags__tag">Fitnesskurs</span>
+                            <span class="tags__tag">Kampfkunst</span>
+                            <span class="tags__tag">Pilates</span>
+                            <span class="tags__tag">Cardio</span>
+                            <span class="tags__tag">Zumba</span>
+                            <span class="tags__tag">Racketsport</span>
+                            <span class="tags__tag">Fitnessstudio</span>
+                            <span class="tags__tag">Golf</span>
+                            <span class="tags__tag">Squash</span>
+                            <span class="tags__tag">Tennis</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="block  partner__block  partner__block--top  partner__places">
+        <div class="partner__places__map" id="google_partner_map"></div>
+        <div class="partner__places__list">
+            <a href="#" class="partner__places__list__item  js-partner-location-item" data-trans-findRoute="Route finden" data-lat="48.1634821" data-lng="16.3388385" data-loc="Gutheil-Schoder-Gasse 7, 1100 Wien" data-title="Gutheil-Schoder-Gasse 7" data-id="1">
+                <span class="icon icon--pin"></span>
+                Gutheil-Schoder-Gasse 7, 1100 Wien						</a>
+        </div>
+    </div>
+
+
+    <div class="block partner__block">
+        <h3>Aktivitäten</h3>
+        <p>Das modern ausgestattete Fitness-Center lädt auf über 650m2 zu gezieltem Training ein. Weiters gibt es ein abwechslungsreiches Groupfitness-Programm, sowie die ersten Indoor-Padel-Courts Österreichs. Die Anlage verfügt über 4 Outdoor-Tennisplätze mit modernem Red-Court-Advantage-Belag und 6 Indoor-Tennisplätze: 1 Hardcourt und 5 Teppich-Courts, sowie 7 Badminton-Felder, 5 Squash- Boxen, 1 Tischtennis-Box und 2 Indoor-Padel-Courts.</p>
+    </div>
+
+    <div class="block partner__block  partner__block--list">
+
+        <div class="category__upcoming__content">
+            <div class="category__upcoming__section">
+                <div class="category__upcoming__section__title">
+                    Morgen, 07.03.2018								</div>
+                <div class="category__upcoming__list">
+
+                    <div class="category__upcoming__item">
+
+                        <a
+                                data-id="EAzcAjpuOr"
+                                href="https://www.myclubs.com/at/de/aktivitaeten/at/wien/EAzcAjpuOrc"
+                        >
+
+                            <div class="category__upcoming__item__date">
+                                09:30				</div>
+
+                            <div class="category__upcoming__item__meta">
+                                <div class="category__upcoming__item__title">
+                                    Best Ager Fitness					</div>
+                                <div class="category__upcoming__item__location">
+                                    City & Country Club Wienerberg, Gutheil-Schoder-Gasse 7, 1100 Wien					</div>
+
+
+                            </div>
+
+                            <div class="category__upcoming__item__action">
+					<span class="button">
+						Mehr Infos
+					</span>
+                            </div>
+
+                        </a>
+
+                    </div>
+
+
+                    <div class="category__upcoming__item">
+
+                        <a
+                                data-id="wIJl1m22r5"
+                                href="https://www.myclubs.com/at/de/aktivitaeten/at/wien/wIJl1m22r5c"
+                        >
+
+                            <div class="category__upcoming__item__date">
+                                11:00				</div>
+
+                            <div class="category__upcoming__item__meta">
+                                <div class="category__upcoming__item__title">
+                                    Pilates					</div>
+                                <div class="category__upcoming__item__location">
+                                    City & Country Club Wienerberg, Gutheil-Schoder-Gasse 7, 1100 Wien					</div>
+
+
+                            </div>
+
+                            <div class="category__upcoming__item__action">
+					<span class="button">
+						Mehr Infos
+					</span>
+                            </div>
+
+                        </a>
+
+                    </div>
+
+
+                    <div class="category__upcoming__item">
+
+                        <a
+                                data-id="pbrBP2LQ3H"
+                                href="https://www.myclubs.com/at/de/aktivitaeten/at/wien/pbrBP2LQ3Hc"
+                        >
+
+                            <div class="category__upcoming__item__date">
+                                15:00				</div>
+
+                            <div class="category__upcoming__item__meta">
+                                <div class="category__upcoming__item__title">
+                                    Ving Tsun					</div>
+                                <div class="category__upcoming__item__location">
+                                    City & Country Club Wienerberg, Gutheil-Schoder-Gasse 7, 1100 Wien					</div>
+
+
+                            </div>
+
+                            <div class="category__upcoming__item__action">
+					<span class="button">
+						Mehr Infos
+					</span>
+                            </div>
+
+                        </a>
+
+                    </div>
+
+
+                    <div class="category__upcoming__item">
+
+                        <a
+                                data-id="LbeGe067Bi"
+                                href="https://www.myclubs.com/at/de/aktivitaeten/at/wien/LbeGe067Bic"
+                        >
+
+                            <div class="category__upcoming__item__date">
+                                16:30				</div>
+
+                            <div class="category__upcoming__item__meta">
+                                <div class="category__upcoming__item__title">
+                                    Soft Workout					</div>
+                                <div class="category__upcoming__item__location">
+                                    City & Country Club Wienerberg, Gutheil-Schoder-Gasse 7, 1100 Wien					</div>
+
+
+                            </div>
+
+                            <div class="category__upcoming__item__action">
+					<span class="button">
+						Mehr Infos
+					</span>
+                            </div>
+
+                        </a>
+
+                    </div>
+
+
+                    <div class="category__upcoming__item">
+
+                        <a
+                                data-id="gHlyBVhJun"
+                                href="https://www.myclubs.com/at/de/aktivitaeten/at/wien/gHlyBVhJunc"
+                        >
+
+                            <div class="category__upcoming__item__date">
+                                18:30				</div>
+
+                            <div class="category__upcoming__item__meta">
+                                <div class="category__upcoming__item__title">
+                                    Bodystyle and Stretch 					</div>
+                                <div class="category__upcoming__item__location">
+                                    City & Country Club Wienerberg, Gutheil-Schoder-Gasse 7, 1100 Wien					</div>
+
+
+                            </div>
+
+                            <div class="category__upcoming__item__action">
+					<span class="button">
+						Mehr Infos
+					</span>
+                            </div>
+
+                        </a>
+
+                    </div>
+
+
+                    <div class="category__upcoming__item">
+
+                        <a data-id="DvW4SXKnt0"  href="https://www.myclubs.com/at/de/aktivitaeten/at/wien/DvW4SXKnt0i">
+
+                            <div class="category__upcoming__item__date">
+                                Book Now				</div>
+
+                            <div class="category__upcoming__item__meta">
+                                <div class="category__upcoming__item__title">
+                                    Badminton					</div>
+                                <div class="category__upcoming__item__location">
+                                    City & Country Club Wienerberg, Gutheil-Schoder-Gasse 7, 1100 Wien					</div>
+                            </div>
+
+                            <div class="category__upcoming__item__action">
+					<span class="button">
+						Mehr Infos					</span>
+                            </div>
+
+                        </a>
+
+                    </div>
+
+
+                    <div class="category__upcoming__item">
+
+                        <a data-id="CfCGt0s8C7"  href="https://www.myclubs.com/at/de/aktivitaeten/at/wien/CfCGt0s8C7i">
+
+                            <div class="category__upcoming__item__date">
+                                Drop-In				</div>
+
+                            <div class="category__upcoming__item__meta">
+                                <div class="category__upcoming__item__title">
+                                    Fitnessstudio - Tageskarte					</div>
+                                <div class="category__upcoming__item__location">
+                                    City & Country Club Wienerberg, Gutheil-Schoder-Gasse 7, 1100 Wien					</div>
+                            </div>
+
+                            <div class="category__upcoming__item__action">
+					<span class="button">
+						Mehr Infos					</span>
+                            </div>
+
+                        </a>
+
+                    </div>
+
+
+                    <div class="category__upcoming__item">
+
+                        <a data-id="MAioD8fDHx"  href="https://www.myclubs.com/at/de/aktivitaeten/at/wien/MAioD8fDHxi">
+
+                            <div class="category__upcoming__item__date">
+                                Book Now				</div>
+
+                            <div class="category__upcoming__item__meta">
+                                <div class="category__upcoming__item__title">
+                                    Indoor Golf 					</div>
+                                <div class="category__upcoming__item__location">
+                                    City & Country Club Wienerberg, Gutheil-Schoder-Gasse 7, 1100 Wien					</div>
+                            </div>
+
+                            <div class="category__upcoming__item__action">
+					<span class="button">
+						Mehr Infos					</span>
+                            </div>
+
+                        </a>
+
+                    </div>
+
+
+                    <div class="category__upcoming__item">
+
+                        <a data-id="9Edg6FPtJl"  href="https://www.myclubs.com/at/de/aktivitaeten/at/wien/9Edg6FPtJli">
+
+                            <div class="category__upcoming__item__date">
+                                Book Now				</div>
+
+                            <div class="category__upcoming__item__meta">
+                                <div class="category__upcoming__item__title">
+                                    Padel-Tennis 					</div>
+                                <div class="category__upcoming__item__location">
+                                    City & Country Club Wienerberg, Gutheil-Schoder-Gasse 7, 1100 Wien					</div>
+                            </div>
+
+                            <div class="category__upcoming__item__action">
+					<span class="button">
+						Mehr Infos					</span>
+                            </div>
+
+                        </a>
+
+                    </div>
+
+
+                    <div class="category__upcoming__item">
+
+                        <a data-id="lhK81m9GjC"  href="https://www.myclubs.com/at/de/aktivitaeten/at/wien/lhK81m9GjCi">
+
+                            <div class="category__upcoming__item__date">
+                                Book Now				</div>
+
+                            <div class="category__upcoming__item__meta">
+                                <div class="category__upcoming__item__title">
+                                    Squash					</div>
+                                <div class="category__upcoming__item__location">
+                                    City & Country Club Wienerberg, Gutheil-Schoder-Gasse 7, 1100 Wien					</div>
+                            </div>
+
+                            <div class="category__upcoming__item__action">
+					<span class="button">
+						Mehr Infos					</span>
+                            </div>
+
+                        </a>
+
+                    </div>
+
+
+                    <div class="category__upcoming__item">
+
+                        <a data-id="Ni4arrU0TO"  href="https://www.myclubs.com/at/de/aktivitaeten/at/wien/Ni4arrU0TOi">
+
+                            <div class="category__upcoming__item__date">
+                                Book Now				</div>
+
+                            <div class="category__upcoming__item__meta">
+                                <div class="category__upcoming__item__title">
+                                    Tennis					</div>
+                                <div class="category__upcoming__item__location">
+                                    City & Country Club Wienerberg, Gutheil-Schoder-Gasse 7, 1100 Wien					</div>
+                            </div>
+
+                            <div class="category__upcoming__item__action">
+					<span class="button">
+						Mehr Infos					</span>
+                            </div>
+
+                        </a>
+
+                    </div>
+
+
+                    <div class="category__upcoming__item">
+
+                        <a data-id="5HHxzaBmJu"  href="https://www.myclubs.com/at/de/aktivitaeten/at/wien/5HHxzaBmJui">
+
+                            <div class="category__upcoming__item__date">
+                                Book Now				</div>
+
+                            <div class="category__upcoming__item__meta">
+                                <div class="category__upcoming__item__title">
+                                    Tischtennis					</div>
+                                <div class="category__upcoming__item__location">
+                                    City & Country Club Wienerberg, Gutheil-Schoder-Gasse 7, 1100 Wien					</div>
+                            </div>
+
+                            <div class="category__upcoming__item__action">
+					<span class="button">
+						Mehr Infos					</span>
+                            </div>
+
+                        </a>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="category__upcoming__section">
+                <div class="category__upcoming__section__title">
+                    Donnerstag, 08.03.2018								</div>
+                <div class="category__upcoming__list">
+
+                    <div class="category__upcoming__item">
+
+                        <a
+                                data-id="iX3QuB9Dxk"
+                                href="https://www.myclubs.com/at/de/aktivitaeten/at/wien/iX3QuB9Dxkc"
+                        >
+
+                            <div class="category__upcoming__item__date">
+                                10:00				</div>
+
+                            <div class="category__upcoming__item__meta">
+                                <div class="category__upcoming__item__title">
+                                    Zumba Gold					</div>
+                                <div class="category__upcoming__item__location">
+                                    City & Country Club Wienerberg, Gutheil-Schoder-Gasse 7, 1100 Wien					</div>
+
+
+                            </div>
+
+                            <div class="category__upcoming__item__action">
+					<span class="button">
+						Mehr Infos
+					</span>
+                            </div>
+
+                        </a>
+
+                    </div>
+
+
+                    <div class="category__upcoming__item">
+
+                        <a
+                                data-id="EcC24jRjhp"
+                                href="https://www.myclubs.com/at/de/aktivitaeten/at/wien/EcC24jRjhpc"
+                        >
+
+                            <div class="category__upcoming__item__date">
+                                11:00				</div>
+
+                            <div class="category__upcoming__item__meta">
+                                <div class="category__upcoming__item__title">
+                                    Gesundheitsgym					</div>
+                                <div class="category__upcoming__item__location">
+                                    City & Country Club Wienerberg, Gutheil-Schoder-Gasse 7, 1100 Wien					</div>
+
+
+                            </div>
+
+                            <div class="category__upcoming__item__action">
+					<span class="button">
+						Mehr Infos
+					</span>
+                            </div>
+
+                        </a>
+
+                    </div>
+
+
+                    <div class="category__upcoming__item">
+
+                        <a
+                                data-id="ZFw9WjRHSr"
+                                href="https://www.myclubs.com/at/de/aktivitaeten/at/wien/ZFw9WjRHSrc"
+                        >
+
+                            <div class="category__upcoming__item__date">
+                                17:30				</div>
+
+                            <div class="category__upcoming__item__meta">
+                                <div class="category__upcoming__item__title">
+                                    Onekor NRG					</div>
+                                <div class="category__upcoming__item__location">
+                                    City & Country Club Wienerberg, Gutheil-Schoder-Gasse 7, 1100 Wien					</div>
+
+
+                            </div>
+
+                            <div class="category__upcoming__item__action">
+					<span class="button">
+						Mehr Infos
+					</span>
+                            </div>
+
+                        </a>
+
+                    </div>
+
+
+                    <div class="category__upcoming__item">
+
+                        <a
+                                data-id="SUfj0ChhQq"
+                                href="https://www.myclubs.com/at/de/aktivitaeten/at/wien/SUfj0ChhQqc"
+                        >
+
+                            <div class="category__upcoming__item__date">
+                                18:30				</div>
+
+                            <div class="category__upcoming__item__meta">
+                                <div class="category__upcoming__item__title">
+                                    Power Rücken					</div>
+                                <div class="category__upcoming__item__location">
+                                    City & Country Club Wienerberg, Gutheil-Schoder-Gasse 7, 1100 Wien					</div>
+
+
+                            </div>
+
+                            <div class="category__upcoming__item__action">
+					<span class="button">
+						Mehr Infos
+					</span>
+                            </div>
+
+                        </a>
+
+                    </div>
+
+
+                    <div class="category__upcoming__item">
+
+                        <a data-id="DvW4SXKnt0"  href="https://www.myclubs.com/at/de/aktivitaeten/at/wien/DvW4SXKnt0i">
+
+                            <div class="category__upcoming__item__date">
+                                Book Now				</div>
+
+                            <div class="category__upcoming__item__meta">
+                                <div class="category__upcoming__item__title">
+                                    Badminton					</div>
+                                <div class="category__upcoming__item__location">
+                                    City & Country Club Wienerberg, Gutheil-Schoder-Gasse 7, 1100 Wien					</div>
+                            </div>
+
+                            <div class="category__upcoming__item__action">
+					<span class="button">
+						Mehr Infos					</span>
+                            </div>
+
+                        </a>
+
+                    </div>
+
+
+                    <div class="category__upcoming__item">
+
+                        <a data-id="idMycDropin"  href="https://www.myclubs.com/at/de/aktivitaeten/at/wien/CfCGt0s8C7i">
+
+                            <div class="category__upcoming__item__date">
+                                Drop-In				</div>
+
+                            <div class="category__upcoming__item__meta">
+                                <div class="category__upcoming__item__title">
+                                    Fitnessstudio - Tageskarte					</div>
+                                <div class="category__upcoming__item__location">
+                                    City & Country Club Wienerberg, Gutheil-Schoder-Gasse 7, 1100 Wien					</div>
+                            </div>
+
+                            <div class="category__upcoming__item__action">
+					<span class="button">
+						Mehr Infos					</span>
+                            </div>
+
+                        </a>
+
+                    </div>
+
+
+                    <div class="category__upcoming__item">
+
+                        <a data-id="idMycBooknow"  href="https://www.myclubs.com/at/de/aktivitaeten/at/wien/MAioD8fDHxi">
+
+                            <div class="category__upcoming__item__date">
+                                Book Now				</div>
+
+                            <div class="category__upcoming__item__meta">
+                                <div class="category__upcoming__item__title">
+                                    Indoor Golf 					</div>
+                                <div class="category__upcoming__item__location">
+                                    City & Country Club Wienerberg, Gutheil-Schoder-Gasse 7, 1100 Wien					</div>
+                            </div>
+
+                            <div class="category__upcoming__item__action">
+					<span class="button">
+						Mehr Infos					</span>
+                            </div>
+
+                        </a>
+
+                    </div>
+
+
+                    <div class="category__upcoming__item">
+
+                        <a data-id="9Edg6FPtJl"  href="https://www.myclubs.com/at/de/aktivitaeten/at/wien/9Edg6FPtJli">
+
+                            <div class="category__upcoming__item__date">
+                                Book Now				</div>
+
+                            <div class="category__upcoming__item__meta">
+                                <div class="category__upcoming__item__title">
+                                    Padel-Tennis 					</div>
+                                <div class="category__upcoming__item__location">
+                                    City & Country Club Wienerberg, Gutheil-Schoder-Gasse 7, 1100 Wien					</div>
+                            </div>
+
+                            <div class="category__upcoming__item__action">
+					<span class="button">
+						Mehr Infos					</span>
+                            </div>
+
+                        </a>
+
+                    </div>
+
+
+                    <div class="category__upcoming__item">
+
+                        <a data-id="lhK81m9GjC"  href="https://www.myclubs.com/at/de/aktivitaeten/at/wien/lhK81m9GjCi">
+
+                            <div class="category__upcoming__item__date">
+                                Book Now				</div>
+
+                            <div class="category__upcoming__item__meta">
+                                <div class="category__upcoming__item__title">
+                                    Squash					</div>
+                                <div class="category__upcoming__item__location">
+                                    City & Country Club Wienerberg, Gutheil-Schoder-Gasse 7, 1100 Wien					</div>
+                            </div>
+
+                            <div class="category__upcoming__item__action">
+					<span class="button">
+						Mehr Infos					</span>
+                            </div>
+
+                        </a>
+
+                    </div>
+
+
+                    <div class="category__upcoming__item">
+
+                        <a data-id="Ni4arrU0TO"  href="https://www.myclubs.com/at/de/aktivitaeten/at/wien/Ni4arrU0TOi">
+
+                            <div class="category__upcoming__item__date">
+                                Book Now				</div>
+
+                            <div class="category__upcoming__item__meta">
+                                <div class="category__upcoming__item__title">
+                                    Tennis					</div>
+                                <div class="category__upcoming__item__location">
+                                    City & Country Club Wienerberg, Gutheil-Schoder-Gasse 7, 1100 Wien					</div>
+                            </div>
+
+                            <div class="category__upcoming__item__action">
+					<span class="button">
+						Mehr Infos					</span>
+                            </div>
+
+                        </a>
+
+                    </div>
+
+
+                    <div class="category__upcoming__item">
+
+                        <a data-id="5HHxzaBmJu"  href="https://www.myclubs.com/at/de/aktivitaeten/at/wien/5HHxzaBmJui">
+
+                            <div class="category__upcoming__item__date">
+                                Book Now				</div>
+
+                            <div class="category__upcoming__item__meta">
+                                <div class="category__upcoming__item__title">
+                                    Tischtennis					</div>
+                                <div class="category__upcoming__item__location">
+                                    City & Country Club Wienerberg, Gutheil-Schoder-Gasse 7, 1100 Wien					</div>
+                            </div>
+
+                            <div class="category__upcoming__item__action">
+					<span class="button">
+						Mehr Infos					</span>
+                            </div>
+
+                        </a>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="category__upcoming__action">
+            <a href="https://www.myclubs.com/at/de/aktivitaeten" class="button">
+                Sportsuche				</a>
+        </div>
+
+    </div>
+
+
+    <div class="contact__wrap">
+        <div class="block contact">
+            <h2>Kontakt für Studios</h2>
+            <p>Schick uns einfach deine Kontaktdaten - wir melden uns umgehend!</p>
+
+            <form id="studiokontakt" method="post" action="https://www.myclubs.com/studio-inquiry">
+
+
+                <input id="myhp1" type="hidden" name="hp1" value="" />
+                <input id="myhp2" type="text" name="hp2" value="ok" style="display:none;" />
+                <input id="myhp3" type="text" name="hp3" value="" style="display:none;" />
+
+
+                <div class="fieldgroup">
+                    <input autocomplete="off" id="name" type="text" name="name" placeholder="Name" spellcheck="false" />
+                    <input autocomplete="off" id="tel" type="text" name="tel" placeholder="Telefon" spellcheck="false"/>
+                </div>
+
+                <div class="fieldgroup">
+                    <input autocomplete="off" id="sc_email" type="email" name="sc_email" placeholder="E-Mail" spellcheck="false"/>
+                    <input autocomplete="off" id="sc_website" type="text" name="sc_website" placeholder="Website" spellcheck="false"/>
+                </div>
+
+                <input type="hidden" id="sc_country" name="sc_country" value="AT" />
+                <br />
+                <br />
+                <br />
+                <input type="submit" class="button" value="Jetzt senden" />
+            </form>
+
+            <div class="success">
+                <span>Vielen Dank für deine Anfrage!</span> Wir werden uns in Kürze bei dir melden.		</div>
+        </div>
+    </div>
+    <div class="newsletter__wrap">
+        <div class="block newsletter">
+            <div class="newsletter__text">
+                <h2>myClubs Newsletter</h2>
+                <p>Bleib fit, bleib informiert! Jetzt Newsletter abonnieren!</p>
+            </div>
+            <br />
+            <form action="//myclubs.us9.list-manage.com/subscribe/post?u=77dc448edfab4b3ad75a115c0&amp;id=ed94dad19d" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+                <div style="position: absolute; left: -5000px;"><input type="text" name="b_77dc448edfab4b3ad75a115c0_ed94dad19d" tabindex="-1" value=""></div>
+                <input autocomplete="off" type="text" name="EMAIL" placeholder="E-Mail Adresse" />
+                <input type="submit" class="button" value="Anmelden" />
+            </form>
+        </div>
+    </div>
+
+    <div class="footer__wrap">
+        <div class="block footer">
+
+            <div class="left">
+                <ul>
+                    <li class="hl">Unternehmen<span class="mobile icon icon--arrdown"></span></li>
+                    <li class="sub"><a href="https://www.myclubs.com/at/de/about">About</a></li><li class="sub"><a href="https://www.myclubs.com/at/de/presse">Presse</a></li><li class="sub"><a href="https://www.myclubs.com/at/de/jobs">Jobs</a></li>			</ul>
+                <ul>
+                    <li class="hl">Rechtliches<span class="mobile icon icon--arrdown"></span></li>
+                    <li class="sub"><a href="https://www.myclubs.com/at/de/agb">AGB</a></li><li class="sub"><a href="https://www.myclubs.com/at/de/datenschutz">Datenschutz</a></li><li class="sub"><a href="https://www.myclubs.com/at/de/impressum">Impressum</a></li>			</ul>
+                <ul>
+                    <li class="hl">Support<span class="mobile icon icon--arrdown"></span></li>
+                    <li class="sub"><a href="https://www.myclubs.com/at/de/faq">FAQ</a></li><li class="sub"><a href="https://www.myclubs.com/at/de/customer-service">Customer Service</a></li><li class="sub"><a href="https://www.myclubs.com/at/de/b2b">Corporate Fitness</a></li>			</ul>
+            </div>
+
+            <div class="right">
+
+                <div class="social">
+                    <a href="https://instagram.com/my_clubs" target="_blank" class="icon icon-social icon--ig"></a>
+                    <a href="https://twitter.com/my_clubs" target="_blank" class="icon icon-social icon--tw"></a>
+                    <a href="https://www.facebook.com/myclubs" target="_blank" class="icon icon-social icon--fb"></a>
+                </div>
+
+                <p>
+                    <span class="icon icon--logo"></span>
+                    &copy; 2018 | Alle Rechte vorbehalten			</p>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+<div class="border-bottom"></div>
+<div class="border-top"></div>
+<div class="border-right mobile"></div>
+
+
+<div class="overlay overlay--bg"></div>
+<div class="overlay overlay--content">
+
+    <a href="" class="icon icon--close overlay__close"></a>
+
+    <div class="overlay__loadedcontent">
+
+
+    </div>
+</div>
+
+
+
+<script type='text/javascript' src='https://www.myclubs.com/assets/web/js/jquery.min.js?v=1.9.31.4'></script>
+<script type='text/javascript' src='https://www.myclubs.com/assets/web/js/vendor.min.js?v=1.9.31.4'></script>
+
+<script type="text/javascript">
+    goog_snippet_vars = function() {
+        var w = window;
+        w.google_conversion_id = 941973852;
+        w.google_conversion_label = "QxSFCIb5vl4Q3MKVwQM";
+        w.google_remarketing_only = false;
+    }
+    // DO NOT CHANGE THE CODE BELOW.
+    goog_report_conversion = function(url) {
+        goog_snippet_vars();
+        window.google_conversion_format = "3";
+        window.google_is_call = true;
+        var opt = new Object();
+        opt.onload_callback = function() {
+            if (typeof(url) != 'undefined') {
+                window.location = url;
+            }
+        }
+        var conv_handler = window['google_trackConversion'];
+        if (typeof(conv_handler) == 'function') {
+            conv_handler(opt);
+        }
+    }
+</script>
+<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion_async.js"></script>
+<script type='text/javascript' src='https://www.myclubs.com/assets/web/js/scripts.min.js?v=1.9.31.4'></script>
+
+
+
+
+<script type="text/javascript">
+    var PAYMILL_PUBLIC_KEY = '8a8394c450aa397a0150cd1dd7bd7a9b';
+</script>
+<script type="text/javascript" src="https://bridge.paymill.com/"></script>
+
+
+<script>
+    $(document).ready(function(){
+
+        $.ajax({
+            url: '/api/getLoggedUser',
+            type: 'post',
+            success: function(data){
+
+                var intercomConfig = {};
+                intercomConfig['app_id'] = 'vxva5fyr';
+
+                if(isNaN(data)){
+                    var response = JSON.parse(data);
+
+                    intercomConfig['user_id'] = response.user_id;
+                    intercomConfig['email'] = response.email;
+
+                    if(response.firstname !== null && response.lastname !== null && response.firstname.length && response.lastname.length){
+                        intercomConfig['name'] = response.firstname + ' ' + response.lastname;
+                    }
+                }
+
+
+                Intercom = window.intercomSettings = intercomConfig;
+
+                (function() {
+                    var w = window;
+                    var ic = w.Intercom;
+                    if (typeof ic === "function") {
+                        ic('reattach_activator');
+                        ic('update', intercomSettings);
+                    } else {
+                        var d = document;
+                        var i = function() {
+                            i.c(arguments)
+                        };
+                        i.q = [];
+                        i.c = function(args) {
+                            i.q.push(args)
+                        };
+                        w.Intercom = i;
+
+                        function l() {
+                            var s = d.createElement('script');
+                            s.type = 'text/javascript';
+                            s.async = true;
+                            s.src = 'https://widget.intercom.io/widget/vxva5fyr';
+                            var x = d.getElementsByTagName('script')[0];
+                            x.parentNode.insertBefore(s, x);
+                        }
+                        if (w.attachEvent) {
+                            w.attachEvent('onload', l);
+                        } else {
+                            w.addEventListener('load', l, false);
+                        }
+                    }
+                })()
+
+
+            }
+        });
+
+    });
+</script>
+
+
+<style type="text/css">
+    #intercom-container .intercom-launcher-badge-frame,
+    #intercom-container .intercom-launcher-discovery-frame,
+    #intercom-container .intercom-launcher-frame {
+        right: 30px !important;
+        bottom: 30px !important;
+    }
+    @media screen and (max-width: 1000px){
+        #intercom-container .intercom-launcher-badge-frame,
+        #intercom-container .intercom-launcher-discovery-frame,
+        #intercom-container .intercom-launcher-frame {
+            right: 22px !important;
+            bottom: 22px !important;
+        }
+    }
+
+    @media screen and (max-width: 767px){
+        #intercom-container .intercom-launcher-badge-frame,
+        #intercom-container .intercom-launcher-discovery-frame,
+        #intercom-container .intercom-launcher-frame {
+            right: 15px !important;
+            bottom: 15px !important;
+        }
+    }
+</style>
+</body>
+</html>

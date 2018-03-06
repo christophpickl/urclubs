@@ -107,19 +107,31 @@ class HtmlParser {
 
     private fun parsePartnerUpcomingActivities(upcomingContent: Elements): List<PartnerDetailActivityHtmlModel> =
             upcomingContent.select("div.category__upcoming__section").map { upcomingSection ->
-                val sectionDate = parseDateFromUpcomingActivityTitle(upcomingSection.select("div.category__upcoming__section__title").text().trim())
-                upcomingSection.select("div.category__upcoming__list > div.category__upcoming__item").map { item ->
-                    val link = item.safeSelectFirst("a")
-                    val meta = link.select("div.category__upcoming__item__meta")
-                    PartnerDetailActivityHtmlModel(
+                val upcomingSectionTitle = upcomingSection.select("div.category__upcoming__section__title")
+                if (upcomingSectionTitle.isEmpty()) {
+                    // like `partner.without_upcoming.html` got no activities by date
+                    // MINOR also support partner HTML parsing for upcoming events when got no date related activities (like EMS studios)
+                    emptyList()
+                } else {
+                    val sectionDate = parseDateFromUpcomingActivityTitle(upcomingSectionTitle.text().trim())
+                    upcomingSection.select("div.category__upcoming__list > div.category__upcoming__item").map { item ->
+                        val link = item.safeSelectFirst("a")
+                        val meta = link.select("div.category__upcoming__item__meta")
+                        val timeInput = link.select("div.category__upcoming__item__date").text().trim().let {
+                            // TODO support activity types: fixed-time, book-now, drop-in
+                            if (it == "Book Now" || it == "Drop-In") "00:00"
+                            else it
+                        }
+
+                        PartnerDetailActivityHtmlModel(
                             idMyc = link.attr("data-id"),
                             detailLink = link.attr("href"),
-                            date = parseAndCombineDateTime(sectionDate, link.select("div.category__upcoming__item__date").text().trim()),
+                            date = parseAndCombineDateTime(sectionDate, timeInput),
                             title = meta.select("div.category__upcoming__item__title").text().trim(),
                             address = meta.select("div.category__upcoming__item__location").text().trim()
-                    )
+                        )
+                    }
                 }
-
             }.flatten()
 
     @VisibleForTesting

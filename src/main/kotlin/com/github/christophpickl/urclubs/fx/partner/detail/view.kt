@@ -9,6 +9,9 @@ import tornadofx.*
 
 class PartnerView : View() {
 
+    companion object {
+        val WIDTH = 300.0
+    }
     private val logg = LOG {}
     private val currentPartner: CurrentPartnerFx by inject()
 

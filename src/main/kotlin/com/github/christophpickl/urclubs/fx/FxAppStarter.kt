@@ -6,6 +6,7 @@ import com.github.christophpickl.urclubs.QuitEvent
 import com.github.christophpickl.urclubs.configureLogging
 import com.github.christophpickl.urclubs.fx.partner.PartnersFxController
 import com.github.christophpickl.urclubs.fx.partner.detail.PartnerFxController
+import com.github.christophpickl.urclubs.fx.partner.detail.PartnerView
 import com.github.christophpickl.urclubs.fx.partner.filter.FilterPartnersController
 import com.github.christophpickl.urclubs.service.Credentials
 import com.github.christophpickl.urclubs.service.SystemPropertyCredentialsProvider
@@ -13,6 +14,8 @@ import com.google.common.eventbus.EventBus
 import com.google.inject.AbstractModule
 import com.google.inject.Guice
 import javafx.application.Application
+import javafx.stage.Screen
+import javafx.stage.Stage
 import tornadofx.*
 import javax.swing.JOptionPane
 import kotlin.reflect.KClass
@@ -43,15 +46,17 @@ object FxAppStarter {
     }
 }
 
+object ApplicationStartedFxEvent : FXEvent()
+
 class UrclubsFxApp : App(
-        primaryView = MainView::class,
-        stylesheet = Styles::class
+    primaryView = MainView::class,
+    stylesheet = Styles::class
 ) {
 
     private val log = LOG {}
 
     private val guice = Guice.createInjector(
-            MainModule(), FxModule()
+        MainModule(), FxModule()
     )
 
     init {
@@ -62,9 +67,18 @@ class UrclubsFxApp : App(
         registerEagerSingletons()
     }
 
-//    override fun start(stage: Stage) {
-//        super.start(stage)
-//    }
+    override fun start(stage: Stage) {
+        super.start(stage)
+        val bounds = Screen.getPrimary().visualBounds
+        val padding = 20.0
+
+        stage.x = bounds.minX + padding
+        stage.y = bounds.minY + padding
+        stage.width = bounds.width - PartnerView.WIDTH - 5 * padding
+        stage.height = bounds.height - 2 * padding
+
+        fire(ApplicationStartedFxEvent)
+    }
 
     override fun stop() { // <= Platform.exit()
         log.debug { "stop()" }

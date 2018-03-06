@@ -20,21 +20,21 @@ class HtmlParserTest {
 
     fun `parsePartners - read valid entry`() {
         assertThatSingleElement(HtmlParser().parsePartners("""<option value="myId" data-slug="short-name">my name</option>"""),
-                PartnerHtmlModel(
-                        id = "myId",
-                        name = "my name",
-                        shortName = "short-name"
-                ))
+            PartnerHtmlModel(
+                id = "myId",
+                name = "my name",
+                shortName = "short-name"
+            ))
     }
 
     fun `parsePartners - skip all partners entry`() {
         assertThat(HtmlParser().parsePartners("""<option value="">Alle Partner</option>"""))
-                .isEmpty()
+            .isEmpty()
     }
 
     fun `parsePartners - integration test`() {
         assertThat(HtmlParser().parsePartners(readResponse("activities-get-partners.html")))
-                .hasSize(174)
+            .hasSize(174)
     }
 
     fun `parseCourses - simple`() {
@@ -62,12 +62,12 @@ class HtmlParserTest {
         val activities = HtmlParser().parseCourses(json.coursesHtml)
 
         assertThatSingleElement(activities, CourseHtmlModel(
-                id = "SEdFOCOPkF",
-                category = "Fitnesskurs",
-                title = "Doshinkan Karatedo",
-                time = "16:00",
-                timestamp = "1516446000",
-                partner = "City & Country Club Wienerberg, 1100 Wien"
+            id = "SEdFOCOPkF",
+            category = "Fitnesskurs",
+            title = "Doshinkan Karatedo",
+            time = "16:00",
+            timestamp = "1516446000",
+            partner = "City & Country Club Wienerberg, 1100 Wien"
         ))
     }
 
@@ -106,11 +106,11 @@ class HtmlParserTest {
         val activities = HtmlParser().parseInfrastructure(json.infrastructuresHtml)
 
         assertThatSingleElement(activities, InfrastructureHtmlModel(
-                id = "jLDnA1B0Ea",
-                category = "Beachvolleyball",
-                title = "Beachvolleyball",
-                time = "Book Now",
-                partner = "Sportzentrum Marswiese, 1170 Wien"
+            id = "jLDnA1B0Ea",
+            category = "Beachvolleyball",
+            title = "Beachvolleyball",
+            time = "Book Now",
+            partner = "Sportzentrum Marswiese, 1170 Wien"
         ))
     }
 
@@ -125,8 +125,8 @@ class HtmlParserTest {
         val activity = HtmlParser().parseActivity(readResponse("activityDetail.json"))
 
         assertThat(activity).isEqualTo(ActivityHtmlModel(
-                partnerShortName = "triller-crossfit",
-                description = "Crosstraining ist viele \u00dcbungen."
+            partnerShortName = "triller-crossfit",
+            description = "Crosstraining ist viele \u00dcbungen."
         ))
     }
 
@@ -160,10 +160,10 @@ class HtmlParserTest {
         val activity = HtmlParser().parseFinishedActivityDay(div)
 
         assertThatSingleElement(activity, FinishedActivityHtmlModel(
-                date = LocalDateTime.parse("2018-01-25T08:00:00"),
-                category = "Fitnesskurs",
-                title = "MovNat",
-                locationHtml = "SPORTHALLE WIEN\n<br>Fuhrmannsgasse 18, 1080 Wien"
+            date = LocalDateTime.parse("2018-01-25T08:00:00"),
+            category = "Fitnesskurs",
+            title = "MovNat",
+            locationHtml = "SPORTHALLE WIEN<br>Fuhrmannsgasse 18, 1080 Wien"
         ))
     }
 
@@ -216,16 +216,16 @@ class HtmlParserTest {
 
         assertThat(activities).hasSize(2)
         assertThat(activities[0]).isEqualTo(FinishedActivityHtmlModel(
-                date = LocalDateTime.parse("2018-01-10T16:00:00"),
-                category = "EMS",
-                title = "EMS-Training",
-                locationHtml = "Bodystreet Convalere\n<br>Taborstraße 33, 1020 Wien"
+            date = LocalDateTime.parse("2018-01-10T16:00:00"),
+            category = "EMS",
+            title = "EMS-Training",
+            locationHtml = "Bodystreet Convalere    <br>Taborstraße 33, 1020 Wien"
         ))
         assertThat(activities[1]).isEqualTo(FinishedActivityHtmlModel(
-                date = LocalDateTime.parse("2018-01-10T08:00:00"),
-                category = "Crosstraining",
-                title = "Strength Advanced",
-                locationHtml = "SPORTHALLE WIEN\n<br>Fuhrmannsgasse 18, 1080 Wien"
+            date = LocalDateTime.parse("2018-01-10T08:00:00"),
+            category = "Crosstraining",
+            title = "Strength Advanced",
+            locationHtml = "SPORTHALLE WIEN<br>Fuhrmannsgasse 18, 1080 Wien"
         ))
     }
 
@@ -239,18 +239,18 @@ class HtmlParserTest {
         val partner = HtmlParser().parsePartner(readResponse("partner.html"))
 
         assertThat(partner).isEqualTo(PartnerDetailHtmlModel(
-                name = "Hotpod Yoga Vienna",
-                description = "Some description.",
-                linkPartnerSite = "http://www.hotpodyoga.com/at/yoga-classes/vienna/",
-                address = "Margaretenstraße 70/2/2, 1050 Wien",
-                flags = listOf("Bikram & Hot Yoga", "Yoga"),
-                upcomingActivities = listOf(PartnerDetailActivityHtmlModel(
-                        idMyc = "meqR6C5d0m",
-                        detailLink = "https://www.myclubs.com/at/de/aktivitaeten/at/wien/meqR6C5d0mc",
-                        date = LocalDateTime.parse("2018-01-27T10:30:00"),
-                        title = "Hotpod Flow English - Beginner/Intermediate",
-                        address = "Hotpod Yoga Vienna, Margaretenstraße 70/2/2, 1050 Wien"
-                ))
+            name = "Hotpod Yoga Vienna",
+            description = "Some description.",
+            linkPartnerSite = "http://www.hotpodyoga.com/at/yoga-classes/vienna/",
+            address = "Margaretenstraße 70/2/2, 1050 Wien",
+            flags = listOf("Bikram & Hot Yoga", "Yoga"),
+            upcomingActivities = listOf(PartnerDetailActivityHtmlModel(
+                idMyc = "meqR6C5d0m",
+                detailLink = "https://www.myclubs.com/at/de/aktivitaeten/at/wien/meqR6C5d0mc",
+                date = LocalDateTime.parse("2018-01-27T10:30:00"),
+                title = "Hotpod Flow English - Beginner/Intermediate",
+                address = "Hotpod Yoga Vienna, Margaretenstraße 70/2/2, 1050 Wien"
+            ))
         ))
     }
 
@@ -261,16 +261,30 @@ class HtmlParserTest {
     }
 
     fun `parsePartner - integration without address`() {
-        val partner = HtmlParser().parsePartner(readResponse("partner_without_address.html"))
+        val partner = HtmlParser().parsePartner(readResponse("partner.without_address.html"))
 
         assertThat(partner.address).isEqualTo("")
     }
 
+    fun `parsePartner - integration upcoming is only book now`() {
+        val partner = HtmlParser().parsePartner(readResponse("partner.upcoming_booknow.html"))
+
+        assertThat(partner.upcomingActivities).isEmpty()
+    }
+
+    fun `parsePartner - integration book now and drop in time Then set time to zero`() {
+        val partner = HtmlParser().parsePartner(readResponse("partner.book_now.html"))
+
+        assertThat(partner.upcomingActivities).anyMatch { it.idMyc == "idMycDropin" && it.date == LocalDateTime.parse("2018-03-08T00:00") }
+        assertThat(partner.upcomingActivities).anyMatch { it.idMyc == "idMycBooknow" && it.date == LocalDateTime.parse("2018-03-08T00:00") }
+
+    }
+
     fun `parseDateFromUpcomingActivityTitle`() {
         mapOf(
-                "Heute, 27.01.2018" to LocalDate.parse("2018-01-27"),
-                "Morgen, 24.02.2018" to LocalDate.parse("2018-02-24"),
-                "Montag, 26.02.2018" to LocalDate.parse("2018-02-26")
+            "Heute, 27.01.2018" to LocalDate.parse("2018-01-27"),
+            "Morgen, 24.02.2018" to LocalDate.parse("2018-02-24"),
+            "Montag, 26.02.2018" to LocalDate.parse("2018-02-26")
         ).forEach { inputString, expectedDate ->
             assertThat(HtmlParser().parseDateFromUpcomingActivityTitle(inputString)).`as`("Failed to parse '$inputString'.").isEqualTo(expectedDate)
         }
@@ -281,6 +295,6 @@ class HtmlParserTest {
     }
 
     private fun readResponse(fileName: String) =
-            javaClass.getResource("/urclubs/responses/$fileName").readText()
+        javaClass.getResource("/urclubs/responses/$fileName").readText()
 
 }

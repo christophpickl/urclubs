@@ -3,7 +3,6 @@ package com.github.christophpickl.urclubs.fx
 import com.github.christophpickl.urclubs.IS_DEVELOPMENT
 import com.github.christophpickl.urclubs.fx.partner.PartnerListRequest
 import com.github.christophpickl.urclubs.fx.partner.PartnersView
-import com.github.christophpickl.urclubs.service.sync.UpcomingActivitySyncer
 import tornadofx.*
 
 class MainView : View() {
@@ -35,12 +34,7 @@ class MainView : View() {
 
 class BottomView : View() {
 
-    private val syncer: UpcomingActivitySyncer by di()
-
     override val root = hbox {
-        button("Foobar").setOnAction {
-            syncer.sync()
-        }
         button("Resync Partners").action {
             fire(SyncRequest)
         }

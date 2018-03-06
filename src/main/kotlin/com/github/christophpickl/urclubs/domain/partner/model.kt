@@ -68,14 +68,14 @@ enum class Rating(
 enum class Category(
     val label: String
 ) {
+    UNKNOWN("Unknown"),
     EMS("EMS"),
     GYM("Gym"),
-    YOGA("Yoga"),
-    WUSHU("Wushu"),
-    WORKOUT("Workout"),
     HEALTH("Health"),
     OTHER("Other"),
-    UNKNOWN("Unknown")
+    WORKOUT("Workout"),
+    WUSHU("Wushu"),
+    YOGA("Yoga")
 }
 
 // =====================================================================================================================

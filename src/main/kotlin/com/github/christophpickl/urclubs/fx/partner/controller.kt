@@ -18,5 +18,4 @@ class PartnersFxController : Controller() {
         }
     }
 
-
 }

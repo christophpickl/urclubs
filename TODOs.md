@@ -4,12 +4,28 @@
 ## New Order
 
 1. Replace google docs
-    * colored lines based on rating
+    * ad table:
+        * colored lines based on rating
+        * context menu: ignore partner
+    * ad detail view:
+        * display idMyc + shortName
+        * link to two pages
+        * change rating
+        * add note
+        * checkboxes: favourite, wishlist
+1. Fix search!
+1. (Caching)
 1. Add credits leftover
 1. Activities list
 
 ### Long term:
 
+* custom pictures for partners
+* Per-category additional fields:
+    * description where location is; zb near subway station
+    * EMS: opening hours
+    * Gym: got room Y/N, opening hours
+* richtext format notes
 * Book activities
 * Recommend activities
 * Google cal integration

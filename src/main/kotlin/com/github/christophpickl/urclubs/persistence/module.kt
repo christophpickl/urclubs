@@ -17,6 +17,9 @@ class PersistenceModule(definedDatabaseUrl: String? = null) : AbstractModule() {
 
     companion object {
         const val URCLUBS_PERSISTENCE_UNIT = "urclubs.punit"
+        const val SHOW_SQL = false
+        // https://stackoverflow.com/questions/438146/hibernate-hbm2ddl-auto-possible-values-and-what-they-do
+        const val AUTO_COMMAND = "validate" // "create" ... in order to get hibernate printing out its own SQL to create DDL (dont forget to disable flyway!)
 
         @JvmStatic
         fun main(args: Array<String>) {
@@ -30,12 +33,9 @@ class PersistenceModule(definedDatabaseUrl: String? = null) : AbstractModule() {
     private val databaseUrl = definedDatabaseUrl ?: defaultDbUrl
 
     private val persistenceProperties = Properties().apply {
-        // https://stackoverflow.com/questions/438146/hibernate-hbm2ddl-auto-possible-values-and-what-they-do
-        val hibernateAuto = "validate" // "create" ... in order to get hibernate printing out its own SQL to create DDL (dont forget to disable flyway!)
-
         put("javax.persistence.jdbc.url", databaseUrl)
-        put("hibernate.show_sql", true)
-        put("hibernate.hbm2ddl.auto", hibernateAuto)
+        put("hibernate.show_sql", SHOW_SQL)
+        put("hibernate.hbm2ddl.auto", AUTO_COMMAND)
     }
 
     override fun configure() {

@@ -142,8 +142,13 @@ class MyClubsHttpApi @Inject constructor(
         loginIfNecessary()
 
         val response = http.execute(HttpGet(util.createMyclubsPartnerUrl(shortName)))
-
-        val partner = parser.parsePartner(response.body)
+        val responseBody = response.body
+        val partner = try {
+            parser.parsePartner(responseBody)
+        } catch (e: Exception) {
+            log.error { "Failed to parse response body:\n${responseBody}" }
+            throw e
+        }
         log.trace { "Found: $partner" }
         return partner
     }
@@ -190,6 +195,7 @@ class MyclubsUtil {
 
 private class Http {
 
+    private val log = LOG {}
     private val httpClient = HttpClientBuilder.create().build()
 
     private val httpContext = BasicHttpContext().apply {
@@ -197,6 +203,7 @@ private class Http {
     }
 
     fun execute(request: HttpUriRequest): CloseableHttpResponse {
+        log.info { "execute(request.uri=${request.uri})" }
         return httpClient.execute(request, httpContext)
     }
 
