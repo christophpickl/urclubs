@@ -31,7 +31,7 @@ class PartnerFxController : Controller() {
                 it!!.x = bounds.width - width - padding
                 it.y = bounds.minY + padding
                 it.width = width
-                it.height = bounds.height - padding - padding
+//                it.height = bounds.height - padding - padding
             }
             primaryStage.requestFocus()
         }

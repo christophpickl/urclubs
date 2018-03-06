@@ -17,9 +17,11 @@ class PartnersView : View() {
     private val currentPartner: CurrentPartnerFx by inject()
 
     val table = tableview<Partner> {
-        column("Name", Partner::name) // .pctWidth(25.0)  .weigthedWidth(1.0)
-        column("Category", Partner::category).fixedWidth(50.0)
-        column("Rating", Partner::rating).fixedWidth(50.0)//.contentWidth(width = 50.0, useAsMin = true, useAsMax = true)
+        //.weightedWidth(1.0) // .pctWidth(25.0)
+        //.contentWidth(width = 50.0, useAsMin = true, useAsMax = true)
+        column("Name", Partner::name).minWidth(200.0).maxWidth(400.0)
+        column("Category", Partner::category).fixedWidth(100.0)
+        column("Rating", Partner::rating).fixedWidth(100.0)
         column("Address", Partner::address)
         columnResizePolicy = SmartResize.POLICY
     }
