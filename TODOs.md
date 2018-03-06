@@ -1,6 +1,20 @@
 
 # TODOs
 
+## New Order
+
+1. Hibernate
+2. Migration
+3. App package
+
+Long term:
+Replace google docs
+Add credits leftover
+Activities list
+Book activities
+Recommend activities
+Google cal integration
+
 ## High Prio
 
 * observable entities
