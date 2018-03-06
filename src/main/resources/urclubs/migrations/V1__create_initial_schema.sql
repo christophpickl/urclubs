@@ -1,0 +1,5 @@
+
+CREATE TABLE tbl_man (
+  col_id BIGINT NOT NULL PRIMARY KEY,
+  col_foo VARCHAR(255) NOT NULL
+);

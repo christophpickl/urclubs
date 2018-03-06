@@ -9,8 +9,10 @@ import javax.inject.Inject
 
 fun configureLogging() {
     Logback4k.reconfigure {
-        rootLevel = Level.ALL
-        packageLevel(Level.WARN, "org.apache.http")
+        rootLevel = Level.WARN
+        packageLevel(Level.ALL, "com.github.christophpickl"
+        , "org.hibernate"
+        )
         addConsoleAppender {
             pattern = "%highlight(%-5level) [%-32thread] %cyan(%logger{60}) - %msg%n"
         }

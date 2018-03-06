@@ -1,6 +1,7 @@
 buildscript {
     ext {
-        versionKotlin = "1.2.21"
+        versionKotlin = "1.2.30"
+        versionGuice = "4.2.0"
         versionJava = "1.8"
         versionKPotpourri = "1.7"
     }
@@ -22,30 +23,41 @@ repositories {
     mavenCentral()
     jcenter()
     maven { url "http://dl.bintray.com/christophpickl/cpickl" }
-    maven { url "http://m2.objectdb.com" }
 }
 
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versionKotlin}"
-    compile "org.jetbrains.kotlin:kotlin-reflect:${versionKotlin}"
+    // KOTLIN
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$versionKotlin"
+    compile "org.jetbrains.kotlin:kotlin-reflect:$versionKotlin"
     compile "org.jetbrains.kotlinx:kotlinx-coroutines-core:0.21"
 
+    // COMMON
     compile "io.github.microutils:kotlin-logging:1.4.9"
     compile "com.github.christophpickl.kpotpourri:common4k:$versionKPotpourri"
     compile "com.github.christophpickl.kpotpourri:logback4k:$versionKPotpourri"
+    compile "com.google.inject:guice:$versionGuice"
 
+    // VIEW
     compile "no.tornado:tornadofx:1.7.14"
-    compile "com.google.inject:guice:4.1.0"
+
+    // HTTP, HTML, JSON
     compile "org.apache.httpcomponents:httpclient:4.5.4"
     compile "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.2"
     compile "org.jsoup:jsoup:1.11.2"
 
-    compile "com.objectdb:objectdb:2.7.4"
+    // DB
+    compile "org.hibernate:hibernate-core:5.2.14.Final"
+    compile 'org.hsqldb:hsqldb:2.3.3' // hsqldb 2.3.4 leads to the application to hang :-/
     compile "org.eclipse.persistence:javax.persistence:2.1.0"
     compile "javax.transaction:jta:1.1"
+    compile "org.flywaydb:flyway-core:4.2.0"
+    compile "com.google.inject.extensions:guice-persist:$versionGuice"
+
+    // CACHE
     compile "org.ehcache:ehcache:3.5.0"
     compile "com.esotericsoftware:kryo:4.0.1"
 
+    // TEST
     testCompile "org.testng:testng:6.13.1"
     testCompile "org.assertj:assertj-core:3.9.0"
     testCompile "com.nhaarman:mockito-kotlin:1.5.0"
