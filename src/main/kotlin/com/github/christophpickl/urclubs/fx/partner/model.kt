@@ -11,16 +11,19 @@ class CurrentPartnerFx() : ViewModel() {
 
     private lateinit var original: Partner // TODO nasty
     val name = SimpleStringProperty()
+    val note = SimpleStringProperty()
     val category = SimpleObjectProperty(Category.UNKNOWN)
 
     fun toPartner() = original.copy(
         name = name.get(),
+        note = note.get(),
         category = category.get()
     )
 
     fun initPartner(partner: Partner) {
         original = partner
         name.set(partner.name)
+        note.set(partner.note)
         category.set(partner.category)
     }
 }

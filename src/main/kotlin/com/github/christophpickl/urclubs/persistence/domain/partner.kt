@@ -23,7 +23,7 @@ interface PartnerDao {
     fun update(partner: PartnerDbo): PartnerDbo
 }
 
-class PartnerObjectDbDao @Inject constructor(
+class PartnerDaoImpl @Inject constructor(
     private val em: EntityManager
 ) : PartnerDao {
     private val log = LOG {}
@@ -68,26 +68,42 @@ class PartnerObjectDbDao @Inject constructor(
 
 }
 
+const val COL_LENGTH_LIL = 128
+const val COL_LENGTH_MED = 512
+const val COL_LENGTH_BIG = 5120
+
 @Entity
 data class PartnerDbo(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     override val id: Long,
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, length = COL_LENGTH_MED, unique = true)
     var idMyc: String,
 
-    @Column(nullable = false, unique = false)
+    @Column(nullable = false, length = COL_LENGTH_MED, unique = false)
     var name: String,
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, length = COL_LENGTH_MED, unique = true)
     var shortName: String,
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = COL_LENGTH_MED)
     var address: String,
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = COL_LENGTH_BIG)
+    var note: String,
+
+    @Column(nullable = false, length = COL_LENGTH_LIL)
+    var linkMyclubsSite: String,
+
+    @Column(nullable = false, length = COL_LENGTH_LIL)
+    var linkPartnerSite: String,
+
+    @Column(nullable = false, length = COL_LENGTH_LIL)
     @Enumerated(EnumType.STRING)
     var rating: RatingDbo,
+
+    @Column(nullable = false)
+    var category: CategoryDbo,
 
     @Column(nullable = false)
     var deletedByMyc: Boolean,
@@ -99,16 +115,7 @@ data class PartnerDbo(
     var wishlisted: Boolean,
 
     @Column(nullable = false)
-    var ignored: Boolean,
-
-    @Column(nullable = false)
-    var category: CategoryDbo,
-
-    @Column(nullable = false)
-    var linkMyclubsSite: String,
-
-    @Column(nullable = false)
-    var linkPartnerSite: String
+    var ignored: Boolean
 
 ) : HasId {
     companion object
@@ -118,6 +125,11 @@ data class PartnerDbo(
         if (shortName != other.shortName) shortName = other.shortName
         if (rating != other.rating) rating = other.rating
         if (category != other.category) category = other.category
+        if (note != other.note) note = other.note
+        if (deletedByMyc != other.deletedByMyc) deletedByMyc = other.deletedByMyc
+        if (favourited != other.favourited) favourited = other.favourited
+        if (wishlisted != other.wishlisted) wishlisted = other.wishlisted
+        if (ignored != other.ignored) ignored = other.ignored
     }
 }
 

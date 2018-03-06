@@ -1,5 +1,6 @@
 package com.github.christophpickl.urclubs.service
 
+import com.github.christophpickl.urclubs.SystemProperties
 import com.google.inject.Provider
 
 data class Credentials(
@@ -21,15 +22,10 @@ class CliArgsCredentialsProvider(private val args: Array<String>) : Provider<Cre
 
 class SystemPropertyCredentialsProvider : Provider<Credentials> {
 
-    companion object {
-        private const val KEY_EMAIL = "urclubs.email"
-        private const val KEY_PASSWORD = "urclubs.password"
-    }
-
     override fun get(): Credentials {
-        val email = System.getProperty(KEY_EMAIL)
-        val password = System.getProperty(KEY_PASSWORD)
-        val notSetValues = listOfNotNull(email.orElse(KEY_EMAIL), password.orElse(KEY_PASSWORD))
+        val email = System.getProperty(SystemProperties.KEY_EMAIL)
+        val password = System.getProperty(SystemProperties.KEY_PASSWORD)
+        val notSetValues = listOfNotNull(email.orElse(SystemProperties.KEY_EMAIL), password.orElse(SystemProperties.KEY_PASSWORD))
         if (notSetValues.isNotEmpty()) {
             throw IllegalStateException("Expected to have set system properties: ${notSetValues.joinToString(", ")}")
         }

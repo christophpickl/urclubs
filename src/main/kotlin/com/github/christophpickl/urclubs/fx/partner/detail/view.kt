@@ -33,6 +33,11 @@ class PartnerView : View() {
                             }
                         }
                     }
+                    field("Note") {
+                        textarea {
+                            textProperty().bindBidirectional(currentPartner.note)
+                        }
+                    }
                 }
             }
         }

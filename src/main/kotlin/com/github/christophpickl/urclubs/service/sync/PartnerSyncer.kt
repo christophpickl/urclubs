@@ -86,6 +86,7 @@ fun PartnerHtmlModel.toPartner() = Partner(
     idDbo = 0L,
     idMyc = id,
     name = name,
+    note = "",
     shortName = shortName,
     address = "", // needs additional GET /partner request
     rating = Rating.UNKNOWN,

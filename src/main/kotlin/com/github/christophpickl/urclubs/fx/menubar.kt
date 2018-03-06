@@ -1,44 +1,25 @@
 package com.github.christophpickl.urclubs.fx
 
 import com.github.christophpickl.kpotpourri.common.logging.LOG
-import com.github.christophpickl.urclubs.domain.partner.Category
 import com.github.christophpickl.urclubs.domain.partner.Partner
 import com.github.christophpickl.urclubs.domain.partner.PartnerService
-import com.github.christophpickl.urclubs.domain.partner.Rating
+import com.github.christophpickl.urclubs.fx.partner.PartnerListRequest
 import javafx.scene.control.MenuBar
 import tornadofx.*
-import java.util.concurrent.atomic.AtomicInteger
 
 class MenuBarController : Controller() {
 
     private val logg = LOG {}
     private val partnerService: PartnerService by di()
-    private val counter = AtomicInteger()
 
     fun createDummyData() {
         logg.info { "createDummyData()" }
-        listOf(
-            dummyPartner().copy(
-                name = "Dummy EMS",
-                category = Category.EMS,
-                rating = Rating.SUPERB
-            ),
-            dummyPartner().copy(
-                name = "Dummy Yoga",
-                category = Category.YOGA
-            )
-        ).forEach {
+        Partner.dummies.forEach {
             partnerService.create(it)
         }
+        fire(PartnerListRequest)
     }
 
-    private fun dummyPartner(): Partner {
-        val count = counter.incrementAndGet()
-        return Partner.prototype().copy(
-            idMyc = "dummy$count",
-            shortName = "dummy$count"
-        )
-    }
 
 }
 

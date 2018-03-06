@@ -1,7 +1,8 @@
 package com.github.christophpickl.urclubs.domain.partner
 
+import com.github.christophpickl.urclubs.persistence.domain.CategoryDbo
+import com.github.christophpickl.urclubs.persistence.domain.PartnerDaoImpl
 import com.github.christophpickl.urclubs.persistence.domain.PartnerDbo
-import com.github.christophpickl.urclubs.persistence.domain.PartnerObjectDbDao
 import com.github.christophpickl.urclubs.persistence.domain.RatingDbo
 import com.github.christophpickl.urclubs.persistence.transactional
 import com.github.christophpickl.urclubs.testInfra.DatabaseTest
@@ -12,7 +13,7 @@ import org.testng.annotations.BeforeMethod
 import org.testng.annotations.Test
 
 @Test
-class PartnerObjectDbDaoTest : DatabaseTest() {
+class PartnerDaoImplTest : DatabaseTest() {
 
     private lateinit var partner: PartnerDbo
     private lateinit var partner1: PartnerDbo
@@ -64,9 +65,41 @@ class PartnerObjectDbDaoTest : DatabaseTest() {
     }
 
     fun `UPDATE - Given saved partner When update that partner Then database contains updated partner`() {
-        val savedPartner = partner.copy(name = "name1", rating = RatingDbo.UNKNOWN)
+        val savedPartner = PartnerDbo(
+            name = "name",
+            note = "note",
+            rating = RatingDbo.GOOD,
+            category = CategoryDbo.GYM,
+            deletedByMyc = true,
+            favourited = true,
+            wishlisted = true,
+            ignored = true,
+
+            id = 0L,
+            idMyc = "idMyc",
+            shortName = "shortName",
+            address = "address",
+            linkPartnerSite = "linkPartnerSite",
+            linkMyclubsSite = "linkMyclubsSite"
+        )
         save(savedPartner)
-        val updatedPartner = savedPartner.copy(name = "name2", rating = RatingDbo.SUPERB)
+        val updatedPartner = PartnerDbo(
+            name = "name2",
+            note = "note2",
+            rating = RatingDbo.BAD,
+            category = CategoryDbo.EMS,
+            deletedByMyc = false,
+            favourited = false,
+            wishlisted = false,
+            ignored = false,
+
+            id = savedPartner.id,
+            idMyc = savedPartner.idMyc,
+            shortName = savedPartner.shortName,
+            address = savedPartner.address,
+            linkPartnerSite = savedPartner.linkPartnerSite,
+            linkMyclubsSite = savedPartner.linkMyclubsSite
+        )
 
         dao().update(updatedPartner)
 
@@ -82,8 +115,8 @@ class PartnerObjectDbDaoTest : DatabaseTest() {
     }
 
     private fun fetchAll() =
-            em.createQuery("SELECT p FROM PartnerDbo p", PartnerDbo::class.java).resultList
+        em.createQuery("SELECT p FROM PartnerDbo p", PartnerDbo::class.java).resultList
 
-    private fun dao() = PartnerObjectDbDao(em)
+    private fun dao() = PartnerDaoImpl(em)
 
 }

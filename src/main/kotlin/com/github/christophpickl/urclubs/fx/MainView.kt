@@ -14,9 +14,6 @@ class MainView : View() {
     override val root = vbox {
         add(MyMenuBar(menuBarController))
         borderpane {
-            top {
-                label("hello urclubs")
-            }
             center {
                 add(partnersView)
             }

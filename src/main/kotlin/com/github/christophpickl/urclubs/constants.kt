@@ -4,4 +4,11 @@ import java.io.File
 
 val URCLUBS_DIRECTORY = File(System.getProperty("user.home"), if (IS_DEVELOPMENT) ".urclubs_dev" else ".urclubs")
 val URCLUBS_DATABASE_DIRECTORY = File(URCLUBS_DIRECTORY, "database")
-val IS_MAC = System.getProperty("urclubs.isMacApp") != null
+val IS_MAC = System.getProperty(SystemProperties.KEY_IS_MAC) != null
+
+object SystemProperties {
+    const val KEY_EMAIL = "urclubs.email"
+    const val KEY_PASSWORD = "urclubs.password"
+    const val SYSPROP_DEVELOPMENT = "urclubs.development"
+    const val KEY_IS_MAC = "urclubs.isMacApp"
+}

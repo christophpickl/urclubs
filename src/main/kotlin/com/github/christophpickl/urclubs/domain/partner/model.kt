@@ -6,12 +6,14 @@ import com.github.christophpickl.urclubs.persistence.domain.CategoryDbo
 import com.github.christophpickl.urclubs.persistence.domain.PartnerDbo
 import com.github.christophpickl.urclubs.persistence.domain.RatingDbo
 import com.google.common.base.MoreObjects
+import java.util.concurrent.atomic.AtomicInteger
 
 data class Partner(
     val idDbo: Long,
     val idMyc: String, // "JYSvEcpVCR"
     val shortName: String, // "triller-crossfit" ... used for links
     val name: String, // "Triller CrossFit"
+    val note: String,
     val address: String,
     val rating: Rating,
     val deletedByMyc: Boolean, // keep in DB still locally
@@ -28,11 +30,14 @@ data class Partner(
 ) {
 
     companion object {
+        private val counter = AtomicInteger()
+
         fun prototype() = Partner(
             idDbo = 0,
             idMyc = "",
             shortName = "",
             name = "",
+            note = "",
             address = "",
             rating = Rating.UNKNOWN,
             deletedByMyc = false,
@@ -43,6 +48,43 @@ data class Partner(
             linkMyclubsSite = "",
             linkPartnerSite = ""
         )
+
+        val dummy1 =
+            dummyPartner().copy(
+                shortName = "dummy-ems",
+                name = "Dummy EMS",
+                address = "Hauptplatz 1",
+                note = "my note 1",
+                linkMyclubsSite = "http://www.orf.at",
+                linkPartnerSite = "http://www.derstandard.at",
+                category = Category.EMS,
+                rating = Rating.SUPERB,
+                favourited = true,
+                wishlisted = true
+            )
+
+        val dummy2 = dummyPartner().copy(
+            shortName = "dummy-yoga",
+            name = "Dummy Yoga",
+            address = "Mieterstrasse 127/42, 1010 Wien",
+            category = Category.YOGA
+        )
+        val dummy3 = dummyPartner().copy(
+            shortName = "mah",
+            name = "Maaaah",
+            category = Category.OTHER,
+            rating = Rating.BAD,
+            ignored = true
+        )
+        val dummies = listOf(dummy1, dummy2, dummy3)
+
+        private fun dummyPartner(): Partner {
+            val count = counter.incrementAndGet()
+            return Partner.prototype().copy(
+                idMyc = "dummy$count",
+                shortName = "dummy$count"
+            )
+        }
     }
 
     override fun toString() = MoreObjects.toStringHelper(this)
@@ -86,6 +128,7 @@ fun Partner.toPartnerDbo() = PartnerDbo(
     id = idDbo,
     idMyc = idMyc,
     name = name,
+    note = note,
     shortName = shortName,
     address = address,
     rating = rating.toRatingDbo(),
@@ -122,6 +165,7 @@ fun PartnerDbo.toPartner() = Partner(
     idMyc = idMyc,
     shortName = shortName,
     name = name,
+    note = note,
     address = address,
     rating = rating.toRating(),
     deletedByMyc = deletedByMyc,

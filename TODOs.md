@@ -3,6 +3,10 @@
 
 ## New Order
 
+* minor UI
+    * table fill vertical
+    * detail pack height
+
 1. Replace google docs
     * ad table:
         * colored lines based on rating
@@ -51,6 +55,10 @@
 
 ## Technical
 
+* introduce some kind of PROFILE
+    * DEV ... use other directory, enable critical shortcuts
+    * PROD (must be explicitly declared) ... using real folder/db
+    * (TEST)
 * Configure: Versioneye
 * Use http4k lib
 * Integrate in GCal (introduce gcal4k)
