@@ -35,16 +35,6 @@ class PartnersView : View() {
         column("Category") { features: TableColumn.CellDataFeatures<Partner, String> ->
             ReadOnlyStringWrapper(features.value.category.label)
         }.fixedWidth(100.0)
-//        column("Rating") { features: TableColumn.CellDataFeatures<Partner, String> ->
-//            ReadOnlyStringWrapper(features.value.rating.label)
-//        }
-//            .fixedWidth(100.0)
-//            .cellFormat {
-//                text = it
-//                style {
-//                    backgroundColor += if (rowItem.rating.color != null) rowItem.rating.color!! else Color.GRAY
-//                }
-//            }
         column("Rating", Partner::rating).cellFormat {
             graphic = hbox {
                 label(rowItem.rating.label)
