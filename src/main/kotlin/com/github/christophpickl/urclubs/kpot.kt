@@ -5,6 +5,10 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.temporal.TemporalAccessor
 
+fun ByteArray?.byteArrayEquals(that: ByteArray?): Boolean =
+    if (this != null && that != null) this.contentEquals(that)
+    else this == null && that == null
+
 // enhanced Timing as measureTimeMillis isn't good enough ;)
 object Stopwatch {
 

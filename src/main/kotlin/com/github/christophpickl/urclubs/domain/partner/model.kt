@@ -90,6 +90,7 @@ data class Partner(
                 linkPartnerSite = "http://google.com",
                 category = Category.EMS,
                 rating = Rating.SUPERB,
+                maxCredits = 2,
                 favourited = true,
                 wishlisted = true
             )

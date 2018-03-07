@@ -1,6 +1,7 @@
 package com.github.christophpickl.urclubs.persistence.domain
 
 import com.github.christophpickl.kpotpourri.common.logging.LOG
+import com.github.christophpickl.urclubs.byteArrayEquals
 import com.github.christophpickl.urclubs.persistence.HasId
 import com.github.christophpickl.urclubs.persistence.ensureNotPersisted
 import com.github.christophpickl.urclubs.persistence.ensurePersisted
@@ -130,17 +131,22 @@ data class PartnerDbo(
     companion object
 
     fun updateBy(other: PartnerDbo) {
-        if (name != other.name) name = other.name
-        if (shortName != other.shortName) shortName = other.shortName
-        if (rating != other.rating) rating = other.rating
-        if (category != other.category) category = other.category
-        if (note != other.note) note = other.note
+        // @formatter:off
+        if (name         != other.name)         name         = other.name
+        if (shortName    != other.shortName)    shortName    = other.shortName
+        if (rating       != other.rating)       rating       = other.rating
+        if (category     != other.category)     category     = other.category
+        if (maxCredits   != other.maxCredits)   maxCredits   = other.maxCredits
+        if (note         != other.note)         note         = other.note
         if (deletedByMyc != other.deletedByMyc) deletedByMyc = other.deletedByMyc
-        if (favourited != other.favourited) favourited = other.favourited
-        if (wishlisted != other.wishlisted) wishlisted = other.wishlisted
-        if (ignored != other.ignored) ignored = other.ignored
+        if (favourited   != other.favourited)   favourited   = other.favourited
+        if (wishlisted   != other.wishlisted)   wishlisted   = other.wishlisted
+        if (ignored      != other.ignored)      ignored      = other.ignored
+        if (!picture.byteArrayEquals(other.picture)) picture = other.picture
+        // @formatter:on
     }
 }
+
 
 enum class RatingDbo {
     UNKNOWN,

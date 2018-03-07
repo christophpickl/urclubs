@@ -4,6 +4,7 @@ import com.github.christophpickl.urclubs.domain.partner.Category
 import com.github.christophpickl.urclubs.domain.partner.Partner
 import com.github.christophpickl.urclubs.domain.partner.Rating
 import javafx.beans.property.SimpleBooleanProperty
+import javafx.beans.property.SimpleIntegerProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.beans.property.SimpleStringProperty
 import tornadofx.*
@@ -18,6 +19,7 @@ class CurrentPartnerFx() : ViewModel() {
     val rating = SimpleObjectProperty(Rating.UNKNOWN)
     val favourited = SimpleBooleanProperty()
     val wishlisted = SimpleBooleanProperty()
+    val maxCredits = SimpleIntegerProperty()
 
     val shortName = SimpleStringProperty()
     val linkMyclubs = SimpleStringProperty()
@@ -29,7 +31,8 @@ class CurrentPartnerFx() : ViewModel() {
         category = category.get(),
         rating = rating.get(),
         favourited = favourited.get(),
-        wishlisted = wishlisted.get()
+        wishlisted = wishlisted.get(),
+        maxCredits = maxCredits.get()
     )
 
     fun initPartner(partner: Partner) {
@@ -40,6 +43,7 @@ class CurrentPartnerFx() : ViewModel() {
         rating.set(partner.rating)
         favourited.set(partner.favourited)
         wishlisted.set(partner.wishlisted)
+        maxCredits.set(partner.maxCredits)
 
         shortName.set(partner.shortName)
         linkMyclubs.set(partner.linkMyclubsSite)

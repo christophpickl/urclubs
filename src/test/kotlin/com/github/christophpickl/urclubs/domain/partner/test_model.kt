@@ -15,8 +15,10 @@ fun PartnerDbo.Companion.testInstance() = PartnerDbo(
     linkPartnerSite = "http://test.partner.at",
     rating = RatingDbo.UNKNOWN,
     category = EMS,
+    maxCredits = Partner.DEFAULT_MAX_CREDITS.toByte(),
     deletedByMyc = false,
     favourited = true,
     ignored = false,
-    wishlisted = true
+    wishlisted = true,
+    picture = null
 )

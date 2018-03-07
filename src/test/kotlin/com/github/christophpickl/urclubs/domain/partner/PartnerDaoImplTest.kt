@@ -98,13 +98,15 @@ class PartnerDaoImplTest : DatabaseTest() {
             favourited = true,
             wishlisted = true,
             ignored = true,
+            maxCredits = 1,
 
             id = 0L,
             idMyc = "idMyc",
             shortName = "shortName",
             address = "address",
             linkPartnerSite = "linkPartnerSite",
-            linkMyclubsSite = "linkMyclubsSite"
+            linkMyclubsSite = "linkMyclubsSite",
+            picture = null
         )
         save(savedPartner)
         val updatedPartner = PartnerDbo(
@@ -116,13 +118,15 @@ class PartnerDaoImplTest : DatabaseTest() {
             favourited = false,
             wishlisted = false,
             ignored = false,
+            maxCredits = 2,
 
             id = savedPartner.id,
             idMyc = savedPartner.idMyc,
             shortName = savedPartner.shortName,
             address = savedPartner.address,
             linkPartnerSite = savedPartner.linkPartnerSite,
-            linkMyclubsSite = savedPartner.linkMyclubsSite
+            linkMyclubsSite = savedPartner.linkMyclubsSite,
+            picture = ByteArray(8, { 1 })
         )
 
         dao().update(updatedPartner)

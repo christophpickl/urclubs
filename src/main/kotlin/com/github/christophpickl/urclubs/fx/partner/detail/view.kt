@@ -11,6 +11,7 @@ import com.github.christophpickl.urclubs.fx.partner.CurrentPartnerFx
 import javafx.application.Application
 import javafx.collections.FXCollections
 import javafx.stage.Stage
+import javafx.util.converter.NumberStringConverter
 import tornadofx.*
 
 fun main(args: Array<String>) {
@@ -79,6 +80,9 @@ class PartnerView : View() {
                                 bind(currentPartner.wishlisted)
                             }
                         }
+                    }
+                    field("Max Credits") {
+                        textfield().textProperty().bindBidirectional(currentPartner.maxCredits, NumberStringConverter())
                     }
                     field("Links") {
                         hbox {
