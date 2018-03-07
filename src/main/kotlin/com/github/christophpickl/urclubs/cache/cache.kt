@@ -70,7 +70,7 @@ class CachedPartnerCopier : Copier<CachedPartner> {
 }
 
 // http://www.ehcache.org/blog/2016/05/12/ehcache3-serializers.html#third-party-serializers
-class CachedPartnerSerializer(loader: ClassLoader) : Serializer<CachedPartner> {
+class CachedPartnerSerializer(@Suppress("UNUSED_PARAMETER") loader: ClassLoader) : Serializer<CachedPartner> {
 
     private val kryo = Kryo()
     private val bufferSize = 4096
