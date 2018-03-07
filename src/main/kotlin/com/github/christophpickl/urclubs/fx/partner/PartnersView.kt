@@ -2,6 +2,7 @@ package com.github.christophpickl.urclubs.fx.partner
 
 import com.github.christophpickl.kpotpourri.common.logging.LOG
 import com.github.christophpickl.urclubs.DEVELOPMENT_COLORS
+import com.github.christophpickl.urclubs.domain.partner.ImageSize
 import com.github.christophpickl.urclubs.domain.partner.Partner
 import com.github.christophpickl.urclubs.domain.partner.Rating
 import com.github.christophpickl.urclubs.fx.partner.detail.PartnerSelectedEvent
@@ -31,6 +32,13 @@ class PartnersView : View() {
     private val currentPartner: CurrentPartnerFx by inject()
 
     val table = tableview<Partner> {
+        column("Picture", Partner::picture).apply {
+            cellFormat {
+                graphic = imageview(rowItem.picture.fxImageLil)
+            }
+            fixedWidth(ImageSize.LITTLE.dimension.width)
+        }
+
         column("Name", Partner::name).minWidth(200.0).maxWidth(400.0)
         column("Category") { features: TableColumn.CellDataFeatures<Partner, String> ->
             ReadOnlyStringWrapper(features.value.category.label)

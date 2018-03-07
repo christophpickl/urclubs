@@ -4,6 +4,7 @@ import com.github.christophpickl.kpotpourri.common.logging.LOG
 import javafx.embed.swing.SwingFXUtils
 import javafx.scene.image.Image
 import java.awt.Dimension
+import java.awt.image.BufferedImage
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -13,28 +14,16 @@ private val log = LOG {}
 
 object PictureUtil {
 
-    fun readFxImageFromBytes(bytes: ByteArray): Image = Image(ByteArrayInputStream(bytes))
-    fun readFxImageFromFileAsBig(file: File): Image {
-        return Image(file.toURI().toString(), ImageSize.BIG.width, ImageSize.BIG.height, false, false)
-//        return Image(file.toURI().toString())
-    }
+    fun readFxImageFromBytes(bytes: ByteArray): Image =
+        Image(ByteArrayInputStream(bytes))
 
-    fun readFxImageFromClasspath(path: String): Image {
-//        return ImageIcon(ensureSafe("Failed to read image icon! (path=$path)") {
-//            log.debug { "readImageIconFromClasspath(path='$path')" }
-//            ImageIO.read(Picture::class.java.getResource(path))
-//        })
-        return Image(Picture::class.java.getResource(path).openStream())
-    }
+    fun readFxImageFromFileAsBig(file: File): Image =
+        Image(file.toURI().toString(), ImageSize.BIG.width, ImageSize.BIG.height, false, false)
+//      Image(file.toURI().toString())
 
-    /*
-    File file = fileChooser.showOpenDialog(stage);
-    if (file != null) {
-        is = new FileInputStream(file);
-        Image image = new Image(is);
-        imageView.setImage(image);
-    }
-     */
+    fun readFxImageFromClasspath(path: String): Image =
+        Image(Picture::class.java.getResource(path).openStream())
+
 }
 
 enum class ImageSize(val dimension: Dimension) {
@@ -55,7 +44,21 @@ fun Image.toByteArray(): ByteArray {
     }
 }
 
+fun Image.scale(targetSize: ImageSize): Image {
+    val swingImage = SwingFXUtils.fromFXImage(this, null)
+    val scaledImage = swingImage.getScaledInstance(targetSize.dimension.width, targetSize.dimension.height, java.awt.Image.SCALE_DEFAULT)
+
+    val bufferedImage = BufferedImage(scaledImage.getWidth(null), scaledImage.getHeight(null), BufferedImage.TYPE_INT_ARGB)
+    val bufferedImageGraphics = bufferedImage.createGraphics()
+    bufferedImageGraphics.drawImage(scaledImage, 0, 0, null)
+    bufferedImageGraphics.dispose()
+
+    return SwingFXUtils.toFXImage(bufferedImage, null)
+}
+
 sealed class Picture(val fxImage: Image) {
+
+    val fxImageLil by lazy { fxImage.scale(ImageSize.LITTLE) }
 
     abstract val saveRepresentation: ByteArray?
 
