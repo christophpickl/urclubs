@@ -22,7 +22,7 @@ class PartnerServiceImplTest {
 
     fun `searchPartner - Given partner exists in DB When search for him Then return him`() {
         val partner = PartnerDbo.testInstance().copy(name = "name", address = "address")
-        whenever(partnerDao.readAll()).thenReturn(listOf(partner))
+        whenever(partnerDao.readAll(includeIgnored = true)).thenReturn(listOf(partner))
 
         val found = service().searchPartner("${partner.name}\n<br>${partner.address}")
 
@@ -30,7 +30,7 @@ class PartnerServiceImplTest {
     }
 
     fun `searchPartner - Given no partners When search Then return null`() {
-        whenever(partnerDao.readAll()).thenReturn(emptyList())
+        whenever(partnerDao.readAll(includeIgnored = true)).thenReturn(emptyList())
 
         val found = service().searchPartner(anyLocationHtml)
 

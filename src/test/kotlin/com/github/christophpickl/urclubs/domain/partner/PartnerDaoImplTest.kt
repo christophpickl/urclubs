@@ -35,7 +35,7 @@ class PartnerDaoImplTest : DatabaseTest() {
     fun `READ - Given a partner is stored When fetch all partners Then that partner is returned`() {
         save(partner)
 
-        val partners = dao().readAll()
+        val partners = dao().readAll(includeIgnored = null)
 
         assertThat(partners).singleEntryIsEqualToIgnoringGivenProps(partner, PartnerDbo::id)
     }
@@ -43,9 +43,33 @@ class PartnerDaoImplTest : DatabaseTest() {
     fun `READ - Given deleted partner When fetch all partners Then nothing is returned`() {
         save(partner.copy(deletedByMyc = true))
 
-        val partners = dao().readAll()
+        val partners = dao().readAll(includeIgnored = null)
 
         assertThat(partners).isEmpty()
+    }
+
+    fun `READ - Given ignored partner When fetch all but ignored partners Then nothing is returned`() {
+        save(partner.copy(ignored = true))
+
+        val partners = dao().readAll(includeIgnored = false)
+
+        assertThat(partners).isEmpty()
+    }
+
+    fun `READ - Given ignored partner When fetch all with ignored partners Then one partner is returned`() {
+        save(partner.copy(ignored = true))
+
+        val partners = dao().readAll(includeIgnored = true)
+
+        assertThat(partners).hasSize(1)
+    }
+
+    fun `READ - Given ignored partner When fetch all and any partners Then one partner is returned`() {
+        save(partner.copy(ignored = true))
+
+        val partners = dao().readAll(includeIgnored = null)
+
+        assertThat(partners).hasSize(1)
     }
 
     fun `READ - Given partner When find by short name Then find`() {
@@ -106,12 +130,11 @@ class PartnerDaoImplTest : DatabaseTest() {
         assertThatSingleElement(fetchAll(), updatedPartner)
     }
 
-    private fun save(vararg partners: PartnerDbo) {
+    private fun save(partner: PartnerDbo): PartnerDbo {
         em.transactional {
-            partners.forEach { partner ->
-                persist(partner)
-            }
+            persist(partner)
         }
+        return partner
     }
 
     private fun fetchAll() =
