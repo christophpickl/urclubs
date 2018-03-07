@@ -14,6 +14,7 @@ import javax.persistence.Enumerated
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
+import javax.persistence.Lob
 
 interface PartnerDao {
     fun create(partner: PartnerDbo): PartnerDbo
@@ -99,6 +100,9 @@ data class PartnerDbo(
     @Column(nullable = false, length = COL_LENGTH_LIL)
     var linkPartnerSite: String,
 
+    @Column(nullable = false)
+    var maxCredits: Byte,
+
     @Column(nullable = false, length = COL_LENGTH_LIL)
     @Enumerated(EnumType.STRING)
     var rating: RatingDbo,
@@ -116,7 +120,11 @@ data class PartnerDbo(
     var wishlisted: Boolean,
 
     @Column(nullable = false)
-    var ignored: Boolean
+    var ignored: Boolean,
+
+    @Lob
+    @Column(nullable = true)
+    var picture: ByteArray?
 
 ) : HasId {
     companion object

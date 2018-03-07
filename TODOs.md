@@ -6,10 +6,13 @@
 1. Replace google docs
     * custom pictures for partners
     * colorize location (=distance)
+1. by default use .dev folder, only when -Dprod defined use prod db
 1. Fix search!
     * BUG: when filter, update meanwhile => change observable in background
+1. enhance search: rating (is bigger/lower/equals)
 1. (Caching)
 1. Add credits total/remaining
+1. enhance search: filter amountCredits =/!= 0; filter totalVisits == x
 1. Activities list in detail
     * List upcoming workouts
     * List past workouts
@@ -50,3 +53,4 @@
 * Use http4k lib
 * debug HTTP traffic on android
 * create own view model? => https://github.com/edvin/tornadofx/wiki/Type-Safe-Builders
+* maybe introduce myclubsMetadata object?? categoryMyc?

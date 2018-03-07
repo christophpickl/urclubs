@@ -21,7 +21,7 @@ class MenuBarController : Controller() {
 
         em.transactional {
             createQuery(createCriteriaDeleteAll<PartnerDbo>()).executeUpdate()
-            Partner.dummies.forEach {
+            Partner.Dummies.all.forEach {
                 persist(it.toPartnerDbo())
             }
         }

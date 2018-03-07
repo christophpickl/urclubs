@@ -20,7 +20,7 @@ CREATE TABLE PartnerDbo (
 );
 
 ALTER TABLE PartnerDbo
-  ADD CONSTRAINT PartnerDboConstraintUniqueIdMyc UNIQUE (idMyc);
+  ADD CONSTRAINT UK_3po4fjydrqy2skbuw60bi0bpk UNIQUE (idMyc);
 
 ALTER TABLE PartnerDbo
-  ADD CONSTRAINT PartnerDboConstraintUniqueShortName UNIQUE (shortName);
+  ADD CONSTRAINT UK_flyiquema8mef568aj5vn3d4m UNIQUE (shortName);

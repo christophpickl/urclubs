@@ -6,6 +6,7 @@ import com.github.christophpickl.urclubs.DEVELOPMENT_FAST_SYNC
 import com.github.christophpickl.urclubs.domain.partner.Category
 import com.github.christophpickl.urclubs.domain.partner.Partner
 import com.github.christophpickl.urclubs.domain.partner.PartnerService
+import com.github.christophpickl.urclubs.domain.partner.Picture
 import com.github.christophpickl.urclubs.domain.partner.Rating
 import com.github.christophpickl.urclubs.myclubs.MyClubsApi
 import com.github.christophpickl.urclubs.myclubs.MyclubsUtil
@@ -90,12 +91,14 @@ fun PartnerHtmlModel.toPartner() = Partner(
     shortName = shortName,
     address = "", // needs additional GET /partner request
     rating = Rating.UNKNOWN,
+    category = Category.UNKNOWN,
+    maxCredits = Partner.DEFAULT_MAX_CREDITS,
     deletedByMyc = false,
     favourited = false,
     wishlisted = false,
     ignored = false,
-    category = Category.UNKNOWN,
     // links will be added later on when syncing each partner in detail
     linkMyclubsSite = "",
-    linkPartnerSite = ""
+    linkPartnerSite = "",
+    picture = Picture.DefaultPicture
 )

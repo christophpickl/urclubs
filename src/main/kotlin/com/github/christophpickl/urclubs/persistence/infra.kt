@@ -2,6 +2,7 @@ package com.github.christophpickl.urclubs.persistence
 
 import com.github.christophpickl.kpotpourri.common.logging.LOG
 import com.github.christophpickl.urclubs.QuitEvent
+import com.github.christophpickl.urclubs.UrclubsConfiguration
 import com.google.common.eventbus.EventBus
 import com.google.common.eventbus.Subscribe
 import com.google.inject.persist.PersistService
@@ -18,13 +19,17 @@ class DbInitializer @Inject constructor(
     private val log = LOG {}
 
     init {
+        if (UrclubsConfiguration.DB_STARTUP.runMigration) {
+            flywayMigration()
+        } else {
+            log.warn { "Flyway database migration is disabled." }
+        }
         log.debug { "Starting persist unit." }
-        flywayMigration()
         service.start()
     }
 
     private fun flywayMigration() {
-        log.debug { "flywayMigration() ... establishing new data source connection" }
+        log.debug { "flywayMigration() ... establishing new data source connection: '$databaseUrl'" }
         val dataSource = JDBCDataSource()
         dataSource.url = databaseUrl
         FlywayManager(dataSource).migrate()

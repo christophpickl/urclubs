@@ -1,6 +1,15 @@
 package com.github.christophpickl.urclubs
 
+import com.github.christophpickl.urclubs.persistence.DatabaseStartupType
 import java.io.File
+
+object UrclubsConfiguration {
+    const val SHOW_SQL = true
+
+    val DB_STARTUP = DatabaseStartupType.Main
+//    val DB_STARTUP = DatabaseStartupType.PrintSchema
+
+}
 
 val URCLUBS_DIRECTORY = File(System.getProperty("user.home"), if (IS_DEVELOPMENT) ".urclubs_dev" else ".urclubs")
 val URCLUBS_DATABASE_DIRECTORY = File(URCLUBS_DIRECTORY, "database")

@@ -19,7 +19,7 @@ fun main(args: Array<String>) {
             stage.width = 1100.0
             stage.height = 800.0
             stage.centerOnScreen()
-            fire(PartnerListEvent(Partner.dummies))
+            fire(PartnerListEvent(Partner.Dummies.all))
         }
     }
     Application.launch(DummyApp::class.java, *args)

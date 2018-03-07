@@ -9,6 +9,30 @@ import com.github.christophpickl.urclubs.persistence.domain.RatingDbo
 import com.google.common.base.MoreObjects
 import java.util.concurrent.atomic.AtomicInteger
 
+sealed class Picture {
+
+    abstract fun toByteArray(): ByteArray?
+
+    companion object {
+        fun read(bytes: ByteArray?): Picture {
+            if (bytes == null) return DefaultPicture
+            return CustomPicture()
+        }
+    }
+
+    object DefaultPicture : Picture() {
+        override fun toByteArray(): ByteArray? {
+            return null
+        }
+    }
+
+    class CustomPicture() : Picture() {
+        override fun toByteArray(): ByteArray? {
+            return null
+        }
+    }
+}
+
 data class Partner(
     val idDbo: Long,
     val idMyc: String, // "JYSvEcpVCR"
@@ -17,21 +41,19 @@ data class Partner(
     val note: String,
     val address: String,
     val rating: Rating,
+    val maxCredits: Int,
     val deletedByMyc: Boolean, // keep in DB still locally
     val favourited: Boolean,
     val wishlisted: Boolean, // want to go there soon (nevertheless whether i've been there already)
     val ignored: Boolean, // kind-a delete (don't display at all anymore anywhere, but keep in DB)
     val category: Category,
     val linkMyclubsSite: String,
-    val linkPartnerSite: String
-
-    // categoryMyc ?
-
-// maybe introduce myclubsMetadata object??
+    val linkPartnerSite: String,
+    val picture: Picture
 ) {
 
     companion object {
-        private val counter = AtomicInteger()
+        const val DEFAULT_MAX_CREDITS = 4
 
         fun prototype() = Partner(
             idDbo = 0,
@@ -41,17 +63,25 @@ data class Partner(
             note = "",
             address = "",
             rating = Rating.UNKNOWN,
+            maxCredits = DEFAULT_MAX_CREDITS,
             deletedByMyc = false,
             favourited = false,
             wishlisted = false,
             ignored = false,
             category = Category.UNKNOWN,
             linkMyclubsSite = "",
-            linkPartnerSite = ""
+            linkPartnerSite = "",
+            picture = Picture.DefaultPicture
         )
+    }
 
-        val dummySuperbEms =
-            dummyPartner().copy(
+    object Dummies {
+        private val counter = AtomicInteger()
+        private val allMutable = mutableListOf<Partner>()
+        val all: List<Partner> get() = allMutable
+
+        val superbEms = newDummy {
+            copy(
                 shortName = "dummy-ems",
                 name = "Dummy EMS",
                 address = "Hauptplatz 1",
@@ -63,41 +93,53 @@ data class Partner(
                 favourited = true,
                 wishlisted = true
             )
+        }
 
-        val dummyGood = dummyPartner().copy(
-            shortName = "dummy-yoga",
-            name = "Dummy Yoga",
-            address = "Mieterstrasse 127/42, 1010 Wien",
-            linkMyclubsSite = "http://derstandard.at",
-            category = Category.YOGA,
-            rating = Rating.GOOD
-        )
-        val dummyOk = dummyPartner().copy(
-            shortName = "mah",
-            name = "Maaaah",
-            rating = Rating.OK
-        )
-        val dummyBad = dummyPartner().copy(
-            shortName = "bad",
-            name = "Bad Ass",
-            rating = Rating.BAD
-        )
-        val dummyUnknown = dummyPartner().copy(
-            shortName = "unknown",
-            name = "Mr Unknown",
-            category = Category.UNKNOWN,
-            rating = Rating.UNKNOWN
-        )
-        val dummyX = dummyPartner().copy(
-            shortName = "ignored",
-            name = "Ignored one",
-            category = Category.OTHER,
-            rating = Rating.BAD,
-            ignored = true
-        )
-        val dummies = listOf(dummySuperbEms, dummyGood, dummyOk, dummyBad, dummyUnknown, dummyX)
+        val goodYoga = newDummy {
+            copy(
+                shortName = "yoga",
+                name = "Dr. Yoga",
+                address = "Mieterstrasse 127/42, 1010 Wien",
+                linkMyclubsSite = "http://derstandard.at",
+                category = Category.YOGA,
+                rating = Rating.GOOD
+            )
+        }
+        val mahOk = newDummy {
+            copy(
+                shortName = "mah",
+                name = "Maaaah",
+                rating = Rating.OK
+            )
+        }
+        val badAss = newDummy {
+            copy(
+                shortName = "bad",
+                name = "Bad Ass",
+                rating = Rating.BAD
+            )
+        }
+        val mrUnknown = newDummy {
+            copy(
+                shortName = "unknown",
+                name = "Mr Unknown",
+                category = Category.UNKNOWN,
+                rating = Rating.UNKNOWN
+            )
+        }
+        val ignored = newDummy {
+            copy(
+                shortName = "ignored",
+                name = "Ignored one",
+                category = Category.OTHER,
+                rating = Rating.BAD,
+                ignored = true
+            )
+        }
 
-        private fun dummyPartner(): Partner {
+        private fun newDummy(action: Partner.() -> Partner) = action(prepare()).also { allMutable += it }
+
+        private fun prepare(): Partner {
             val count = counter.incrementAndGet()
             return Partner.prototype().copy(
                 idMyc = "dummy$count",
@@ -172,6 +214,8 @@ fun Partner.toPartnerDbo() = PartnerDbo(
     wishlisted = wishlisted,
     ignored = ignored,
     category = category.toCategoryDbo(),
+    maxCredits = maxCredits.toByte(),
+    picture = picture.toByteArray(),
     linkMyclubsSite = linkMyclubsSite,
     linkPartnerSite = linkPartnerSite
 )
@@ -203,13 +247,15 @@ fun PartnerDbo.toPartner() = Partner(
     note = note,
     address = address,
     rating = rating.toRating(),
+    maxCredits = maxCredits.toInt(),
     deletedByMyc = deletedByMyc,
     favourited = favourited,
     wishlisted = wishlisted,
     ignored = ignored,
     category = category.toCategory(),
     linkMyclubsSite = linkMyclubsSite,
-    linkPartnerSite = linkPartnerSite
+    linkPartnerSite = linkPartnerSite,
+    picture = Picture.read(picture)
 )
 
 fun RatingDbo?.toRating() = when (this) {
