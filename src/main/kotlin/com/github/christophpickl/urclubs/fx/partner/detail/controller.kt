@@ -31,23 +31,14 @@ class PartnerFxController : Controller() {
                 it!!.x = bounds.width - width - padding
                 it.y = bounds.minY + padding
                 it.width = width
-//                it.height = bounds.height - padding - padding
             }
             primaryStage.requestFocus()
         }
 
         subscribe<PartnerSelectedEvent> { _ ->
-            //            val partner = event.partner
-//            logg.debug { "Partner got selected: $partner" }
-//            currentPartner.partner.set(partner.toPartnerFx())
-//            view.initPartner(partner)
             view.openWindow()
         }
-//        currentPartner.partner.addListener { it ->
-//            view.openWindow()
-//        }
         subscribe<PartnerSaveEvent> {
-            //            val updatedPartner = view.readPartner(currentPartnerOld!!)
             service.update(currentPartner.toPartner())
         }
         bus.register(this)
@@ -57,16 +48,5 @@ class PartnerFxController : Controller() {
     fun onPartnerUpdatedEvent(event: PartnerUpdatedEvent) {
         fire(PartnerUpdatedFXEvent(event.partner))
     }
-
-//    private fun PartnerView.initPartner(partner: Partner) {
-//        nameField.text = partner.name
-//        category.selectionModel.select(partner.category)
-//    }
-
-//    private fun PartnerView.readPartner(partner: Partner) = partner.copy(
-//        name = nameField.text.trim(),
-//        name = currentPartner.partner.get().name.get(),
-//        category = category.selectedItem!!
-//    )
 
 }

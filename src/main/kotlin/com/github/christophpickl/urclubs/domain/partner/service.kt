@@ -29,7 +29,7 @@ class PartnerServiceImpl @Inject constructor(
 
     override fun readAll(): List<Partner> {
         log.trace { "readAll()" }
-        return partnerDao.readAll().map { it.toPartner() }
+        return partnerDao.readAll(includeIgnored = false).map { it.toPartner() }
     }
 
     override fun read(id: Long): Partner? {
@@ -57,7 +57,7 @@ class PartnerServiceImpl @Inject constructor(
     override fun searchPartner(locationHtml: String): Partner? {
         // MINOR performance improvement: do it directly in DB
         log.trace { "searchPartner(locationHtml=$locationHtml)" }
-        val partners = partnerDao.readAll().associateBy { it.name + "<br>" + it.address }
+        val partners = partnerDao.readAll(includeIgnored = true).associateBy { it.name + "<br>" + it.address }
         return partners[locationHtml]?.toPartner()
 
     }

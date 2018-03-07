@@ -2,24 +2,31 @@ package com.github.christophpickl.urclubs.fx
 
 import com.github.christophpickl.kpotpourri.common.logging.LOG
 import com.github.christophpickl.urclubs.domain.partner.Partner
-import com.github.christophpickl.urclubs.domain.partner.PartnerService
+import com.github.christophpickl.urclubs.domain.partner.toPartnerDbo
 import com.github.christophpickl.urclubs.fx.partner.PartnerListRequest
+import com.github.christophpickl.urclubs.persistence.createCriteriaDeleteAll
+import com.github.christophpickl.urclubs.persistence.domain.PartnerDbo
+import com.github.christophpickl.urclubs.persistence.transactional
 import javafx.scene.control.MenuBar
 import tornadofx.*
+import javax.persistence.EntityManager
 
 class MenuBarController : Controller() {
 
     private val logg = LOG {}
-    private val partnerService: PartnerService by di()
+    private val em: EntityManager by di()
 
-    fun createDummyData() {
-        logg.info { "createDummyData()" }
-        Partner.dummies.forEach {
-            partnerService.create(it)
+    fun resetDummyData() {
+        logg.info { "resetDummyData()" }
+
+        em.transactional {
+            createQuery(createCriteriaDeleteAll<PartnerDbo>()).executeUpdate()
+            Partner.dummies.forEach {
+                persist(it.toPartnerDbo())
+            }
         }
         fire(PartnerListRequest)
     }
-
 
 }
 
@@ -27,8 +34,8 @@ class MyMenuBar(private val menuBarController: MenuBarController) : MenuBar() {
 
     init {
         menu("Develop") {
-            item("Create Dummy Data").action {
-                menuBarController.createDummyData()
+            item("Reset Dummy Data").action {
+                menuBarController.resetDummyData()
             }
         }
     }

@@ -16,6 +16,10 @@ class PartnersFxController : Controller() {
             val partners = partnerService.readAll()
             fire(PartnerListEvent(partners))
         }
+        subscribe<IgnorePartnerFXEvent> {
+            val partner = it.partner
+            partnerService.update(partner.copy(ignored = true))
+        }
     }
 
 }

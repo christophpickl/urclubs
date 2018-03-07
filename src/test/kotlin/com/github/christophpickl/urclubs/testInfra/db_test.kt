@@ -2,8 +2,8 @@ package com.github.christophpickl.urclubs.testInfra
 
 import com.github.christophpickl.kpotpourri.common.logging.LOG
 import com.github.christophpickl.urclubs.persistence.PersistenceModule
+import com.github.christophpickl.urclubs.persistence.deleteAll
 import com.github.christophpickl.urclubs.persistence.domain.PartnerDbo
-import com.github.christophpickl.urclubs.persistence.transactional
 import com.google.inject.AbstractModule
 import org.testng.annotations.BeforeMethod
 import org.testng.annotations.Guice
@@ -30,12 +30,10 @@ abstract class DatabaseTest {
     @BeforeMethod
     fun clearDb() {
         log.debug { "clearDb()" }
-        val delete = em.criteriaBuilder.createCriteriaDelete<PartnerDbo>(PartnerDbo::class.java)
-        delete.from(PartnerDbo::class.java)
-        em.transactional {
-            createQuery(delete).executeUpdate()
-//            flush()
-        }
+//        val delete = em.criteriaBuilder.createCriteriaDelete<PartnerDbo>(PartnerDbo::class.java)
+//        delete.from(PartnerDbo::class.java)
+        em.deleteAll<PartnerDbo>()
     }
 
 }
+

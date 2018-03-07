@@ -17,7 +17,7 @@ import javax.persistence.Id
 
 interface PartnerDao {
     fun create(partner: PartnerDbo): PartnerDbo
-    fun readAll(): List<PartnerDbo>
+    fun readAll(includeIgnored: Boolean?): List<PartnerDbo>
     fun read(id: Long): PartnerDbo?
     fun findByShortName(shortName: String): PartnerDbo?
     fun update(partner: PartnerDbo): PartnerDbo
@@ -35,9 +35,10 @@ class PartnerDaoImpl @Inject constructor(
         return partner
     }
 
-    override fun readAll(): List<PartnerDbo> {
+    override fun readAll(includeIgnored: Boolean?): List<PartnerDbo> {
         log.debug { "readAll()" }
-        val query = em.createQuery("SELECT p FROM ${PartnerDbo::class.simpleName} p WHERE ${PartnerDbo::deletedByMyc.name} = false", PartnerDbo::class.java)
+        val whereIgnored = if (includeIgnored == null) "" else " AND ${PartnerDbo::ignored.name} = $includeIgnored"
+        val query = em.createQuery("SELECT p FROM ${PartnerDbo::class.simpleName} p WHERE ${PartnerDbo::deletedByMyc.name} = false" + whereIgnored, PartnerDbo::class.java)
         return query.resultList
     }
 

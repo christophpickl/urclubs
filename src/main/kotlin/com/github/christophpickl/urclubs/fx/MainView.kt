@@ -11,14 +11,14 @@ import javafx.scene.layout.Priority
 import javafx.stage.Stage
 import tornadofx.*
 
+
 fun main(args: Array<String>) {
     class DummyApp : App(primaryView = MainView::class) {
         override fun start(stage: Stage) {
             super.start(stage)
-            stage.x = 100.0
-            stage.y = 100.0
             stage.width = 1100.0
             stage.height = 800.0
+            stage.centerOnScreen()
             fire(PartnerListEvent(Partner.dummies))
         }
     }

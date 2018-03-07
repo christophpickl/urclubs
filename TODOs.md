@@ -5,23 +5,14 @@
 
 ## New Order
 
-* minor UI
-    * detail pack height
-
 1. Replace google docs
-    * ad table:
-        * colored lines based on rating
-        * context menu: ignore partner
-    * ad detail view:
-        * display idMyc + shortName
-        * link to two pages
-        * change rating
-        * add note
-        * checkboxes: favourite, wishlist
+    * ???
 1. Fix search!
-1. (Caching)
-1. Add credits leftover
+1. Add credits total/remaining
 1. Activities list
+1. (Caching)
+1. Low prio:
+    * ad table: FULL colored lines based on rating
 
 ### Long term:
 

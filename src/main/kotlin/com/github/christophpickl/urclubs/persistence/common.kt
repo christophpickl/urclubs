@@ -26,3 +26,13 @@ fun EntityManager.transactional(action: EntityManager.() -> Unit) {
     action(this)
     transaction.commit()
 }
+
+inline fun <reified T: Any> EntityManager.createCriteriaDeleteAll() = criteriaBuilder.createCriteriaDelete<T>(T::class.java).apply {
+    from(T::class.java)
+}
+inline fun <reified T: Any> EntityManager.deleteAll() {
+    val delete = createCriteriaDeleteAll<T>()
+    transactional {
+        createQuery(delete).executeUpdate()
+    }
+}

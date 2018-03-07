@@ -91,6 +91,7 @@ class UrclubsFxApp : App(
         find(PartnerFxController::class)
         find(SyncFxController::class)
         find(FilterPartnersController::class)
+        find(BrowseWebsiteController::class)
     }
 
 }

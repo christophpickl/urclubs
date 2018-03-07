@@ -2,6 +2,7 @@ package com.github.christophpickl.urclubs.domain.partner
 
 import com.github.christophpickl.urclubs.HasOrder
 import com.github.christophpickl.urclubs.OrderedEnumCompanion
+import com.github.christophpickl.urclubs.OrderedEnumCompanion2
 import com.github.christophpickl.urclubs.persistence.domain.CategoryDbo
 import com.github.christophpickl.urclubs.persistence.domain.PartnerDbo
 import com.github.christophpickl.urclubs.persistence.domain.RatingDbo
@@ -55,8 +56,8 @@ data class Partner(
                 name = "Dummy EMS",
                 address = "Hauptplatz 1",
                 note = "my note 1",
-                linkMyclubsSite = "http://www.orf.at",
-                linkPartnerSite = "http://www.derstandard.at",
+                linkMyclubsSite = "http://orf.at",
+                linkPartnerSite = "http://google.com",
                 category = Category.EMS,
                 rating = Rating.SUPERB,
                 favourited = true,
@@ -67,16 +68,29 @@ data class Partner(
             shortName = "dummy-yoga",
             name = "Dummy Yoga",
             address = "Mieterstrasse 127/42, 1010 Wien",
-            category = Category.YOGA
+            linkMyclubsSite = "http://derstandard.at",
+            category = Category.YOGA,
+            rating = Rating.OK
         )
         val dummy3 = dummyPartner().copy(
             shortName = "mah",
             name = "Maaaah",
+            rating = Rating.BAD
+        )
+        val dummy4 = dummyPartner().copy(
+            shortName = "unknown",
+            name = "Mr Unknown",
+            category = Category.UNKNOWN,
+            rating = Rating.UNKNOWN
+        )
+        val dummyX = dummyPartner().copy(
+            shortName = "ignored",
+            name = "Ignored one",
             category = Category.OTHER,
             rating = Rating.BAD,
             ignored = true
         )
-        val dummies = listOf(dummy1, dummy2, dummy3)
+        val dummies = listOf(dummy1, dummy2, dummy3, dummy4, dummyX)
 
         private fun dummyPartner(): Partner {
             val count = counter.incrementAndGet()
@@ -96,13 +110,14 @@ data class Partner(
 
 
 enum class Rating(
+    val label: String,
     override val order: Int
 ) : HasOrder {
-    UNKNOWN(0),
-    BAD(1),
-    OK(2),
-    GOOD(3),
-    SUPERB(4);
+    UNKNOWN("-UNKNOWN-", 0),
+    SUPERB("Superb", 100),
+    GOOD("Good", 110),
+    OK("Ok", 120),
+    BAD("Bad", 130);
 
     object Ordered : OrderedEnumCompanion<Rating>(Rating.values())
 }
@@ -110,14 +125,29 @@ enum class Rating(
 enum class Category(
     val label: String
 ) {
-    UNKNOWN("Unknown"),
-    EMS("EMS"),
+    UNKNOWN("-UNKNOWN-"),
     GYM("Gym"),
+    EMS("EMS"),
     HEALTH("Health"),
-    OTHER("Other"),
     WORKOUT("Workout"),
     WUSHU("Wushu"),
-    YOGA("Yoga")
+    YOGA("Yoga"),
+    OTHER("Other");
+
+    companion object {
+        private val defaultComparator = Comparator<Category> { o1, o2 ->
+            if (o1 == UNKNOWN && o2 != UNKNOWN) {
+                -1
+            } else if (o1 != UNKNOWN && o2 == UNKNOWN) {
+                1
+            } else {
+                o1.label.compareTo(o2.label)
+            }
+        }
+    }
+
+    object Ordered : OrderedEnumCompanion2<Category>(Category.values(), defaultComparator)
+
 }
 
 // =====================================================================================================================
