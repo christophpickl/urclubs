@@ -53,7 +53,7 @@ class CurrentPartnerFx() : ViewModel() {
         pictureWrapper.set(partner.picture)
 
         shortName.set(partner.shortName)
-        linkMyclubs.set(partner.linkMyclubsSite)
+        linkMyclubs.set(partner.linkMyclubs)
         linkPartner.set(partner.linkPartnerSite)
     }
 }

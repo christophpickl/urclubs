@@ -48,7 +48,7 @@ class PartnerFxController : Controller() {
             service.update(currentPartner.toPartner())
         }
         subscribe<ChoosePictureFXEvent> {
-            val file = choosePictureFile()
+            val file = choosePictureFile(it.requestor)
             if (file != null) {
                 logg.debug { "Selected new picture: ${file.canonicalPath}" }
                 val picture = Picture.FilePicture(file)
@@ -68,11 +68,11 @@ class PartnerFxController : Controller() {
         bus.register(this)
     }
 
-    private fun choosePictureFile(): File? = FileChooser().apply {
+    private fun choosePictureFile(requestor: View): File? = FileChooser().apply {
         title = "Select Picture"
         initialDirectory = File(System.getProperty("user.home"))
         extensionFilters.add(FileChooser.ExtensionFilter("PNG", "*.png"))
-    }.showOpenDialog(primaryStage)
+    }.showOpenDialog(requestor.currentWindow)
 
 
     @Subscribe

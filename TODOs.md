@@ -1,17 +1,18 @@
 
-```-Durclubs.email=foo@bar.com -Durclubs.password=xxx -Durclubs.development```
-
 # Grob Plan
 
 1. must do
-    * custom pictures for partners
-    * colorize location (=distance)
+    1. prompt for user/pass on myclubs login; inject some kind of CredentialsProvider into MyclubsApi
     1. Fix search! BUG: when filter, update meanwhile => change observable in background
-    1. (Caching)
+    1. Caching
     1. sync past activities
-    1. Add remaining credits
+    1. display:
+        * remaining credits (colorize green-red much-few)
+        * count past activities (mehr platz einnehmende "baelkchen")
     
 1. immediately after
+    * colorize location (=distance) => property Partner.locationRating (rename regular rating to "partnerRating")
+        + add new property: locationNote (render in table next to static location address)
     1. enhance search:
         * rating (is bigger/lower/equals)
         * remainingCredits/totalVisits (lower, equal, bigger, not)
@@ -20,7 +21,6 @@
 1. Activities list in detail
     * List upcoming workouts
     * List past workouts
-    * List available workouts
 
 # TODOs
 

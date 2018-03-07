@@ -11,6 +11,7 @@ import com.github.christophpickl.urclubs.fx.partner.CurrentPartnerFx
 import javafx.application.Application
 import javafx.collections.FXCollections
 import javafx.geometry.Orientation
+import javafx.geometry.Pos
 import javafx.stage.Stage
 import javafx.util.converter.NumberStringConverter
 import tornadofx.*
@@ -26,12 +27,12 @@ fun main(args: Array<String>) {
     Application.launch(DummyApp::class.java, *args)
 }
 
-object ChoosePictureFXEvent : FXEvent()
+class ChoosePictureFXEvent(val requestor: View) : FXEvent()
 
 class PartnerView : View() {
 
     companion object {
-        const val WIDTH = 500.0
+        const val WIDTH = 400.0
     }
 
     private val logg = LOG {}
@@ -39,16 +40,19 @@ class PartnerView : View() {
 
     override val root = borderpane {
         top {
-            imageview().apply {
-                setOnMouseClicked {
-                    logg.debug { "Clicked on picture." }
-                    fire(ChoosePictureFXEvent)
-                }
-            }.imageProperty().bindBidirectional(currentPartner.picture)
+            vbox {
+                alignment = Pos.CENTER
+                imageview().apply {
+                    setOnMouseClicked {
+                        logg.debug { "Clicked on picture." }
+                        fire(ChoosePictureFXEvent(this@PartnerView))
+                    }
+                }.imageProperty().bindBidirectional(currentPartner.picture)
+            }
         }
         center {
             form {
-                fieldset("General Info", labelPosition = Orientation.VERTICAL) {
+                fieldset(labelPosition = Orientation.HORIZONTAL) {
                     field("Name") {
                         textfield().textProperty().bindBidirectional(currentPartner.name)
                     }
@@ -92,20 +96,34 @@ class PartnerView : View() {
                             }
                         }
                     }
-                    field("Max Credits") {
-                        textfield().textProperty().bindBidirectional(currentPartner.maxCredits, NumberStringConverter())
+                    field("Credits") {
+                        hbox {
+                            label("Left: ")
+                            label("X")
+
+                            label("  Max: ")
+                            textfield().apply {
+                                prefWidth = 40.0
+                                textProperty().bindBidirectional(currentPartner.maxCredits, NumberStringConverter())
+                            }
+
+                            label("  Visits: ")
+                            label("XX")
+                        }
                     }
                     field("Links") {
                         hbox {
-                            button("MyClubs") {
-                                disableWhen { currentPartner.linkMyclubs.isEmpty }
-                                action { fire(OpenWebsiteFXEvent(url = currentPartner.original.linkMyclubsSite)) }
+                            hyperlink {
+                                textProperty().bind(currentPartner.linkMyclubs)
                                 tooltip { textProperty().bind(currentPartner.linkMyclubs) }
+                                enableWhen { currentPartner.linkMyclubs.isNotEmpty }
+                                setOnAction { fire(OpenWebsiteFXEvent(url = currentPartner.original.linkMyclubs)) }
                             }
-                            button("Partner") {
-                                disableWhen { currentPartner.linkPartner.isEmpty }
-                                action { fire(OpenWebsiteFXEvent(url = currentPartner.original.linkPartnerSite)) }
+                            hyperlink {
+                                textProperty().bind(currentPartner.linkPartner)
                                 tooltip { textProperty().bind(currentPartner.linkPartner) }
+                                enableWhen { currentPartner.linkPartner.isNotEmpty }
+                                setOnAction { fire(OpenWebsiteFXEvent(url = currentPartner.original.linkPartnerSite)) }
                             }
                         }
                     }
@@ -126,6 +144,6 @@ class PartnerView : View() {
     }
 
     init {
-        title = "Partner Details"
+        title = "Partner"
     }
 }

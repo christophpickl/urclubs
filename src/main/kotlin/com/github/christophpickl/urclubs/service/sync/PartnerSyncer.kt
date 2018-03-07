@@ -57,7 +57,7 @@ class PartnerSyncer @Inject constructor(
     private fun Partner.enhance(detailed: PartnerDetailHtmlModel) = copy(
         address = detailed.address,
         linkPartnerSite = detailed.linkPartnerSite,
-        linkMyclubsSite = util.createMyclubsPartnerUrl(shortName)
+        linkMyclubs = util.createMyclubsPartnerUrl(shortName)
         // TODO sync more details
         // description
         // flags
@@ -98,7 +98,7 @@ fun PartnerHtmlModel.toPartner() = Partner(
     wishlisted = false,
     ignored = false,
     // links will be added later on when syncing each partner in detail
-    linkMyclubsSite = "",
+    linkMyclubs = "",
     linkPartnerSite = "",
     picture = Picture.DefaultPicture
 )

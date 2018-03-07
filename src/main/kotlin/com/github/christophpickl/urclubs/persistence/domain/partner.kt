@@ -97,10 +97,10 @@ data class PartnerDbo(
     var note: String,
 
     @Column(nullable = false, length = COL_LENGTH_LIL)
-    var linkMyclubsSite: String,
+    var linkMyclubs: String,
 
     @Column(nullable = false, length = COL_LENGTH_LIL)
-    var linkPartnerSite: String,
+    var linkPartner: String,
 
     @Column(nullable = false)
     var maxCredits: Byte,

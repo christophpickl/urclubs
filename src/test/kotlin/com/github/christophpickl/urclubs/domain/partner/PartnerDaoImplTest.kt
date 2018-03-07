@@ -104,8 +104,8 @@ class PartnerDaoImplTest : DatabaseTest() {
             idMyc = "idMyc",
             shortName = "shortName",
             address = "address",
-            linkPartnerSite = "linkPartnerSite",
-            linkMyclubsSite = "linkMyclubsSite",
+            linkPartner = "linkPartner",
+            linkMyclubs = "linkMyclubs",
             picture = null
         )
         save(savedPartner)
@@ -124,8 +124,8 @@ class PartnerDaoImplTest : DatabaseTest() {
             idMyc = savedPartner.idMyc,
             shortName = savedPartner.shortName,
             address = savedPartner.address,
-            linkPartnerSite = savedPartner.linkPartnerSite,
-            linkMyclubsSite = savedPartner.linkMyclubsSite,
+            linkPartner = savedPartner.linkPartner,
+            linkMyclubs = savedPartner.linkMyclubs,
             picture = ByteArray(8, { 1 })
         )
 

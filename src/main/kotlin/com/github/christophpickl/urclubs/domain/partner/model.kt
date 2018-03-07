@@ -23,7 +23,7 @@ data class Partner(
     val wishlisted: Boolean, // want to go there soon (nevertheless whether i've been there already)
     val ignored: Boolean, // kind-a delete (don't display at all anymore anywhere, but keep in DB)
     val category: Category,
-    val linkMyclubsSite: String,
+    val linkMyclubs: String,
     val linkPartnerSite: String,
     val picture: Picture
 ) {
@@ -45,7 +45,7 @@ data class Partner(
             wishlisted = false,
             ignored = false,
             category = Category.UNKNOWN,
-            linkMyclubsSite = "",
+            linkMyclubs = "",
             linkPartnerSite = "",
             picture = Picture.DefaultPicture
         )
@@ -62,7 +62,7 @@ data class Partner(
                 name = "Dummy EMS",
                 address = "Hauptplatz 1",
                 note = "my note 1",
-                linkMyclubsSite = "http://orf.at",
+                linkMyclubs = "http://orf.at",
                 linkPartnerSite = "http://google.com",
                 category = Category.EMS,
                 rating = Rating.SUPERB,
@@ -77,7 +77,7 @@ data class Partner(
                 shortName = "yoga",
                 name = "Dr. Yoga",
                 address = "Mieterstrasse 127/42, 1010 Wien",
-                linkMyclubsSite = "http://derstandard.at",
+                linkMyclubs = "http://derstandard.at",
                 category = Category.YOGA,
                 rating = Rating.GOOD
             )
@@ -193,8 +193,8 @@ fun Partner.toPartnerDbo() = PartnerDbo(
     category = category.toCategoryDbo(),
     maxCredits = maxCredits.toByte(),
     picture = picture.saveRepresentation,
-    linkMyclubsSite = linkMyclubsSite,
-    linkPartnerSite = linkPartnerSite
+    linkMyclubs = linkMyclubs,
+    linkPartner = linkPartnerSite
 )
 
 fun Rating.toRatingDbo() = when (this) {
@@ -230,8 +230,8 @@ fun PartnerDbo.toPartner() = Partner(
     wishlisted = wishlisted,
     ignored = ignored,
     category = category.toCategory(),
-    linkMyclubsSite = linkMyclubsSite,
-    linkPartnerSite = linkPartnerSite,
+    linkMyclubs = linkMyclubs,
+    linkPartnerSite = linkPartner,
     picture = Picture.readFromDb(picture)
 )
 
