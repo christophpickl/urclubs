@@ -1,60 +1,52 @@
 
 ```-Durclubs.email=foo@bar.com -Durclubs.password=xxx -Durclubs.development```
 
-# TODOs
-
-## New Order
+# Grob Plan
 
 1. Replace google docs
-    * ???
+    * custom pictures for partners
+    * colorize location (=distance)
 1. Fix search!
-1. Add credits total/remaining
-1. Activities list
+    * BUG: when filter, update meanwhile => change observable in background
 1. (Caching)
-1. Low prio:
-    * ad table: FULL colored lines based on rating
+1. Add credits total/remaining
+1. Activities list in detail
+    * List upcoming workouts
+    * List past workouts
+    * List available workouts
+
+# TODOs
+
+## Coming up:
+
+* Per-category dynamic fields:
+    * description where location is; zb near subway station
+    * EMS: opening hours, phone number
+    * Gym: opening hours, got room Y/N
+* richtext format notes
+
+### Minor:
+
+* ad table: FULL colored lines based on rating
+* show number of displayed partners "10/170" based on current filter
 
 ### Long term:
 
-* custom pictures for partners
-* Per-category additional fields:
-    * description where location is; zb near subway station
-    * EMS: opening hours
-    * Gym: got room Y/N, opening hours
-* richtext format notes
 * Book activities
 * Recommend activities
-* Google cal integration
-
-## High Prio
-
-* observable entities
-* MyClubs API caching + deferred login
-* MenuBar => Develop / Create dummy data
-* BUG: when filter, update meanwhile => change observable in background
-
-## Business
-
-* List upcoming workouts
-* List past workouts
-* List available workouts
-* Concept of datamodel based on google docs doc
-* Workout recommendation
     * Use DB and sync partners/workouts (on startup)
     * Store some metadata (preferred partner)
     * Simple suggestion of workout based on metadata
-* show number of displayed partners "10/170" based on current filter 
+* Google cal integration
 
 ## Technical
 
+* resolve: org.hibernate.orm.connections.pooling - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
 * introduce some kind of PROFILE
     * DEV ... use other directory, enable critical shortcuts
     * PROD (must be explicitly declared) ... using real folder/db
     * (TEST)
 * Configure: Versioneye
 * Use http4k lib
-* Integrate in GCal (introduce gcal4k)
 * debug HTTP traffic on android
-
-
 * create own view model? => https://github.com/edvin/tornadofx/wiki/Type-Safe-Builders

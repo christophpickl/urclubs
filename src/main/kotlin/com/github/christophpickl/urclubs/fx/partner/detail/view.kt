@@ -18,7 +18,7 @@ fun main(args: Array<String>) {
         override fun start(stage: Stage) {
             super.start(stage)
             stage.centerOnScreen()
-            find<CurrentPartnerFx>().initPartner(Partner.dummy1)
+            find<CurrentPartnerFx>().initPartner(Partner.dummySuperbEms)
         }
     }
     Application.launch(DummyApp::class.java, *args)

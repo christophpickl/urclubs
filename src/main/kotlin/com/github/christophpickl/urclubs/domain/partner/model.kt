@@ -50,7 +50,7 @@ data class Partner(
             linkPartnerSite = ""
         )
 
-        val dummy1 =
+        val dummySuperbEms =
             dummyPartner().copy(
                 shortName = "dummy-ems",
                 name = "Dummy EMS",
@@ -64,20 +64,25 @@ data class Partner(
                 wishlisted = true
             )
 
-        val dummy2 = dummyPartner().copy(
+        val dummyGood = dummyPartner().copy(
             shortName = "dummy-yoga",
             name = "Dummy Yoga",
             address = "Mieterstrasse 127/42, 1010 Wien",
             linkMyclubsSite = "http://derstandard.at",
             category = Category.YOGA,
-            rating = Rating.OK
+            rating = Rating.GOOD
         )
-        val dummy3 = dummyPartner().copy(
+        val dummyOk = dummyPartner().copy(
             shortName = "mah",
             name = "Maaaah",
+            rating = Rating.OK
+        )
+        val dummyBad = dummyPartner().copy(
+            shortName = "bad",
+            name = "Bad Ass",
             rating = Rating.BAD
         )
-        val dummy4 = dummyPartner().copy(
+        val dummyUnknown = dummyPartner().copy(
             shortName = "unknown",
             name = "Mr Unknown",
             category = Category.UNKNOWN,
@@ -90,7 +95,7 @@ data class Partner(
             rating = Rating.BAD,
             ignored = true
         )
-        val dummies = listOf(dummy1, dummy2, dummy3, dummy4, dummyX)
+        val dummies = listOf(dummySuperbEms, dummyGood, dummyOk, dummyBad, dummyUnknown, dummyX)
 
         private fun dummyPartner(): Partner {
             val count = counter.incrementAndGet()
