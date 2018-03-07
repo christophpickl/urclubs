@@ -9,30 +9,6 @@ import com.github.christophpickl.urclubs.persistence.domain.RatingDbo
 import com.google.common.base.MoreObjects
 import java.util.concurrent.atomic.AtomicInteger
 
-sealed class Picture {
-
-    abstract fun toByteArray(): ByteArray?
-
-    companion object {
-        fun read(bytes: ByteArray?): Picture {
-            if (bytes == null) return DefaultPicture
-            return CustomPicture()
-        }
-    }
-
-    object DefaultPicture : Picture() {
-        override fun toByteArray(): ByteArray? {
-            return null
-        }
-    }
-
-    class CustomPicture() : Picture() {
-        override fun toByteArray(): ByteArray? {
-            return null
-        }
-    }
-}
-
 data class Partner(
     val idDbo: Long,
     val idMyc: String, // "JYSvEcpVCR"
@@ -216,7 +192,7 @@ fun Partner.toPartnerDbo() = PartnerDbo(
     ignored = ignored,
     category = category.toCategoryDbo(),
     maxCredits = maxCredits.toByte(),
-    picture = picture.toByteArray(),
+    picture = picture.saveRepresentation,
     linkMyclubsSite = linkMyclubsSite,
     linkPartnerSite = linkPartnerSite
 )
@@ -256,7 +232,7 @@ fun PartnerDbo.toPartner() = Partner(
     category = category.toCategory(),
     linkMyclubsSite = linkMyclubsSite,
     linkPartnerSite = linkPartnerSite,
-    picture = Picture.read(picture)
+    picture = Picture.readFromDb(picture)
 )
 
 fun RatingDbo?.toRating() = when (this) {

@@ -10,6 +10,7 @@ import com.github.christophpickl.urclubs.fx.RatingCell
 import com.github.christophpickl.urclubs.fx.partner.CurrentPartnerFx
 import javafx.application.Application
 import javafx.collections.FXCollections
+import javafx.geometry.Orientation
 import javafx.stage.Stage
 import javafx.util.converter.NumberStringConverter
 import tornadofx.*
@@ -25,6 +26,8 @@ fun main(args: Array<String>) {
     Application.launch(DummyApp::class.java, *args)
 }
 
+object ChoosePictureFXEvent : FXEvent()
+
 class PartnerView : View() {
 
     companion object {
@@ -35,9 +38,17 @@ class PartnerView : View() {
     private val currentPartner: CurrentPartnerFx by inject()
 
     override val root = borderpane {
+        top {
+            imageview().apply {
+                setOnMouseClicked {
+                    logg.debug { "Clicked on picture." }
+                    fire(ChoosePictureFXEvent)
+                }
+            }.imageProperty().bindBidirectional(currentPartner.picture)
+        }
         center {
             form {
-                fieldset("General Info") {
+                fieldset("General Info", labelPosition = Orientation.VERTICAL) {
                     field("Name") {
                         textfield().textProperty().bindBidirectional(currentPartner.name)
                     }

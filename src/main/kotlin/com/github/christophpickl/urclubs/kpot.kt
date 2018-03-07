@@ -5,6 +5,13 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.temporal.TemporalAccessor
 
+fun <T> ensureSafe(message: String, function: () -> T?): T =
+    try {
+        function()
+    } catch (e: Exception) {
+        throw Exception(message, e)
+    } ?: throw Exception(message)
+
 fun ByteArray?.byteArrayEquals(that: ByteArray?): Boolean =
     if (this != null && that != null) this.contentEquals(that)
     else this == null && that == null

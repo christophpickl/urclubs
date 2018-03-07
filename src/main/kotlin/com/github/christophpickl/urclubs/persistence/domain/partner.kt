@@ -6,6 +6,7 @@ import com.github.christophpickl.urclubs.persistence.HasId
 import com.github.christophpickl.urclubs.persistence.ensureNotPersisted
 import com.github.christophpickl.urclubs.persistence.ensurePersisted
 import com.github.christophpickl.urclubs.persistence.transactional
+import com.google.common.base.MoreObjects
 import javax.inject.Inject
 import javax.persistence.Column
 import javax.persistence.Entity
@@ -128,7 +129,9 @@ data class PartnerDbo(
     var picture: ByteArray?
 
 ) : HasId {
-    companion object
+    companion object {
+        val MAX_PICTURE_BYTES = 1024 * 1024 // == 1MB
+    }
 
     fun updateBy(other: PartnerDbo) {
         // @formatter:off
@@ -145,6 +148,13 @@ data class PartnerDbo(
         if (!picture.byteArrayEquals(other.picture)) picture = other.picture
         // @formatter:on
     }
+
+    override fun toString() = MoreObjects.toStringHelper(this)
+        .add("id", id)
+        .add("shortName", shortName)
+        .add("idMyc", idMyc)
+        .add("--picture-set", picture != null)
+        .toString()
 }
 
 

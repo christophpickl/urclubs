@@ -3,16 +3,20 @@
 
 # Grob Plan
 
-1. Replace google docs
+1. must do
     * custom pictures for partners
     * colorize location (=distance)
-1. by default use .dev folder, only when -Dprod defined use prod db
-1. Fix search!
-    * BUG: when filter, update meanwhile => change observable in background
-1. enhance search: rating (is bigger/lower/equals)
-1. (Caching)
-1. Add credits total/remaining
-1. enhance search: filter amountCredits =/!= 0; filter totalVisits == x
+    1. Fix search! BUG: when filter, update meanwhile => change observable in background
+    1. (Caching)
+    1. sync past activities
+    1. Add remaining credits
+    
+1. immediately after
+    1. enhance search:
+        * rating (is bigger/lower/equals)
+        * remainingCredits/totalVisits (lower, equal, bigger, not)
+    1. DevMode rework: by default use .dev folder, only when -Dprod defined use prod db
+
 1. Activities list in detail
     * List upcoming workouts
     * List past workouts

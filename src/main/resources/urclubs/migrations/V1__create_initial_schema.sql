@@ -12,7 +12,7 @@ CREATE TABLE PartnerDbo (
   maxCredits      TINYINT       NOT NULL,
   name            VARCHAR(512)  NOT NULL,
   note            VARCHAR(5120) NOT NULL,
-  picture         BLOB(255),
+  picture         BLOB(1048576),
   rating          VARCHAR(128)  NOT NULL,
   shortName       VARCHAR(512)  NOT NULL,
   wishlisted      BOOLEAN       NOT NULL,
