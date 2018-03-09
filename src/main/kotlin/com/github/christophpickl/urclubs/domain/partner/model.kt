@@ -24,7 +24,7 @@ data class Partner(
     val ignored: Boolean, // kind-a delete (don't display at all anymore anywhere, but keep in DB)
     val category: Category,
     val linkMyclubs: String,
-    val linkPartnerSite: String,
+    val linkPartner: String,
     val picture: Picture
 ) {
 
@@ -46,7 +46,7 @@ data class Partner(
             ignored = false,
             category = Category.UNKNOWN,
             linkMyclubs = "",
-            linkPartnerSite = "",
+            linkPartner = "",
             picture = Picture.DefaultPicture
         )
     }
@@ -63,7 +63,7 @@ data class Partner(
                 address = "Hauptplatz 1",
                 note = "my note 1",
                 linkMyclubs = "http://orf.at",
-                linkPartnerSite = "http://google.com",
+                linkPartner = "http://google.com",
                 category = Category.EMS,
                 rating = Rating.SUPERB,
                 maxCredits = 2,
@@ -194,7 +194,7 @@ fun Partner.toPartnerDbo() = PartnerDbo(
     maxCredits = maxCredits.toByte(),
     picture = picture.saveRepresentation,
     linkMyclubs = linkMyclubs,
-    linkPartner = linkPartnerSite
+    linkPartner = linkPartner
 )
 
 fun Rating.toRatingDbo() = when (this) {
@@ -231,7 +231,7 @@ fun PartnerDbo.toPartner() = Partner(
     ignored = ignored,
     category = category.toCategory(),
     linkMyclubs = linkMyclubs,
-    linkPartnerSite = linkPartner,
+    linkPartner = linkPartner,
     picture = Picture.readFromDb(picture)
 )
 

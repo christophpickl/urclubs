@@ -2,7 +2,11 @@ package com.github.christophpickl.urclubs.persistence.domain
 
 import com.github.christophpickl.kpotpourri.common.logging.LOG
 import com.github.christophpickl.urclubs.byteArrayEquals
+import com.github.christophpickl.urclubs.persistence.COL_LENGTH_BIG
+import com.github.christophpickl.urclubs.persistence.COL_LENGTH_LIL
+import com.github.christophpickl.urclubs.persistence.COL_LENGTH_MED
 import com.github.christophpickl.urclubs.persistence.HasId
+import com.github.christophpickl.urclubs.persistence.ONE_MB
 import com.github.christophpickl.urclubs.persistence.ensureNotPersisted
 import com.github.christophpickl.urclubs.persistence.ensurePersisted
 import com.github.christophpickl.urclubs.persistence.transactional
@@ -72,9 +76,6 @@ class PartnerDaoImpl @Inject constructor(
 
 }
 
-const val COL_LENGTH_LIL = 128
-const val COL_LENGTH_MED = 512
-const val COL_LENGTH_BIG = 5120
 
 @Entity
 data class PartnerDbo(
@@ -125,7 +126,7 @@ data class PartnerDbo(
     var ignored: Boolean,
 
     @Lob
-    @Column(nullable = true)
+    @Column(nullable = true, length = ONE_MB)
     var picture: ByteArray?
 
 ) : HasId {

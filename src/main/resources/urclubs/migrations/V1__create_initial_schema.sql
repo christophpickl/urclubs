@@ -19,7 +19,6 @@ CREATE TABLE PartnerDbo (
   PRIMARY KEY (id)
 );
 
-
 ALTER TABLE PartnerDbo
   ADD CONSTRAINT PartnerDboConstraintUniqueIdMyc UNIQUE (idMyc);
 

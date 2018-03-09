@@ -6,8 +6,8 @@ import java.io.File
 object UrclubsConfiguration {
     const val SHOW_SQL = true
 
-    val DB_STARTUP = DatabaseStartupType.Main
-//    val DB_STARTUP = DatabaseStartupType.PrintSchema
+//    val DB_STARTUP = DatabaseStartupType.Main
+    val DB_STARTUP = DatabaseStartupType.PrintSchema
 
 }
 

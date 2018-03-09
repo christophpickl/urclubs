@@ -123,7 +123,7 @@ class PartnerView : View() {
                                 textProperty().bind(currentPartner.linkPartner)
                                 tooltip { textProperty().bind(currentPartner.linkPartner) }
                                 enableWhen { currentPartner.linkPartner.isNotEmpty }
-                                setOnAction { fire(OpenWebsiteFXEvent(url = currentPartner.original.linkPartnerSite)) }
+                                setOnAction { fire(OpenWebsiteFXEvent(url = currentPartner.original.linkPartner)) }
                             }
                         }
                     }

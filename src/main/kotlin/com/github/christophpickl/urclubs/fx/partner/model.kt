@@ -54,6 +54,6 @@ class CurrentPartnerFx() : ViewModel() {
 
         shortName.set(partner.shortName)
         linkMyclubs.set(partner.linkMyclubs)
-        linkPartner.set(partner.linkPartnerSite)
+        linkPartner.set(partner.linkPartner)
     }
 }

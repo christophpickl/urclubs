@@ -5,6 +5,11 @@ import javax.persistence.EntityManager
 // could enhance DB classes: http://www.objectdb.com/java/jpa/tool/enhancer
 // Enhancer.enhance("com.github.christophpickl.urclubs.persistence.*")
 
+const val COL_LENGTH_LIL = 128
+const val COL_LENGTH_MED = 512
+const val COL_LENGTH_BIG = 5120
+const val ONE_MB = 1024 * 1024
+
 interface HasId {
     val id: Long?
 }
