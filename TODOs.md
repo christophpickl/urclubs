@@ -34,6 +34,10 @@
 
 ### Minor:
 
+* MacMenuBar
+* send notifications via MacOs (e.g. after sync)
+* myclubs testng group, doing HTTP requests + parse, run on travis
+* think about how to "smart filter" => predefined queries (SQL?)
 * ad table: FULL colored lines based on rating
 * show number of displayed partners "10/170" based on current filter
 
