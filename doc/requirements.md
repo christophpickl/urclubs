@@ -59,7 +59,8 @@
 # Recommendation System
 
 * sophisticated algorithm which proposes only relevant activities
-    * make heave use of metadata and past history (maybe even geo location)
+    * make heavy use of metadata and past history (maybe even geo location)
+    * don't recommend for example EMS again, if already went there x days ago
 * when simply scrolling through all activities, enable filters:
     * category
     * available because of gcal empty timeslot
