@@ -4,6 +4,7 @@ import com.github.christophpickl.kpotpourri.common.logging.LOG
 import com.github.christophpickl.urclubs.persistence.PersistenceModule
 import com.github.christophpickl.urclubs.persistence.deleteAll
 import com.github.christophpickl.urclubs.persistence.domain.PartnerDbo
+import com.google.common.eventbus.EventBus
 import com.google.inject.AbstractModule
 import org.testng.annotations.BeforeMethod
 import org.testng.annotations.Guice
@@ -14,6 +15,7 @@ import javax.persistence.EntityManager
 
 class TestDbModule : AbstractModule() {
     override fun configure() {
+        bind(EventBus::class.java).toInstance(EventBus())
         install(PersistenceModule("jdbc:hsqldb:mem:test_db"))
     }
 }

@@ -129,6 +129,7 @@ data class Partner(
         .add("idDbo", idDbo)
         .add("shortName", shortName)
         .add("name", name)
+        .add("address", address)
         .toString()
 }
 

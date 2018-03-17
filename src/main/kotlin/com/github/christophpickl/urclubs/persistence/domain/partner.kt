@@ -9,6 +9,7 @@ import com.github.christophpickl.urclubs.persistence.HasId
 import com.github.christophpickl.urclubs.persistence.ONE_MB
 import com.github.christophpickl.urclubs.persistence.ensureNotPersisted
 import com.github.christophpickl.urclubs.persistence.ensurePersisted
+import com.github.christophpickl.urclubs.persistence.queryList
 import com.github.christophpickl.urclubs.persistence.transactional
 import com.google.common.base.MoreObjects
 import javax.inject.Inject
@@ -24,15 +25,26 @@ import javax.persistence.Lob
 
 interface PartnerDao {
     fun create(partner: PartnerDbo): PartnerDbo
-    fun readAll(includeIgnored: Boolean?): List<PartnerDbo>
+    fun readAll(includeIgnored: Boolean): List<PartnerDbo>
     fun read(id: Long): PartnerDbo?
     fun findByShortName(shortName: String): PartnerDbo?
     fun update(partner: PartnerDbo): PartnerDbo
+    fun searchByNameAndAddress(name: String, address: String): PartnerDbo?
 }
+
 
 class PartnerDaoImpl @Inject constructor(
     private val em: EntityManager
 ) : PartnerDao {
+
+    override fun searchByNameAndAddress(name: String, address: String): PartnerDbo? {
+        val query = em.createQuery("SELECT p FROM ${PartnerDbo::class.simpleName} p WHERE " +
+            "${PartnerDbo::name.name} = :name AND ${PartnerDbo::address.name} = :address", PartnerDbo::class.java)
+        query.setParameter("name", name)
+        query.setParameter("address", address)
+        return query.resultList.firstOrNull()
+    }
+
     private val log = LOG {}
 
     override fun create(partner: PartnerDbo): PartnerDbo {
@@ -42,11 +54,10 @@ class PartnerDaoImpl @Inject constructor(
         return partner
     }
 
-    override fun readAll(includeIgnored: Boolean?): List<PartnerDbo> {
-        log.debug { "readAll()" }
-        val whereIgnored = if (includeIgnored == null) "" else " AND ${PartnerDbo::ignored.name} = $includeIgnored"
-        val query = em.createQuery("SELECT p FROM ${PartnerDbo::class.simpleName} p WHERE ${PartnerDbo::deletedByMyc.name} = false" + whereIgnored, PartnerDbo::class.java)
-        return query.resultList
+    override fun readAll(includeIgnored: Boolean): List<PartnerDbo> {
+        log.debug { "readAll(includeIgnored=$includeIgnored)" }
+        val whereIgnored = if (includeIgnored) "" else " AND ${PartnerDbo::ignored.name} = $includeIgnored"
+        return em.queryList("SELECT p FROM ${PartnerDbo::class.simpleName} p WHERE ${PartnerDbo::deletedByMyc.name} = false" + whereIgnored)
     }
 
     override fun read(id: Long): PartnerDbo? =

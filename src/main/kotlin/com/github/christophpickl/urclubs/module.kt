@@ -1,5 +1,6 @@
 package com.github.christophpickl.urclubs
 
+import com.github.christophpickl.urclubs.domain.activity.ActivityModule
 import com.github.christophpickl.urclubs.domain.partner.PartnerModule
 import com.github.christophpickl.urclubs.myclubs.MyclubsModule
 import com.github.christophpickl.urclubs.persistence.PersistenceModule
@@ -14,6 +15,7 @@ class MainModule : AbstractModule() {
 
         install(PersistenceModule())
         install(PartnerModule())
+        install(ActivityModule())
         install(MyclubsModule())
         install(ServiceModule())
     }

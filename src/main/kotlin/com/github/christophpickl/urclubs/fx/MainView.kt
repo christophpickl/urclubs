@@ -61,7 +61,7 @@ class MainView : View() {
 class BottomView : View() {
 
     override val root = hbox {
-        button("Resync Partners").action {
+        button("Resync Data").action {
             fire(SyncRequest)
         }
         button("Reload from DB").action {

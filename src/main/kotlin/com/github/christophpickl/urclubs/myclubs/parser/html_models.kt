@@ -54,7 +54,9 @@ data class FinishedActivityHtmlModel(
         val category: String,
         val title: String,
         val locationHtml: String
-)
+) {
+    companion object
+}
 
 data class ProfileHtmlModel(
         val finishedActivities: List<FinishedActivityHtmlModel>

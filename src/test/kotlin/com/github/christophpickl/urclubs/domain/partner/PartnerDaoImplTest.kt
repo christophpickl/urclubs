@@ -35,7 +35,7 @@ class PartnerDaoImplTest : DatabaseTest() {
     fun `READ - Given a partner is stored When fetch all partners Then that partner is returned`() {
         save(partner)
 
-        val partners = dao().readAll(includeIgnored = null)
+        val partners = dao().readAll(includeIgnored = true)
 
         assertThat(partners).singleEntryIsEqualToIgnoringGivenProps(partner, PartnerDbo::id)
     }
@@ -43,7 +43,7 @@ class PartnerDaoImplTest : DatabaseTest() {
     fun `READ - Given deleted partner When fetch all partners Then nothing is returned`() {
         save(partner.copy(deletedByMyc = true))
 
-        val partners = dao().readAll(includeIgnored = null)
+        val partners = dao().readAll(includeIgnored = true)
 
         assertThat(partners).isEmpty()
     }
@@ -64,14 +64,6 @@ class PartnerDaoImplTest : DatabaseTest() {
         assertThat(partners).hasSize(1)
     }
 
-    fun `READ - Given ignored partner When fetch all and any partners Then one partner is returned`() {
-        save(partner.copy(ignored = true))
-
-        val partners = dao().readAll(includeIgnored = null)
-
-        assertThat(partners).hasSize(1)
-    }
-
     fun `READ - Given partner When find by short name Then find`() {
         save(partner.copy(shortName = "foo"))
 
@@ -84,6 +76,20 @@ class PartnerDaoImplTest : DatabaseTest() {
         save(partner.copy(shortName = "foo"))
 
         val found = dao().findByShortName("wrong")
+
+        assertThat(found).isNull()
+    }
+
+    fun `READ - Given partner When search by name and address Then return not null`() {
+        val partner = save(partner.copy(name = "name", address = "address"))
+
+        val found = dao().searchByNameAndAddress(partner.name, partner.address)
+
+        assertThat(found).isNotNull()
+    }
+
+    fun `READ - When search by name and address Then return null`() {
+        val found = dao().searchByNameAndAddress(partner.name, partner.address)
 
         assertThat(found).isNull()
     }

@@ -1,0 +1,181 @@
+- Partner{idDbo=1, shortName=aerial-yoga, name=Aerial Yoga, address=Tendlergasse 11, 1090 Wien}
+- Partner{idDbo=2, shortName=aikido-vienna, name=Aikido Vienna, address=Stadlauerstraße 4, 1220 Wien}
+- Partner{idDbo=3, shortName=alive-656-wien-1-bezirk, name=ALIVE 656 Wien - 1. Bezirk, address=Singerstraße 11b, 1010 Wien}
+- Partner{idDbo=4, shortName=alive-656-wien-2-bezirk, name=ALIVE 656 Wien - 2. Bezirk, address=Praterstraße 38 / Geschäftslokal, 1020 Wien}
+- Partner{idDbo=5, shortName=alive-656-wien-3-bezirk, name=ALIVE 656 Wien - 3. Bezirk, address=Invalidenstraße 15, 1030 Wien}
+- Partner{idDbo=6, shortName=alive-656-wien-9-bezirk, name=ALIVE 656 Wien - 9. Bezirk, address=Viriotgasse 4, 1090 Wien}
+- Partner{idDbo=7, shortName=amazing-yoga, name=Amazing Yoga, address=Diefenbachgasse 54A, 1150 Wien}
+- Partner{idDbo=8, shortName=ananya-yogaraum-wien, name=ANANYA - Yogaraum Wien, address=Mollardgasse 34, 1060 Wien}
+- Partner{idDbo=9, shortName=asanga-yoga, name=Asanga Yoga, address=Sandgasse 38/8, 1190 Wien}
+- Partner{idDbo=10, shortName=ashtangavienna, name=Ashtangavienna, address=Herbeckstraße 27, 1180 Wien}
+- Partner{idDbo=11, shortName=atelier-innere-mitte, name=Atelier Innere Mitte, address=Marxergasse 17 , 1030 Wien}
+- Partner{idDbo=12, shortName=ayutthaya-muay-thai-gym, name=Ayutthaya Muay Thai Gym, address=Salesianergasse 2, 1030 Wien}
+- Partner{idDbo=13, shortName=backyard-vienna, name=Backyard Vienna, address=Burggasse 95, 1070 Wien}
+- Partner{idDbo=14, shortName=bali-yoga-wien, name=Bali Yoga Wien, address=Gußhausstraße 2, 1040 Wien}
+- Partner{idDbo=15, shortName=bb-yoga, name=BB Yoga, address=Bergmillergasse 5, 1140 Wien}
+- Partner{idDbo=16, shortName=beach-and-racket-sport-eden, name=Beach and Racket Sport Eden, address=An der Schanze 7, 1210 Wien}
+- Partner{idDbo=17, shortName=beachsport-padel, name=Beachsport & Padel, address=Meiereistraße 20, 1020 Wien}
+- Partner{idDbo=18, shortName=beachvolley-wien, name=Beachvolley Wien, address=An der Schanze 7, 1210 Wien}
+- Partner{idDbo=19, shortName=bhavani-yoga-and-creativity, name=Bhavani - Yoga and Creativity, address=Florianigasse 29/8, 1080 Wien}
+- Partner{idDbo=20, shortName=bikram-yoga-schottenring, name=Bikram Yoga Schottenring, address=Maria-Theresien-Straße 32-34/17, 1010 Wien}
+- Partner{idDbo=21, shortName=body-concept-vienna, name=Body Concept Vienna, address=Spiegelgasse 8/6, 1010 Wien}
+- Partner{idDbo=22, shortName=bodydays, name=Bodydays, address=Jedlersdorferstr. 94, 1210 Wien}
+- Partner{idDbo=23, shortName=bodystreet-convalere, name=Bodystreet Convalere, address=Taborstraße 33, 1020 Wien}
+- Partner{idDbo=24, shortName=bodystreet-wien-rochusmarkt, name=Bodystreet Wien Rochusmarkt, address=Ungargasse 46, 1030 Wien}
+- Partner{idDbo=25, shortName=bootcamp-training-wien, name=BOOTCAMP Training Wien, address=Apostelgasse 18, 1030 Wien}
+- Partner{idDbo=26, shortName=boulderbar, name=Boulderbar, address=Hannovergasse 21, 1200 Wien}
+- Partner{idDbo=27, shortName=boulderbar-wienerberg, name=boulderbar Wienerberg, address=Gutheil Schoder Gasse 8-12, 1100 Wien}
+- Partner{idDbo=28, shortName=boxing3gym, name=Boxing3Gym, address=Schönbrunner Straße 103, 1050 Wien}
+- Partner{idDbo=29, shortName=budoclub-jonedo, name=Budoclub Jonedo, address=Leonard Bernstein Straße 2, 1220 Wien}
+- Partner{idDbo=30, shortName=bujinkan-wien-dojo, name=Bujinkan Wien Dojo, address=Schanzstraße 36/3, 1150 Wien}
+- Partner{idDbo=31, shortName=c19-indoor-golf-squash, name=C19 Indoor Golf & Squash, address=Heiligenstädter Straße 86/Innenhof Gebäude, 1190 Wien}
+- Partner{idDbo=32, shortName=campinas-yoga-ville, name=Campinas Yoga Ville, address=Wehlistrasse 68, 1200 Wien}
+- Partner{idDbo=33, shortName=capoeira-academy-vienna, name=Capoeira Academy Vienna, address=Taborstraße 38, 1020 Wien}
+- Partner{idDbo=34, shortName=center-6, name=Center 6, address=Kurzgasse 6, 1060 Wien}
+- Partner{idDbo=35, shortName=city-country-club-wienerberg, name=City & Country Club Wienerberg, address=Gutheil-Schoder-Gasse 7, 1100 Wien}
+- Partner{idDbo=36, shortName=clau-chi-entspannt, name=clau-chi entspannt, address=Siebensterngasse 4, 1070 Wien}
+- Partner{idDbo=37, shortName=climbonmarswiese, name=Climbonmarswiese, address=Neuwaldegger Straße 57a, 1170 Wien}
+- Partner{idDbo=38, shortName=codeblue-defence, name=CODEBLUE DEFENCE, address=Breitenfurterstraße 372, 1230 Wien}
+- Partner{idDbo=39, shortName=crossfit-brickbox, name=CrossFit BrickBox, address=Goldschlagstr. 172/ Stiege 3/ 1. OG, 1140 Wien}
+- Partner{idDbo=40, shortName=crossfit-district-2, name=CrossFit District 2, address=Schiffamtsgasse 10/10 – 13, 1020 Wien}
+- Partner{idDbo=41, shortName=crosszone, name=CrossZone, address=Fischerstiege 9, 1010 Wien}
+- Partner{idDbo=42, shortName=dimove-body-health-fitness, name=DIMOVE Body Health Fitness, address=Türkenstraße 13, 1090 Wien}
+- Partner{idDbo=43, shortName=doktor-yoga, name=doktor yoga, address=Kirchengasse 1A, 1070 Wien}
+- Partner{idDbo=44, shortName=easyoga, name=Easyoga, address=Schimmelgasse 3, 1030 Wien}
+- Partner{idDbo=45, shortName=ems-next-level-xbody-vienna, name=EMS next level - XBody Vienna, address=Gumpendorferstraße 87, 1060 Wien}
+- Partner{idDbo=46, shortName=ems-workout, name=EMS Workout, address=Wiedner Hauptstraße 33, 1040 Wien}
+- Partner{idDbo=47, shortName=family-strength, name=family strength, address=}
+- Partner{idDbo=48, shortName=fancypantsyoga, name=fancypantsyoga, address=Hollandstraße 9/13, 1020 Wien}
+- Partner{idDbo=49, shortName=feelgoodstudio, name=feelgoodstudio, address=Paulanergasse 13, 1040 Wien}
+- Partner{idDbo=50, shortName=fienergy, name=FiEnergy, address=Augarten, 1020 Wien}
+- Partner{idDbo=51, shortName=fit-mit-elvira, name=Fit mit Elvira, address=Schimmelgasse 3, 1030 Wien}
+- Partner{idDbo=52, shortName=fit-sportclub, name=Fit Sportclub, address=Heinrich von Buolgasse 3, 1210 Wien}
+- Partner{idDbo=53, shortName=fitboxen, name=Fitboxen, address=Anton Sattler Gasse 93 , 1220 Wien}
+- Partner{idDbo=54, shortName=fitness-beauty-saloon-wien-14, name=Fitness & Beauty – Saloon Wien 14, address=Breitenseerstraße 38, 1140 Wien}
+- Partner{idDbo=55, shortName=fitness-club-isc, name=Fitness Club ISC, address=Mariahilferstrasse 47, 1060 Wien}
+- Partner{idDbo=56, shortName=fitness-festival, name=Fitness Festival, address=Hütteldorfer Straße 130a, 1140 Wien}
+- Partner{idDbo=57, shortName=fitness-unlimited, name=Fitness Unlimited, address=Maria-Theresien-Straße 5, 1090 Wien}
+- Partner{idDbo=58, shortName=fitness-club-39, name=Fitness-Club 39, address=Porzellangasse 39-41, 1090 Wien}
+- Partner{idDbo=59, shortName=fitnesscenter-lemperg, name=Fitnesscenter Lemperg, address=Neubaugasse 56 , 1070 Wien}
+- Partner{idDbo=60, shortName=fitnessclub-heimlich, name=Fitnessclub Heimlich, address=Ungargasse 4, 1030 Wien}
+- Partner{idDbo=61, shortName=floor-a-fitness, name=Floor A Fitness, address=Bergmillergasse 5, 1140 Wien}
+- Partner{idDbo=62, shortName=fox-gym, name=Fox Gym, address=Tautenhayngasse 24, 1150 Wien}
+- Partner{idDbo=63, shortName=garage-gym, name=Garage Gym, address=Ungargasse 46, 1030 Wien}
+- Partner{idDbo=64, shortName=garuda-warrior-academy, name=Garuda Warrior Academy, address=Diefenbachgasse 46, 1150 Wien}
+- Partner{idDbo=65, shortName=gk-studio, name=GK Studio, address=Alserbachstraße 11, 1090 Wien}
+- Partner{idDbo=66, shortName=gymclub, name=GYMCLUB, address=Schönbrunner Straße 271 , 1120 Wien}
+- Partner{idDbo=67, shortName=hagju-ganzkrpertraining, name=hag*ju - ganzkörpertraining, address=}
+- Partner{idDbo=68, shortName=heeres-tennis-club-wien, name=Heeres Tennis Club Wien, address=Gaßmannstraße 2, 1130 Wien}
+- Partner{idDbo=69, shortName=here-and-now-yoga, name=Here and now - yoga, address=Meiselstraße 66, 1140 Wien}
+- Partner{idDbo=70, shortName=hi-edison-rochusmarkt, name=Hi Edison Rochusmarkt, address=Rochusplatz 1, 1030 Wien}
+- Partner{idDbo=71, shortName=hi-edison-wienerberg, name=Hi Edison Wienerberg, address=Wienerbergstraße 5/Top 120, 1100 wien}
+- Partner{idDbo=72, shortName=hot-yoga-vienna, name=Hot Yoga Vienna, address=Gumpendorfer Strasse 63C/1, 1060 Wien}
+- Partner{idDbo=73, shortName=hotpod-yoga-vienna, name=Hotpod Yoga Vienna, address=Margaretenstraße 70/2/2, 1050 Wien}
+- Partner{idDbo=74, shortName=i-liq-chuan-austria-kampfkunst-der-achtsamkeit, name=I Liq Chuan Austria - Kampfkunst der Achtsamkeit, address=Wiedner Gürtel 68, 1040 Wien}
+- Partner{idDbo=75, shortName=in-good-shape, name=In good shape, address=Obere Donaustrasse 69, 1020 Wien}
+- Partner{idDbo=76, shortName=int-tai-chi-chuan-austria, name=Int. Tai Chi Chuan Austria, address=Mariahilfer Straße 115, 1060 Wien}
+- Partner{idDbo=77, shortName=jab-club-vienna, name=JAB Club Vienna, address=Altmannsdorferstrasse 182a, 1230 Wien}
+- Partner{idDbo=78, shortName=justyfit, name=JUSTyFIT, address=Schwindgasse 5, 1040 Wien}
+- Partner{idDbo=79, shortName=kampfkunstforum-wien, name=Kampfkunstforum Wien, address=Neustiftgasse 100, 1070 Wien}
+- Partner{idDbo=80, shortName=kampfsportcenter-tosan, name=Kampfsportcenter Tosan, address=Taborstraße 38, 1020 Wien}
+- Partner{idDbo=81, shortName=kangoo-club-wien, name=Kangoo Club Wien, address=Theresiengasse 47, 1180 Wien}
+- Partner{idDbo=82, shortName=kavaza-schule-wien, name=Kavaza Schule Wien, address=Wipplingerstraße 30, 1010 Wien}
+- Partner{idDbo=83, shortName=kletterhalle-wien-sdstadt, name=Kletterhalle Wien & Südstadt, address=Kletterhalle Südstadt: Liese Prokop-Platz 1, 2344 Maria Enzersdorf}
+- Partner{idDbo=84, shortName=kletterpark-donauinsel, name=Kletterpark Donauinsel, address=Am Kaisermühlendamm 53, 1220 WIen}
+- Partner{idDbo=85, shortName=krafftgasse-eu, name=Krafftgasse e.U., address=Rembrandtstrasse 26/2, 1020 Wien}
+- Partner{idDbo=86, shortName=krav-maga-global, name=Krav Maga Global, address=Obere Donaustraße 69, 1020 Wien}
+- Partner{idDbo=87, shortName=lenok-yoga, name=Lenok Yoga, address=Stubenring 14/DG, 1010 Vienna}
+- Partner{idDbo=88, shortName=little-yoga-room, name=Little Yoga Room, address=Strozzigasse 32-34, 1080 Wien}
+- Partner{idDbo=89, shortName=makoto-dojo-vienna, name=Makoto Dojo Vienna, address=Anastasius Grün Gasse 10, 1180 Wien}
+- Partner{idDbo=90, shortName=mamafit, name=MamaFIT, address=AUGARTEN, 1020 Wien}
+- Partner{idDbo=91, shortName=mamafit-maria-tavares, name=mamaFIT Maria Tavares, address=Arenbergpark, 1030 Wien}
+- Partner{idDbo=92, shortName=mamborama, name=Mamborama, address=Schmalzhofgasse 8/15, 1060 Wien}
+- Partner{idDbo=93, shortName=mars-training, name=MARS Training, address=Roter Berg, 1130 Wien}
+- Partner{idDbo=94, shortName=mathletics, name=MAthletics, address=Sonnenallee 41, 1220 Wien}
+- Partner{idDbo=95, shortName=maxx-entertainment, name=MAXX Entertainment, address=Herziggasse 3, 1230 Wien}
+- Partner{idDbo=96, shortName=mein-raum-yoga-feel-move-balance, name=Mein Raum Yoga - FEEL. MOVE. BALANCE., address=Ungargasse 46, 1030 Wien}
+- Partner{idDbo=97, shortName=mindful-yoga-mit-caro, name=MINDFUL YOGA mit Caro, address=Fasholdgasse 3 (Sattvayoga), 1130 Wien}
+- Partner{idDbo=98, shortName=missmagicfit, name=MissMAGICFIT, address=Prager Straße 80-86, 1210 Wien}
+- Partner{idDbo=99, shortName=mma-vienna, name=MMA Vienna, address=Favoritenstraße 54, 1040 Wien}
+- Partner{idDbo=100, shortName=myclubs-fussball, name=myClubs Fussball, address=Karajangasse 14, 1200 Wien}
+- Partner{idDbo=101, shortName=nox-fight-fitness-club, name=NOX Fight & Fitness Club, address=Friesgasse 12, 1150 Wien}
+- Partner{idDbo=102, shortName=oeav-kletteranlage-flakturm, name=OeAV Kletteranlage Flakturm, address=OeAV-Kletteranlage Flakturm, 1060 Wien}
+- Partner{idDbo=103, shortName=parkour-austria, name=Parkour Austria, address=Wohlmutstraße 3, 1020 Wien}
+- Partner{idDbo=104, shortName=perform-zentrum, name=Perform Zentrum, address=Mariahilfer Strasse 51, 1060 Wien}
+- Partner{idDbo=105, shortName=performing-center-austria, name=Performing Center Austria, address=Zieglergasse 7, 1070 Wien}
+- Partner{idDbo=106, shortName=personal-fitness-club, name=Personal Fitness Club, address=Porzellangasse 47, 1090 Wien}
+- Partner{idDbo=107, shortName=personalcoretraining, name=Personalcoretraining, address=Alserbachstraße 11/3, 1090 Wien}
+- Partner{idDbo=108, shortName=pilates-boutique-vienna, name=Pilates Boutique Vienna, address=Elisabethstraße 6/3/17, 5. Stock, 1010 Wien}
+- Partner{idDbo=109, shortName=pilates-studio-vienna, name=Pilates Studio Vienna, address=Kundmanngasse 33, 1030 Wien}
+- Partner{idDbo=110, shortName=pilates-system-europe, name=Pilates System Europe, address=Severingasse 1/6, 1090 Wien}
+- Partner{idDbo=111, shortName=pilatesstudio-rosen, name=Pilatesstudio Rosen, address=Walcherstraße 13 G.01, 1020 Wien}
+- Partner{idDbo=112, shortName=pop-pilates, name=Pop Pilates, address=Ferstelgasse 3, 1090 Wien}
+- Partner{idDbo=113, shortName=poweryoga-vienna, name=poweryoga vienna, address=Franz-Hochedlinger-Gasse 4, 1020 Wien}
+- Partner{idDbo=114, shortName=px-sports, name=PX Sports, address=Sensengasse 5/3, 1090 Wien}
+- Partner{idDbo=115, shortName=qigong-kleinowitz, name=Qigong Kleinowitz, address=}
+- Partner{idDbo=116, shortName=retreat-vienna, name=RE:TREAT Vienna, address=Nelkengasse 6/14, 1060 Wien}
+- Partner{idDbo=117, shortName=rising-high, name=Rising High, address=Obergfellplatz 2/1, 1210 Wien}
+- Partner{idDbo=118, shortName=roberta-rogy-ems, name=Roberta Rogy EMS, address=Rasumofskygasse 17, 1030 Wien}
+- Partner{idDbo=119, shortName=rockubody-fit-am-ring, name=ROCKuBODY - Fit am Ring, address=Beethovenplatz 1, 1010 Wien}
+- Partner{idDbo=120, shortName=sami-self-defense-martial-arts, name=S.A.M.I. - Self Defense & Martial Arts, address=Frömmlgasse 31, 1210 Wien}
+- Partner{idDbo=121, shortName=salsaviva, name=SalsaViva, address=Wipplingerstraße 30, 1010 Wien}
+- Partner{idDbo=122, shortName=sc-vienna-walzer-sektion-futsal, name=SC Vienna Walzer Sektion Futsal, address=}
+- Partner{idDbo=123, shortName=schwimmschule-wien, name=Schwimmschule Wien, address=Vally-Weigl-Gasse 2/Stiege 1, 1100 Wien}
+- Partner{idDbo=124, shortName=shendao-fitness, name=Shendao Fitness, address=Kendlerstrasse 25, 1140 Wien}
+- Partner{idDbo=125, shortName=shenwu, name=Shenwu, address=Argentinierstraße 17, 1040 Wien}
+- Partner{idDbo=126, shortName=shinergy-schnbrunn, name=Shinergy Schönbrunn, address=Winkelmannstrasse 8, 1150 Wien}
+- Partner{idDbo=127, shortName=silat-akademie, name=Silat Akademie, address=Währinger Gürtel 29, 1180 Wien}
+- Partner{idDbo=128, shortName=soundcycle-urban-indoor-cycling-studio, name=soundcycle - urban indoor cycling studio, address=Bauernmarkt 18/10, 1010 Wien}
+- Partner{idDbo=129, shortName=special-dive-tauchschule, name=Special Dive Tauchschule, address=Lilienbrunngasse 7-9, 1020 Wien}
+- Partner{idDbo=130, shortName=spinbox, name=SpinBOX, address=Vally-Weigl-Gasse 2, 1100 Wien}
+- Partner{idDbo=131, shortName=sport-zentrum-gudrun, name=Sport Zentrum Gudrun, address=Laimäckergasse 1, 1100 Wien}
+- Partner{idDbo=132, shortName=sporthalle-wien, name=SPORTHALLE WIEN, address=Fuhrmannsgasse 18, 1080 Wien}
+- Partner{idDbo=133, shortName=sportzentrum-leopoldstadt, name=Sportzentrum Leopoldstadt, address=Leystraße 163, 1020 Wien}
+- Partner{idDbo=134, shortName=sportzentrum-marswiese, name=Sportzentrum Marswiese, address=Neuwaldeggerstrasse 57 A, 1170 Wien}
+- Partner{idDbo=135, shortName=spring-dance-tanzen-macht-spass, name=Spring Dance - Tanzen macht Spass, address=Obere Donaustrasse 69, 1020 Wien, 1020 Wien}
+- Partner{idDbo=136, shortName=stand-up-paddling-kayak-center, name=Stand Up Paddling & Kayak Center, address=}
+- Partner{idDbo=137, shortName=sula-fitness, name=Sula Fitness, address=Alserbachstraße 11/3, 1090 Wien}
+- Partner{idDbo=138, shortName=tabro, name=TABRO®, address=Kürschnergasse 1A, 1210 Wien}
+- Partner{idDbo=139, shortName=tae-kibo-kampfsportverein, name=Tae-Kibo Kampfsportverein, address=Münzgasse 3, 1030 Wien}
+- Partner{idDbo=140, shortName=tanzschule-chris, name=Tanzschule Chris, address=Wehlistraße 150 , 1020 Wien}
+- Partner{idDbo=141, shortName=tanzstudio-mnada, name=Tanzstudio Mänada, address=Diehlgasse 52/ Ecke Margaretenstraße, 1050 Wien}
+- Partner{idDbo=142, shortName=tennis-hrubesch, name=Tennis Hrubesch, address=Rosensteingasse 93, 1170 Wien}
+- Partner{idDbo=143, shortName=tennis-point-vienna, name=Tennis Point Vienna, address=Baumgasse 87, 1030 Wien}
+- Partner{idDbo=144, shortName=tennisclub-pokorny, name=Tennisclub Pokorny, address=Mauerbachstraße 75, 1140 Wien}
+- Partner{idDbo=145, shortName=the-coi, name=The COI, address=Handelskai 265, 1020 Wien}
+- Partner{idDbo=146, shortName=the-drill, name=the drill, address=Ennsgasse 17, 1020 Wien}
+- Partner{idDbo=147, shortName=tikju-twerk-dance-studio, name=Ti:Kju - Twerk & Dance Studio, address=Nußdorferstraße 69/Top 1a, 1090 Wien}
+- Partner{idDbo=148, shortName=triller-crossfit, name=Triller CrossFit, address=Trillergasse 4/21A, 1210 Wien}
+- Partner{idDbo=149, shortName=tristyle, name=Tristyle, address=Türkenstraße 13, 1090 Wien}
+- Partner{idDbo=150, shortName=triyoga-center-vienna, name=Triyoga-Center Vienna, address=Plösslgasse 11, 1040 Wien}
+- Partner{idDbo=151, shortName=tumbao, name=Tumbao, address=Margaretenstrasse 26, 1040 Wien}
+- Partner{idDbo=152, shortName=vienna-city-bootcamp, name=Vienna City Bootcamp, address=Heldenplatz:Innenseite des Heldentors, rechte Seite 1, 1010 Wien}
+- Partner{idDbo=153, shortName=ving-tsun-austria, name=Ving Tsun Austria, address=Dingelstedtgasse8/1, 1150 Wien}
+- Partner{idDbo=154, shortName=vital-woman, name=Vital Woman, address=Vorgartenstraße 65, 1200 Wien}
+- Partner{idDbo=155, shortName=wakeboardlift-wien, name=Wakeboardlift Wien, address=Am Wehr 1, 1220 Wien}
+- Partner{idDbo=156, shortName=welcome-to-ems, name=WELCOME TO EMS, address=Einfahrtstrasse 1-3, 1300 Schwechat}
+- Partner{idDbo=157, shortName=wohlbefinden-jetzt-julia-merl, name=Wohlbefinden JETZT - Julia Merl, address=}
+- Partner{idDbo=158, shortName=wohlsinn, name=wohlsinn, address=}
+- Partner{idDbo=159, shortName=wonneyoga, name=WONNEYOGA, address=Piaristengasse 18 -, 1080 Wien}
+- Partner{idDbo=160, shortName=workout-gesundheit-fitness-wellness, name=WorkOut Gesundheit, Fitness, Wellness, address=Rötzergasse 41, 1170 Wien}
+- Partner{idDbo=161, shortName=worxout-high-tech-fitness-club, name=WORXOUT High Tech Fitness Club, address=Schottenfeldgasse 16, 1070 Wien}
+- Partner{idDbo=162, shortName=wu-tai-chi-mit-markus-tanzer, name=Wu-Tai Chi mit Markus Tanzer, address=Lerchenfelder Straße 156/200, 1080 Wien}
+- Partner{idDbo=163, shortName=wudang-akademie-wien, name=Wudang Akademie Wien, address=Rotundenallee , 1020 Wien}
+- Partner{idDbo=164, shortName=x-sanity-vienna, name=X-Sanity Vienna, address=Theresiengasse 47, 1180 Wien}
+- Partner{idDbo=165, shortName=y4e-yoga-for-everyone, name=Y4E Yoga for Everyone, address=Schlösselgasse 19/1, 1080 Wien}
+- Partner{idDbo=166, shortName=yamasorg, name=Yamas.org, address=Ortnergasse 4, 1150 Vienna}
+- Partner{idDbo=167, shortName=yoga-shiatsu-massage, name=YOGA - SHIATSU - MASSAGE, address=Kienmayergasse 16/EG Hof, 1140 Wien}
+- Partner{idDbo=168, shortName=yoga-atelier, name=Yoga Atelier, address=Blindengasse 7-9, 1080 Wien}
+- Partner{idDbo=169, shortName=yoga-college-vienna, name=Yoga College Vienna, address=Neubaugürtel 47/5, 1150 Wien}
+- Partner{idDbo=170, shortName=yoga-is-different, name=Yoga is different, address=Schlösselgasse 19/1, 1080 Wien}
+- Partner{idDbo=171, shortName=yoga23, name=Yoga23, address=Ketzergasse 41/3, 1230 Wien}
+- Partner{idDbo=172, shortName=yoga4yoginis, name=Yoga4Yoginis, address=Waaggasse 12, 1040 Wien}
+- Partner{idDbo=173, shortName=yoga7, name=Yoga7, address=Burggasse 74/10, 1070 Wien}
+- Partner{idDbo=174, shortName=yogainn, name=YogaInn, address=Sternwartestrasse 17, 1180 Wien}
+- Partner{idDbo=175, shortName=yogakula, name=YogaKula, address=Bösendorferstraße 9, 1010 Wien}
+- Partner{idDbo=176, shortName=yogalounge, name=Yogalounge, address=Seidlgasse 30, 1030 Wien}
+- Partner{idDbo=177, shortName=yogarei, name=Yogarei, address=Gfornergasse 3/1/2, 1060 Wien}
+- Partner{idDbo=178, shortName=yogaria, name=Yogaria, address=Strozzigasse 31, 1080 Wien}
+- Partner{idDbo=179, shortName=yogart-studio, name=YogArt Studio, address=Nordbahnstrasse 16, 1020 Wien}
+- Partner{idDbo=180, shortName=yogazentrum-ganesha, name=Yogazentrum Ganesha, address=Alserbachstraße 2/15, 1090 Wien}
+- Partner{idDbo=181, shortName=zumba-im-loft25, name=Zumba im Loft25, address=Theresiengasse 47, 1180 Wien}

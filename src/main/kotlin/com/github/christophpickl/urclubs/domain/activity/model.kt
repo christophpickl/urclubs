@@ -1,7 +1,11 @@
 package com.github.christophpickl.urclubs.domain.activity
 
-data class Activity(
-        val idMyc: String
+import java.time.LocalDateTime
+
+data class FinishedActivity(
+        val idMyc: String,
+        val date: LocalDateTime
+// title?
 )
 
 enum class ActivityType {

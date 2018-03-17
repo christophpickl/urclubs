@@ -4,15 +4,25 @@ import com.github.christophpickl.kpotpourri.common.logging.LOG
 import javax.inject.Inject
 
 class SyncService @Inject constructor(
-        private val partnerSyncer: PartnerSyncer,
-        private val pastActivitySyncer: PastActivitySyncer,
-        private val upcomingActivitySyncer: UpcomingActivitySyncer
+    private val partnerSyncer: PartnerSyncer,
+    private val finishedActivitySyncer: FinishedActivitySyncer,
+    private val upcomingActivitySyncer: UpcomingActivitySyncer
 ) {
 
     private val log = LOG {}
 
-    fun sync(): PartnerSyncReport {
+    fun sync(): SyncReport {
         log.debug { "sync()" }
-        return partnerSyncer.sync()
+
+        return SyncReport(
+            partners = partnerSyncer.sync(),
+            finishedActivities = finishedActivitySyncer.sync()
+        )
     }
+
 }
+
+data class SyncReport(
+    val partners: PartnerSyncReport,
+    val finishedActivities: FinishedActivitySyncReport
+)

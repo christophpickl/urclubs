@@ -13,6 +13,7 @@
 1. immediately after
     * colorize location (=distance) => property Partner.locationRating (rename regular rating to "partnerRating")
         + add new property: locationNote (render in table next to static location address)
+    1. style evertyhing; use myclubs colors (black bg, yellow font)
     1. enhance search:
         * rating (is bigger/lower/equals)
         * remainingCredits/totalVisits (lower, equal, bigger, not)

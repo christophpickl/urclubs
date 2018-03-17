@@ -2,17 +2,14 @@ package com.github.christophpickl.urclubs.fx
 
 import com.github.christophpickl.kpotpourri.common.logging.LOG
 import com.github.christophpickl.urclubs.fx.partner.PartnerListRequest
-import com.github.christophpickl.urclubs.service.sync.PartnerSyncReport
+import com.github.christophpickl.urclubs.service.sync.SyncReport
 import com.github.christophpickl.urclubs.service.sync.SyncService
 import javafx.scene.control.ButtonType
-import tornadofx.Controller
-import tornadofx.EventBus
-import tornadofx.FXEvent
-import tornadofx.information
+import tornadofx.*
 
 object SyncRequest : FXEvent(EventBus.RunOn.BackgroundThread)
 
-class SyncResultEvent(val partnersSynced: PartnerSyncReport) : FXEvent()
+class SyncResultEvent(val syncReport: SyncReport) : FXEvent()
 
 class SyncFxController : Controller() {
 
@@ -31,8 +28,10 @@ class SyncFxController : Controller() {
             information(
                     title = "Sync Report",
                     header = "Sync completed successfully",
-                    content = "Inserted: ${event.partnersSynced.insertedPartners.size}\n" +
-                            "Deleted: ${event.partnersSynced.deletedPartners.size}",
+                content = "Partners inserted: ${event.syncReport.partners.insertedPartners.size}, " +
+                    "deleted: ${event.syncReport.partners.deletedPartners.size}\n" +
+                    "Past activities inserted: ${event.syncReport.finishedActivities.inserted.size}, " +
+                    "deleted: ${event.syncReport.finishedActivities.deleted.size}\n",
                     buttons = *arrayOf(ButtonType.OK)
                     // owner = ... main window reference?!
             )

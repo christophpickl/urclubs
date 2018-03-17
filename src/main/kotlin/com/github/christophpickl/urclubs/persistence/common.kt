@@ -26,10 +26,22 @@ fun HasId.ensurePersisted() {
     }
 }
 
+
+fun <T> EntityManager.persistTransactional(entity: T): T {
+    transactional {
+        persist(entity)
+    }
+    return entity
+}
+
 fun EntityManager.transactional(action: EntityManager.() -> Unit) {
     transaction.begin()
     action(this)
     transaction.commit()
+}
+
+inline fun <reified T> EntityManager.queryList(query: String): List<T> {
+    return createQuery(query, T::class.java).resultList
 }
 
 inline fun <reified T: Any> EntityManager.createCriteriaDeleteAll() = criteriaBuilder.createCriteriaDelete<T>(T::class.java).apply {
