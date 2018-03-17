@@ -3,9 +3,8 @@ package com.github.christophpickl.urclubs.domain.activity
 import java.time.LocalDateTime
 
 data class FinishedActivity(
-        val idMyc: String,
-        val date: LocalDateTime
-// title?
+    val title: String,
+    val date: LocalDateTime
 )
 
 enum class ActivityType {

@@ -1,14 +1,19 @@
 package com.github.christophpickl.urclubs.service.sync
 
-import com.github.christophpickl.kpotpourri.common.collection.prettyPrint
 import com.github.christophpickl.kpotpourri.common.logging.LOG
 import com.github.christophpickl.urclubs.DEVELOPMENT_FAST_SYNC
 import com.github.christophpickl.urclubs.domain.activity.ActivityService
+import com.github.christophpickl.urclubs.domain.activity.FinishedActivity
 import com.github.christophpickl.urclubs.domain.partner.Partner
 import com.github.christophpickl.urclubs.domain.partner.PartnerService
 import com.github.christophpickl.urclubs.myclubs.MyClubsApi
 import com.github.christophpickl.urclubs.myclubs.parser.FinishedActivityHtmlModel
 import javax.inject.Inject
+
+fun FinishedActivityHtmlModel.toFinishedActivity() = FinishedActivity(
+    title = title,
+    date = date
+)
 
 class FinishedActivitySyncer @Inject constructor(
     private val myclubs: MyClubsApi,
@@ -18,45 +23,55 @@ class FinishedActivitySyncer @Inject constructor(
 
     private val log = LOG {}
 
+    // those partners have been deleted in the meanwhile by myclubs
+    private val ignoredActivityLocations = listOf(
+        "Bodystreet Convalere<br>Ungargasse 46, 1030 Wien",
+        "MINDFUL_BODY WIEN<br>Paulanergasse 13, 1040 Wien",
+        "Fitness Festival<br>Wipplingerstraße 30, 1010 Wien"
+    )
+
     fun sync(): FinishedActivitySyncReport {
         log.info { "sync()" }
         val activitiesFetched = fetchFinishedActivities()
-        activitiesFetched.prettyPrint()
-        val activitiesStored = activityService.readAllFinished()
+        val notYetInsertedActivities = filterNotYetInserted(activitiesFetched)
 
-//        val fetchedById = activitiesFetched.associateBy { it.activity. }
-//        val fetchedIds = fetchedById.keys
-//        val storedById = partnersStored.associateBy { it.idMyc }
-//        val storedIds = storedById.keys
-//
-//        val insertedPartners = fetchedById.minus(storedIds).values.map { partnerMyc ->
-//            val rawPartner = partnerMyc.toPartner()
-//            val detailPartner = myclubs.partner(rawPartner.shortName)
-//            val partner = rawPartner.enhance(detailPartner)
-//            partnerService.create(partner)
-//        }
-//
-//        val deletedPartners = storedById.minus(fetchedIds).values
-//            .map { it.copy(deletedByMyc = true) }
-//            .apply {
-//                forEach {
-//                    partnerService.update(it)
-//                }
-//            }.toList()
+        val insertedActivities = mutableListOf<FinishedActivity>()
+        notYetInsertedActivities.forEach { activity ->
+            val finishedActivity = activity.activity.toFinishedActivity()
+            insertedActivities += finishedActivity
+            val partner = activity.partner.addFinishedActivity(finishedActivity)
+            partnerService.update(partner)
+        }
 
-        // FIXME implement sync past activities
-
-        return FinishedActivitySyncReport(inserted = emptyList(), deleted = emptyList())
+        return FinishedActivitySyncReport(inserted = insertedActivities)
     }
+
+    private fun Partner.addFinishedActivity(activity: FinishedActivity) = copy(
+        finishedActivities = finishedActivities.toMutableList().apply { add(activity) }
+    )
+
+    private fun filterNotYetInserted(fetched: List<EnhancedFinishedActivity>): List<EnhancedFinishedActivity> {
+        val stored = activityService.readAllFinished()
+        return fetched.filter {
+            !stored.contains(it.activity.toFinishedActivity())
+        }
+    }
+
     private fun fetchFinishedActivities(): List<EnhancedFinishedActivity> {
         val activities = myclubs.finishedActivities().run {
-            if (DEVELOPMENT_FAST_SYNC) take(1) else this
+            if (DEVELOPMENT_FAST_SYNC) take(5) else this
         }
-        return activities.map { activity ->
+        return activities.mapNotNull { activity ->
+            val partner = partnerService.searchPartner(activity.locationHtml)
+                ?: if (ignoredActivityLocations.contains(activity.locationHtml)) {
+                    log.info { "Ignoring activity which is known to be associated by a deleted partner." }
+                    return@mapNotNull null
+                } else {
+                    throw Exception("Could not find partner for: $activity")
+                }
             EnhancedFinishedActivity(
                 activity = activity,
-                partner = partnerService.searchPartner(activity.locationHtml)
-                    ?: throw Exception("Could not find partner for $activity")
+                partner = partner
             )
         }
     }
@@ -69,6 +84,5 @@ private data class EnhancedFinishedActivity(
 )
 
 data class FinishedActivitySyncReport(
-    val inserted: List<Any>,
-    val deleted: List<Any>
+    val inserted: List<FinishedActivity>
 )

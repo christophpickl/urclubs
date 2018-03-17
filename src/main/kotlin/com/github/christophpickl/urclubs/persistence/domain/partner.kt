@@ -14,6 +14,7 @@ import com.github.christophpickl.urclubs.persistence.transactional
 import com.google.common.base.MoreObjects
 import javax.inject.Inject
 import javax.persistence.Column
+import javax.persistence.ElementCollection
 import javax.persistence.Entity
 import javax.persistence.EntityManager
 import javax.persistence.EnumType
@@ -32,17 +33,21 @@ interface PartnerDao {
     fun searchByNameAndAddress(name: String, address: String): PartnerDbo?
 }
 
-
 class PartnerDaoImpl @Inject constructor(
     private val em: EntityManager
 ) : PartnerDao {
 
     override fun searchByNameAndAddress(name: String, address: String): PartnerDbo? {
-        val query = em.createQuery("SELECT p FROM ${PartnerDbo::class.simpleName} p WHERE " +
-            "${PartnerDbo::name.name} = :name AND ${PartnerDbo::address.name} = :address", PartnerDbo::class.java)
-        query.setParameter("name", name)
-        query.setParameter("address", address)
-        return query.resultList.firstOrNull()
+        val builder = em.criteriaBuilder
+        val criteria = builder.createQuery(PartnerDbo::class.java).apply {
+            val root = from(PartnerDbo::class.java)
+            select(root)
+            var where = builder.conjunction()
+            where = builder.and(where, builder.equal(root.get<PartnerDbo>(PartnerDbo::name.name), name))
+            where = builder.and(where, builder.isMember(address, root.get(PartnerDbo::addresses.name)))
+            where(where)
+        }
+        return em.createQuery(criteria).resultList.firstOrNull()
     }
 
     private val log = LOG {}
@@ -102,8 +107,8 @@ data class PartnerDbo(
     @Column(nullable = false, length = COL_LENGTH_MED, unique = true)
     var shortName: String,
 
-    @Column(nullable = false, length = COL_LENGTH_MED)
-    var address: String,
+    @ElementCollection
+    var addresses: List<String>,
 
     @Column(nullable = false, length = COL_LENGTH_BIG)
     var note: String,

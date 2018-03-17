@@ -242,7 +242,7 @@ class HtmlParserTest {
             name = "Hotpod Yoga Vienna",
             description = "Some description.",
             linkPartnerSite = "http://www.hotpodyoga.com/at/yoga-classes/vienna/",
-            address = "Margaretenstraße 70/2/2, 1050 Wien",
+            addresses = listOf("Margaretenstraße 70/2/2, 1050 Wien"),
             flags = listOf("Bikram & Hot Yoga", "Yoga"),
             upcomingActivities = listOf(PartnerDetailActivityHtmlModel(
                 idMyc = "meqR6C5d0m",
@@ -260,10 +260,16 @@ class HtmlParserTest {
         assertThat(partner.upcomingActivities).hasSize(9)
     }
 
+    fun `parsePartner - multi addresses`() {
+        val partner = HtmlParser().parsePartner(readResponse("partner.multi_address.html"))
+
+        assertThat(partner.addresses).hasSize(3)
+    }
+
     fun `parsePartner - integration without address`() {
         val partner = HtmlParser().parsePartner(readResponse("partner.without_address.html"))
 
-        assertThat(partner.address).isEqualTo("")
+        assertThat(partner.addresses).isEmpty()
     }
 
     fun `parsePartner - integration upcoming is only book now`() {

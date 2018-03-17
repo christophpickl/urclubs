@@ -28,20 +28,20 @@ class PartnerServiceImplTest : DatabaseTest() {
 
     fun `searchPartner - Given partner exists in DB When search for him Then return him`() {
         val partner = em.persistTransactional(
-            PartnerDbo.testInstance().copy(name = "name", address = "address")
+            PartnerDbo.testInstance().copy(name = "name", addresses = listOf("address"))
         )
 
-        val found = service.searchPartner("${partner.name}<br>${partner.address}")
+        val found = service.searchPartner("${partner.name}<br>${partner.addresses[0]}")
 
         assertThat(found).isNotNull()
     }
 
     fun `searchPartner - Given location with HTML encoded ampersand When search for him Then return him`() {
         val partner = em.persistTransactional(
-            PartnerDbo.testInstance().copy(name = "City & Country Club", address = "address")
+            PartnerDbo.testInstance().copy(name = "City & Country Club", addresses = listOf("address"))
         )
 
-        val found = service.searchPartner("City &amp; Country Club<br>${partner.address}")
+        val found = service.searchPartner("City &amp; Country Club<br>${partner.addresses[0]}")
 
         assertThat(found).isNotNull()
     }

@@ -80,16 +80,32 @@ class PartnerDaoImplTest : DatabaseTest() {
         assertThat(found).isNull()
     }
 
-    fun `READ - Given partner When search by name and address Then return not null`() {
-        val partner = save(partner.copy(name = "name", address = "address"))
+    fun `READ - Given partner with 3 addresses When search by name and address Then return not null`() {
+        val partner = save(partner.copy(name = "name", addresses = listOf("address1", "address2", "address3")))
 
-        val found = dao().searchByNameAndAddress(partner.name, partner.address)
+        val found = dao().searchByNameAndAddress(partner.name, partner.addresses[1])
 
         assertThat(found).isNotNull()
     }
 
-    fun `READ - When search by name and address Then return null`() {
-        val found = dao().searchByNameAndAddress(partner.name, partner.address)
+    fun `READ - Given partner When search by correct name and incorrect address Then return null`() {
+        val partner = save(partner.copy(name = "name", addresses = listOf("address")))
+
+        val found = dao().searchByNameAndAddress(partner.name, "incorrect")
+
+        assertThat(found).isNull()
+    }
+
+    fun `READ - Given partner When search by incorrect name and correct address Then return null`() {
+        val partner = save(partner.copy(name = "name", addresses = listOf("address")))
+
+        val found = dao().searchByNameAndAddress("incorrect", partner.addresses[0])
+
+        assertThat(found).isNull()
+    }
+
+    fun `READ - Given empty DB When search by name and address Then return null`() {
+        val found = dao().searchByNameAndAddress("anyName", "anyAddress")
 
         assertThat(found).isNull()
     }
@@ -109,7 +125,7 @@ class PartnerDaoImplTest : DatabaseTest() {
             id = 0L,
             idMyc = "idMyc",
             shortName = "shortName",
-            address = "address",
+            addresses = listOf("address"),
             linkPartner = "linkPartner",
             linkMyclubs = "linkMyclubs",
             picture = null
@@ -129,7 +145,7 @@ class PartnerDaoImplTest : DatabaseTest() {
             id = savedPartner.id,
             idMyc = savedPartner.idMyc,
             shortName = savedPartner.shortName,
-            address = savedPartner.address,
+            addresses = savedPartner.addresses,
             linkPartner = savedPartner.linkPartner,
             linkMyclubs = savedPartner.linkMyclubs,
             picture = ByteArray(8, { 1 })

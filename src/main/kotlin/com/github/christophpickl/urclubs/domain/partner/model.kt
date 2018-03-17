@@ -3,6 +3,7 @@ package com.github.christophpickl.urclubs.domain.partner
 import com.github.christophpickl.urclubs.HasOrder
 import com.github.christophpickl.urclubs.OrderedEnumCompanion
 import com.github.christophpickl.urclubs.OrderedEnumCompanion2
+import com.github.christophpickl.urclubs.domain.activity.FinishedActivity
 import com.github.christophpickl.urclubs.persistence.domain.CategoryDbo
 import com.github.christophpickl.urclubs.persistence.domain.PartnerDbo
 import com.github.christophpickl.urclubs.persistence.domain.RatingDbo
@@ -15,7 +16,7 @@ data class Partner(
     val shortName: String, // "triller-crossfit" ... used for links
     val name: String, // "Triller CrossFit"
     val note: String,
-    val address: String,
+    val addresses: List<String>,
     val rating: Rating,
     val maxCredits: Int,
     val deletedByMyc: Boolean, // keep in DB still locally
@@ -25,7 +26,8 @@ data class Partner(
     val category: Category,
     val linkMyclubs: String,
     val linkPartner: String,
-    val picture: Picture
+    val picture: Picture,
+    val finishedActivities: List<FinishedActivity>
 ) {
 
     companion object {
@@ -37,7 +39,7 @@ data class Partner(
             shortName = "",
             name = "",
             note = "",
-            address = "",
+            addresses = emptyList(),
             rating = Rating.UNKNOWN,
             maxCredits = DEFAULT_MAX_CREDITS,
             deletedByMyc = false,
@@ -47,7 +49,8 @@ data class Partner(
             category = Category.UNKNOWN,
             linkMyclubs = "",
             linkPartner = "",
-            picture = Picture.DefaultPicture
+            picture = Picture.DefaultPicture,
+            finishedActivities = emptyList()
         )
     }
 
@@ -60,7 +63,7 @@ data class Partner(
             copy(
                 shortName = "dummy-ems",
                 name = "Dummy EMS",
-                address = "Hauptplatz 1",
+                addresses = listOf("Hauptplatz 1"),
                 note = "my note 1",
                 linkMyclubs = "http://orf.at",
                 linkPartner = "http://google.com",
@@ -76,7 +79,7 @@ data class Partner(
             copy(
                 shortName = "yoga",
                 name = "Dr. Yoga",
-                address = "Mieterstrasse 127/42, 1010 Wien",
+                addresses = listOf("Mieterstrasse 127/42, 1010 Wien"),
                 linkMyclubs = "http://derstandard.at",
                 category = Category.YOGA,
                 rating = Rating.GOOD
@@ -129,7 +132,7 @@ data class Partner(
         .add("idDbo", idDbo)
         .add("shortName", shortName)
         .add("name", name)
-        .add("address", address)
+        .add("addresses", addresses)
         .toString()
 }
 
@@ -185,7 +188,7 @@ fun Partner.toPartnerDbo() = PartnerDbo(
     name = name,
     note = note,
     shortName = shortName,
-    address = address,
+    addresses = addresses,
     rating = rating.toRatingDbo(),
     deletedByMyc = deletedByMyc,
     favourited = favourited,
@@ -223,7 +226,7 @@ fun PartnerDbo.toPartner() = Partner(
     shortName = shortName,
     name = name,
     note = note,
-    address = address,
+    addresses = addresses,
     rating = rating.toRating(),
     maxCredits = maxCredits.toInt(),
     deletedByMyc = deletedByMyc,
@@ -233,7 +236,8 @@ fun PartnerDbo.toPartner() = Partner(
     category = category.toCategory(),
     linkMyclubs = linkMyclubs,
     linkPartner = linkPartner,
-    picture = Picture.readFromDb(picture)
+    picture = Picture.readFromDb(picture),
+    finishedActivities = emptyList() // FIXME persist list
 )
 
 fun RatingDbo?.toRating() = when (this) {

@@ -9,7 +9,7 @@ fun Partner.Companion.testInstance() = Partner(
     idMyc = "testIdMyc",
     name = "testName",
     shortName = "testShortName",
-    address = "testStreet",
+    addresses = listOf("testStreet"),
     note = "testNote",
     linkMyclubs = "http://test.myclubs.at",
     linkPartner = "http://test.partner.at",
@@ -20,7 +20,8 @@ fun Partner.Companion.testInstance() = Partner(
     favourited = true,
     ignored = false,
     wishlisted = true,
-    picture = Picture.DefaultPicture
+    picture = Picture.DefaultPicture,
+    finishedActivities = emptyList()
 )
 
 fun PartnerDbo.Companion.testInstance() = PartnerDbo(
@@ -28,7 +29,7 @@ fun PartnerDbo.Companion.testInstance() = PartnerDbo(
     idMyc = "testIdMyc",
     name = "testName",
     shortName = "testShortName",
-    address = "testStreet",
+    addresses = listOf("testStreet"),
     note = "testNote",
     linkMyclubs = "http://test.myclubs.at",
     linkPartner = "http://test.partner.at",

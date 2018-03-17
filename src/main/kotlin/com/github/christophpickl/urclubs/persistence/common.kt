@@ -2,9 +2,6 @@ package com.github.christophpickl.urclubs.persistence
 
 import javax.persistence.EntityManager
 
-// could enhance DB classes: http://www.objectdb.com/java/jpa/tool/enhancer
-// Enhancer.enhance("com.github.christophpickl.urclubs.persistence.*")
-
 const val COL_LENGTH_LIL = 128
 const val COL_LENGTH_MED = 512
 const val COL_LENGTH_BIG = 5120
@@ -26,7 +23,6 @@ fun HasId.ensurePersisted() {
     }
 }
 
-
 fun <T> EntityManager.persistTransactional(entity: T): T {
     transactional {
         persist(entity)
@@ -44,12 +40,7 @@ inline fun <reified T> EntityManager.queryList(query: String): List<T> {
     return createQuery(query, T::class.java).resultList
 }
 
-inline fun <reified T: Any> EntityManager.createCriteriaDeleteAll() = criteriaBuilder.createCriteriaDelete<T>(T::class.java).apply {
-    from(T::class.java)
-}
-inline fun <reified T: Any> EntityManager.deleteAll() {
-    val delete = createCriteriaDeleteAll<T>()
-    transactional {
-        createQuery(delete).executeUpdate()
+inline fun <reified T : Any> EntityManager.createCriteriaDeleteAll() =
+    criteriaBuilder.createCriteriaDelete<T>(T::class.java).apply {
+        from(T::class.java)
     }
-}

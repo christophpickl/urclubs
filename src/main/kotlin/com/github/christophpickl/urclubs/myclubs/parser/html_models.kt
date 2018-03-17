@@ -14,7 +14,7 @@ data class PartnerDetailHtmlModel(
     val name: String,
     val description: String,
     val linkPartnerSite: String,
-    val address: String,
+    val addresses: List<String>,
     val flags: List<String>,
     val upcomingActivities: List<PartnerDetailActivityHtmlModel>
 )

@@ -40,7 +40,6 @@ class CacheDemo {
     private val urclubsHome = File(System.getProperty("user.home"), ".urclubs")
 
     fun initCache(): Cache<String, CachedPartner> {
-        // TODO when the data class has changed, we need to do a full evict
         val partnersCacheAlias = "partnersCache"
         val cacheKeyType = String::class.java
         val cacheValueType = CachedPartner::class.java

@@ -1,6 +1,5 @@
 package com.github.christophpickl.urclubs.cli
 
-import com.github.christophpickl.kpotpourri.common.collection.prettyPrint
 import com.github.christophpickl.urclubs.MainModule
 import com.github.christophpickl.urclubs.QuitEvent
 import com.github.christophpickl.urclubs.configureLogging
@@ -31,19 +30,12 @@ class CliApp @Inject constructor(
     }
 
     private fun playground() {
-        partnerService.readAll().prettyPrint()
+        // FinishedActivityHtmlModel(date=2017-10-16T16:19, category=EMS, title=EMS-Training,
+        // locationHtml=Bodystreet Convalere<br>Ungargasse 46, 1030 Wien)
 
-        // FIXME bug
-
-        // FinishedActivityHtmlModel(date=2018-01-07T11:00, category=Fitnesskurs, title=Calisthenics Beginner,
-        // locationHtml=Krafftgasse e.U.<br>Rembrandtstrasse 26, 1020 Wien)
-
-        // - Partner{idDbo=85, shortName=krafftgasse-eu, name=Krafftgasse e.U., address=Rembrandtstrasse 26/2, 1020 Wien}
-
-//        println(finishedActivitySyncer.sync())
-
+//        partnerService.readAll().prettyPrint()
+        println(finishedActivitySyncer.sync())
 //        println(partnerSyncer.sync())
-
     }
 
 }

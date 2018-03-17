@@ -26,14 +26,13 @@ class SyncFxController : Controller() {
         }
         subscribe<SyncResultEvent> { event ->
             information(
-                    title = "Sync Report",
-                    header = "Sync completed successfully",
+                title = "Sync Report",
+                header = "Sync completed successfully",
                 content = "Partners inserted: ${event.syncReport.partners.insertedPartners.size}, " +
                     "deleted: ${event.syncReport.partners.deletedPartners.size}\n" +
-                    "Past activities inserted: ${event.syncReport.finishedActivities.inserted.size}, " +
-                    "deleted: ${event.syncReport.finishedActivities.deleted.size}\n",
-                    buttons = *arrayOf(ButtonType.OK)
-                    // owner = ... main window reference?!
+                    "Past activities inserted: ${event.syncReport.finishedActivities.inserted.size}, ",
+                buttons = *arrayOf(ButtonType.OK)
+                // owner = ... main window reference?!
             )
         }
     }
