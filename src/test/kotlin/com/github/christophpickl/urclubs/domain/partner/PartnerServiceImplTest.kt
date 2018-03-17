@@ -2,6 +2,7 @@ package com.github.christophpickl.urclubs.domain.partner
 
 import com.github.christophpickl.urclubs.persistence.domain.PartnerDbo
 import com.github.christophpickl.urclubs.persistence.persistTransactional
+import com.github.christophpickl.urclubs.service.sync.testInstance
 import com.github.christophpickl.urclubs.testInfra.DatabaseTest
 import com.github.christophpickl.urclubs.testInfra.TestDbModule
 import com.google.inject.AbstractModule
@@ -17,7 +18,7 @@ private class PartnerServiceImplTestModule : AbstractModule() {
     }
 }
 
-@Test(groups = ["integration"])
+@Test(groups = ["guice", "database"])
 @Guice(modules = [PartnerServiceImplTestModule::class])
 class PartnerServiceImplTest : DatabaseTest() {
 

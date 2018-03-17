@@ -12,6 +12,7 @@ import com.github.christophpickl.urclubs.persistence.ensurePersisted
 import com.github.christophpickl.urclubs.persistence.queryList
 import com.github.christophpickl.urclubs.persistence.transactional
 import com.google.common.base.MoreObjects
+import com.google.common.base.Objects
 import javax.inject.Inject
 import javax.persistence.Column
 import javax.persistence.ElementCollection
@@ -143,11 +144,41 @@ data class PartnerDbo(
 
     @Lob
     @Column(nullable = true, length = ONE_MB)
-    var picture: ByteArray?
+    var picture: ByteArray?,
+
+    @ElementCollection
+    var finishedActivities: MutableList<FinishedActivityDbo>
+
+    // dont forget to extend the equals() method when adding new properties!
 
 ) : HasId {
     companion object {
         val MAX_PICTURE_BYTES = 1024 * 1024 // == 1MB
+    }
+
+    override fun equals(other: Any?): Boolean {
+        // @formatter:off
+        if (other !is PartnerDbo) return false
+        if (id           != other.id)           return false
+        if (idMyc        != other.idMyc)        return false
+        if (name         != other.name)         return false
+        if (shortName    != other.shortName)    return false
+        if (addresses    != other.addresses)    return false
+        if (note         != other.note)         return false
+        if (linkMyclubs  != other.linkMyclubs)  return false
+        if (linkPartner  != other.linkPartner)  return false
+        if (maxCredits   != other.maxCredits)   return false
+        if (rating       != other.rating)       return false
+        if (category     != other.category)     return false
+        if (deletedByMyc != other.deletedByMyc) return false
+        if (favourited   != other.favourited)   return false
+        if (wishlisted   != other.wishlisted)   return false
+        if (ignored      != other.ignored)      return false
+        if (!picture.byteArrayEquals(other.picture)) return false
+        // hibernate bag is messing up the equals method
+        if (finishedActivities.toList() != other.finishedActivities.toList()) return false
+        // @formatter:on
+        return true
     }
 
     fun updateBy(other: PartnerDbo) {
@@ -162,6 +193,10 @@ data class PartnerDbo(
         if (favourited   != other.favourited)   favourited   = other.favourited
         if (wishlisted   != other.wishlisted)   wishlisted   = other.wishlisted
         if (ignored      != other.ignored)      ignored      = other.ignored
+        if (finishedActivities != other.finishedActivities) finishedActivities.apply {
+            clear()
+            addAll(other.finishedActivities)
+        }
         if (!picture.byteArrayEquals(other.picture)) picture = other.picture
         // @formatter:on
     }
@@ -170,8 +205,11 @@ data class PartnerDbo(
         .add("id", id)
         .add("shortName", shortName)
         .add("idMyc", idMyc)
-        .add("--picture-set", picture != null)
+        .add("picture-set", picture != null)
         .toString()
+
+    override fun hashCode() = Objects.hashCode(id, name, shortName)
+
 }
 
 

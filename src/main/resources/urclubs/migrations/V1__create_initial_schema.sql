@@ -21,6 +21,11 @@ CREATE TABLE PartnerDbo_addresses (
   PartnerDbo_id BIGINT NOT NULL,
   addresses     VARCHAR(255)
 );
+CREATE TABLE PartnerDbo_finishedActivities (
+  PartnerDbo_id BIGINT       NOT NULL,
+  date          TIMESTAMP    NOT NULL,
+  title         VARCHAR(512) NOT NULL
+);
 
 ALTER TABLE PartnerDbo
   ADD CONSTRAINT PartnerDboConstraintUniqueIdMyc UNIQUE (idMyc);
@@ -30,3 +35,6 @@ ALTER TABLE PartnerDbo
 
 ALTER TABLE PartnerDbo_addresses
   ADD CONSTRAINT PartnerDbo_addresses_ConstraintForeignKey FOREIGN KEY (PartnerDbo_id) REFERENCES PartnerDbo
+
+ALTER TABLE PartnerDbo_finishedActivities
+  ADD CONSTRAINT PartnerDbo_finishedActivities_ConstraintForeignKey FOREIGN KEY (PartnerDbo_id) REFERENCES PartnerDbo;

@@ -1,10 +1,8 @@
-package com.github.christophpickl.urclubs.domain.partner
+package com.github.christophpickl.urclubs.persistence.domain
 
-import com.github.christophpickl.urclubs.persistence.domain.CategoryDbo
-import com.github.christophpickl.urclubs.persistence.domain.PartnerDaoImpl
-import com.github.christophpickl.urclubs.persistence.domain.PartnerDbo
-import com.github.christophpickl.urclubs.persistence.domain.RatingDbo
+import com.github.christophpickl.urclubs.domain.partner.testInstance
 import com.github.christophpickl.urclubs.persistence.transactional
+import com.github.christophpickl.urclubs.service.sync.testInstance
 import com.github.christophpickl.urclubs.testInfra.DatabaseTest
 import com.github.christophpickl.urclubs.testInfra.assertThatSingleElement
 import com.github.christophpickl.urclubs.testInfra.singleEntryIsEqualToIgnoringGivenProps
@@ -15,21 +13,30 @@ import org.testng.annotations.Test
 @Test
 class PartnerDaoImplTest : DatabaseTest() {
 
+    // need to be lateinit vars, as hibernate is going to mess around with those (actually imutable) objects
     private lateinit var partner: PartnerDbo
     private lateinit var partner1: PartnerDbo
     private lateinit var partner2: PartnerDbo
+    private lateinit var partnerWithFinishedActivities: PartnerDbo
 
     @BeforeMethod
     fun createData() {
         partner = PartnerDbo.testInstance()
         partner1 = PartnerDbo.testInstance().copy(idMyc = "myc1")
         partner2 = PartnerDbo.testInstance().copy(idMyc = "myc2")
+        partnerWithFinishedActivities = partner.copy(finishedActivities = mutableListOf(FinishedActivityDbo.testInstance()))
     }
 
     fun `CREATE - When insert partner Then expect partner to be inserted in database`() {
         dao().create(partner)
 
         assertThat(fetchAll()).singleEntryIsEqualToIgnoringGivenProps(partner, PartnerDbo::id)
+    }
+
+    fun `CREATE - When insert partner with finished activities Then expect activities to be inserted in database`() {
+        dao().create(partnerWithFinishedActivities)
+
+        assertThat(fetchAll()).singleEntryIsEqualToIgnoringGivenProps(partnerWithFinishedActivities, PartnerDbo::id)
     }
 
     fun `READ - Given a partner is stored When fetch all partners Then that partner is returned`() {
@@ -128,7 +135,8 @@ class PartnerDaoImplTest : DatabaseTest() {
             addresses = listOf("address"),
             linkPartner = "linkPartner",
             linkMyclubs = "linkMyclubs",
-            picture = null
+            picture = null,
+            finishedActivities = mutableListOf()
         )
         save(savedPartner)
         val updatedPartner = PartnerDbo(
@@ -148,7 +156,8 @@ class PartnerDaoImplTest : DatabaseTest() {
             addresses = savedPartner.addresses,
             linkPartner = savedPartner.linkPartner,
             linkMyclubs = savedPartner.linkMyclubs,
-            picture = ByteArray(8, { 1 })
+            picture = ByteArray(8, { 1 }),
+            finishedActivities = mutableListOf(FinishedActivityDbo.testInstance())
         )
 
         dao().update(updatedPartner)

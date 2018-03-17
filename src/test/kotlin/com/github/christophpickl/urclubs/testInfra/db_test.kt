@@ -35,6 +35,7 @@ abstract class DatabaseTest {
         log.debug { "clearDb()" }
         em.transactional {
             createNativeQuery("DELETE FROM PartnerDbo_addresses").executeUpdate()
+            createNativeQuery("DELETE FROM PartnerDbo_finishedActivities").executeUpdate()
             deleteAll<PartnerDbo>()
         }
     }

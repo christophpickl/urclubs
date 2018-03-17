@@ -4,6 +4,8 @@ import com.github.christophpickl.urclubs.HasOrder
 import com.github.christophpickl.urclubs.OrderedEnumCompanion
 import com.github.christophpickl.urclubs.OrderedEnumCompanion2
 import com.github.christophpickl.urclubs.domain.activity.FinishedActivity
+import com.github.christophpickl.urclubs.domain.activity.toFinishedActivity
+import com.github.christophpickl.urclubs.domain.activity.toFinishedActivityDbo
 import com.github.christophpickl.urclubs.persistence.domain.CategoryDbo
 import com.github.christophpickl.urclubs.persistence.domain.PartnerDbo
 import com.github.christophpickl.urclubs.persistence.domain.RatingDbo
@@ -198,7 +200,8 @@ fun Partner.toPartnerDbo() = PartnerDbo(
     maxCredits = maxCredits.toByte(),
     picture = picture.saveRepresentation,
     linkMyclubs = linkMyclubs,
-    linkPartner = linkPartner
+    linkPartner = linkPartner,
+    finishedActivities = finishedActivities.map { it.toFinishedActivityDbo() }.toMutableList()
 )
 
 fun Rating.toRatingDbo() = when (this) {
@@ -237,7 +240,7 @@ fun PartnerDbo.toPartner() = Partner(
     linkMyclubs = linkMyclubs,
     linkPartner = linkPartner,
     picture = Picture.readFromDb(picture),
-    finishedActivities = emptyList() // FIXME persist list
+    finishedActivities = finishedActivities.map { it.toFinishedActivity() }
 )
 
 fun RatingDbo?.toRating() = when (this) {

@@ -21,10 +21,20 @@ CREATE TABLE PartnerDbo_addresses (
   PartnerDbo_id BIGINT NOT NULL,
   addresses     VARCHAR(255)
 );
+CREATE TABLE PartnerDbo_finishedActivities (
+  PartnerDbo_id BIGINT       NOT NULL,
+  date          TIMESTAMP    NOT NULL,
+  title         VARCHAR(512) NOT NULL
+);
 
 ALTER TABLE PartnerDbo
   ADD CONSTRAINT UK_3po4fjydrqy2skbuw60bi0bpk UNIQUE (idMyc);
+
 ALTER TABLE PartnerDbo
   ADD CONSTRAINT UK_flyiquema8mef568aj5vn3d4m UNIQUE (shortName);
+
 ALTER TABLE PartnerDbo_addresses
-  ADD CONSTRAINT FKfae8r0snge969uvevfiwe54fl FOREIGN KEY (PartnerDbo_id) REFERENCES PartnerDbo
+  ADD CONSTRAINT FKfae8r0snge969uvevfiwe54fl FOREIGN KEY (PartnerDbo_id) REFERENCES PartnerDbo;
+
+ALTER TABLE PartnerDbo_finishedActivities
+  ADD CONSTRAINT FK85klq5ewdn6b4k543lmh7hwwc FOREIGN KEY (PartnerDbo_id) REFERENCES PartnerDbo;

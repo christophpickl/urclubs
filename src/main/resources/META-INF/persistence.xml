@@ -6,7 +6,8 @@
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
         <class>com.github.christophpickl.urclubs.persistence.domain.PartnerDbo</class>
-        
+        <class>com.github.christophpickl.urclubs.persistence.domain.FinishedActivityDbo</class>
+
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.hsqldb.jdbcDriver"/>
             <property name="javax.persistence.jdbc.user" value="sa"/>
