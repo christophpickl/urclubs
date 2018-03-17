@@ -99,7 +99,7 @@ class PartnerView : View() {
                     field("Credits") {
                         hbox {
                             label("Left: ")
-                            label("X")
+                            label(currentPartner.creditsLeftThisPeriod)
 
                             label("  Max: ")
                             textfield().apply {
@@ -108,7 +108,7 @@ class PartnerView : View() {
                             }
 
                             label("  Visits: ")
-                            label("XX")
+                            label(currentPartner.totalVisits)
                         }
                     }
                     field("Links") {

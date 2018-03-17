@@ -10,6 +10,7 @@ import com.github.christophpickl.urclubs.persistence.domain.CategoryDbo
 import com.github.christophpickl.urclubs.persistence.domain.PartnerDbo
 import com.github.christophpickl.urclubs.persistence.domain.RatingDbo
 import com.google.common.base.MoreObjects
+import java.time.LocalDateTime
 import java.util.concurrent.atomic.AtomicInteger
 
 data class Partner(
@@ -31,6 +32,17 @@ data class Partner(
     val picture: Picture,
     val finishedActivities: List<FinishedActivity>
 ) {
+
+    val visitsThisMonth: Int
+    val creditsLeftThisPeriod: Int
+
+    init {
+        val now = LocalDateTime.now()
+        visitsThisMonth = finishedActivities.filter {
+            it.date.year == now.year && it.date.monthValue == now.monthValue
+        }.size
+        creditsLeftThisPeriod = maxCredits - visitsThisMonth
+    }
 
     companion object {
         const val DEFAULT_MAX_CREDITS = 4
@@ -73,7 +85,11 @@ data class Partner(
                 rating = Rating.SUPERB,
                 maxCredits = 2,
                 favourited = true,
-                wishlisted = true
+                wishlisted = true,
+                finishedActivities = listOf(
+                    FinishedActivity("past", LocalDateTime.now().minusMonths(1)),
+                    FinishedActivity("current", LocalDateTime.now())
+                )
             )
         }
 
@@ -84,14 +100,23 @@ data class Partner(
                 addresses = listOf("Mieterstrasse 127/42, 1010 Wien"),
                 linkMyclubs = "http://derstandard.at",
                 category = Category.YOGA,
-                rating = Rating.GOOD
+                rating = Rating.GOOD,
+                finishedActivities = listOf(
+                    FinishedActivity("current1", LocalDateTime.now()),
+                    FinishedActivity("current2", LocalDateTime.now()),
+                    FinishedActivity("current3", LocalDateTime.now()),
+                    FinishedActivity("current4", LocalDateTime.now())
+                )
             )
         }
         val mahOk = newDummy {
             copy(
                 shortName = "mah",
                 name = "Maaaah",
-                rating = Rating.OK
+                rating = Rating.OK,
+                finishedActivities = listOf(
+                    FinishedActivity("past", LocalDateTime.now().minusMonths(1))
+                )
             )
         }
         val badAss = newDummy {

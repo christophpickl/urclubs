@@ -51,7 +51,10 @@ class PartnersView : View() {
                 }
             }
         }
-        column("Max", Partner::maxCredits).fixedWidth(40)
+        column("Credits") { features: TableColumn.CellDataFeatures<Partner, String> ->
+            val partner = features.value
+            ReadOnlyStringWrapper("${partner.creditsLeftThisPeriod}/${partner.maxCredits}")
+        }.fixedWidth(40)
         column("Note", Partner::note)
 
         columnResizePolicy = SmartResize.POLICY

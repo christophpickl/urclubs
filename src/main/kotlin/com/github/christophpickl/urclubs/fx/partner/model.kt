@@ -21,6 +21,8 @@ class CurrentPartnerFx() : ViewModel() {
     val favourited = SimpleBooleanProperty()
     val wishlisted = SimpleBooleanProperty()
     val maxCredits = SimpleIntegerProperty()
+    val totalVisits = SimpleIntegerProperty()
+    val creditsLeftThisPeriod = SimpleIntegerProperty()
 
     val shortName = SimpleStringProperty()
     val linkMyclubs = SimpleStringProperty()
@@ -55,5 +57,8 @@ class CurrentPartnerFx() : ViewModel() {
         shortName.set(partner.shortName)
         linkMyclubs.set(partner.linkMyclubs)
         linkPartner.set(partner.linkPartner)
+
+        totalVisits.set(partner.finishedActivities.size)
+        creditsLeftThisPeriod.set(partner.creditsLeftThisPeriod)
     }
 }
