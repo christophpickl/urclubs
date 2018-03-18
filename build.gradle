@@ -1,3 +1,7 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
+import java.text.SimpleDateFormat
+
 buildscript {
     ext {
         versionKotlin = "1.2.30"
@@ -18,7 +22,6 @@ plugins {
 ext {
     myMainClassName = "com.github.christophpickl.urclubs.fx.FxAppStarter"
     myAppName = "UrClubs"
-    myAppVersion = "1.0"
 }
 
 dependencies {
@@ -81,6 +84,30 @@ repositories {
 }
 
 // =====================================================================================================================
+// VERSION NUMBER
+// =====================================================================================================================
+
+task loadProjectVersionNumber {
+    Properties props = new Properties()
+    File propsFile = new File("version.properties")
+    props.load(propsFile.newDataInputStream())
+    version = props['version']
+    println "[URCLUBS] Version: " + version
+}
+
+processResources.dependsOn loadProjectVersionNumber
+
+processResources {
+    from('src/main/resources') {
+        include '**/metainf.properties'
+        filter ReplaceTokens, tokens: [
+                "application.version": version,
+                "built.date"         : new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date())
+        ]
+    }
+}
+
+// =====================================================================================================================
 // PACKAGING MAC
 // =====================================================================================================================
 
@@ -94,7 +121,7 @@ if (System.properties.getProperty("urclubs.enableMacBundle") == "true") {
 
     macAppBundle {
         appName = myAppName
-        dmgName = myAppName + "-" + myAppVersion
+        dmgName = myAppName + "-" + version
 
         mainClassName = myMainClassName
         icon = "src/main/buildMac/logo.icns"

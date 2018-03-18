@@ -14,6 +14,7 @@ class MainModule : AbstractModule() {
         bind(EventBus::class.java).toInstance(EventBus())
         bind(AllEventCatcher::class.java).asEagerSingleton()
         bind(QuitManager::class.java).asEagerSingleton()
+        bind(MetaInf::class.java).toInstance(MetaInfProvider.get())
 
         install(PersistenceModule())
         install(PartnerModule())

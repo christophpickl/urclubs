@@ -60,9 +60,9 @@ class SystemPropertyCredentialsProvider : Provider<Credentials> {
 
 }
 
-
 class PropertiesFileCredentialsProvider : Provider<Credentials> {
 
+    @Suppress("ClassName")
     private object login : PropertyGroup() {
         val email by stringType
         val password by stringType

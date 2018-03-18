@@ -2,6 +2,7 @@ package com.github.christophpickl.urclubs.fx
 
 import com.github.christophpickl.kpotpourri.common.logging.LOG
 import com.github.christophpickl.urclubs.MainModule
+import com.github.christophpickl.urclubs.MetaInf
 import com.github.christophpickl.urclubs.QuitFXEvent
 import com.github.christophpickl.urclubs.QuitManager
 import com.github.christophpickl.urclubs.configureLogging
@@ -108,6 +109,7 @@ class FxModule : AbstractModule() {
 class MainController : Controller() {
 
     private val logg = LOG {}
+    private val metaInf: MetaInf by di()
 
     init {
         subscribe<QuitFXEvent> {
@@ -118,8 +120,7 @@ class MainController : Controller() {
             information(
                 title = "About",
                 header = "About UrClubs",
-                // TODO proper application version number + clickable link
-                content = "UrClubs Version 1.0\nhttps://github.com/christophpickl/urclubs",
+                content = "Application Version: ${metaInf.version}\nhttps://github.com/christophpickl/urclubs",
                 buttons = *arrayOf(ButtonType.OK)
             )
         }

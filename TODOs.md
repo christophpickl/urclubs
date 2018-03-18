@@ -3,8 +3,10 @@
 
 1. must do
     1. Caching for myclubs API
+    1. logging to file (in .urclubs directory like gadsu is doing)
 
 1. immediately after
+    1. proper exception handling
     1. Minor: change app icon (turn around the U)
     1. Minor: change default partner icon (even more generic/slim)
     1. Minor: Version number by gradle resource filtering (display in About dialog)

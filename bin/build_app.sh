@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-./gradlew compileKotlin createApp -Durclubs.enableMacBundle=true
+./gradlew loadProjectVersionNumber createApp -Durclubs.enableMacBundle=true
 
 #open build/macApp/
 
