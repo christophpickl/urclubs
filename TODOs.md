@@ -8,7 +8,6 @@
 1. immediately after
     1. proper exception handling
     1. Minor: change app icon (turn around the U)
-    1. Minor: change default partner icon (even more generic/slim)
     1. Minor: Version number by gradle resource filtering (display in About dialog)
     1. add new properties: 
         * locationNote (render in table next to static location address)

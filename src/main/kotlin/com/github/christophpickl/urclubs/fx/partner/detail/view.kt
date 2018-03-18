@@ -112,7 +112,7 @@ class PartnerView : View() {
                         }
                     }
                     field("Links") {
-                        hbox {
+                        vbox {
                             hyperlink {
                                 textProperty().bind(currentPartner.linkMyclubs)
                                 tooltip { textProperty().bind(currentPartner.linkMyclubs) }
@@ -126,6 +126,9 @@ class PartnerView : View() {
                                 setOnAction { fire(OpenWebsiteFXEvent(url = currentPartner.original.linkPartner)) }
                             }
                         }
+                    }
+                    field("foo") {
+                        label("bar")
                     }
                 }
             }
