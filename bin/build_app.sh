@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
 
-./gradlew createApp -Durclubs.enableMacBundle=true
+./gradlew compileKotlin createApp -Durclubs.enableMacBundle=true
+
+#open build/macApp/
+
 ./build/macApp/UrClubs.app/Contents/MacOS/JavaAppLauncher

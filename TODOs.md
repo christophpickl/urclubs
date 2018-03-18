@@ -3,9 +3,12 @@
 
 1. must do
     1. Caching for myclubs API
-    
+
 1. immediately after
-    1. DevMode rework: by default use .dev folder, only when -Dprod defined use prod db
+    1. Minor: support MacMenuBar (handle QuitEvent, outsource menu items into system's Application item)
+    1. Minor: change app icon (turn around the U)
+    1. Minor: change default partner icon (even more generic/slim)
+    1. Minor: Version number by gradle resource filtering (display in About dialog)
     1. add new properties: 
         * locationNote (render in table next to static location address)
         * add secondary comment for partners (not visible in table but in detail view)
@@ -17,8 +20,9 @@
 
 1. more-over
     * List upcoming workouts
-    * Create gcal entries
     * improved search: think about how to "smart filter" => predefined queries (SQL?)
+    * BIG: Create gcal entries
+    * richtext format notes
 
 # TODOs
 
@@ -28,11 +32,9 @@
     * description where location is; zb near subway station
     * EMS: opening hours, phone number
     * Gym: opening hours, got room Y/N
-* richtext format notes
 
 ### Minor:
 
-* MacMenuBar
 * send notifications via MacOs (e.g. after sync)
 * colorize location (=distance) => property Partner.locationRating (rename regular rating to "partnerRating")
 * colorize remaining credits (green-red much-few)

@@ -102,6 +102,15 @@ if (System.properties.getProperty("urclubs.enableMacBundle") == "true") {
 
         javaProperties.put("apple.laf.useScreenMenuBar", "true")
         javaProperties.put("urclubs.isMacApp", "true")
+        javaProperties.put("urclubs.production", "true")
+        /*
+        CFBundleVersion
+        ResourceVersion
+        CFBundleShortVersionString
+        <key>xxx</key>
+	    <string>myAppVersion</string>
+         */
+
 //        javaExtras.put("-splash:\$APP_ROOT/Contents/Resources/splashscreen.jpg", null)
     }
 

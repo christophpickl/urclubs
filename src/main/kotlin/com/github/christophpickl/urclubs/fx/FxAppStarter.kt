@@ -3,6 +3,7 @@ package com.github.christophpickl.urclubs.fx
 import com.github.christophpickl.kpotpourri.common.logging.LOG
 import com.github.christophpickl.urclubs.MainModule
 import com.github.christophpickl.urclubs.QuitEvent
+import com.github.christophpickl.urclubs.QuitFXEvent
 import com.github.christophpickl.urclubs.configureLogging
 import com.github.christophpickl.urclubs.fx.partner.PartnersFxController
 import com.github.christophpickl.urclubs.fx.partner.detail.PartnerFxController
@@ -14,6 +15,8 @@ import com.google.common.eventbus.EventBus
 import com.google.inject.AbstractModule
 import com.google.inject.Guice
 import javafx.application.Application
+import javafx.application.Platform
+import javafx.scene.control.ButtonType
 import javafx.stage.Screen
 import javafx.stage.Stage
 import tornadofx.*
@@ -65,6 +68,12 @@ class UrclubsFxApp : App(
             override fun <T : Any> getInstance(type: KClass<T>) = guice.getInstance(type.java)
         }
         registerEagerSingletons()
+
+        // FIXME this doesnt work for javafx anymore?!?
+//        val mac = guice.getInstance(MacHandler::class.java)
+//        if (mac.isEnabled()) {
+//            registerMacHandler(mac)
+//        }
     }
 
     override fun start(stage: Stage) {
@@ -82,7 +91,7 @@ class UrclubsFxApp : App(
 
     override fun stop() { // <= Platform.exit()
         log.debug { "stop()" }
-        guice.getInstance(EventBus::class.java).post(QuitEvent) // MINOR block until DB was closed
+        guice.getInstance(EventBus::class.java).post(QuitEvent) // TODO block until DB was closed
         super.stop()
     }
 
@@ -92,6 +101,14 @@ class UrclubsFxApp : App(
         find(SyncFxController::class)
         find(FilterPartnersController::class)
         find(BrowseWebsiteController::class)
+        find(MainController::class)
+    }
+
+    private fun registerMacHandler(mac: MacHandler) {
+        log.debug { "registerMacHandler()" }
+        mac.registerAbout { fire(ShowAboutFXEvent) }
+//        mac.registerPreferences { ... }
+        mac.registerQuit { fire(QuitFXEvent) }
     }
 
 }
@@ -100,4 +117,26 @@ class FxModule : AbstractModule() {
     override fun configure() {
         bind(Credentials::class.java).toProvider(PropertiesFileCredentialsProvider())
     }
+}
+
+class MainController : Controller() {
+
+    private val logg = LOG {}
+
+    init {
+        subscribe<QuitFXEvent> {
+            logg.info { "QuitFXEvent was dispatched" }
+            Platform.exit() // => UrclubsFxApp.stop()
+        }
+        subscribe<ShowAboutFXEvent> {
+            information(
+                title = "About",
+                header = "About UrClubs",
+                // TODO proper application version number + clickable link
+                content = "UrClubs Version 1.0\nhttps://github.com/christophpickl/urclubs",
+                buttons = *arrayOf(ButtonType.OK)
+            )
+        }
+    }
+
 }

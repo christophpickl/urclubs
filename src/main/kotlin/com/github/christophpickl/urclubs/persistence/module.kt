@@ -48,7 +48,7 @@ class PersistenceModule(definedDatabaseUrl: String? = null) : AbstractModule() {
     private val databaseUrl = definedDatabaseUrl ?: defaultDbUrl
 
     init {
-        log.debug { "definedDatabaseUrl: '$definedDatabaseUrl'" }
+        log.debug { "definedDatabaseUrl: ${definedDatabaseUrl ?: "N/A"}" }
     }
 
     private val persistenceProperties = Properties().apply {
