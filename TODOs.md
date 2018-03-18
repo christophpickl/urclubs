@@ -5,7 +5,6 @@
     1. Caching for myclubs API
 
 1. immediately after
-    1. Minor: support MacMenuBar (handle QuitEvent, outsource menu items into system's Application item)
     1. Minor: change app icon (turn around the U)
     1. Minor: change default partner icon (even more generic/slim)
     1. Minor: Version number by gradle resource filtering (display in About dialog)
@@ -41,6 +40,7 @@
 * finished activities visualize count as "baelkchen"
 * ad table: FULL colored lines based on rating
 * show number of displayed partners "10/170" based on current filter
+* support MacMenuBar (handle QuitEvent, outsource menu items into system's Application item)
 
 ### Long term:
 
@@ -54,6 +54,7 @@
 
 * myclubs testng group, doing HTTP requests + parse, run on travis
 * resolve: org.hibernate.orm.connections.pooling - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+* resolve o.h.e.j.c.internal.DriverManagerConnectionProviderImpl - Connection leak detected: there are 1 unclosed connections upon shutting down pool jdbc:hsqldb:file:/Users/wu/.urclubs_dev/database/database
 * Configure: Versioneye
 * debug HTTP traffic on android
     - reverse engineer requests, e.g.: count of available credits

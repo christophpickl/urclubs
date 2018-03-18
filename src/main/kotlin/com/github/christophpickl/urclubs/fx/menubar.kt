@@ -47,7 +47,7 @@ class MyMenuBar(
 ) : MenuBar() {
 
     init {
-
+        useSystemMenuBarProperty().set(true)
         menu("Application") {
             item("About").action {
                 controller.showAbout()

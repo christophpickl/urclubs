@@ -4,6 +4,5 @@ import com.google.inject.AbstractModule
 
 class FxViewModule : AbstractModule() {
     override fun configure() {
-        install(MacModule())
     }
 }

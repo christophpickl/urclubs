@@ -1,7 +1,7 @@
 package com.github.christophpickl.urclubs.cli
 
 import com.github.christophpickl.urclubs.MainModule
-import com.github.christophpickl.urclubs.QuitEvent
+import com.github.christophpickl.urclubs.QuitManager
 import com.github.christophpickl.urclubs.configureLogging
 import com.github.christophpickl.urclubs.domain.partner.PartnerService
 import com.github.christophpickl.urclubs.myclubs.MyClubsApi
@@ -21,12 +21,13 @@ class CliApp @Inject constructor(
     private val myclubs: MyClubsApi,
     private val partnerService: PartnerService,
     private val bus: EventBus,
-    private val courseEnhancer: CourseEnhancer
+    private val courseEnhancer: CourseEnhancer,
+    private val quitManager: QuitManager
 ) {
     fun start() {
         playground()
 
-        bus.post(QuitEvent)
+        quitManager.publishQuitEvent()
     }
 
     private fun playground() {
