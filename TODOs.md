@@ -2,7 +2,6 @@
 # Grob Plan
 
 1. must do
-    1. prompt for user/pass on myclubs login; inject some kind of CredentialsProvider into MyclubsApi
     1. Caching for myclubs API
     
 1. immediately after

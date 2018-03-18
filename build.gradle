@@ -32,6 +32,7 @@ dependencies {
     compile "com.github.christophpickl.kpotpourri:common4k:$versionKPotpourri"
     compile "com.github.christophpickl.kpotpourri:logback4k:$versionKPotpourri"
     compile "com.google.inject:guice:$versionGuice"
+    compile "com.natpryce:konfig:1.6.1.0"
 
     // VIEW
     compile "no.tornado:tornadofx:1.7.14"

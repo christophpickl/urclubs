@@ -9,7 +9,7 @@ import com.github.christophpickl.urclubs.fx.partner.detail.PartnerFxController
 import com.github.christophpickl.urclubs.fx.partner.detail.PartnerView
 import com.github.christophpickl.urclubs.fx.partner.filter.FilterPartnersController
 import com.github.christophpickl.urclubs.service.Credentials
-import com.github.christophpickl.urclubs.service.SystemPropertyCredentialsProvider
+import com.github.christophpickl.urclubs.service.PropertiesFileCredentialsProvider
 import com.google.common.eventbus.EventBus
 import com.google.inject.AbstractModule
 import com.google.inject.Guice
@@ -98,6 +98,6 @@ class UrclubsFxApp : App(
 
 class FxModule : AbstractModule() {
     override fun configure() {
-        bind(Credentials::class.java).toProvider(SystemPropertyCredentialsProvider())
+        bind(Credentials::class.java).toProvider(PropertiesFileCredentialsProvider())
     }
 }

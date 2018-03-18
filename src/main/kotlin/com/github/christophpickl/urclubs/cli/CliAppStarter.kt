@@ -7,7 +7,7 @@ import com.github.christophpickl.urclubs.domain.partner.PartnerService
 import com.github.christophpickl.urclubs.myclubs.MyClubsApi
 import com.github.christophpickl.urclubs.service.CourseEnhancer
 import com.github.christophpickl.urclubs.service.Credentials
-import com.github.christophpickl.urclubs.service.SystemPropertyCredentialsProvider
+import com.github.christophpickl.urclubs.service.PropertiesFileCredentialsProvider
 import com.github.christophpickl.urclubs.service.sync.FinishedActivitySyncer
 import com.github.christophpickl.urclubs.service.sync.PartnerSyncer
 import com.google.common.eventbus.EventBus
@@ -58,8 +58,7 @@ object CliAppStarter {
 
 class CliModule(private val args: Array<String>) : AbstractModule() {
     override fun configure() {
-//        bind(Credentials::class.java).toProvider(CliArgsCredentialsProvider(args))
-        bind(Credentials::class.java).toProvider(SystemPropertyCredentialsProvider())
+        bind(Credentials::class.java).toProvider(PropertiesFileCredentialsProvider())
 
         bind(CliApp::class.java)
     }
