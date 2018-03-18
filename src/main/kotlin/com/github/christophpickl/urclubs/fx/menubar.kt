@@ -3,7 +3,7 @@ package com.github.christophpickl.urclubs.fx
 import com.github.christophpickl.kpotpourri.common.logging.LOG
 import com.github.christophpickl.urclubs.domain.partner.Partner
 import com.github.christophpickl.urclubs.domain.partner.toPartnerDbo
-import com.github.christophpickl.urclubs.fx.partner.PartnerListRequest
+import com.github.christophpickl.urclubs.fx.partner.PartnerListRequestFXEvent
 import com.github.christophpickl.urclubs.persistence.createCriteriaDeleteAll
 import com.github.christophpickl.urclubs.persistence.domain.PartnerDbo
 import com.github.christophpickl.urclubs.persistence.transactional
@@ -25,7 +25,7 @@ class MenuBarController : Controller() {
                 persist(it.toPartnerDbo())
             }
         }
-        fire(PartnerListRequest)
+        fire(PartnerListRequestFXEvent)
     }
 
 }

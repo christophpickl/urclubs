@@ -6,7 +6,6 @@ import com.github.christophpickl.urclubs.domain.partner.ImageSize
 import com.github.christophpickl.urclubs.domain.partner.Partner
 import com.github.christophpickl.urclubs.domain.partner.Rating
 import com.github.christophpickl.urclubs.fx.partner.detail.PartnerSelectedEvent
-import com.github.christophpickl.urclubs.fx.partner.detail.PartnerUpdatedFXEvent
 import com.github.christophpickl.urclubs.fx.partner.filter.FilterPartnersView
 import javafx.beans.property.ReadOnlyStringWrapper
 import javafx.scene.control.TableColumn
@@ -30,6 +29,7 @@ class PartnersView : View() {
     // https://github.com/edvin/tornadofx/wiki/Utilities
     private val partnersFilter: FilterPartnersView by inject()
     private val currentPartner: CurrentPartnerFx by inject()
+
 
     val table = tableview<Partner> {
         column("Picture", Partner::picture).apply {
@@ -78,19 +78,6 @@ class PartnersView : View() {
     }
 
     init {
-        subscribe<PartnerListEvent> { event ->
-            logg.trace { "Received PartnerListEvent (partners.size=${event.partners.size}), updating table items." }
-            // TODO go through controller instead and apply filter
-            table.items.setAll(event.partners)
-        }
-        subscribe<PartnerUpdatedFXEvent> { event ->
-            val partner = event.partner
-            logg.trace { "Updating partner in table: $partner" }
-            val index = table.items.indexOfFirst { it.idDbo == partner.idDbo }
-            if (index == -1) throw IllegalStateException("Could not find updated partner in table: $partner") // TODO when search (=filter) is active this will fail??
-            table.items[index] = partner // FIXME when filtering, saving doesnt work... need to set on original list somehow...
-            table.selectionModel.select(index)
-        }
         table.onUserSelect(clickCount = 1) {
             firePartnerSelected(it)
         }

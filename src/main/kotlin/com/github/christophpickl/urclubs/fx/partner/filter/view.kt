@@ -1,15 +1,7 @@
 package com.github.christophpickl.urclubs.fx.partner.filter
 
-import com.github.christophpickl.urclubs.domain.partner.Category
 import javafx.scene.control.ListCell
 import tornadofx.*
-
-class CategoryFilterCell : ListCell<CategoryFilter>() {
-    override fun updateItem(item: CategoryFilter?, empty: Boolean) {
-        super.updateItem(item, empty)
-        text = item?.label
-    }
-}
 
 class FilterPartnersView : View() {
 
@@ -32,25 +24,9 @@ class FilterPartnersView : View() {
 
 }
 
-sealed class CategoryFilter {
-
-    abstract val label: String
-
-    object AnyCategory : CategoryFilter() {
-        override val label = "Any"
+class CategoryFilterCell : ListCell<CategoryFilter>() {
+    override fun updateItem(item: CategoryFilter?, empty: Boolean) {
+        super.updateItem(item, empty)
+        text = item?.label
     }
-
-    class EnumCategory(
-        val category: Category
-    ) : CategoryFilter() {
-        override val label = category.label
-    }
-
-    companion object {
-        val all: List<CategoryFilter> = mutableListOf(AnyCategory) +
-            Category.values().map {
-                EnumCategory(it)
-            }
-    }
-
 }

@@ -1,7 +1,7 @@
 package com.github.christophpickl.urclubs.fx
 
 import com.github.christophpickl.kpotpourri.common.logging.LOG
-import com.github.christophpickl.urclubs.fx.partner.PartnerListRequest
+import com.github.christophpickl.urclubs.fx.partner.PartnerListRequestFXEvent
 import com.github.christophpickl.urclubs.service.sync.SyncReport
 import com.github.christophpickl.urclubs.service.sync.SyncService
 import javafx.scene.control.ButtonType
@@ -22,7 +22,7 @@ class SyncFxController : Controller() {
             logg.debug { "Got SyncRequest..." }
             val report = syncService.sync()
             fire(SyncResultEvent(report))
-            fire(PartnerListRequest)
+            fire(PartnerListRequestFXEvent)
         }
         subscribe<SyncResultEvent> { event ->
             information(

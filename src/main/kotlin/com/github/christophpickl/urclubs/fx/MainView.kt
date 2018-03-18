@@ -3,8 +3,8 @@ package com.github.christophpickl.urclubs.fx
 import com.github.christophpickl.urclubs.DEVELOPMENT_COLORS
 import com.github.christophpickl.urclubs.IS_DEVELOPMENT
 import com.github.christophpickl.urclubs.domain.partner.Partner
-import com.github.christophpickl.urclubs.fx.partner.PartnerListEvent
-import com.github.christophpickl.urclubs.fx.partner.PartnerListRequest
+import com.github.christophpickl.urclubs.fx.partner.PartnerListFXEvent
+import com.github.christophpickl.urclubs.fx.partner.PartnerListRequestFXEvent
 import com.github.christophpickl.urclubs.fx.partner.PartnersView
 import javafx.application.Application
 import javafx.scene.layout.Priority
@@ -19,7 +19,7 @@ fun main(args: Array<String>) {
             stage.width = 1100.0
             stage.height = 800.0
             stage.centerOnScreen()
-            fire(PartnerListEvent(Partner.Dummies.all))
+            fire(PartnerListFXEvent(Partner.Dummies.all))
         }
     }
     Application.launch(DummyApp::class.java, *args)
@@ -54,7 +54,7 @@ class MainView : View() {
 
     init {
         title = "UrClubs" + if (IS_DEVELOPMENT) " - DEVELOPMENT" else ""
-        fire(PartnerListRequest)
+        fire(PartnerListRequestFXEvent)
     }
 }
 
@@ -65,7 +65,7 @@ class BottomView : View() {
             fire(SyncRequest)
         }
         button("Reload from DB").action {
-            fire(PartnerListRequest)
+            fire(PartnerListRequestFXEvent)
         }
     }
 

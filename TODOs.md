@@ -3,7 +3,6 @@
 
 1. must do
     1. prompt for user/pass on myclubs login; inject some kind of CredentialsProvider into MyclubsApi
-    1. Fix search! BUG: when filter, update meanwhile => change observable in background
     1. Caching for myclubs API
     
 1. immediately after
