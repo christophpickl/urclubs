@@ -86,6 +86,11 @@ class MyClubsCachedApi @Inject constructor(
                 .build(true)
     }
 
+    fun closeCache() {
+        log.debug { "closeCache()" }
+        cacheManager.close()
+    }
+
     private fun <T> CacheManager.getFor(entity: CacheEntity<T>): Cache<String, T> =
             getCache(entity.cacheAlias, entity.keyType, entity.valueType) ?:
                     throw Exception("Could not find cache by: $entity")

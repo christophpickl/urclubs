@@ -17,6 +17,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.ehcache.config.builders.ResourcePoolsBuilder
 import org.ehcache.config.units.MemoryUnit
 import org.mockito.Mockito.verify
+import org.testng.annotations.AfterMethod
 import org.testng.annotations.BeforeMethod
 import org.testng.annotations.Test
 
@@ -39,6 +40,11 @@ class MyClubsCachedApiTest {
                 delegate = delegateApi
 //                ,overrideResourcePools = testResourcePool
         )
+    }
+
+    @AfterMethod
+    fun tearDown() {
+        cachedApi.closeCache()
     }
 
     fun `loggedUser - single request should load and return from delegate`() {
