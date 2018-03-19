@@ -2,25 +2,28 @@
 # Grob Plan
 
 1. must do
-    1. prompt for user/pass on myclubs login; inject some kind of CredentialsProvider into MyclubsApi
-    1. Fix search! BUG: when filter, update meanwhile => change observable in background
-    1. Caching
-    1. sync past activities
-    1. display:
-        * remaining credits (colorize green-red much-few)
-        * count past activities (mehr platz einnehmende "baelkchen")
-    
+    1. Caching for myclubs API
+    1. logging to file (in .urclubs directory like gadsu is doing)
+    1. when resync data show (indeterministic) progress UI dialog (block UI)
+
 1. immediately after
-    * colorize location (=distance) => property Partner.locationRating (rename regular rating to "partnerRating")
-        + add new property: locationNote (render in table next to static location address)
+    1. proper exception handling
+    1. Minor: change app icon (turn around the U)
+    1. Minor: Version number by gradle resource filtering (display in About dialog)
+    1. add new properties: 
+        * locationNote (render in table next to static location address)
+        * add secondary comment for partners (not visible in table but in detail view)
+        * global notes
+    1. style evertyhing; use myclubs colors (black bg, yellow font)
     1. enhance search:
         * rating (is bigger/lower/equals)
         * remainingCredits/totalVisits (lower, equal, bigger, not)
-    1. DevMode rework: by default use .dev folder, only when -Dprod defined use prod db
 
-1. Activities list in detail
+1. more-over
     * List upcoming workouts
-    * List past workouts
+    * improved search: think about how to "smart filter" => predefined queries (SQL?)
+    * BIG: Create gcal entries
+    * richtext format notes
 
 # TODOs
 
@@ -30,12 +33,16 @@
     * description where location is; zb near subway station
     * EMS: opening hours, phone number
     * Gym: opening hours, got room Y/N
-* richtext format notes
 
 ### Minor:
 
+* send notifications via MacOs (e.g. after sync)
+* colorize location (=distance) => property Partner.locationRating (rename regular rating to "partnerRating")
+* colorize remaining credits (green-red much-few)
+* finished activities visualize count as "baelkchen"
 * ad table: FULL colored lines based on rating
 * show number of displayed partners "10/170" based on current filter
+* support MacMenuBar (handle QuitEvent, outsource menu items into system's Application item)
 
 ### Long term:
 
@@ -44,17 +51,13 @@
     * Use DB and sync partners/workouts (on startup)
     * Store some metadata (preferred partner)
     * Simple suggestion of workout based on metadata
-* Google cal integration
 
 ## Technical
 
+* myclubs testng group, doing HTTP requests + parse, run on travis
 * resolve: org.hibernate.orm.connections.pooling - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
-* introduce some kind of PROFILE
-    * DEV ... use other directory, enable critical shortcuts
-    * PROD (must be explicitly declared) ... using real folder/db
-    * (TEST)
+* resolve o.h.e.j.c.internal.DriverManagerConnectionProviderImpl - Connection leak detected: there are 1 unclosed connections upon shutting down pool jdbc:hsqldb:file:/Users/wu/.urclubs_dev/database/database
 * Configure: Versioneye
-* Use http4k lib
 * debug HTTP traffic on android
-* create own view model? => https://github.com/edvin/tornadofx/wiki/Type-Safe-Builders
-* maybe introduce myclubsMetadata object?? categoryMyc?
+    - reverse engineer requests, e.g.: count of available credits
+

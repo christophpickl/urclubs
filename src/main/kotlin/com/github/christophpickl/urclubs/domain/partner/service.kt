@@ -55,11 +55,17 @@ class PartnerServiceImpl @Inject constructor(
     }
 
     override fun searchPartner(locationHtml: String): Partner? {
-        // MINOR performance improvement: do it directly in DB
         log.trace { "searchPartner(locationHtml=$locationHtml)" }
-        val partners = partnerDao.readAll(includeIgnored = true).associateBy { it.name + "<br>" + it.address }
-        return partners[locationHtml]?.toPartner()
 
+        val cleanedLocationHtml = locationHtml.replace("&amp;", "&")
+        if (!cleanedLocationHtml.contains("<br>")) throw IllegalArgumentException("Expected location HTML to contain a <br>: $locationHtml")
+        val split = cleanedLocationHtml.split("<br>")
+        if(split.size != 2) throw IllegalArgumentException("Expected location HTML to contain only a single <br>: $locationHtml")
+
+        return partnerDao.searchByNameAndAddress(
+            name = split[0],
+            address = split[1]
+        )?.toPartner()
     }
 
 }

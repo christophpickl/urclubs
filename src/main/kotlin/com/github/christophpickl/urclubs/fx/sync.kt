@@ -1,18 +1,15 @@
 package com.github.christophpickl.urclubs.fx
 
 import com.github.christophpickl.kpotpourri.common.logging.LOG
-import com.github.christophpickl.urclubs.fx.partner.PartnerListRequest
-import com.github.christophpickl.urclubs.service.sync.PartnerSyncReport
+import com.github.christophpickl.urclubs.fx.partner.PartnerListRequestFXEvent
+import com.github.christophpickl.urclubs.service.sync.SyncReport
 import com.github.christophpickl.urclubs.service.sync.SyncService
 import javafx.scene.control.ButtonType
-import tornadofx.Controller
-import tornadofx.EventBus
-import tornadofx.FXEvent
-import tornadofx.information
+import tornadofx.*
 
 object SyncRequest : FXEvent(EventBus.RunOn.BackgroundThread)
 
-class SyncResultEvent(val partnersSynced: PartnerSyncReport) : FXEvent()
+class SyncResultEvent(val syncReport: SyncReport) : FXEvent()
 
 class SyncFxController : Controller() {
 
@@ -25,16 +22,17 @@ class SyncFxController : Controller() {
             logg.debug { "Got SyncRequest..." }
             val report = syncService.sync()
             fire(SyncResultEvent(report))
-            fire(PartnerListRequest)
+            fire(PartnerListRequestFXEvent)
         }
         subscribe<SyncResultEvent> { event ->
             information(
-                    title = "Sync Report",
-                    header = "Sync completed successfully",
-                    content = "Inserted: ${event.partnersSynced.insertedPartners.size}\n" +
-                            "Deleted: ${event.partnersSynced.deletedPartners.size}",
-                    buttons = *arrayOf(ButtonType.OK)
-                    // owner = ... main window reference?!
+                title = "Sync Report",
+                header = "Sync completed successfully",
+                content = "Partners inserted: ${event.syncReport.partners.insertedPartners.size}, " +
+                    "deleted: ${event.syncReport.partners.deletedPartners.size}\n" +
+                    "Past activities inserted: ${event.syncReport.finishedActivities.inserted.size}, ",
+                buttons = *arrayOf(ButtonType.OK)
+                // owner = ... main window reference?!
             )
         }
     }

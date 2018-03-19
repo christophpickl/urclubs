@@ -2,18 +2,21 @@ package com.github.christophpickl.urclubs.fx
 
 import com.github.christophpickl.kpotpourri.common.logging.LOG
 import com.github.christophpickl.urclubs.MainModule
-import com.github.christophpickl.urclubs.QuitEvent
+import com.github.christophpickl.urclubs.MetaInf
+import com.github.christophpickl.urclubs.QuitFXEvent
+import com.github.christophpickl.urclubs.QuitManager
 import com.github.christophpickl.urclubs.configureLogging
 import com.github.christophpickl.urclubs.fx.partner.PartnersFxController
 import com.github.christophpickl.urclubs.fx.partner.detail.PartnerFxController
 import com.github.christophpickl.urclubs.fx.partner.detail.PartnerView
 import com.github.christophpickl.urclubs.fx.partner.filter.FilterPartnersController
 import com.github.christophpickl.urclubs.service.Credentials
-import com.github.christophpickl.urclubs.service.SystemPropertyCredentialsProvider
-import com.google.common.eventbus.EventBus
+import com.github.christophpickl.urclubs.service.PropertiesFileCredentialsProvider
 import com.google.inject.AbstractModule
 import com.google.inject.Guice
 import javafx.application.Application
+import javafx.application.Platform
+import javafx.scene.control.ButtonType
 import javafx.stage.Screen
 import javafx.stage.Stage
 import tornadofx.*
@@ -82,7 +85,7 @@ class UrclubsFxApp : App(
 
     override fun stop() { // <= Platform.exit()
         log.debug { "stop()" }
-        guice.getInstance(EventBus::class.java).post(QuitEvent) // MINOR block until DB was closed
+        guice.getInstance(QuitManager::class.java).publishQuitEvent()
         super.stop()
     }
 
@@ -92,12 +95,35 @@ class UrclubsFxApp : App(
         find(SyncFxController::class)
         find(FilterPartnersController::class)
         find(BrowseWebsiteController::class)
+        find(MainController::class)
     }
 
 }
 
 class FxModule : AbstractModule() {
     override fun configure() {
-        bind(Credentials::class.java).toProvider(SystemPropertyCredentialsProvider())
+        bind(Credentials::class.java).toProvider(PropertiesFileCredentialsProvider())
     }
+}
+
+class MainController : Controller() {
+
+    private val logg = LOG {}
+    private val metaInf: MetaInf by di()
+
+    init {
+        subscribe<QuitFXEvent> {
+            logg.info { "QuitFXEvent was dispatched" }
+            Platform.exit() // => UrclubsFxApp.stop()
+        }
+        subscribe<ShowAboutFXEvent> {
+            information(
+                title = "About",
+                header = "About UrClubs",
+                content = "Application Version: ${metaInf.version}\nhttps://github.com/christophpickl/urclubs",
+                buttons = *arrayOf(ButtonType.OK)
+            )
+        }
+    }
+
 }

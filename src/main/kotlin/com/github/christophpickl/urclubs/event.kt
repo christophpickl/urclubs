@@ -1,3 +1,5 @@
 package com.github.christophpickl.urclubs
 
-object QuitEvent
+import tornadofx.*
+
+object QuitFXEvent : FXEvent()

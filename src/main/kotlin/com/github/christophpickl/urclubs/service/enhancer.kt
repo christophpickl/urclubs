@@ -9,7 +9,6 @@ import com.github.christophpickl.urclubs.myclubs.ActivityFilter
 import com.github.christophpickl.urclubs.myclubs.MyClubsApi
 import com.github.christophpickl.urclubs.myclubs.parser.ActivityHtmlModel
 import com.github.christophpickl.urclubs.myclubs.parser.CourseHtmlModel
-import com.github.christophpickl.urclubs.myclubs.parser.FinishedActivityHtmlModel
 import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.runBlocking
 import javax.inject.Inject
@@ -57,25 +56,4 @@ data class EnhancedCourse(
     val partner: Partner
 )
 
-class FinishedActivityEnhancer @Inject constructor(
-    private val partnerService: PartnerService
-) {
-    private val log = LOG {}
-
-    fun enhance(activities: List<FinishedActivityHtmlModel>): List<EnhancedFinishedActivity> {
-        log.debug { "enhance(activities)" }
-        return activities.map { activity ->
-            EnhancedFinishedActivity(
-                activity = activity,
-                partner = partnerService.searchPartner(activity.locationHtml)
-                    ?: throw Exception("Could not find partner for $activity")
-            )
-        }
-    }
-}
-
-data class EnhancedFinishedActivity(
-    val activity: FinishedActivityHtmlModel,
-    val partner: Partner
-)
 

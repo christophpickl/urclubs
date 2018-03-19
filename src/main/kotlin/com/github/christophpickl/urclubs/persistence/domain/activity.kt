@@ -1,19 +1,19 @@
 package com.github.christophpickl.urclubs.persistence.domain
 
-import com.github.christophpickl.urclubs.persistence.HasId
+import com.github.christophpickl.urclubs.persistence.COL_LENGTH_MED
+import java.time.LocalDateTime
 import javax.persistence.Column
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
+import javax.persistence.Embeddable
 
-// @Entity
-data class ActivityDbo(
+@Embeddable
+data class FinishedActivityDbo(
 
-        @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-        override val id: Long,
+    @Column(nullable = false, length = COL_LENGTH_MED)
+    var title: String,
 
-        @Column(nullable = false, unique = true)
-        var idMyc: String
-) : HasId {
+    @Column(nullable = false)
+    var date: LocalDateTime
+
+) {
     companion object
 }

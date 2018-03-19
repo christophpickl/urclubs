@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
 
-./gradlew createDmg -Durclubs.enableMacBundle=true
+./gradlew clean build loadProjectVersionNumber createDmg -Durclubs.enableMacBundle=true
+
 open build/distributions

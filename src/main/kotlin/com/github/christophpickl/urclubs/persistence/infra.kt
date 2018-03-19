@@ -1,10 +1,9 @@
 package com.github.christophpickl.urclubs.persistence
 
 import com.github.christophpickl.kpotpourri.common.logging.LOG
-import com.github.christophpickl.urclubs.QuitEvent
+import com.github.christophpickl.urclubs.QuitListener
+import com.github.christophpickl.urclubs.QuitManager
 import com.github.christophpickl.urclubs.UrclubsConfiguration
-import com.google.common.eventbus.EventBus
-import com.google.common.eventbus.Subscribe
 import com.google.inject.persist.PersistService
 import org.hsqldb.jdbc.JDBCDataSource
 import javax.inject.Inject
@@ -38,20 +37,20 @@ class DbInitializer @Inject constructor(
 }
 
 class DbExitializer @Inject constructor(
-    bus: EventBus,
+    quitManager: QuitManager,
     private val em: EntityManager,
     private val emf: EntityManagerFactory
-) {
-
+) : QuitListener {
     private val log = LOG {}
+
     init {
-        bus.register(this)
+        quitManager.addQuitListener(this)
     }
 
-    @Subscribe
-    fun onQuitEvent(@Suppress("UNUSED_PARAMETER") event: QuitEvent) {
-        log.debug { "onQuitEvent(event) ... shutting down database" }
+    override fun onQuit() {
+        log.debug { "onQuit() ... shutting down database" }
         em.close()
         emf.close()
     }
+
 }

@@ -99,7 +99,7 @@ class PartnerView : View() {
                     field("Credits") {
                         hbox {
                             label("Left: ")
-                            label("X")
+                            label(currentPartner.creditsLeftThisPeriod)
 
                             label("  Max: ")
                             textfield().apply {
@@ -108,11 +108,11 @@ class PartnerView : View() {
                             }
 
                             label("  Visits: ")
-                            label("XX")
+                            label(currentPartner.totalVisits)
                         }
                     }
                     field("Links") {
-                        hbox {
+                        vbox {
                             hyperlink {
                                 textProperty().bind(currentPartner.linkMyclubs)
                                 tooltip { textProperty().bind(currentPartner.linkMyclubs) }
@@ -123,9 +123,12 @@ class PartnerView : View() {
                                 textProperty().bind(currentPartner.linkPartner)
                                 tooltip { textProperty().bind(currentPartner.linkPartner) }
                                 enableWhen { currentPartner.linkPartner.isNotEmpty }
-                                setOnAction { fire(OpenWebsiteFXEvent(url = currentPartner.original.linkPartnerSite)) }
+                                setOnAction { fire(OpenWebsiteFXEvent(url = currentPartner.original.linkPartner)) }
                             }
                         }
+                    }
+                    field("foo") {
+                        label("bar")
                     }
                 }
             }

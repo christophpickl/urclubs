@@ -24,23 +24,22 @@ class PartnerSyncer @Inject constructor(
 
     fun sync(): PartnerSyncReport {
         log.info { "sync()" }
-        val partnersMyc = if(DEVELOPMENT_FAST_SYNC) myclubs.partners().take(5) else myclubs.partners()
-        val partnersDbo = partnerService.readAll()
+        val partnersFetched = if(DEVELOPMENT_FAST_SYNC) myclubs.partners().take(5) else myclubs.partners()
+        val partnersStored = partnerService.readAll()
 
-        val mycsById = partnersMyc.associateBy { it.id }
-        val idOfMycs = mycsById.keys
-        val dbosByIdMyc = partnersDbo.associateBy { it.idMyc }
-        val idMycOfDbos = dbosByIdMyc.keys
+        val fetchedById = partnersFetched.associateBy { it.id }
+        val fetchedIds = fetchedById.keys
+        val storedById = partnersStored.associateBy { it.idMyc }
+        val storedIds = storedById.keys
 
-        // MINOR introduce coroutines for syncing each partner
-        val insertedPartners = mycsById.minus(idMycOfDbos).values.map { partnerMyc ->
+        val insertedPartners = fetchedById.minus(storedIds).values.map { partnerMyc ->
             val rawPartner = partnerMyc.toPartner()
             val detailPartner = myclubs.partner(rawPartner.shortName)
             val partner = rawPartner.enhance(detailPartner)
             partnerService.create(partner)
         }
 
-        val deletedPartners = dbosByIdMyc.minus(idOfMycs).values
+        val deletedPartners = storedById.minus(fetchedIds).values
             .map { it.copy(deletedByMyc = true) }
             .apply {
                 forEach {
@@ -55,8 +54,8 @@ class PartnerSyncer @Inject constructor(
     }
 
     private fun Partner.enhance(detailed: PartnerDetailHtmlModel) = copy(
-        address = detailed.address,
-        linkPartnerSite = detailed.linkPartnerSite,
+        addresses = detailed.addresses,
+        linkPartner = detailed.linkPartnerSite,
         linkMyclubs = util.createMyclubsPartnerUrl(shortName)
         // TODO sync more details
         // description
@@ -89,7 +88,7 @@ fun PartnerHtmlModel.toPartner() = Partner(
     name = name,
     note = "",
     shortName = shortName,
-    address = "", // needs additional GET /partner request
+    addresses = emptyList(), // needs additional GET /partner request
     rating = Rating.UNKNOWN,
     category = Category.UNKNOWN,
     maxCredits = Partner.DEFAULT_MAX_CREDITS,
@@ -99,6 +98,7 @@ fun PartnerHtmlModel.toPartner() = Partner(
     ignored = false,
     // links will be added later on when syncing each partner in detail
     linkMyclubs = "",
-    linkPartnerSite = "",
-    picture = Picture.DefaultPicture
+    linkPartner = "",
+    picture = Picture.DefaultPicture,
+    finishedActivities = emptyList()
 )

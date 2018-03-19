@@ -1,24 +1,29 @@
 package com.github.christophpickl.urclubs.domain.partner
 
-import com.github.christophpickl.urclubs.persistence.domain.CategoryDbo.EMS
-import com.github.christophpickl.urclubs.persistence.domain.PartnerDbo
-import com.github.christophpickl.urclubs.persistence.domain.RatingDbo
+import com.github.christophpickl.urclubs.persistence.domain.FinishedActivityDbo
+import java.time.LocalDateTime
 
-fun PartnerDbo.Companion.testInstance() = PartnerDbo(
-    id = 0L,
+fun Partner.Companion.testInstance() = Partner(
+    idDbo = 0L,
     idMyc = "testIdMyc",
     name = "testName",
     shortName = "testShortName",
-    address = "testStreet",
+    addresses = listOf("testStreet"),
     note = "testNote",
     linkMyclubs = "http://test.myclubs.at",
     linkPartner = "http://test.partner.at",
-    rating = RatingDbo.UNKNOWN,
-    category = EMS,
-    maxCredits = Partner.DEFAULT_MAX_CREDITS.toByte(),
+    rating = Rating.UNKNOWN,
+    category = Category.EMS,
+    maxCredits = Partner.DEFAULT_MAX_CREDITS,
     deletedByMyc = false,
     favourited = true,
     ignored = false,
     wishlisted = true,
-    picture = null
+    picture = Picture.DefaultPicture,
+    finishedActivities = emptyList()
+)
+
+fun FinishedActivityDbo.Companion.testInstance() = FinishedActivityDbo(
+    title = "testTitle",
+    date = LocalDateTime.parse("2000-12-31T09:00:00")
 )

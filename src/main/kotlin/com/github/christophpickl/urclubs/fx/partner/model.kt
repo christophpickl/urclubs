@@ -12,7 +12,7 @@ import tornadofx.*
 
 class CurrentPartnerFx() : ViewModel() {
 
-    lateinit var original: Partner // TODO nasty
+    lateinit var original: Partner // TODO can this be improved?
 
     val name = SimpleStringProperty()
     val note = SimpleStringProperty()
@@ -21,6 +21,8 @@ class CurrentPartnerFx() : ViewModel() {
     val favourited = SimpleBooleanProperty()
     val wishlisted = SimpleBooleanProperty()
     val maxCredits = SimpleIntegerProperty()
+    val totalVisits = SimpleIntegerProperty()
+    val creditsLeftThisPeriod = SimpleIntegerProperty()
 
     val shortName = SimpleStringProperty()
     val linkMyclubs = SimpleStringProperty()
@@ -54,6 +56,9 @@ class CurrentPartnerFx() : ViewModel() {
 
         shortName.set(partner.shortName)
         linkMyclubs.set(partner.linkMyclubs)
-        linkPartner.set(partner.linkPartnerSite)
+        linkPartner.set(partner.linkPartner)
+
+        totalVisits.set(partner.finishedActivities.size)
+        creditsLeftThisPeriod.set(partner.creditsLeftThisPeriod)
     }
 }

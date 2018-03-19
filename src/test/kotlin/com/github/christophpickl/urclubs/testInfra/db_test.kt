@@ -2,8 +2,10 @@ package com.github.christophpickl.urclubs.testInfra
 
 import com.github.christophpickl.kpotpourri.common.logging.LOG
 import com.github.christophpickl.urclubs.persistence.PersistenceModule
-import com.github.christophpickl.urclubs.persistence.deleteAll
+import com.github.christophpickl.urclubs.persistence.createCriteriaDeleteAll
 import com.github.christophpickl.urclubs.persistence.domain.PartnerDbo
+import com.github.christophpickl.urclubs.persistence.transactional
+import com.google.common.eventbus.EventBus
 import com.google.inject.AbstractModule
 import org.testng.annotations.BeforeMethod
 import org.testng.annotations.Guice
@@ -14,6 +16,7 @@ import javax.persistence.EntityManager
 
 class TestDbModule : AbstractModule() {
     override fun configure() {
+        bind(EventBus::class.java).toInstance(EventBus())
         install(PersistenceModule("jdbc:hsqldb:mem:test_db"))
     }
 }
@@ -30,9 +33,16 @@ abstract class DatabaseTest {
     @BeforeMethod
     fun clearDb() {
         log.debug { "clearDb()" }
-//        val delete = em.criteriaBuilder.createCriteriaDelete<PartnerDbo>(PartnerDbo::class.java)
-//        delete.from(PartnerDbo::class.java)
-        em.deleteAll<PartnerDbo>()
+        em.transactional {
+            createNativeQuery("DELETE FROM PartnerDbo_addresses").executeUpdate()
+            createNativeQuery("DELETE FROM PartnerDbo_finishedActivities").executeUpdate()
+            deleteAll<PartnerDbo>()
+        }
+    }
+
+    private inline fun <reified T : Any> EntityManager.deleteAll() {
+        val delete = createCriteriaDeleteAll<T>()
+        createQuery(delete).executeUpdate()
     }
 
 }

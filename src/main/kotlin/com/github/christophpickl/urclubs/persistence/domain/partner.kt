@@ -2,13 +2,20 @@ package com.github.christophpickl.urclubs.persistence.domain
 
 import com.github.christophpickl.kpotpourri.common.logging.LOG
 import com.github.christophpickl.urclubs.byteArrayEquals
+import com.github.christophpickl.urclubs.persistence.COL_LENGTH_BIG
+import com.github.christophpickl.urclubs.persistence.COL_LENGTH_LIL
+import com.github.christophpickl.urclubs.persistence.COL_LENGTH_MED
 import com.github.christophpickl.urclubs.persistence.HasId
+import com.github.christophpickl.urclubs.persistence.ONE_MB
 import com.github.christophpickl.urclubs.persistence.ensureNotPersisted
 import com.github.christophpickl.urclubs.persistence.ensurePersisted
+import com.github.christophpickl.urclubs.persistence.queryList
 import com.github.christophpickl.urclubs.persistence.transactional
 import com.google.common.base.MoreObjects
+import com.google.common.base.Objects
 import javax.inject.Inject
 import javax.persistence.Column
+import javax.persistence.ElementCollection
 import javax.persistence.Entity
 import javax.persistence.EntityManager
 import javax.persistence.EnumType
@@ -20,15 +27,30 @@ import javax.persistence.Lob
 
 interface PartnerDao {
     fun create(partner: PartnerDbo): PartnerDbo
-    fun readAll(includeIgnored: Boolean?): List<PartnerDbo>
+    fun readAll(includeIgnored: Boolean): List<PartnerDbo>
     fun read(id: Long): PartnerDbo?
     fun findByShortName(shortName: String): PartnerDbo?
     fun update(partner: PartnerDbo): PartnerDbo
+    fun searchByNameAndAddress(name: String, address: String): PartnerDbo?
 }
 
 class PartnerDaoImpl @Inject constructor(
     private val em: EntityManager
 ) : PartnerDao {
+
+    override fun searchByNameAndAddress(name: String, address: String): PartnerDbo? {
+        val builder = em.criteriaBuilder
+        val criteria = builder.createQuery(PartnerDbo::class.java).apply {
+            val root = from(PartnerDbo::class.java)
+            select(root)
+            var where = builder.conjunction()
+            where = builder.and(where, builder.equal(root.get<PartnerDbo>(PartnerDbo::name.name), name))
+            where = builder.and(where, builder.isMember(address, root.get(PartnerDbo::addresses.name)))
+            where(where)
+        }
+        return em.createQuery(criteria).resultList.firstOrNull()
+    }
+
     private val log = LOG {}
 
     override fun create(partner: PartnerDbo): PartnerDbo {
@@ -38,11 +60,10 @@ class PartnerDaoImpl @Inject constructor(
         return partner
     }
 
-    override fun readAll(includeIgnored: Boolean?): List<PartnerDbo> {
-        log.debug { "readAll()" }
-        val whereIgnored = if (includeIgnored == null) "" else " AND ${PartnerDbo::ignored.name} = $includeIgnored"
-        val query = em.createQuery("SELECT p FROM ${PartnerDbo::class.simpleName} p WHERE ${PartnerDbo::deletedByMyc.name} = false" + whereIgnored, PartnerDbo::class.java)
-        return query.resultList
+    override fun readAll(includeIgnored: Boolean): List<PartnerDbo> {
+        log.debug { "readAll(includeIgnored=$includeIgnored)" }
+        val whereIgnored = if (includeIgnored) "" else " AND ${PartnerDbo::ignored.name} = $includeIgnored"
+        return em.queryList("SELECT p FROM ${PartnerDbo::class.simpleName} p WHERE ${PartnerDbo::deletedByMyc.name} = false" + whereIgnored)
     }
 
     override fun read(id: Long): PartnerDbo? =
@@ -72,9 +93,6 @@ class PartnerDaoImpl @Inject constructor(
 
 }
 
-const val COL_LENGTH_LIL = 128
-const val COL_LENGTH_MED = 512
-const val COL_LENGTH_BIG = 5120
 
 @Entity
 data class PartnerDbo(
@@ -90,8 +108,8 @@ data class PartnerDbo(
     @Column(nullable = false, length = COL_LENGTH_MED, unique = true)
     var shortName: String,
 
-    @Column(nullable = false, length = COL_LENGTH_MED)
-    var address: String,
+    @ElementCollection
+    var addresses: List<String>,
 
     @Column(nullable = false, length = COL_LENGTH_BIG)
     var note: String,
@@ -125,12 +143,42 @@ data class PartnerDbo(
     var ignored: Boolean,
 
     @Lob
-    @Column(nullable = true)
-    var picture: ByteArray?
+    @Column(nullable = true, length = ONE_MB)
+    var picture: ByteArray?,
+
+    @ElementCollection
+    var finishedActivities: MutableList<FinishedActivityDbo>
+
+    // dont forget to extend the equals() method when adding new properties!
 
 ) : HasId {
     companion object {
         val MAX_PICTURE_BYTES = 1024 * 1024 // == 1MB
+    }
+
+    override fun equals(other: Any?): Boolean {
+        // @formatter:off
+        if (other !is PartnerDbo) return false
+        if (id           != other.id)           return false
+        if (idMyc        != other.idMyc)        return false
+        if (name         != other.name)         return false
+        if (shortName    != other.shortName)    return false
+        if (addresses    != other.addresses)    return false
+        if (note         != other.note)         return false
+        if (linkMyclubs  != other.linkMyclubs)  return false
+        if (linkPartner  != other.linkPartner)  return false
+        if (maxCredits   != other.maxCredits)   return false
+        if (rating       != other.rating)       return false
+        if (category     != other.category)     return false
+        if (deletedByMyc != other.deletedByMyc) return false
+        if (favourited   != other.favourited)   return false
+        if (wishlisted   != other.wishlisted)   return false
+        if (ignored      != other.ignored)      return false
+        if (!picture.byteArrayEquals(other.picture)) return false
+        // hibernate bag is messing up the equals method
+        if (finishedActivities.toList() != other.finishedActivities.toList()) return false
+        // @formatter:on
+        return true
     }
 
     fun updateBy(other: PartnerDbo) {
@@ -145,6 +193,10 @@ data class PartnerDbo(
         if (favourited   != other.favourited)   favourited   = other.favourited
         if (wishlisted   != other.wishlisted)   wishlisted   = other.wishlisted
         if (ignored      != other.ignored)      ignored      = other.ignored
+        if (finishedActivities != other.finishedActivities) finishedActivities.apply {
+            clear()
+            addAll(other.finishedActivities)
+        }
         if (!picture.byteArrayEquals(other.picture)) picture = other.picture
         // @formatter:on
     }
@@ -153,8 +205,11 @@ data class PartnerDbo(
         .add("id", id)
         .add("shortName", shortName)
         .add("idMyc", idMyc)
-        .add("--picture-set", picture != null)
+        .add("picture-set", picture != null)
         .toString()
+
+    override fun hashCode() = Objects.hashCode(id, name, shortName)
+
 }
 
 

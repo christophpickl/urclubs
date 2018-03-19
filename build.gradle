@@ -1,3 +1,7 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
+import java.text.SimpleDateFormat
+
 buildscript {
     ext {
         versionKotlin = "1.2.30"
@@ -18,7 +22,6 @@ plugins {
 ext {
     myMainClassName = "com.github.christophpickl.urclubs.fx.FxAppStarter"
     myAppName = "UrClubs"
-    myAppVersion = "1.0"
 }
 
 dependencies {
@@ -32,6 +35,7 @@ dependencies {
     compile "com.github.christophpickl.kpotpourri:common4k:$versionKPotpourri"
     compile "com.github.christophpickl.kpotpourri:logback4k:$versionKPotpourri"
     compile "com.google.inject:guice:$versionGuice"
+    compile "com.natpryce:konfig:1.6.1.0"
 
     // VIEW
     compile "no.tornado:tornadofx:1.7.14"
@@ -80,6 +84,30 @@ repositories {
 }
 
 // =====================================================================================================================
+// VERSION NUMBER
+// =====================================================================================================================
+
+task loadProjectVersionNumber {
+    Properties props = new Properties()
+    File propsFile = new File("version.properties")
+    props.load(propsFile.newDataInputStream())
+    version = props['version']
+    println "[URCLUBS] Version: " + version
+}
+
+processResources.dependsOn loadProjectVersionNumber
+
+processResources {
+    from('src/main/resources') {
+        include '**/metainf.properties'
+        filter ReplaceTokens, tokens: [
+                "application.version": version,
+                "built.date"         : new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date())
+        ]
+    }
+}
+
+// =====================================================================================================================
 // PACKAGING MAC
 // =====================================================================================================================
 
@@ -93,7 +121,7 @@ if (System.properties.getProperty("urclubs.enableMacBundle") == "true") {
 
     macAppBundle {
         appName = myAppName
-        dmgName = myAppName + "-" + myAppVersion
+        dmgName = myAppName + "-" + version
 
         mainClassName = myMainClassName
         icon = "src/main/buildMac/logo.icns"
@@ -101,6 +129,15 @@ if (System.properties.getProperty("urclubs.enableMacBundle") == "true") {
 
         javaProperties.put("apple.laf.useScreenMenuBar", "true")
         javaProperties.put("urclubs.isMacApp", "true")
+        javaProperties.put("urclubs.production", "true")
+        /*
+        CFBundleVersion
+        ResourceVersion
+        CFBundleShortVersionString
+        <key>xxx</key>
+	    <string>myAppVersion</string>
+         */
+
 //        javaExtras.put("-splash:\$APP_ROOT/Contents/Resources/splashscreen.jpg", null)
     }
 

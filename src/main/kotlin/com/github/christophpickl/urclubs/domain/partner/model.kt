@@ -3,10 +3,14 @@ package com.github.christophpickl.urclubs.domain.partner
 import com.github.christophpickl.urclubs.HasOrder
 import com.github.christophpickl.urclubs.OrderedEnumCompanion
 import com.github.christophpickl.urclubs.OrderedEnumCompanion2
+import com.github.christophpickl.urclubs.domain.activity.FinishedActivity
+import com.github.christophpickl.urclubs.domain.activity.toFinishedActivity
+import com.github.christophpickl.urclubs.domain.activity.toFinishedActivityDbo
 import com.github.christophpickl.urclubs.persistence.domain.CategoryDbo
 import com.github.christophpickl.urclubs.persistence.domain.PartnerDbo
 import com.github.christophpickl.urclubs.persistence.domain.RatingDbo
 import com.google.common.base.MoreObjects
+import java.time.LocalDateTime
 import java.util.concurrent.atomic.AtomicInteger
 
 data class Partner(
@@ -15,7 +19,7 @@ data class Partner(
     val shortName: String, // "triller-crossfit" ... used for links
     val name: String, // "Triller CrossFit"
     val note: String,
-    val address: String,
+    val addresses: List<String>,
     val rating: Rating,
     val maxCredits: Int,
     val deletedByMyc: Boolean, // keep in DB still locally
@@ -24,9 +28,21 @@ data class Partner(
     val ignored: Boolean, // kind-a delete (don't display at all anymore anywhere, but keep in DB)
     val category: Category,
     val linkMyclubs: String,
-    val linkPartnerSite: String,
-    val picture: Picture
+    val linkPartner: String,
+    val picture: Picture,
+    val finishedActivities: List<FinishedActivity>
 ) {
+
+    val visitsThisMonth: Int
+    val creditsLeftThisPeriod: Int
+
+    init {
+        val now = LocalDateTime.now()
+        visitsThisMonth = finishedActivities.filter {
+            it.date.year == now.year && it.date.monthValue == now.monthValue
+        }.size
+        creditsLeftThisPeriod = maxCredits - visitsThisMonth
+    }
 
     companion object {
         const val DEFAULT_MAX_CREDITS = 4
@@ -37,7 +53,7 @@ data class Partner(
             shortName = "",
             name = "",
             note = "",
-            address = "",
+            addresses = emptyList(),
             rating = Rating.UNKNOWN,
             maxCredits = DEFAULT_MAX_CREDITS,
             deletedByMyc = false,
@@ -46,8 +62,9 @@ data class Partner(
             ignored = false,
             category = Category.UNKNOWN,
             linkMyclubs = "",
-            linkPartnerSite = "",
-            picture = Picture.DefaultPicture
+            linkPartner = "",
+            picture = Picture.DefaultPicture,
+            finishedActivities = emptyList()
         )
     }
 
@@ -60,15 +77,19 @@ data class Partner(
             copy(
                 shortName = "dummy-ems",
                 name = "Dummy EMS",
-                address = "Hauptplatz 1",
+                addresses = listOf("Hauptplatz 1"),
                 note = "my note 1",
                 linkMyclubs = "http://orf.at",
-                linkPartnerSite = "http://google.com",
+                linkPartner = "http://google.com",
                 category = Category.EMS,
                 rating = Rating.SUPERB,
                 maxCredits = 2,
                 favourited = true,
-                wishlisted = true
+                wishlisted = true,
+                finishedActivities = listOf(
+                    FinishedActivity("past", LocalDateTime.now().minusMonths(1)),
+                    FinishedActivity("current", LocalDateTime.now())
+                )
             )
         }
 
@@ -76,17 +97,26 @@ data class Partner(
             copy(
                 shortName = "yoga",
                 name = "Dr. Yoga",
-                address = "Mieterstrasse 127/42, 1010 Wien",
+                addresses = listOf("Mieterstrasse 127/42, 1010 Wien"),
                 linkMyclubs = "http://derstandard.at",
                 category = Category.YOGA,
-                rating = Rating.GOOD
+                rating = Rating.GOOD,
+                finishedActivities = listOf(
+                    FinishedActivity("current1", LocalDateTime.now()),
+                    FinishedActivity("current2", LocalDateTime.now()),
+                    FinishedActivity("current3", LocalDateTime.now()),
+                    FinishedActivity("current4", LocalDateTime.now())
+                )
             )
         }
         val mahOk = newDummy {
             copy(
                 shortName = "mah",
                 name = "Maaaah",
-                rating = Rating.OK
+                rating = Rating.OK,
+                finishedActivities = listOf(
+                    FinishedActivity("past", LocalDateTime.now().minusMonths(1))
+                )
             )
         }
         val badAss = newDummy {
@@ -129,6 +159,7 @@ data class Partner(
         .add("idDbo", idDbo)
         .add("shortName", shortName)
         .add("name", name)
+        .add("addresses", addresses)
         .toString()
 }
 
@@ -184,7 +215,7 @@ fun Partner.toPartnerDbo() = PartnerDbo(
     name = name,
     note = note,
     shortName = shortName,
-    address = address,
+    addresses = addresses,
     rating = rating.toRatingDbo(),
     deletedByMyc = deletedByMyc,
     favourited = favourited,
@@ -194,7 +225,8 @@ fun Partner.toPartnerDbo() = PartnerDbo(
     maxCredits = maxCredits.toByte(),
     picture = picture.saveRepresentation,
     linkMyclubs = linkMyclubs,
-    linkPartner = linkPartnerSite
+    linkPartner = linkPartner,
+    finishedActivities = finishedActivities.map { it.toFinishedActivityDbo() }.toMutableList()
 )
 
 fun Rating.toRatingDbo() = when (this) {
@@ -222,7 +254,7 @@ fun PartnerDbo.toPartner() = Partner(
     shortName = shortName,
     name = name,
     note = note,
-    address = address,
+    addresses = addresses,
     rating = rating.toRating(),
     maxCredits = maxCredits.toInt(),
     deletedByMyc = deletedByMyc,
@@ -231,8 +263,9 @@ fun PartnerDbo.toPartner() = Partner(
     ignored = ignored,
     category = category.toCategory(),
     linkMyclubs = linkMyclubs,
-    linkPartnerSite = linkPartner,
-    picture = Picture.readFromDb(picture)
+    linkPartner = linkPartner,
+    picture = Picture.readFromDb(picture),
+    finishedActivities = finishedActivities.map { it.toFinishedActivity() }
 )
 
 fun RatingDbo?.toRating() = when (this) {

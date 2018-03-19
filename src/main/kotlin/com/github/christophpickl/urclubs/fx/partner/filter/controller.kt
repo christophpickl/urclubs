@@ -2,18 +2,14 @@ package com.github.christophpickl.urclubs.fx.partner.filter
 
 import com.github.christophpickl.kpotpourri.common.logging.LOG
 import com.github.christophpickl.urclubs.domain.partner.Partner
-import com.github.christophpickl.urclubs.fx.partner.PartnersView
-import javafx.collections.ObservableList
-import javafx.collections.transformation.FilteredList
 import javafx.scene.input.KeyCode
 import tornadofx.*
+import java.util.function.Predicate
 
 class FilterPartnersController : Controller() {
 
     private val logg = LOG {}
     private val view: FilterPartnersView by inject()
-    private val partnersView: PartnersView by inject()
-    private var originalPartners: ObservableList<Partner>? = null
 
     init {
         view.nameField.setOnKeyPressed { e ->
@@ -33,36 +29,54 @@ class FilterPartnersController : Controller() {
     }
 
     private fun filter() {
-        if (originalPartners == null) {
-            // TODO needs to be reset on PartnerListEvent
-            originalPartners = partnersView.table.items
-        }
         val filterName = view.nameField.text
         val categoryFilter = view.category.selectedItem!!
 
         if (filterName.isEmpty() &&
             categoryFilter == CategoryFilter.AnyCategory) {
             logg.debug { "Resetting filter." }
-            partnersView.table.items = originalPartners
+            fire(ApplyFilterFXEvent.noFilter())
             return
         }
 
-        val filteredItems = FilteredList<Partner>(originalPartners)
-        filteredItems.setPredicate {
-            if (filterName.isEmpty()) {
-                true
-            } else {
-                it.name.contains(filterName, ignoreCase = true)
-            }
-                &&
-                when (categoryFilter) {
-                    CategoryFilter.AnyCategory -> true
-                    is CategoryFilter.EnumCategory -> it.category == categoryFilter.category
-                }
-
+        val predicates = mutableListOf<FilterPredicate>()
+        if (filterName.isNotEmpty()) {
+            predicates += NameFilterPredicate(filterName)
         }
-        partnersView.table.items = filteredItems
+        if (categoryFilter is CategoryFilter.EnumCategory) {
+            predicates += CategoryFilterPredicate(categoryFilter)
+        }
+        fire(ApplyFilterFXEvent(Filter.SomeFilter(predicates)))
+    }
+}
+
+sealed class Filter {
+    object NoFilter : Filter() {
+        val all = Predicate<Partner> { true }
     }
 
+    data class SomeFilter(private val predicates: List<FilterPredicate>) : Filter() {
+        init {
+            assert(predicates.isNotEmpty(), { "At least one predicate must be set, otherwise use NoFilter instead." })
+        }
 
+        fun concatPredicates() = Predicate<Partner> { partner ->
+            predicates.all { predicate ->
+                predicate.test(partner)
+            }
+        }
+
+    }
+}
+
+interface FilterPredicate : Predicate<Partner>
+
+private data class NameFilterPredicate(private val filterName: String) : FilterPredicate {
+    override fun test(t: Partner) =
+        t.name.contains(filterName, ignoreCase = true)
+}
+
+private data class CategoryFilterPredicate(private val categoryFilter: CategoryFilter.EnumCategory) : FilterPredicate {
+    override fun test(t: Partner) =
+        t.category == categoryFilter.category
 }
