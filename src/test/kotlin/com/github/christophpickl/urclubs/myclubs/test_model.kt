@@ -1,7 +1,7 @@
 package com.github.christophpickl.urclubs.myclubs
 
-import com.github.christophpickl.urclubs.myclubs.parser.PartnerHtmlModel
 import com.github.christophpickl.urclubs.myclubs.parser.FinishedActivityHtmlModel
+import com.github.christophpickl.urclubs.myclubs.parser.PartnerHtmlModel
 import java.time.LocalDateTime
 
 fun PartnerHtmlModel.Companion.testInstance() = PartnerHtmlModel(
@@ -16,3 +16,5 @@ fun FinishedActivityHtmlModel.Companion.testInstance() = FinishedActivityHtmlMod
     title = "Super Yoga",
     locationHtml = "Yoga<br>Wien"
 )
+
+fun UserMycJson.Companion.testInstance() = UserMycJson(id ="testId", email = "testEmail", firstName = "testFirstName", lastName = "testLastName")

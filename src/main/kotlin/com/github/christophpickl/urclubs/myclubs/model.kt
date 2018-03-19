@@ -15,7 +15,9 @@ data class UserMycJson(
         val firstName: String,
         @JsonProperty("lastname")
         val lastName: String
-)
+) {
+    companion object
+}
 
 data class ActivitiesMycJson(
         // boundingBox

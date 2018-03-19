@@ -163,8 +163,8 @@ class MyClubsHttpApi @Inject constructor(
 
         val body = response.body
         if (body != "success") {
-            log.warn { response.toString() }
-            log.warn(body)
+            log.warn { "Response:\n$response" }
+            log.warn { "Response body:\n$body" }
             throw Exception("Login failed!")
         }
         loggedIn = true

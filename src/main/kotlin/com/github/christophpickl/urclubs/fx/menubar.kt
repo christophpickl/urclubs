@@ -7,11 +7,16 @@ import com.github.christophpickl.urclubs.QuitFXEvent
 import com.github.christophpickl.urclubs.domain.partner.Partner
 import com.github.christophpickl.urclubs.domain.partner.toPartnerDbo
 import com.github.christophpickl.urclubs.fx.partner.PartnerListRequestFXEvent
+import com.github.christophpickl.urclubs.myclubs.MyClubsCacheManager
 import com.github.christophpickl.urclubs.persistence.createCriteriaDeleteAll
 import com.github.christophpickl.urclubs.persistence.domain.PartnerDbo
 import com.github.christophpickl.urclubs.persistence.transactional
 import javafx.scene.control.MenuBar
-import tornadofx.*
+import tornadofx.Controller
+import tornadofx.FXEvent
+import tornadofx.action
+import tornadofx.item
+import tornadofx.menu
 import javax.persistence.EntityManager
 
 object ShowAboutFXEvent : FXEvent()
@@ -20,6 +25,7 @@ class MenuBarController : Controller() {
 
     private val logg = LOG {}
     private val em: EntityManager by di()
+    private val cacheManager: MyClubsCacheManager by di()
 
     fun resetDummyData() {
         logg.info { "resetDummyData()" }
@@ -40,6 +46,10 @@ class MenuBarController : Controller() {
     fun showAbout() {
         fire(ShowAboutFXEvent)
     }
+
+    fun clearCaches() {
+        cacheManager.clearCaches()
+    }
 }
 
 class MyMenuBar(
@@ -49,6 +59,9 @@ class MyMenuBar(
     init {
         useSystemMenuBarProperty().set(true)
         menu("Application") {
+            item("Clear Caches").action {
+                controller.clearCaches()
+            }
             item("About").action {
                 controller.showAbout()
             }

@@ -4,6 +4,7 @@ import com.esotericsoftware.kryo.Kryo
 import com.esotericsoftware.kryo.io.ByteBufferInputStream
 import com.esotericsoftware.kryo.io.Input
 import com.esotericsoftware.kryo.io.Output
+import com.github.christophpickl.kpotpourri.common.logging.LOG
 import com.github.christophpickl.urclubs.URCLUBS_CACHE_DIRECTORY
 import com.github.christophpickl.urclubs.myclubs.parser.ActivityHtmlModel
 import com.github.christophpickl.urclubs.myclubs.parser.CourseHtmlModel
@@ -15,11 +16,21 @@ import org.ehcache.spi.serialization.Serializer
 import java.nio.ByteBuffer
 import javax.inject.Inject
 
+interface MyClubsCacheManager {
+    fun clearCaches()
+}
+
 class MyClubsCachedApi @Inject constructor(
         @HttpApi private val delegate: MyClubsApi
-) : MyClubsApi {
+) : MyClubsApi, MyClubsCacheManager {
+
+    private val log = LOG {}
 
     private val directory = URCLUBS_CACHE_DIRECTORY
+
+    override fun clearCaches() {
+        log.info { "clearCaches()" }
+    }
 
     override fun loggedUser(): UserMycJson {
         return delegate.loggedUser()
