@@ -11,29 +11,97 @@ import com.github.christophpickl.urclubs.myclubs.parser.CourseHtmlModel
 import com.github.christophpickl.urclubs.myclubs.parser.FinishedActivityHtmlModel
 import com.github.christophpickl.urclubs.myclubs.parser.PartnerDetailHtmlModel
 import com.github.christophpickl.urclubs.myclubs.parser.PartnerHtmlModel
+import org.ehcache.Cache
+import org.ehcache.CacheManager
+import org.ehcache.config.ResourcePools
+import org.ehcache.config.builders.CacheConfigurationBuilder
+import org.ehcache.config.builders.CacheManagerBuilder
+import org.ehcache.config.builders.ExpiryPolicyBuilder
+import org.ehcache.config.builders.ResourcePoolsBuilder
+import org.ehcache.config.units.MemoryUnit
 import org.ehcache.spi.copy.Copier
 import org.ehcache.spi.serialization.Serializer
 import java.nio.ByteBuffer
+import java.time.Duration
+import java.time.temporal.ChronoUnit
 import javax.inject.Inject
 
 interface MyClubsCacheManager {
     fun clearCaches()
 }
 
+data class CacheEntity<T>(
+        val cacheAlias: String,
+        val valueType: Class<T>,
+        val duration: Duration,
+        val serializerType: Class<out Serializer<T>>,
+        val copierType: Class<out Copier<T>>
+) {
+    val keyType = String::class.java
+}
+
 class MyClubsCachedApi @Inject constructor(
-        @HttpApi private val delegate: MyClubsApi
+        @HttpApi private val delegate: MyClubsApi,
+        overrideResourcePools: ResourcePools? = null // for testing purposes only
 ) : MyClubsApi, MyClubsCacheManager {
 
     private val log = LOG {}
 
-    private val directory = URCLUBS_CACHE_DIRECTORY
+    private val defaultResourcePools = ResourcePoolsBuilder.newResourcePoolsBuilder()
+            .heap(1, MemoryUnit.MB)
+            .offheap(10, MemoryUnit.MB)
+            .disk(50, MemoryUnit.MB, true)
+            .build()
+
+    private val cacheManager: CacheManager
+    private val cacheDirectory = URCLUBS_CACHE_DIRECTORY
+    private val entityUser = CacheEntity(
+            cacheAlias = "user",
+            valueType = CachedUserMycJson::class.java,
+            duration = Duration.of(2, ChronoUnit.DAYS),
+            serializerType = CachedUserMycJsonSerializer::class.java,
+            copierType = CachedUserMycJsonCopier::class.java
+    )
+    private val userCacheKey = "userKey"
+    private val entities = listOf(entityUser)
+
+    init {
+        cacheManager = CacheManagerBuilder.newCacheManagerBuilder()
+                .with(CacheManagerBuilder.persistence(cacheDirectory))
+                .apply {
+                    entities.forEach { entity ->
+                        log.debug { "Registering cache for entity: $entity" }
+                        withCache(entity.cacheAlias,
+                                CacheConfigurationBuilder.newCacheConfigurationBuilder(
+                                        entity.keyType,
+                                        entity.valueType,
+                                        overrideResourcePools ?: defaultResourcePools
+                                )
+                                        .withExpiry(ExpiryPolicyBuilder.timeToLiveExpiration(entity.duration))
+                                        .withValueSerializer(entity.serializerType)
+                                        .withValueCopier(entity.copierType)
+                        )
+                    }
+                }
+                .build(true)
+    }
+
+    private fun <T> CacheManager.getFor(entity: CacheEntity<T>): Cache<String, T> =
+            getCache(entity.cacheAlias, entity.keyType, entity.valueType) ?:
+                    throw Exception("Could not find cache by: $entity")
 
     override fun clearCaches() {
         log.info { "clearCaches()" }
     }
 
     override fun loggedUser(): UserMycJson {
-        return delegate.loggedUser()
+        val cache = cacheManager.getFor(entityUser)
+        cache.get(userCacheKey)?.let {
+            return it.toUserMycJson()
+        }
+        val result = delegate.loggedUser()
+        cache.put(userCacheKey, CachedUserMycJson(result))
+        return result
     }
 
     override fun partners(): List<PartnerHtmlModel> {
@@ -70,6 +138,13 @@ data class CachedUserMycJson(
             email = original.email,
             firstName = original.firstName,
             lastName = original.lastName
+    )
+
+    fun toUserMycJson() = UserMycJson(
+            id = id,
+            email = email,
+            firstName = firstName,
+            lastName = lastName
     )
 }
 

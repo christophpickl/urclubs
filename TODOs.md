@@ -3,7 +3,6 @@
 
 1. must do
     1. Caching for myclubs API
-        * add menubar entry "Clear Cache"
     1. logging to file (in .urclubs directory like gadsu is doing)
     1. when resync data show (indeterministic) progress UI dialog (block UI)
 

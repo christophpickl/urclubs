@@ -29,7 +29,7 @@ val URCLUBS_DIRECTORY = File(System.getProperty("user.home"), if (IS_DEVELOPMENT
     log.info { "Urclubs directory located at: ${file.canonicalPath}" }
 }
 val URCLUBS_DATABASE_DIRECTORY = File(URCLUBS_DIRECTORY, "database")
-val URCLUBS_CACHE_DIRECTORY = File(URCLUBS_DIRECTORY, "cache")
+val URCLUBS_CACHE_DIRECTORY = File(URCLUBS_DIRECTORY, "cache2")
 val IS_MAC = (System.getProperty(SystemProperties.KEY_IS_MAC) != null).also { enabled ->
     log.info("Mac mode is ${if (enabled) "enabled" else "disabled"}")
 }
