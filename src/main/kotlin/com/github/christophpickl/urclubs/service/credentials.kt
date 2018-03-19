@@ -6,7 +6,9 @@ import com.google.inject.Provider
 data class Credentials(
         val email: String,
         val password: String
-)
+) {
+    companion object
+}
 
 class CliArgsCredentialsProvider(private val args: Array<String>) : Provider<Credentials> {
     override fun get(): Credentials {

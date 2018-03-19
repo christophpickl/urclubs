@@ -13,6 +13,7 @@ object UrclubsConfiguration {
 
 val URCLUBS_DIRECTORY = File(System.getProperty("user.home"), if (IS_DEVELOPMENT) ".urclubs_dev" else ".urclubs")
 val URCLUBS_DATABASE_DIRECTORY = File(URCLUBS_DIRECTORY, "database")
+val URCLUBS_CACHE_DIRECTORY = File(URCLUBS_DIRECTORY, "cache")
 val IS_MAC = System.getProperty(SystemProperties.KEY_IS_MAC) != null
 
 object SystemProperties {
