@@ -38,7 +38,7 @@ class CliApp @Inject constructor(
 
 object CliAppStarter {
     init {
-        configureLogging()
+        UrClubsLogConfigurer.configureLogging()
     }
 
     @JvmStatic

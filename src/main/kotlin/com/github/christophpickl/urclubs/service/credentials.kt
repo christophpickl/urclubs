@@ -2,7 +2,7 @@ package com.github.christophpickl.urclubs.service
 
 import com.github.christophpickl.kpotpourri.common.logging.LOG
 import com.github.christophpickl.urclubs.SystemProperties
-import com.github.christophpickl.urclubs.URCLUBS_DIRECTORY
+import com.github.christophpickl.urclubs.UrclubsConfiguration
 import com.google.inject.Provider
 import com.natpryce.konfig.Configuration
 import com.natpryce.konfig.ConfigurationProperties
@@ -74,7 +74,7 @@ class PropertiesFileCredentialsProvider : Provider<Credentials> {
     }
 
     override fun get(): Credentials {
-        val loginFile = File(URCLUBS_DIRECTORY, "login.properties")
+        val loginFile = File(UrclubsConfiguration.HOME_DIRECTORY, "login.properties")
         log.debug { "Loading credentials from file: ${loginFile.canonicalPath}" }
         if (!loginFile.exists()) {
             throw CredentialsLoadException("Required file doesnt exist at: ${loginFile.canonicalPath}")

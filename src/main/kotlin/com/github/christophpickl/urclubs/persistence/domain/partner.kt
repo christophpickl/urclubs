@@ -1,7 +1,7 @@
 package com.github.christophpickl.urclubs.persistence.domain
 
+import com.github.christophpickl.kpotpourri.common.arrays.byteArrayEquals
 import com.github.christophpickl.kpotpourri.common.logging.LOG
-import com.github.christophpickl.urclubs.byteArrayEquals
 import com.github.christophpickl.urclubs.persistence.COL_LENGTH_BIG
 import com.github.christophpickl.urclubs.persistence.COL_LENGTH_LIL
 import com.github.christophpickl.urclubs.persistence.COL_LENGTH_MED

@@ -2,16 +2,16 @@ package com.github.christophpickl.urclubs
 
 import com.github.christophpickl.kpotpourri.common.logging.LOG
 import com.github.christophpickl.urclubs.fx.UrClubsFxApp
-import com.github.christophpickl.urclubs.service.configureLogging
+import com.github.christophpickl.urclubs.service.UrClubsLogConfigurer
 import javafx.application.Application
 import javax.swing.JOptionPane
 
 object UrClubs {
 
-    private val log = LOG {}
+    private val log by lazy { LOG {} }
 
     init {
-        configureLogging()
+        UrClubsLogConfigurer.configureLogging()
 
         Thread.setDefaultUncaughtExceptionHandler { thread, throwable ->
             log.error("Uncaught exception in thread '${thread.name}'!", throwable)
@@ -21,7 +21,7 @@ object UrClubs {
 
     @JvmStatic
     fun main(args: Array<String>) {
-        log.info { "Starting FX application context ..." }
+        log.info { "Starting FX application context" }
         Application.launch(UrClubsFxApp::class.java, *args)
     }
 

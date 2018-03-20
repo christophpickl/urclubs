@@ -1,7 +1,7 @@
 package com.github.christophpickl.urclubs.service.sync
 
 import com.github.christophpickl.kpotpourri.common.logging.LOG
-import com.github.christophpickl.urclubs.DEVELOPMENT_FAST_SYNC
+import com.github.christophpickl.urclubs.UrclubsConfiguration
 import com.github.christophpickl.urclubs.domain.activity.ActivityService
 import com.github.christophpickl.urclubs.domain.activity.FinishedActivity
 import com.github.christophpickl.urclubs.domain.partner.Partner
@@ -59,7 +59,7 @@ class FinishedActivitySyncer @Inject constructor(
 
     private fun fetchFinishedActivities(): List<EnhancedFinishedActivity> {
         val activities = myclubs.finishedActivities().run {
-            if (DEVELOPMENT_FAST_SYNC) take(5) else this
+            if (UrclubsConfiguration.DEVELOPMENT_FAST_SYNC) take(5) else this
         }
         return activities.mapNotNull { activity ->
             val partner = partnerService.searchPartner(activity.locationHtml)

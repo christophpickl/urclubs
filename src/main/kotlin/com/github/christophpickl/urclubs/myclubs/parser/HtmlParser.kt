@@ -3,7 +3,7 @@ package com.github.christophpickl.urclubs.myclubs.parser
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import com.github.christophpickl.urclubs.toLocalDate
+import com.github.christophpickl.kpotpourri.common.time.toLocalDate
 import com.google.common.annotations.VisibleForTesting
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element

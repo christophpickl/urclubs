@@ -32,7 +32,7 @@ object MetaInfProvider : Provider<MetaInf> {
             version = config[metainf.application_version],
             builtDate = config[metainf.built_date]
         )
-        log.info { "Successfully load metainf: ${metaInf}" }
+        log.info { "Successfully loaded: $metaInf" }
         return metaInf!!
     }
 

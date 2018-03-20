@@ -1,7 +1,6 @@
 package com.github.christophpickl.urclubs.fx
 
-import com.github.christophpickl.urclubs.DEVELOPMENT_COLORS
-import com.github.christophpickl.urclubs.IS_DEVELOPMENT
+import com.github.christophpickl.urclubs.UrclubsConfiguration
 import com.github.christophpickl.urclubs.domain.partner.Partner
 import com.github.christophpickl.urclubs.fx.partner.PartnerListFXEvent
 import com.github.christophpickl.urclubs.fx.partner.PartnerListRequestFXEvent
@@ -33,7 +32,7 @@ class MainView : View() {
 
     override val root = vbox {
         style {
-            if (DEVELOPMENT_COLORS) backgroundColor += javafx.scene.paint.Color.GREENYELLOW
+            if (UrclubsConfiguration.DEVELOPMENT_COLORS) backgroundColor += javafx.scene.paint.Color.GREENYELLOW
         }
 
         add(MyMenuBar(menuBarController))
@@ -41,7 +40,7 @@ class MainView : View() {
         borderpane {
             vgrow = Priority.ALWAYS
             style {
-                if (DEVELOPMENT_COLORS) backgroundColor += javafx.scene.paint.Color.BEIGE
+                if (UrclubsConfiguration.DEVELOPMENT_COLORS) backgroundColor += javafx.scene.paint.Color.BEIGE
             }
             center {
                 add(partnersView)
@@ -53,7 +52,7 @@ class MainView : View() {
     }
 
     init {
-        title = "UrClubs" + if (IS_DEVELOPMENT) " - DEVELOPMENT" else ""
+        title = "UrClubs" + if (UrclubsConfiguration.IS_DEVELOPMENT) " - DEVELOPMENT" else ""
         fire(PartnerListRequestFXEvent)
     }
 }
@@ -62,7 +61,7 @@ class BottomView : View() {
 
     override val root = hbox {
         button("Resync Data").action {
-            fire(SyncRequest)
+            fire(SyncRequestFXEvent)
         }
         button("Reload from DB").action {
             fire(PartnerListRequestFXEvent)

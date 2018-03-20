@@ -2,7 +2,7 @@ package com.github.christophpickl.urclubs.service.sync
 
 import com.github.christophpickl.kpotpourri.common.collection.toPrettyString
 import com.github.christophpickl.kpotpourri.common.logging.LOG
-import com.github.christophpickl.urclubs.DEVELOPMENT_FAST_SYNC
+import com.github.christophpickl.urclubs.UrclubsConfiguration
 import com.github.christophpickl.urclubs.domain.partner.Category
 import com.github.christophpickl.urclubs.domain.partner.Partner
 import com.github.christophpickl.urclubs.domain.partner.PartnerService
@@ -24,7 +24,7 @@ class PartnerSyncer @Inject constructor(
 
     fun sync(): PartnerSyncReport {
         log.info { "sync()" }
-        val partnersFetched = if(DEVELOPMENT_FAST_SYNC) myclubs.partners().take(5) else myclubs.partners()
+        val partnersFetched = if(UrclubsConfiguration.DEVELOPMENT_FAST_SYNC) myclubs.partners().take(5) else myclubs.partners()
         val partnersStored = partnerService.readAll()
 
         val fetchedById = partnersFetched.associateBy { it.id }

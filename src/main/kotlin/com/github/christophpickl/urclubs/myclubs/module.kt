@@ -1,6 +1,6 @@
 package com.github.christophpickl.urclubs.myclubs
 
-import com.github.christophpickl.urclubs.URCLUBS_CACHE_DIRECTORY
+import com.github.christophpickl.urclubs.UrclubsConfiguration
 import com.github.christophpickl.urclubs.myclubs.cache.CacheFile
 import com.github.christophpickl.urclubs.myclubs.cache.MyClubsCacheManager
 import com.github.christophpickl.urclubs.myclubs.cache.MyClubsCachedApi
@@ -24,6 +24,6 @@ class MyclubsModule : AbstractModule() {
     @Provides
     @Singleton
     @CacheFile
-    fun provideCacheDirectory() = URCLUBS_CACHE_DIRECTORY
+    fun provideCacheDirectory() = UrclubsConfiguration.CACHE_DIRECTORY
 
 }

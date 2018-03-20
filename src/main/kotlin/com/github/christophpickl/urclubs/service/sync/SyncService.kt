@@ -20,6 +20,17 @@ class SyncService @Inject constructor(
         )
     }
 
+    // MINOR could create stubbing dev bean which fakes real sync
+//    fun sync(): SyncReport {
+//        log.debug { "FAKE sync()" }
+//
+//        Thread.sleep(3_000)
+//        return SyncReport(
+//            partners = PartnerSyncReport(emptyList(), emptyList()),
+//            finishedActivities = FinishedActivitySyncReport(emptyList())
+//        )
+//    }
+
 }
 
 data class SyncReport(

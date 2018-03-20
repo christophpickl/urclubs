@@ -7,7 +7,7 @@ buildscript {
         versionKotlin = "1.2.30"
         versionGuice = "4.2.0"
         versionJava = "1.8"
-        versionKPotpourri = "1.7"
+        versionKPotpourri = "1.10"
     }
     dependencies {
         classpath "gradle.plugin.edu.sc.seis:macAppBundle:2.1.8"
@@ -64,6 +64,7 @@ dependencies {
 }
 
 sourceCompatibility = versionJava
+targetCompatibility = versionJava
 compileKotlin {
     kotlinOptions.jvmTarget = versionJava.toString()
 }

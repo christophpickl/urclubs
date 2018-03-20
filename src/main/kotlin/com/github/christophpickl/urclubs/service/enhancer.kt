@@ -1,7 +1,7 @@
 package com.github.christophpickl.urclubs.service
 
 import com.github.christophpickl.kpotpourri.common.logging.LOG
-import com.github.christophpickl.urclubs.Stopwatch
+import com.github.christophpickl.kpotpourri.common.time.Stopwatch
 import com.github.christophpickl.urclubs.domain.activity.ActivityType
 import com.github.christophpickl.urclubs.domain.partner.Partner
 import com.github.christophpickl.urclubs.domain.partner.PartnerService

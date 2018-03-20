@@ -1,9 +1,8 @@
 package com.github.christophpickl.urclubs.persistence
 
 import com.github.christophpickl.kpotpourri.common.logging.LOG
-import com.github.christophpickl.urclubs.URCLUBS_DATABASE_DIRECTORY
 import com.github.christophpickl.urclubs.UrclubsConfiguration
-import com.github.christophpickl.urclubs.service.configureLogging
+import com.github.christophpickl.urclubs.service.UrClubsLogConfigurer
 import com.google.inject.AbstractModule
 import com.google.inject.BindingAnnotation
 import com.google.inject.Guice
@@ -37,14 +36,14 @@ class PersistenceModule(definedDatabaseUrl: String? = null) : AbstractModule() {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
-            configureLogging()
+            UrClubsLogConfigurer.configureLogging()
             Guice.createInjector(PersistenceModule("jdbc:hsqldb:mem:mymemdb"))
         }
     }
 
     private val log = LOG {}
     private val persistenceUnitName = "urclubs.punit"
-    private val defaultDbUrl: String = "jdbc:hsqldb:file:${File(URCLUBS_DATABASE_DIRECTORY, "database").absolutePath}"
+    private val defaultDbUrl: String = "jdbc:hsqldb:file:${File(UrclubsConfiguration.DATABASE_DIRECTORY, "database").absolutePath}"
     private val databaseUrl = definedDatabaseUrl ?: defaultDbUrl
 
     init {

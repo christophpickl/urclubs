@@ -1,7 +1,7 @@
 package com.github.christophpickl.urclubs.fx.partner
 
 import com.github.christophpickl.kpotpourri.common.logging.LOG
-import com.github.christophpickl.urclubs.DEVELOPMENT_COLORS
+import com.github.christophpickl.urclubs.UrclubsConfiguration
 import com.github.christophpickl.urclubs.domain.partner.ImageSize
 import com.github.christophpickl.urclubs.domain.partner.Partner
 import com.github.christophpickl.urclubs.domain.partner.Rating
@@ -67,7 +67,7 @@ class PartnersView : View() {
 
     override val root = borderpane {
         style {
-            if (DEVELOPMENT_COLORS) backgroundColor += Color.AQUA
+            if (UrclubsConfiguration.DEVELOPMENT_COLORS) backgroundColor += Color.AQUA
         }
         top {
             add(partnersFilter)
