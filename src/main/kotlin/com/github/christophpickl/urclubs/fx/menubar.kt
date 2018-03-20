@@ -3,7 +3,6 @@ package com.github.christophpickl.urclubs.fx
 import com.github.christophpickl.kpotpourri.common.logging.LOG
 import com.github.christophpickl.urclubs.IS_DEVELOPMENT
 import com.github.christophpickl.urclubs.IS_MAC
-import com.github.christophpickl.urclubs.QuitFXEvent
 import com.github.christophpickl.urclubs.domain.partner.Partner
 import com.github.christophpickl.urclubs.domain.partner.toPartnerDbo
 import com.github.christophpickl.urclubs.fx.partner.PartnerListRequestFXEvent

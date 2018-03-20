@@ -1,4 +1,4 @@
-package com.github.christophpickl.urclubs
+package com.github.christophpickl.urclubs.service
 
 import com.github.christophpickl.kpotpourri.common.logging.LOG
 

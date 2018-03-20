@@ -3,7 +3,7 @@ package com.github.christophpickl.urclubs.persistence
 import com.github.christophpickl.kpotpourri.common.logging.LOG
 import com.github.christophpickl.urclubs.URCLUBS_DATABASE_DIRECTORY
 import com.github.christophpickl.urclubs.UrclubsConfiguration
-import com.github.christophpickl.urclubs.configureLogging
+import com.github.christophpickl.urclubs.service.configureLogging
 import com.google.inject.AbstractModule
 import com.google.inject.BindingAnnotation
 import com.google.inject.Guice

@@ -20,7 +20,7 @@ plugins {
 }
 
 ext {
-    myMainClassName = "com.github.christophpickl.urclubs.fx.FxAppStarter"
+    myMainClassName = "com.github.christophpickl.urclubs.UrClubs"
     myAppName = "UrClubs"
 }
 

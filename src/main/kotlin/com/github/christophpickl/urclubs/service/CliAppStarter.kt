@@ -1,13 +1,8 @@
-package com.github.christophpickl.urclubs.cli
+package com.github.christophpickl.urclubs.service
 
 import com.github.christophpickl.urclubs.MainModule
-import com.github.christophpickl.urclubs.QuitManager
-import com.github.christophpickl.urclubs.configureLogging
 import com.github.christophpickl.urclubs.domain.partner.PartnerService
 import com.github.christophpickl.urclubs.myclubs.MyClubsApi
-import com.github.christophpickl.urclubs.service.CourseEnhancer
-import com.github.christophpickl.urclubs.service.Credentials
-import com.github.christophpickl.urclubs.service.PropertiesFileCredentialsProvider
 import com.github.christophpickl.urclubs.service.sync.FinishedActivitySyncer
 import com.github.christophpickl.urclubs.service.sync.PartnerSyncer
 import com.google.common.eventbus.EventBus

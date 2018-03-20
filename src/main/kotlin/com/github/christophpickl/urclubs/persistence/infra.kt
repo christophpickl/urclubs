@@ -1,8 +1,8 @@
 package com.github.christophpickl.urclubs.persistence
 
 import com.github.christophpickl.kpotpourri.common.logging.LOG
-import com.github.christophpickl.urclubs.QuitListener
-import com.github.christophpickl.urclubs.QuitManager
+import com.github.christophpickl.urclubs.service.QuitListener
+import com.github.christophpickl.urclubs.service.QuitManager
 import com.github.christophpickl.urclubs.UrclubsConfiguration
 import com.google.inject.persist.PersistService
 import org.hsqldb.jdbc.JDBCDataSource

@@ -1,4 +1,4 @@
-package com.github.christophpickl.urclubs
+package com.github.christophpickl.urclubs.service
 
 import com.github.christophpickl.kpotpourri.common.logging.LOG
 import com.google.inject.Provider
@@ -32,7 +32,7 @@ object MetaInfProvider : Provider<MetaInf> {
             version = config[metainf.application_version],
             builtDate = config[metainf.built_date]
         )
-        log.info { "Successfully load metainf: $metaInf" }
+        log.info { "Successfully load metainf: ${metaInf}" }
         return metaInf!!
     }
 
