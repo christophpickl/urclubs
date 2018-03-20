@@ -5,12 +5,12 @@ import com.esotericsoftware.kryo.io.ByteBufferInputStream
 import com.esotericsoftware.kryo.io.Input
 import com.esotericsoftware.kryo.io.Output
 import com.github.christophpickl.kpotpourri.common.logging.LOG
-import com.github.christophpickl.urclubs.URCLUBS_CACHE_DIRECTORY
 import com.github.christophpickl.urclubs.myclubs.parser.ActivityHtmlModel
 import com.github.christophpickl.urclubs.myclubs.parser.CourseHtmlModel
 import com.github.christophpickl.urclubs.myclubs.parser.FinishedActivityHtmlModel
 import com.github.christophpickl.urclubs.myclubs.parser.PartnerDetailHtmlModel
 import com.github.christophpickl.urclubs.myclubs.parser.PartnerHtmlModel
+import com.google.inject.BindingAnnotation
 import org.ehcache.Cache
 import org.ehcache.CacheManager
 import org.ehcache.config.ResourcePools
@@ -21,6 +21,7 @@ import org.ehcache.config.builders.ResourcePoolsBuilder
 import org.ehcache.config.units.MemoryUnit
 import org.ehcache.spi.copy.Copier
 import org.ehcache.spi.serialization.Serializer
+import java.io.File
 import java.nio.ByteBuffer
 import java.time.Duration
 import java.time.temporal.ChronoUnit
@@ -40,21 +41,36 @@ data class CacheEntity<T>(
     val keyType = String::class.java
 }
 
-class MyClubsCachedApi @Inject constructor(
-        @HttpApi private val delegate: MyClubsApi,
-        overrideResourcePools: ResourcePools? = null // for testing purposes only
+@Retention
+@Target(AnnotationTarget.VALUE_PARAMETER, AnnotationTarget.FUNCTION)
+@BindingAnnotation
+annotation class CacheFile
+
+class MyClubsCachedApi constructor(
+        private val delegate: MyClubsApi,
+        cacheDirectory: File?,
+        overrideResourcePools: ResourcePools?
 ) : MyClubsApi, MyClubsCacheManager {
+
+    companion object {
+        private val defaultResourcePools = ResourcePoolsBuilder.newResourcePoolsBuilder()
+                .heap(1, MemoryUnit.MB)
+                .offheap(10, MemoryUnit.MB)
+                .disk(50, MemoryUnit.MB, true)
+                .build()
+    }
+
+    @Inject constructor(
+            @HttpApi delegate: MyClubsApi,
+            @CacheFile cacheDirectory: File
+
+    ) : this(delegate, cacheDirectory, null)
 
     private val log = LOG {}
 
-    private val defaultResourcePools = ResourcePoolsBuilder.newResourcePoolsBuilder()
-            .heap(1, MemoryUnit.MB)
-            .offheap(10, MemoryUnit.MB)
-            .disk(50, MemoryUnit.MB, true)
-            .build()
 
     private val cacheManager: CacheManager
-    private val cacheDirectory = URCLUBS_CACHE_DIRECTORY
+
     private val entityUser = CacheEntity(
             cacheAlias = "user",
             valueType = CachedUserMycJson::class.java,
@@ -67,34 +83,36 @@ class MyClubsCachedApi @Inject constructor(
 
     init {
         log.debug { "Init cache" }
-        cacheManager = CacheManagerBuilder.newCacheManagerBuilder()
-                .with(CacheManagerBuilder.persistence(cacheDirectory))
-//                .apply {
-//                    entities.forEach { entity ->
-//                        log.debug { "Registering cache for entity: $entity" }
-//                        withCache(entity.cacheAlias,
-//                                CacheConfigurationBuilder.newCacheConfigurationBuilder(
-//                                        entity.keyType,
-//                                        entity.valueType,
-//                                        overrideResourcePools ?: defaultResourcePools
-//                                )
-//                                        .withExpiry(ExpiryPolicyBuilder.timeToLiveExpiration(entity.duration))
-//                                        .withValueSerializer(entity.serializerType)
-//                                        .withValueCopier(entity.copierType)
-//                        )
-//                    }
-//                }
-                .withCache("user",
-                        CacheConfigurationBuilder.newCacheConfigurationBuilder(
-                                String::class.java,
-                                CachedUserMycJson::class.java,
-                                overrideResourcePools ?: defaultResourcePools
-                        )
-                                .withExpiry(ExpiryPolicyBuilder.timeToLiveExpiration(Duration.of(2, ChronoUnit.DAYS)))
-                                .withValueSerializer(CachedUserMycJsonSerializer::class.java)
-                                .withValueCopier(CachedUserMycJsonCopier::class.java)
-                )
-                .build(true)
+        var builder: CacheManagerBuilder<CacheManager> = CacheManagerBuilder.newCacheManagerBuilder()
+        if (cacheDirectory != null) {
+            log.debug { "Setting cache directory to: ${cacheDirectory.canonicalPath}" }
+            builder = builder.with(CacheManagerBuilder.persistence(cacheDirectory)) as CacheManagerBuilder<CacheManager>
+        }
+
+        entities.map { entity ->
+            log.debug { "Registering cache for: $entity" }
+            builder = builder.withCache(entity.cacheAlias,
+                    CacheConfigurationBuilder.newCacheConfigurationBuilder(
+                            entity.keyType,
+                            entity.valueType,
+                            overrideResourcePools ?: defaultResourcePools
+                    )
+                            .withExpiry(ExpiryPolicyBuilder.timeToLiveExpiration(entity.duration))
+                            .withValueSerializer(entity.serializerType)
+                            .withValueCopier(entity.copierType)
+            )
+        }
+
+        cacheManager = builder.build(true)
+    }
+
+    override fun clearCaches() {
+        log.info { "clearCaches()" }
+
+        entities.forEach {
+            log.trace { "Removing cache: $it" }
+            cacheManager.getFor(entityUser).clear()
+        }
     }
 
     fun closeCache() {
@@ -105,10 +123,6 @@ class MyClubsCachedApi @Inject constructor(
     private fun <T> CacheManager.getFor(entity: CacheEntity<T>): Cache<String, T> =
             getCache(entity.cacheAlias, entity.keyType, entity.valueType)
                     ?: throw Exception("Could not find cache by: $entity")
-
-    override fun clearCaches() {
-        log.info { "clearCaches()" }
-    }
 
     override fun loggedUser(): UserMycJson {
         log.trace { "loggedUser()" }

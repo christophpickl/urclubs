@@ -1,10 +1,13 @@
 package com.github.christophpickl.urclubs.myclubs
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.github.christophpickl.kpotpourri.common.logging.LOG
 import com.github.christophpickl.urclubs.service.Credentials
 import com.github.christophpickl.urclubs.service.testInstance
 import com.google.inject.AbstractModule
 import com.google.inject.Guice
+import com.google.inject.Provides
+import com.google.inject.Singleton
 import com.google.inject.util.Modules
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
@@ -20,6 +23,8 @@ import org.mockito.Mockito.verify
 import org.testng.annotations.AfterMethod
 import org.testng.annotations.BeforeMethod
 import org.testng.annotations.Test
+import java.io.File
+import java.util.*
 
 private val testResourcePool = ResourcePoolsBuilder.newResourcePoolsBuilder()
         .heap(5, MemoryUnit.MB)
@@ -38,7 +43,8 @@ class MyClubsCachedApiTest {
         delegateApi = mock()
         cachedApi = MyClubsCachedApi(
                 delegate = delegateApi,
-                overrideResourcePools = testResourcePool
+                overrideResourcePools = testResourcePool,
+                cacheDirectory = null
         )
     }
 
@@ -65,25 +71,28 @@ class MyClubsCachedApiTest {
         verify(delegateApi, times(1)).loggedUser()
     }
 
+    fun `clearCaches - two requests and clear cache in between should again return from delegate`() {
+        whenever(delegateApi.loggedUser()).thenReturn(userMycJson)
+        cachedApi.loggedUser()
+
+        cachedApi.clearCaches()
+        cachedApi.loggedUser()
+
+        verify(delegateApi, times(2)).loggedUser()
+    }
+
 }
 
 @Test(groups = ["guice"])
 class MyClubsCachedApiGuiceTest {
 
-    private class TestModule(
-            private val httpMock: Http
-    ) : AbstractModule() {
-        override fun configure() {
-            bind(Http::class.java).toInstance(httpMock)
-            bind(Credentials::class.java).toInstance(Credentials.testInstance())
-        }
-    }
-
     private val mapper = jacksonObjectMapper()
 
     fun `When get loggedUser two times Then only one HTTP call was made for login and one for loggedUser`() {
         val http = mock<Http>()
-        whenever(http.execute(any())).thenReturn(mockResponse("success"), mockResponse(UserMycJson.testInstance()))
+        val loginResponse = mockResponse("success")
+        val userResponse = mockResponse(UserMycJson.testInstance())
+        whenever(http.execute(any())).thenReturn(loginResponse, userResponse)
         val guice = Guice.createInjector(Modules.override(MyclubsModule()).with(TestModule(http)))
         val myclubs = guice.getInstance(MyClubsApi::class.java)
         guice.getInstance(MyClubsCacheManager::class.java).clearCaches()
@@ -101,4 +110,25 @@ class MyClubsCachedApiGuiceTest {
         whenever(entity).thenReturn(StringEntity(stringBody, inferredContentType))
     }
 
+}
+
+private class TestModule(
+        private val httpMock: Http
+) : AbstractModule() {
+
+    private val log = LOG {}
+
+    override fun configure() {
+        bind(Http::class.java).toInstance(httpMock)
+        bind(Credentials::class.java).toInstance(Credentials.testInstance())
+    }
+
+    @Provides
+    @Singleton
+    @CacheFile
+    fun provideCacheDirectory() = File(System.getProperty("java.io.tmpdir"), randomName()).apply {
+        log.debug { "Using test cache directory at: ${this.canonicalPath}" }
+    }
+
+    private fun randomName() = "cache_test_dir-${Date().time}"
 }
