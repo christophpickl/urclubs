@@ -1,4 +1,4 @@
-package com.github.christophpickl.urclubs.cache
+package com.github.christophpickl.urclubs.myclubs.cache
 
 import com.esotericsoftware.kryo.Kryo
 import com.esotericsoftware.kryo.io.ByteBufferInputStream
