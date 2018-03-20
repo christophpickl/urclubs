@@ -1,7 +1,15 @@
-package com.github.christophpickl.urclubs.myclubs
+package com.github.christophpickl.urclubs.myclubs.cache
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.github.christophpickl.kpotpourri.common.logging.LOG
+import com.github.christophpickl.urclubs.myclubs.cache.CacheFile
+import com.github.christophpickl.urclubs.myclubs.Http
+import com.github.christophpickl.urclubs.myclubs.MyClubsApi
+import com.github.christophpickl.urclubs.myclubs.cache.MyClubsCacheManager
+import com.github.christophpickl.urclubs.myclubs.cache.MyClubsCachedApi
+import com.github.christophpickl.urclubs.myclubs.MyclubsModule
+import com.github.christophpickl.urclubs.myclubs.UserMycJson
+import com.github.christophpickl.urclubs.myclubs.testInstance
 import com.github.christophpickl.urclubs.service.Credentials
 import com.github.christophpickl.urclubs.service.testInstance
 import com.google.inject.AbstractModule

@@ -1,6 +1,9 @@
 package com.github.christophpickl.urclubs.myclubs
 
 import com.github.christophpickl.urclubs.URCLUBS_CACHE_DIRECTORY
+import com.github.christophpickl.urclubs.myclubs.cache.CacheFile
+import com.github.christophpickl.urclubs.myclubs.cache.MyClubsCacheManager
+import com.github.christophpickl.urclubs.myclubs.cache.MyClubsCachedApi
 import com.google.inject.AbstractModule
 import com.google.inject.Provides
 import com.google.inject.Scopes

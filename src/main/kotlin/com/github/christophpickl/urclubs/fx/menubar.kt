@@ -7,7 +7,7 @@ import com.github.christophpickl.urclubs.QuitFXEvent
 import com.github.christophpickl.urclubs.domain.partner.Partner
 import com.github.christophpickl.urclubs.domain.partner.toPartnerDbo
 import com.github.christophpickl.urclubs.fx.partner.PartnerListRequestFXEvent
-import com.github.christophpickl.urclubs.myclubs.MyClubsCacheManager
+import com.github.christophpickl.urclubs.myclubs.cache.MyClubsCacheManager
 import com.github.christophpickl.urclubs.persistence.createCriteriaDeleteAll
 import com.github.christophpickl.urclubs.persistence.domain.PartnerDbo
 import com.github.christophpickl.urclubs.persistence.transactional
