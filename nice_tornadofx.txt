@@ -1,0 +1,59 @@
+
+https://github.com/edvin/tornadofx/wiki/Type-Safe-Builders
+
+
+ init {
+        with(root) {
+            menubar {
+                menu("File") {
+                    menu("Switch Account") {
+                        menuItem("Facebook") { println("Switching to Facebook") }
+                        menuItem("Twitter") { println("Switching to Twitter") }
+                    }
+                    separator()
+                    menuItem("Save") { println("Saving") }
+                    menuItem("Exit") { println("Exiting")}
+                }
+                menu("Edit") {
+                    menuItem("Copy") { println("Copying") }
+                    menuItem("Paste") { println("Pasting") }
+                    separator()
+                    menu("Options") {
+                        menuItem("Account") { println("Launching Account Options") }
+                        menuItem("Security") { println("Launching Security Options") }
+                        menuItem("Appearance") { println("Launching Appearance Options") }
+                    }
+                }
+            }
+        }
+    }
+
+
+
+ init {
+        with(root) {
+            tabpane {
+                gridpaneConstraints {
+                    vhGrow = Priority.ALWAYS
+                }
+                tab("Report", HBox()) {
+                    label("Report goes here")
+                }
+                tab("Data", GridPane()) {
+                    tableview<Person> {
+                        items = persons
+                        column("ID", Person::idProperty)
+                        column("Name", Person::nameProperty)
+                        column("Birthday", Person::birthdayProperty)
+                        column("Age", Person::ageProperty).cellFormat {
+                            if (it < 18) {
+                                style = "-fx-background-color:#8b0000; -fx-text-fill:white"
+                                text = it.toString()
+                            } else {
+                                text = it.toString()
+                            }
+                        }
+                    }
+                }
+            }
+        }

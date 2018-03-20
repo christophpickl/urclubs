@@ -1,4 +1,4 @@
-package com.github.christophpickl.urclubs.cache
+package com.github.christophpickl.urclubs.myclubs.cache
 
 import com.esotericsoftware.kryo.Kryo
 import com.esotericsoftware.kryo.io.ByteBufferInputStream
@@ -26,10 +26,10 @@ class CacheDemo {
             val demo = CacheDemo()
             val cache = demo.initCache()
 
-            println(cache.get("a"))
+            println("result1: ${cache.get("a")}")
 
-//            cache.put("a", CachedPartner.SAMPLE1)
-//            println(cache.get("a"))
+            cache.put("a", CachedPartner.SAMPLE1)
+            println("result2: ${cache.get("a")}")
 
             demo.cacheManager.close()
         }
@@ -37,7 +37,7 @@ class CacheDemo {
 
     lateinit var cacheManager: CacheManager
 
-    private val urclubsHome = File(System.getProperty("user.home"), ".urclubs")
+    private val urclubsHome = File(System.getProperty("user.home"), ".urclubs_dev/cache_dummy")
 
     fun initCache(): Cache<String, CachedPartner> {
         val partnersCacheAlias = "partnersCache"

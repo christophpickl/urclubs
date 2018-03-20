@@ -15,6 +15,7 @@
         * add secondary comment for partners (not visible in table but in detail view)
         * global notes
     1. style evertyhing; use myclubs colors (black bg, yellow font)
+        * create `FakePersistenceModule` (disable migration and DB stuff for faster startup)
     1. enhance search:
         * rating (is bigger/lower/equals)
         * remainingCredits/totalVisits (lower, equal, bigger, not)
