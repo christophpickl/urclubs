@@ -66,23 +66,34 @@ class MyClubsCachedApi @Inject constructor(
     private val entities = listOf(entityUser)
 
     init {
+        log.debug { "Init cache" }
         cacheManager = CacheManagerBuilder.newCacheManagerBuilder()
                 .with(CacheManagerBuilder.persistence(cacheDirectory))
-                .apply {
-                    entities.forEach { entity ->
-                        log.debug { "Registering cache for entity: $entity" }
-                        withCache(entity.cacheAlias,
-                                CacheConfigurationBuilder.newCacheConfigurationBuilder(
-                                        entity.keyType,
-                                        entity.valueType,
-                                        overrideResourcePools ?: defaultResourcePools
-                                )
-                                        .withExpiry(ExpiryPolicyBuilder.timeToLiveExpiration(entity.duration))
-                                        .withValueSerializer(entity.serializerType)
-                                        .withValueCopier(entity.copierType)
+//                .apply {
+//                    entities.forEach { entity ->
+//                        log.debug { "Registering cache for entity: $entity" }
+//                        withCache(entity.cacheAlias,
+//                                CacheConfigurationBuilder.newCacheConfigurationBuilder(
+//                                        entity.keyType,
+//                                        entity.valueType,
+//                                        overrideResourcePools ?: defaultResourcePools
+//                                )
+//                                        .withExpiry(ExpiryPolicyBuilder.timeToLiveExpiration(entity.duration))
+//                                        .withValueSerializer(entity.serializerType)
+//                                        .withValueCopier(entity.copierType)
+//                        )
+//                    }
+//                }
+                .withCache("user",
+                        CacheConfigurationBuilder.newCacheConfigurationBuilder(
+                                String::class.java,
+                                CachedUserMycJson::class.java,
+                                overrideResourcePools ?: defaultResourcePools
                         )
-                    }
-                }
+                                .withExpiry(ExpiryPolicyBuilder.timeToLiveExpiration(Duration.of(2, ChronoUnit.DAYS)))
+                                .withValueSerializer(CachedUserMycJsonSerializer::class.java)
+                                .withValueCopier(CachedUserMycJsonCopier::class.java)
+                )
                 .build(true)
     }
 
@@ -92,16 +103,18 @@ class MyClubsCachedApi @Inject constructor(
     }
 
     private fun <T> CacheManager.getFor(entity: CacheEntity<T>): Cache<String, T> =
-            getCache(entity.cacheAlias, entity.keyType, entity.valueType) ?:
-                    throw Exception("Could not find cache by: $entity")
+            getCache(entity.cacheAlias, entity.keyType, entity.valueType)
+                    ?: throw Exception("Could not find cache by: $entity")
 
     override fun clearCaches() {
         log.info { "clearCaches()" }
     }
 
     override fun loggedUser(): UserMycJson {
+        log.trace { "loggedUser()" }
         val cache = cacheManager.getFor(entityUser)
         cache.get(userCacheKey)?.let {
+            log.trace { "Cache hit" }
             return it.toUserMycJson()
         }
         val result = delegate.loggedUser()
@@ -132,12 +145,15 @@ class MyClubsCachedApi @Inject constructor(
 }
 
 data class CachedUserMycJson(
-        val id: String,
-        val email: String,
-        val firstName: String,
-        val lastName: String
+        val id: String?,
+        val email: String?,
+        val firstName: String?,
+        val lastName: String?
 
 ) {
+    // needed for kryo
+
+    constructor() : this(null, null, null, null)
     constructor(original: UserMycJson) : this(
             id = original.id,
             email = original.email,
@@ -146,10 +162,10 @@ data class CachedUserMycJson(
     )
 
     fun toUserMycJson() = UserMycJson(
-            id = id,
-            email = email,
-            firstName = firstName,
-            lastName = lastName
+            id = id!!,
+            email = email!!,
+            firstName = firstName!!,
+            lastName = lastName!!
     )
 }
 

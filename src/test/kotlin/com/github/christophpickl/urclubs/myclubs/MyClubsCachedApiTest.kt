@@ -37,8 +37,8 @@ class MyClubsCachedApiTest {
     fun initState() {
         delegateApi = mock()
         cachedApi = MyClubsCachedApi(
-                delegate = delegateApi
-//                ,overrideResourcePools = testResourcePool
+                delegate = delegateApi,
+                overrideResourcePools = testResourcePool
         )
     }
 
