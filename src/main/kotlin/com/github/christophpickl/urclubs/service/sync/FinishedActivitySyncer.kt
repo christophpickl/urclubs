@@ -64,7 +64,7 @@ class FinishedActivitySyncer @Inject constructor(
         return activities.mapNotNull { activity ->
             val partner = partnerService.searchPartner(activity.locationHtml)
                 ?: if (ignoredActivityLocations.contains(activity.locationHtml)) {
-                    log.info { "Ignoring activity which is known to be associated by a deleted partner." }
+                    log.info { "Ignoring activity (${activity.title}) which is known to be associated by a deleted partner." }
                     return@mapNotNull null
                 } else {
                     throw Exception("Could not find partner for: $activity")

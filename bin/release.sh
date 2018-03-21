@@ -40,7 +40,7 @@ safeEval "git status"
 verifyConfirm "Continue with release?"
 
 echo "version=$NEXT_VERSION" > $VERSION_FILE
-safeEval "./gradlew clean check checkTodo test build loadProjectVersionNumber createApp -Durclubs.enableMacBundle=true"
+safeEval "./gradlew clean check checkTodo test build loadProjectVersionNumber createApp -Durclubs.production=true -Durclubs.enableMacBundle=true"
 safeEval "open build/macApp/"
 verifyConfirm "Are you happy with the build and want to tag this version?"
 
