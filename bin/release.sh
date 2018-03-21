@@ -4,6 +4,7 @@ VERSION_FILE="version.properties"
 
 safeEval() {
     COMMAND=$1
+    echo ""
     echo ">> $COMMAND"
     eval $COMMAND
     if [ $? -ne 0 ] ; then
