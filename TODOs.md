@@ -18,6 +18,7 @@
     1. enhance search:
         * rating (is bigger/lower/equals)
         * remainingCredits/totalVisits (lower, equal, bigger, not)
+    1. splash screen doesnt go away
 
 1. more-over
     * List upcoming workouts

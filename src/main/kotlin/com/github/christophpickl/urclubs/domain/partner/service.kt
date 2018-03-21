@@ -12,6 +12,9 @@ interface PartnerService {
     fun findByShortName(shortName: String): Partner?
     fun findByShortNameOrThrow(shortName: String): Partner
     fun update(partner: Partner)
+    /**
+     * @param locationHtml of format: "PARTNER_NAME<br>PARTNER_ADDRESS"
+     */
     fun searchPartner(locationHtml: String): Partner?
 }
 

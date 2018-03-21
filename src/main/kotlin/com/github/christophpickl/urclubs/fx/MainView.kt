@@ -12,7 +12,10 @@ import tornadofx.*
 
 
 fun main(args: Array<String>) {
-    class DummyApp : App(primaryView = MainView::class) {
+    class DummyApp : App(
+        primaryView = MainView::class,
+        stylesheet = Styles::class
+    ) {
         override fun start(stage: Stage) {
             super.start(stage)
             stage.width = 1100.0

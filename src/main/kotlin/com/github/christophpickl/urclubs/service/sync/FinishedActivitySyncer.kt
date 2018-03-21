@@ -39,10 +39,12 @@ class FinishedActivitySyncer @Inject constructor(
         notYetInsertedActivities.forEach { activity ->
             val finishedActivity = activity.activity.toFinishedActivity()
             insertedActivities += finishedActivity
-            val partner = activity.partner.addFinishedActivity(finishedActivity)
-            partnerService.update(partner)
+            val partner = partnerService.read(activity.partnerIdDbo) ?: throw IllegalStateException("Assumed partner existing: ${activity.partnerIdDbo}")
+            val addedPartner = partner.addFinishedActivity(finishedActivity)
+            partnerService.update(addedPartner)
         }
 
+        log.info { "sync() DONE" }
         return FinishedActivitySyncReport(inserted = insertedActivities)
     }
 
@@ -71,7 +73,7 @@ class FinishedActivitySyncer @Inject constructor(
                 }
             EnhancedFinishedActivity(
                 activity = activity,
-                partner = partner
+                partnerIdDbo = partner.idDbo
             )
         }
     }
@@ -80,7 +82,7 @@ class FinishedActivitySyncer @Inject constructor(
 
 private data class EnhancedFinishedActivity(
     val activity: FinishedActivityHtmlModel,
-    val partner: Partner
+    val partnerIdDbo: Long
 )
 
 data class FinishedActivitySyncReport(

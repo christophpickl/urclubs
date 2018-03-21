@@ -47,3 +47,5 @@ safeEval "git commit -m '[Auto-Release] Version: $NEXT_VERSION'"
 safeEval "git tag $NEXT_VERSION"
 safeEval "git push"
 safeEval "git push origin --tags"
+
+safeEval "open build/macApp/"

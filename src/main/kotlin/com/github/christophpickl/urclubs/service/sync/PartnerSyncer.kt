@@ -47,6 +47,7 @@ class PartnerSyncer @Inject constructor(
                 }
             }.toList()
 
+        log.info { "sync() DONE" }
         return PartnerSyncReport(
             insertedPartners = insertedPartners,
             deletedPartners = deletedPartners

@@ -160,6 +160,7 @@ data class Partner(
         .add("shortName", shortName)
         .add("name", name)
         .add("addresses", addresses)
+        .add("finishedActivities.size", finishedActivities.size)
         .toString()
 }
 

@@ -2,11 +2,8 @@ package com.github.christophpickl.urclubs.myclubs.cache
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.github.christophpickl.kpotpourri.common.logging.LOG
-import com.github.christophpickl.urclubs.myclubs.cache.CacheFile
 import com.github.christophpickl.urclubs.myclubs.Http
 import com.github.christophpickl.urclubs.myclubs.MyClubsApi
-import com.github.christophpickl.urclubs.myclubs.cache.MyClubsCacheManager
-import com.github.christophpickl.urclubs.myclubs.cache.MyClubsCachedApi
 import com.github.christophpickl.urclubs.myclubs.MyclubsModule
 import com.github.christophpickl.urclubs.myclubs.UserMycJson
 import com.github.christophpickl.urclubs.myclubs.testInstance
@@ -32,7 +29,7 @@ import org.testng.annotations.AfterMethod
 import org.testng.annotations.BeforeMethod
 import org.testng.annotations.Test
 import java.io.File
-import java.util.*
+import java.util.Date
 
 private val testResourcePool = ResourcePoolsBuilder.newResourcePoolsBuilder()
         .heap(5, MemoryUnit.MB)
@@ -118,25 +115,26 @@ class MyClubsCachedApiGuiceTest {
         whenever(entity).thenReturn(StringEntity(stringBody, inferredContentType))
     }
 
-}
 
-private class TestModule(
+    private class TestModule(
         private val httpMock: Http
-) : AbstractModule() {
+    ) : AbstractModule() {
 
-    private val log = LOG {}
+        private val log = LOG {}
 
-    override fun configure() {
-        bind(Http::class.java).toInstance(httpMock)
-        bind(Credentials::class.java).toInstance(Credentials.testInstance())
+        override fun configure() {
+            bind(Http::class.java).toInstance(httpMock)
+            bind(Credentials::class.java).toInstance(Credentials.testInstance())
+        }
+
+        @Provides
+        @Singleton
+        @CacheFile
+        fun provideCacheDirectory() = File(System.getProperty("java.io.tmpdir"), randomName()).apply {
+            log.debug { "Using test cache directory at: ${this.canonicalPath}" }
+        }
+
+        private fun randomName() = "cache_test_dir-${Date().time}"
     }
 
-    @Provides
-    @Singleton
-    @CacheFile
-    fun provideCacheDirectory() = File(System.getProperty("java.io.tmpdir"), randomName()).apply {
-        log.debug { "Using test cache directory at: ${this.canonicalPath}" }
-    }
-
-    private fun randomName() = "cache_test_dir-${Date().time}"
 }
