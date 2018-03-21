@@ -36,11 +36,11 @@ class FinishedActivitySyncer @Inject constructor(
         val notYetInsertedActivities = filterNotYetInserted(activitiesFetched)
 
         val insertedActivities = mutableListOf<FinishedActivity>()
-        notYetInsertedActivities.forEach { activity ->
-            val finishedActivity = activity.activity.toFinishedActivity()
-            insertedActivities += finishedActivity
-            val partner = partnerService.read(activity.partnerIdDbo) ?: throw IllegalStateException("Assumed partner existing: ${activity.partnerIdDbo}")
-            val addedPartner = partner.addFinishedActivity(finishedActivity)
+        notYetInsertedActivities.groupBy { it.partnerIdDbo }.forEach { partnerIdDbo, enhancedActivities ->
+            val partner = partnerService.read(partnerIdDbo) ?: throw IllegalStateException("Assumed partner existing: $partnerIdDbo")
+            val activitiesToInsert = enhancedActivities.map { it.activity.toFinishedActivity() }
+            insertedActivities += activitiesToInsert
+            val addedPartner = partner.addFinishedActivities(activitiesToInsert)
             partnerService.update(addedPartner)
         }
 
@@ -48,8 +48,8 @@ class FinishedActivitySyncer @Inject constructor(
         return FinishedActivitySyncReport(inserted = insertedActivities)
     }
 
-    private fun Partner.addFinishedActivity(activity: FinishedActivity) = copy(
-        finishedActivities = finishedActivities.toMutableList().apply { add(activity) }
+    private fun Partner.addFinishedActivities(activities: List<FinishedActivity>) = copy(
+        finishedActivities = finishedActivities.toMutableList().apply { addAll(activities) }
     )
 
     private fun filterNotYetInserted(fetched: List<EnhancedFinishedActivity>): List<EnhancedFinishedActivity> {
