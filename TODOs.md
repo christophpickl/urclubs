@@ -3,6 +3,7 @@
 
 1. must do
     1. Caching for myclubs API
+    1. improve sync progress dialog UI
 
 1. immediately after
     1. proper exception handling
@@ -42,6 +43,14 @@
 * ad table: FULL colored lines based on rating
 * show number of displayed partners "10/170" based on current filter
 * support MacMenuBar (handle QuitEvent, outsource menu items into system's Application item)
+* TECH: CurrentPartnerFx.original: Partner is hacky
+* TEST: inject MyclubsUtil, in order to make it fakeable/testable (integration tests with wiremock)
+* sync more Partner details (description, flags, ...)
+* support activity types: fixed-time, book-now, drop-in
+* @parseInfrastructure: "Book Now", "Drop In" => used to infer type (OPEN, RESERVATION_NEEDED => show phone number)
+* @parseCourses: parse proper time ???
+* TEST: MyClubsHttpApi: test for not found activity
+* TEST: inject MyClubsHttpApi.baseUrl, in order to make it fakeable/testable (integration tests with wiremock)
 
 ### Long term:
 

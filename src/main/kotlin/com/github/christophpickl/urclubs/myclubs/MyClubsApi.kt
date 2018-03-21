@@ -29,7 +29,7 @@ interface MyClubsApi {
 }
 
 class MyclubsUtil {
-    private val baseUrl = "https://www.myclubs.com" // TODO inject, in order to make it fakeable/testable (integration tests with wiremock)
+    private val baseUrl = "https://www.myclubs.com"
 
     fun createMyclubsPartnerUrl(shortName: String) = "$baseUrl/at/de/partner/$shortName"
 }

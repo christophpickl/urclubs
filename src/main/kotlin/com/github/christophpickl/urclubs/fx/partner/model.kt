@@ -12,7 +12,7 @@ import tornadofx.*
 
 class CurrentPartnerFx() : ViewModel() {
 
-    lateinit var original: Partner // TODO can this be improved?
+    lateinit var original: Partner
 
     val name = SimpleStringProperty()
     val note = SimpleStringProperty()

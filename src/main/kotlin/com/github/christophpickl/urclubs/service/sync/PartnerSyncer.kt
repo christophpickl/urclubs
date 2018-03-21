@@ -57,9 +57,6 @@ class PartnerSyncer @Inject constructor(
         addresses = detailed.addresses,
         linkPartner = detailed.linkPartnerSite,
         linkMyclubs = util.createMyclubsPartnerUrl(shortName)
-        // TODO sync more details
-        // description
-        // flags
     )
 }
 

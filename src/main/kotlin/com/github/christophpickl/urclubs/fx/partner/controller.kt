@@ -40,7 +40,7 @@ class PartnersFxController : Controller() {
             val updatedPartner = event.partner
             logg.trace { "Updating partner in table: $updatedPartner" }
             val index = allPartners.indexOfFirst { it.idDbo == updatedPartner.idDbo }
-            if (index == -1) throw IllegalStateException("Could not find updated partner in table: $updatedPartner") // TODO when search (=filter) is active this will fail??
+            if (index == -1) throw IllegalStateException("Could not find updated partner in table: $updatedPartner")
             allPartners[index] = updatedPartner
             view.table.selectionModel.select(index)
         }

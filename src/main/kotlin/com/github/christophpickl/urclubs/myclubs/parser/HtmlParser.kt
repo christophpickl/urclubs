@@ -35,7 +35,7 @@ class HtmlParser {
             Jsoup.parse(html).select("li").map { li ->
                 CourseHtmlModel(
                         id = li.attr("data-activity"),
-                        time = li.select(".time").text(), // TODO parse proper time
+                        time = li.select(".time").text(),
                         timestamp = li.attr("data-date"),
                         title = li.select("h3").text(),
                         category = li.select(".cat").text(),
@@ -47,7 +47,7 @@ class HtmlParser {
             Jsoup.parse(html).select("li").map { li ->
                 InfrastructureHtmlModel(
                         id = li.attr("data-activity"),
-                        time = li.select(".time").text(),  // TODO "Book Now", "Drop In" => used to infer type (OPEN, RESERVATION_NEEDED => show phone number)
+                        time = li.select(".time").text(),
                         title = li.select("h3").text(),
                         category = li.select(".cat").text(),
                         partner = li.select(".text__partner").text()
@@ -117,7 +117,6 @@ class HtmlParser {
                         val link = item.safeSelectFirst("a")
                         val meta = link.select("div.category__upcoming__item__meta")
                         val timeInput = link.select("div.category__upcoming__item__date").text().trim().let {
-                            // TODO support activity types: fixed-time, book-now, drop-in
                             if (it == "Book Now" || it == "Drop-In") "00:00"
                             else it
                         }

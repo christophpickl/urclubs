@@ -1,6 +1,5 @@
 package com.github.christophpickl.urclubs.service.sync
 
-import com.github.christophpickl.kpotpourri.common.collection.prettyPrint
 import com.github.christophpickl.kpotpourri.common.logging.LOG
 import com.github.christophpickl.urclubs.myclubs.MyClubsApi
 import javax.inject.Inject
@@ -13,10 +12,10 @@ class UpcomingActivitySyncer @Inject constructor(
 
     fun sync(): UpcomingActivitySyncReport {
         log.info { "sync()" }
-        val partner = myclubs.partner("sporthalle-wien")
-        partner.upcomingActivities.prettyPrint()
-        // FIXME implement sync upcoming activities
-        return UpcomingActivitySyncReport("")
+        throw UnsupportedOperationException("not yet implemented")
+//        val partner = myclubs.partner("sporthalle-wien")
+//        partner.upcomingActivities.prettyPrint()
+//        return UpcomingActivitySyncReport("")
     }
 }
 data class UpcomingActivitySyncReport(

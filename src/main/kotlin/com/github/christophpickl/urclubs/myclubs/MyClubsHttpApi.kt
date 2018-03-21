@@ -40,7 +40,7 @@ class MyClubsHttpApi @Inject constructor(
 
     private val log = LOG {}
 
-    private val baseUrl = "https://www.myclubs.com" // TODO inject, in order to make it fakeable/testable (integration tests with wiremock)
+    private val baseUrl = "https://www.myclubs.com"
     private val baseApiUrl = "$baseUrl/api"
     private val jackson = jacksonObjectMapper().apply {
         disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
@@ -95,7 +95,6 @@ class MyClubsHttpApi @Inject constructor(
         return courses
     }
 
-    // MINOR if would remove the timestamp filter, we could cache the response, right?!
     override fun activity(filter: ActivityFilter): ActivityHtmlModel {
         log.info { "activity(filter=$filter)" }
         loginIfNecessary()
@@ -110,7 +109,6 @@ class MyClubsHttpApi @Inject constructor(
             ))
         })
 
-        // TODO test for not found activity
         return parser.parseActivity(response.body)
     }
 
