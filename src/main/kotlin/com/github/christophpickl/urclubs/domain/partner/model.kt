@@ -35,6 +35,7 @@ data class Partner(
 
     val visitsThisMonth: Int
     val creditsLeftThisPeriod: Int
+    val totalVisits = finishedActivities.size
 
     init {
         val now = LocalDateTime.now()

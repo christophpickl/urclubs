@@ -1,5 +1,6 @@
 package com.github.christophpickl.urclubs.fx.partner.filter
 
+import com.github.christophpickl.urclubs.fx.Styles
 import javafx.scene.control.ListCell
 import tornadofx.*
 
@@ -8,6 +9,7 @@ class FilterPartnersView : View() {
     val nameField = textfield() {
         promptText = "Enter Name"
     }
+
     val category = combobox(values = CategoryFilter.all) {
         buttonCell = CategoryFilterCell()
         setCellFactory {
@@ -17,8 +19,12 @@ class FilterPartnersView : View() {
     }
 
     override val root = flowpane {
-        label(text = "Filter: ")
+        paddingBottom = Styles.partnersTableVerticalPadding
+
+        label(text = "Filter: ").addClass(Styles.fontWhiteMedium)
         add(nameField)
+
+        label(text = " Category: ").addClass(Styles.fontWhiteMedium)
         add(category)
     }
 

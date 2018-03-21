@@ -6,6 +6,8 @@
     1. improve sync progress dialog UI
 
 1. immediately after
+    1. in partner detail view: add button to artificially increase visit counts (reason: only past 70s are synced :-()
+    1. incorporate partner detail view into main window (get rid of additional window)
     1. proper exception handling
     1. Minor: change app icon (turn around the U)
     1. Minor: Version number by gradle resource filtering (display in About dialog)
@@ -13,8 +15,6 @@
         * locationNote (render in table next to static location address)
         * add secondary comment for partners (not visible in table but in detail view)
         * global notes
-    1. style evertyhing; use myclubs colors (black bg, yellow font)
-        * create `FakePersistenceModule` (disable migration and DB stuff for faster startup)
     1. enhance search:
         * rating (is bigger/lower/equals)
         * remainingCredits/totalVisits (lower, equal, bigger, not)

@@ -1,31 +1,11 @@
 package com.github.christophpickl.urclubs.fx
 
 import com.github.christophpickl.urclubs.UrclubsConfiguration
-import com.github.christophpickl.urclubs.domain.partner.Partner
-import com.github.christophpickl.urclubs.fx.partner.PartnerListFXEvent
 import com.github.christophpickl.urclubs.fx.partner.PartnerListRequestFXEvent
 import com.github.christophpickl.urclubs.fx.partner.PartnersView
-import javafx.application.Application
 import javafx.scene.layout.Priority
-import javafx.stage.Stage
 import tornadofx.*
 
-
-fun main(args: Array<String>) {
-    class DummyApp : App(
-        primaryView = MainView::class,
-        stylesheet = Styles::class
-    ) {
-        override fun start(stage: Stage) {
-            super.start(stage)
-            stage.width = 1100.0
-            stage.height = 800.0
-            stage.centerOnScreen()
-            fire(PartnerListFXEvent(Partner.Dummies.all))
-        }
-    }
-    Application.launch(DummyApp::class.java, *args)
-}
 
 class MainView : View() {
 
@@ -34,6 +14,7 @@ class MainView : View() {
     private val menuBarController: MenuBarController by inject()
 
     override val root = vbox {
+        addClass(Styles.mainPanel)
         style {
             if (UrclubsConfiguration.DEVELOPMENT_COLORS) backgroundColor += javafx.scene.paint.Color.GREENYELLOW
         }
@@ -63,11 +44,10 @@ class MainView : View() {
 class BottomView : View() {
 
     override val root = hbox {
+        paddingTop = Styles.partnersTableVerticalPadding
+
         button("Resync Data").action {
             fire(SyncRequestFXEvent)
-        }
-        button("Reload from DB").action {
-            fire(PartnerListRequestFXEvent)
         }
     }
 

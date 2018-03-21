@@ -33,14 +33,9 @@ class MenuBarController : Controller() {
         fire(PartnerListRequestFXEvent)
     }
 
-    fun quit() {
-        fire(QuitFXEvent)
+    fun <T : FXEvent> doFire(event: T) {
+        fire(event)
     }
-
-    fun showAbout() {
-        fire(ShowAboutFXEvent)
-    }
-
     fun clearCaches() {
         cacheManager.clearCaches()
     }
@@ -57,11 +52,11 @@ class MyMenuBar(
                 controller.clearCaches()
             }
             item("About").action {
-                controller.showAbout()
+                controller.doFire(ShowAboutFXEvent)
             }
             if (UrclubsConfiguration.IS_NOT_MAC) {
                 item("Quit").action {
-                    controller.quit()
+                    controller.doFire(QuitFXEvent)
                 }
             }
         }
@@ -69,6 +64,9 @@ class MyMenuBar(
             menu("Develop") {
                 item("Reset Dummy Data").action {
                     controller.resetDummyData()
+                }
+                item("Reload DB").action {
+                    controller.doFire(PartnerListRequestFXEvent)
                 }
             }
         }

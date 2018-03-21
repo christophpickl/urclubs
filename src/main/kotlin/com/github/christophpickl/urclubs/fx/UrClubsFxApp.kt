@@ -2,11 +2,12 @@ package com.github.christophpickl.urclubs.fx
 
 import com.github.christophpickl.kpotpourri.common.logging.LOG
 import com.github.christophpickl.urclubs.MainModule
-import com.github.christophpickl.urclubs.service.QuitManager
+import com.github.christophpickl.urclubs.UrclubsConfiguration
 import com.github.christophpickl.urclubs.fx.partner.PartnersFxController
 import com.github.christophpickl.urclubs.fx.partner.detail.PartnerFxController
 import com.github.christophpickl.urclubs.fx.partner.detail.PartnerView
 import com.github.christophpickl.urclubs.fx.partner.filter.FilterPartnersController
+import com.github.christophpickl.urclubs.service.QuitManager
 import com.google.inject.Guice
 import javafx.stage.Screen
 import javafx.stage.Stage
@@ -30,6 +31,10 @@ class UrClubsFxApp : App(
 
     init {
         log.info { "FX application started." }
+        if (UrclubsConfiguration.IS_DEVELOPMENT) {
+            reloadStylesheetsOnFocus()
+        }
+
         FX.dicontainer = object : DIContainer {
             override fun <T : Any> getInstance(type: KClass<T>) = guice.getInstance(type.java)
         }

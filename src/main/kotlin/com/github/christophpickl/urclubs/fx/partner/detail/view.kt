@@ -2,30 +2,18 @@ package com.github.christophpickl.urclubs.fx.partner.detail
 
 import com.github.christophpickl.kpotpourri.common.logging.LOG
 import com.github.christophpickl.urclubs.domain.partner.Category
-import com.github.christophpickl.urclubs.domain.partner.Partner
 import com.github.christophpickl.urclubs.domain.partner.Rating
 import com.github.christophpickl.urclubs.fx.CategoryCell
 import com.github.christophpickl.urclubs.fx.OpenWebsiteFXEvent
 import com.github.christophpickl.urclubs.fx.RatingCell
+import com.github.christophpickl.urclubs.fx.Styles
 import com.github.christophpickl.urclubs.fx.partner.CurrentPartnerFx
-import javafx.application.Application
 import javafx.collections.FXCollections
 import javafx.geometry.Orientation
 import javafx.geometry.Pos
-import javafx.stage.Stage
 import javafx.util.converter.NumberStringConverter
 import tornadofx.*
 
-fun main(args: Array<String>) {
-    class DummyApp : App(primaryView = PartnerView::class) {
-        override fun start(stage: Stage) {
-            super.start(stage)
-            stage.centerOnScreen()
-            find<CurrentPartnerFx>().initPartner(Partner.Dummies.superbEms)
-        }
-    }
-    Application.launch(DummyApp::class.java, *args)
-}
 
 class ChoosePictureFXEvent(val requestor: View) : FXEvent()
 
@@ -39,10 +27,12 @@ class PartnerView : View() {
     private val currentPartner: CurrentPartnerFx by inject()
 
     override val root = borderpane {
+        addClass(Styles.partnerPanel)
         top {
             vbox {
                 alignment = Pos.CENTER
                 imageview().apply {
+                    addClass(Styles.pictureChooser)
                     setOnMouseClicked {
                         logg.debug { "Clicked on picture." }
                         fire(ChoosePictureFXEvent(this@PartnerView))
@@ -88,6 +78,7 @@ class PartnerView : View() {
                     }
                     field("Flags") {
                         hbox {
+                            spacing = 10.0
                             checkbox(text = "Favourite") {
                                 bind(currentPartner.favourited)
                             }
@@ -98,6 +89,7 @@ class PartnerView : View() {
                     }
                     field("Credits") {
                         hbox {
+                            alignment = Pos.BASELINE_LEFT
                             label("Left: ")
                             label(currentPartner.creditsLeftThisPeriod)
 
@@ -126,9 +118,6 @@ class PartnerView : View() {
                                 setOnAction { fire(OpenWebsiteFXEvent(url = currentPartner.original.linkPartner)) }
                             }
                         }
-                    }
-                    field("foo") {
-                        label("bar")
                     }
                 }
             }

@@ -5,6 +5,7 @@ import com.github.christophpickl.urclubs.UrclubsConfiguration
 import com.github.christophpickl.urclubs.domain.partner.ImageSize
 import com.github.christophpickl.urclubs.domain.partner.Partner
 import com.github.christophpickl.urclubs.domain.partner.Rating
+import com.github.christophpickl.urclubs.fx.Styles
 import com.github.christophpickl.urclubs.fx.partner.detail.PartnerSelectedEvent
 import com.github.christophpickl.urclubs.fx.partner.filter.FilterPartnersView
 import javafx.beans.property.ReadOnlyStringWrapper
@@ -30,8 +31,8 @@ class PartnersView : View() {
     private val partnersFilter: FilterPartnersView by inject()
     private val currentPartner: CurrentPartnerFx by inject()
 
-
     val table = tableview<Partner> {
+        addClass(Styles.partnersTable)
         column("Picture", Partner::picture).apply {
             cellFormat {
                 graphic = imageview(rowItem.picture.fxImageLil)
@@ -54,7 +55,8 @@ class PartnersView : View() {
         column("Credits") { features: TableColumn.CellDataFeatures<Partner, String> ->
             val partner = features.value
             ReadOnlyStringWrapper("${partner.creditsLeftThisPeriod}/${partner.maxCredits}")
-        }.fixedWidth(40)
+        }.fixedWidth(50)
+        column("Visits", Partner::totalVisits).fixedWidth(50)
         column("Note", Partner::note)
 
         columnResizePolicy = SmartResize.POLICY
