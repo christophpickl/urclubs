@@ -26,6 +26,7 @@ object UrclubsConfiguration {
 
     val DEVELOPMENT_FAST_SYNC = (false && IS_DEVELOPMENT).also { if (it) log.info { "Using fast sync mode." } }
     val DEVELOPMENT_COLORS = (false && IS_DEVELOPMENT).also { if (it) log.info { "Using colors mode." } }
+    val USE_STUBBED_MYCLUBS = (false && IS_DEVELOPMENT).also { if (it) log.info { "Using stubbed MyClubs API." } }
 
     val CACHE_DIRECTORY = File(HOME_DIRECTORY, "cache")
 

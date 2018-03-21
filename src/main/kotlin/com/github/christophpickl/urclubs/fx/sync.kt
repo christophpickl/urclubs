@@ -2,8 +2,11 @@ package com.github.christophpickl.urclubs.fx
 
 import com.github.christophpickl.kpotpourri.common.logging.LOG
 import com.github.christophpickl.urclubs.fx.partner.PartnerListRequestFXEvent
-import com.github.christophpickl.urclubs.service.sync.SyncReport
-import com.github.christophpickl.urclubs.service.sync.SyncService
+import com.github.christophpickl.urclubs.service.sync.FinishedActivitySyncReport
+import com.github.christophpickl.urclubs.service.sync.FinishedActivitySyncer
+import com.github.christophpickl.urclubs.service.sync.PartnerSyncReport
+import com.github.christophpickl.urclubs.service.sync.PartnerSyncer
+import com.github.christophpickl.urclubs.service.sync.UpcomingActivitySyncer
 import javafx.scene.control.ButtonType
 import javafx.stage.Modality
 import javafx.stage.Stage
@@ -51,7 +54,9 @@ class ProgressDialog(
 class SyncFxController : Controller() {
 
     private val logg = LOG {}
-    private val syncService: SyncService by di()
+    private val partnerSyncer: PartnerSyncer by di()
+    private val finishedActivitySyncer: FinishedActivitySyncer by di()
+    private val upcomingActivitySyncer: UpcomingActivitySyncer by di()
 
     init {
         subscribe<SyncRequestFXEvent> {
@@ -61,7 +66,7 @@ class SyncFxController : Controller() {
             progressDialog.show()
 
             runAsync {
-                syncService.sync() // MINOR how are exceptions handled here?
+                executeSync()
             } ui { report ->
                 progressDialog.close()
                 fire(SyncResultEvent(report))
@@ -75,13 +80,29 @@ class SyncFxController : Controller() {
                 header = "Sync completed successfully",
                 content = "Partners inserted: ${event.syncReport.partners.insertedPartners.size}, " +
                     "deleted: ${event.syncReport.partners.deletedPartners.size}\n" +
-                    "Past activities inserted: ${event.syncReport.finishedActivities.inserted.size}, ",
+                    "Past activities inserted: ${event.syncReport.finishedActivities.inserted.size}",
                 buttons = *arrayOf(ButtonType.OK)
                 // owner = ... main window reference?!
             )
         }
     }
 
+    private fun executeSync(): SyncReport {
+        val partnersReport = partnerSyncer.sync()
+        fire(PartnerListRequestFXEvent)
+
+        // MINOR how are exceptions handled here?
+        val finishedActivitiesReport = finishedActivitySyncer.sync()
+
+        return SyncReport(
+            partners = partnersReport,
+            finishedActivities = finishedActivitiesReport
+        )
+    }
+
 }
 
-
+data class SyncReport(
+    val partners: PartnerSyncReport,
+    val finishedActivities: FinishedActivitySyncReport
+)
