@@ -14,6 +14,7 @@ safeEval() {
 
 verifyConfirm() {
     PROMPT=$1
+    echo ""
     echo -n "$PROMPT [y/n] "
     read CONFIRM_INPUT
     if [ "$CONFIRM_INPUT" != "y" ]; then
