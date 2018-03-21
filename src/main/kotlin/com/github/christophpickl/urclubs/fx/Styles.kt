@@ -168,7 +168,6 @@ class Styles : Stylesheet() {
                 backgroundColor += greyVeryBright
                 textFill = white
                 fontWeight = FontWeight.BOLD
-                // TODO alternate bg colors for combo box
                 and(hover) {
                     backgroundColor += orange
                 }
