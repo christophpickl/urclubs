@@ -52,6 +52,11 @@
 * TEST: MyClubsHttpApi: test for not found activity
 * TEST: inject MyClubsHttpApi.baseUrl, in order to make it fakeable/testable (integration tests with wiremock)
 
+
+## Nice for other users too
+
+* use email as cache key for loggedUser
+
 ### Long term:
 
 * Book activities

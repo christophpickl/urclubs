@@ -78,7 +78,7 @@ class MyClubsCachedApi constructor(
             serializerType = CachedUserMycJsonSerializer::class.java,
             copierType = CachedUserMycJsonCopier::class.java
     )
-    private val userCacheKey = "userKey" // TODO use email ass cache key, and somehow intercept credentials
+    private val userCacheKey = "userKey"
     private val cacheSpecs = listOf(userSpec)
 
     init {

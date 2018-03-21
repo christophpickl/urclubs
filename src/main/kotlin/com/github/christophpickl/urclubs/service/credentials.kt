@@ -67,28 +67,32 @@ class PropertiesFileCredentialsProvider : Provider<Credentials> {
 
     private val log = LOG {}
 
+    private val propertiesFile = File(UrclubsConfiguration.HOME_DIRECTORY, "login.properties")
+
+    private val credentials by lazy {
+        log.debug { "Loading credentials from file: ${propertiesFile.canonicalPath}" }
+        if (!propertiesFile.exists()) {
+            throw CredentialsLoadException("Required file doesnt exist at: ${propertiesFile.canonicalPath}")
+        }
+        val config = systemProperties() overriding
+            EnvironmentVariables() overriding
+            ConfigurationProperties.fromFile(propertiesFile)
+
+        val email = config.safeGet(login.email)
+        val password = config.safeGet(login.password)
+        Credentials(
+            email = email,
+            password = password
+        )
+    }
+
     @Suppress("ClassName")
     private object login : PropertyGroup() {
         val email by stringType
         val password by stringType
     }
 
-    override fun get(): Credentials {
-        val loginFile = File(UrclubsConfiguration.HOME_DIRECTORY, "login.properties")
-        log.debug { "Loading credentials from file: ${loginFile.canonicalPath}" }
-        if (!loginFile.exists()) {
-            throw CredentialsLoadException("Required file doesnt exist at: ${loginFile.canonicalPath}")
-        }
-        val config = systemProperties() overriding
-            EnvironmentVariables() overriding
-            ConfigurationProperties.fromFile(loginFile)
-        val email = config.safeGet(login.email)
-        val password = config.safeGet(login.password)
-        return Credentials(
-            email = email,
-            password = password
-        )
-    }
+    override fun get() = credentials
 
     private fun <T> Configuration.safeGet(key: Key<T>): T {
         try {
