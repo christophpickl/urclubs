@@ -112,7 +112,7 @@ todo {
 // VERSION NUMBER
 // =====================================================================================================================
 
-task loadProjectVersionNumber {
+task loadUrclubsVersion {
     Properties props = new Properties()
     File propsFile = new File("version.properties")
     props.load(propsFile.newDataInputStream())
@@ -120,7 +120,7 @@ task loadProjectVersionNumber {
     println "[URCLUBS] Version: " + version
 }
 
-processResources.dependsOn loadProjectVersionNumber
+processResources.dependsOn loadUrclubsVersion
 
 processResources {
     from('src/main/resources') {

@@ -39,8 +39,17 @@ echo "Check that everything was commited..."
 safeEval "git status"
 verifyConfirm "Continue with release?"
 
-echo "version=$NEXT_VERSION" > $VERSION_FILE
-safeEval "./gradlew clean check checkTodo test build loadProjectVersionNumber createApp -Durclubs.production=true -Durclubs.enableMacBundle=true"
+echo "version=$NEXT_VERSION" > ${VERSION_FILE}
+
+BUILD_COMMAND="./gradlew clean checkTodo test check build loadUrclubsVersion createApp -Durclubs.production=true -Durclubs.enableMacBundle=true"
+echo ""
+echo ">> $BUILD_COMMAND"
+eval ${BUILD_COMMAND}
+if [ $? -ne 0 ] ; then
+echo "version=$CURRENT_VERSION" > ${VERSION_FILE}
+    echo "Gradle build failed!"
+    exit 1
+fi
 
 safeEval "git add ."
 safeEval "git commit -m '[Auto-Release] Version: $NEXT_VERSION'"
