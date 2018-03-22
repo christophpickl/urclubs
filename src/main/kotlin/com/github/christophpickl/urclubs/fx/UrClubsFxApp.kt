@@ -5,7 +5,6 @@ import com.github.christophpickl.urclubs.MainModule
 import com.github.christophpickl.urclubs.UrclubsConfiguration
 import com.github.christophpickl.urclubs.fx.partner.PartnersFxController
 import com.github.christophpickl.urclubs.fx.partner.detail.PartnerFxController
-import com.github.christophpickl.urclubs.fx.partner.detail.PartnerView
 import com.github.christophpickl.urclubs.fx.partner.filter.FilterPartnersController
 import com.github.christophpickl.urclubs.service.QuitManager
 import com.google.inject.Guice
@@ -44,12 +43,12 @@ class UrClubsFxApp : App(
     override fun start(stage: Stage) {
         super.start(stage)
         val bounds = Screen.getPrimary().visualBounds
-        val padding = 20.0
+        val padding = UrclubsConfiguration.WINDOW_GAP
 
-        stage.x = bounds.minX + padding
-        stage.y = bounds.minY + padding
-        stage.width = bounds.width - PartnerView.WIDTH - 5 * padding
-        stage.height = bounds.height - 2 * padding
+        stage.x = bounds.minX
+        stage.y = bounds.minY
+        stage.width = bounds.width - UrclubsConfiguration.PARTNER_WINDOW_WIDTH - padding
+        stage.height = bounds.height
 
         fire(ApplicationStartedFxEvent)
     }

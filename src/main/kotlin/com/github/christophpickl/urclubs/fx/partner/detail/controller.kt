@@ -2,6 +2,7 @@ package com.github.christophpickl.urclubs.fx.partner.detail
 
 import com.github.christophpickl.kpotpourri.common.file.humanReadableSize
 import com.github.christophpickl.kpotpourri.common.logging.LOG
+import com.github.christophpickl.urclubs.UrclubsConfiguration
 import com.github.christophpickl.urclubs.domain.partner.PartnerService
 import com.github.christophpickl.urclubs.domain.partner.PartnerUpdatedEvent
 import com.github.christophpickl.urclubs.domain.partner.Picture
@@ -31,12 +32,12 @@ class PartnerFxController : Controller() {
                 resizable = true
             ).also {
                 val bounds = Screen.getPrimary().visualBounds
-                val width = PartnerView.WIDTH
-                val padding = 20.0
+                val width = UrclubsConfiguration.PARTNER_WINDOW_WIDTH
 
-                it!!.x = bounds.width - width - padding
-                it.y = bounds.minY + padding
+                it!!.x = bounds.width - width
+                it.y = bounds.minY
                 it.width = width
+                it.height = bounds.height
             }
             primaryStage.requestFocus()
         }

@@ -7,6 +7,7 @@ import com.github.christophpickl.urclubs.persistence.COL_LENGTH_LIL
 import com.github.christophpickl.urclubs.persistence.COL_LENGTH_MED
 import com.github.christophpickl.urclubs.persistence.HasId
 import com.github.christophpickl.urclubs.persistence.ONE_MB
+import com.github.christophpickl.urclubs.persistence.deleteAll
 import com.github.christophpickl.urclubs.persistence.ensureNotPersisted
 import com.github.christophpickl.urclubs.persistence.ensurePersisted
 import com.github.christophpickl.urclubs.persistence.queryList
@@ -24,6 +25,12 @@ import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
 import javax.persistence.Lob
+
+fun EntityManager.deleteAllPartners() {
+    createNativeQuery("DELETE FROM PartnerDbo_addresses").executeUpdate()
+    createNativeQuery("DELETE FROM PartnerDbo_finishedActivities").executeUpdate()
+    deleteAll<PartnerDbo>()
+}
 
 interface PartnerDao {
     fun create(partner: PartnerDbo): PartnerDbo

@@ -10,6 +10,9 @@ object UrclubsConfiguration {
 
     private val log = LOG {}
 
+    val WINDOW_GAP = 10.0
+    val PARTNER_WINDOW_WIDTH = 500.0
+
     val IS_PRODUCTION = (System.getProperty(SystemProperties.KEY_PRODUCTION) != null).also {
         if (it) log.info { "Production mode (-D${SystemProperties.KEY_PRODUCTION}) is enabled." }
     }

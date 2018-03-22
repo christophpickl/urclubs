@@ -19,10 +19,6 @@ class ChoosePictureFXEvent(val requestor: View) : FXEvent()
 
 class PartnerView : View() {
 
-    companion object {
-        const val WIDTH = 400.0
-    }
-
     private val logg = LOG {}
     private val currentPartner: CurrentPartnerFx by inject()
 
@@ -45,9 +41,6 @@ class PartnerView : View() {
                 fieldset(labelPosition = Orientation.HORIZONTAL) {
                     field("Name") {
                         textfield().textProperty().bindBidirectional(currentPartner.name)
-                    }
-                    field("Short") {
-                        label().textProperty().bind(currentPartner.shortName)
                     }
                     field("Category") {
                         combobox(
@@ -125,7 +118,7 @@ class PartnerView : View() {
         bottom {
             hbox {
                 style {
-                    padding = box(20.px)
+//                    padding = box(20.px)
                 }
                 button("Save").setOnAction {
                     logg.trace { "Save button clicked." }

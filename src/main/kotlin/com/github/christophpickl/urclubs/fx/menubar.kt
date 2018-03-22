@@ -6,8 +6,7 @@ import com.github.christophpickl.urclubs.domain.partner.Partner
 import com.github.christophpickl.urclubs.domain.partner.toPartnerDbo
 import com.github.christophpickl.urclubs.fx.partner.PartnerListRequestFXEvent
 import com.github.christophpickl.urclubs.myclubs.cache.MyClubsCacheManager
-import com.github.christophpickl.urclubs.persistence.createCriteriaDeleteAll
-import com.github.christophpickl.urclubs.persistence.domain.PartnerDbo
+import com.github.christophpickl.urclubs.persistence.domain.deleteAllPartners
 import com.github.christophpickl.urclubs.persistence.transactional
 import javafx.scene.control.MenuBar
 import tornadofx.*
@@ -25,7 +24,7 @@ class MenuBarController : Controller() {
         logg.info { "resetDummyData()" }
 
         em.transactional {
-            createQuery(createCriteriaDeleteAll<PartnerDbo>()).executeUpdate()
+            deleteAllPartners()
             Partner.Dummies.all.forEach {
                 persist(it.toPartnerDbo())
             }
