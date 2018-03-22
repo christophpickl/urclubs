@@ -25,7 +25,7 @@ class DummyModule : AbstractModule() {
     override fun configure() {
         bind(PartnerService::class.java).toInstance(object : PartnerService {
             override fun create(partner: Partner) = partner
-            override fun readAll() = emptyList<Partner>()
+            override fun readAll(includeIgnored: Boolean) = emptyList<Partner>()
             override fun read(id: Long): Partner? = null
             override fun findByShortName(shortName: String): Partner? = null
             override fun findByShortNameOrThrow(shortName: String): Partner = TODO()
