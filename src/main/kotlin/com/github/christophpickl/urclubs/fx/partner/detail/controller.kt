@@ -77,6 +77,7 @@ class PartnerFxController : Controller() {
 
     @Subscribe
     fun onPartnerUpdatedEvent(event: PartnerUpdatedEvent) {
+        logg.debug { "onPartnerUpdatedEvent() redispatching guice event as javafx event" }
         fire(PartnerUpdatedFXEvent(event.partner))
     }
 

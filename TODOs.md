@@ -4,8 +4,16 @@
 1. must do
     1. myclubs caching
     1. improve sync progress dialog UI
+    1. get mac menubar working
+    1. BUG: after initial import, credits left this month is not updated!
+    1. render address
+    * dont display short name
+    * render favourite+wishlist in table (as icon) + make it a clickable icon in detail (only outlines / filled)
+    * BUG: when partner updaten, dann select springt woanders in table hin
+    * !!! BUG: manchmal funktioniert speichern einfach nicht (wenn woanders hinclicken, dann kein dirty check... changes lost) 
 
 1. immediately after
+    1. UI: incorporate partner detail view into main window (get rid of additional window)
     1. in partner detail view: add button to artificially increase visit counts (reason: only past 70s are synced :-()
     1. enhance search:
         * rating (is bigger/lower/equals)
@@ -47,7 +55,6 @@
     * locationNote (render in table next to static location address)
     * add secondary comment for partners (not visible in table but in detail view)
 * global notes
-* UI: incorporate partner detail view into main window (get rid of additional window)
 * UI: send notifications via MacOs (e.g. after sync)
 * support MacMenuBar (handle QuitEvent, outsource menu items into system's Application item)
 * @parseCourses: parse proper time ???

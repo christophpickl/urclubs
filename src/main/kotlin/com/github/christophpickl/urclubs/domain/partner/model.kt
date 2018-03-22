@@ -16,20 +16,24 @@ import java.util.concurrent.atomic.AtomicInteger
 data class Partner(
     val idDbo: Long,
     val idMyc: String, // "JYSvEcpVCR"
+
     val shortName: String, // "triller-crossfit" ... used for links
     val name: String, // "Triller CrossFit"
     val note: String,
-    val addresses: List<String>,
-    val rating: Rating,
+    val linkMyclubs: String,
+    val linkPartner: String,
+
     val maxCredits: Int,
-    val deletedByMyc: Boolean, // keep in DB still locally
+    val rating: Rating,
+    val category: Category,
+    val picture: Picture,
+
     val favourited: Boolean,
     val wishlisted: Boolean, // want to go there soon (nevertheless whether i've been there already)
     val ignored: Boolean, // kind-a delete (don't display at all anymore anywhere, but keep in DB)
-    val category: Category,
-    val linkMyclubs: String,
-    val linkPartner: String,
-    val picture: Picture,
+    val deletedByMyc: Boolean, // keep in DB still locally
+
+    val addresses: List<String>,
     val finishedActivities: List<FinishedActivity>
 ) {
 
@@ -158,10 +162,20 @@ data class Partner(
 
     override fun toString() = MoreObjects.toStringHelper(this)
         .add("idDbo", idDbo)
+        .add("idMyc", idMyc)
         .add("shortName", shortName)
         .add("name", name)
+        .add("rating", rating)
+        .add("category", category)
+        .add("maxCredits", maxCredits)
+        .add("favourited", favourited)
+        .add("wishlisted", wishlisted)
+        .add("deletedByMyc", deletedByMyc)
         .add("addresses", addresses)
+        .add("ignored", ignored)
         .add("finishedActivities.size", finishedActivities.size)
+        .add("picture", picture::class.java.simpleName)
+
         .toString()
 }
 

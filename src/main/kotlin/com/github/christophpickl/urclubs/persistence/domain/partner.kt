@@ -189,9 +189,9 @@ data class PartnerDbo(
         if (category     != other.category)     category     = other.category
         if (maxCredits   != other.maxCredits)   maxCredits   = other.maxCredits
         if (note         != other.note)         note         = other.note
-        if (deletedByMyc != other.deletedByMyc) deletedByMyc = other.deletedByMyc
         if (favourited   != other.favourited)   favourited   = other.favourited
         if (wishlisted   != other.wishlisted)   wishlisted   = other.wishlisted
+        if (deletedByMyc != other.deletedByMyc) deletedByMyc = other.deletedByMyc
         if (ignored      != other.ignored)      ignored      = other.ignored
         if (finishedActivities != other.finishedActivities) finishedActivities.apply {
             clear()
@@ -203,8 +203,14 @@ data class PartnerDbo(
 
     override fun toString() = MoreObjects.toStringHelper(this)
         .add("id", id)
-        .add("shortName", shortName)
         .add("idMyc", idMyc)
+        .add("shortName", shortName)
+        .add("rating", rating)
+        .add("category", category)
+        .add("maxCredits", maxCredits)
+        .add("favourited", favourited)
+        .add("wishlisted", wishlisted)
+        .add("finishedActivities.size", finishedActivities.size)
         .add("picture-set", picture != null)
         .toString()
 
