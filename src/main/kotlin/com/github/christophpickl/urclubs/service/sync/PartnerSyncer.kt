@@ -25,7 +25,7 @@ class PartnerSyncer @Inject constructor(
     fun sync(): PartnerSyncReport {
         log.info { "sync()" }
         val partnersFetched = if(UrclubsConfiguration.DEVELOPMENT_FAST_SYNC) myclubs.partners().take(5) else myclubs.partners()
-        val partnersStored = partnerService.readAll()
+        val partnersStored = partnerService.readAll(includeIgnored = true)
 
         val fetchedById = partnersFetched.associateBy { it.id }
         val fetchedIds = fetchedById.keys

@@ -80,19 +80,18 @@ class PartnerView : View() {
                             }
                         }
                     }
-                    field("Credits") {
+                    field("Visits") {
                         hbox {
                             alignment = Pos.BASELINE_LEFT
-                            label("Left: ")
                             label(currentPartner.creditsLeftThisPeriod)
 
-                            label("  Max: ")
+                            label(" of ")
                             textfield().apply {
                                 prefWidth = 40.0
                                 textProperty().bindBidirectional(currentPartner.maxCredits, NumberStringConverter())
                             }
 
-                            label("  Visits: ")
+                            label(" Left. Total: ")
                             label(currentPartner.totalVisits)
                         }
                     }

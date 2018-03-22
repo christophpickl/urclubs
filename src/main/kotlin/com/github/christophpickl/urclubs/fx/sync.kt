@@ -1,6 +1,7 @@
 package com.github.christophpickl.urclubs.fx
 
 import com.github.christophpickl.kpotpourri.common.logging.LOG
+import com.github.christophpickl.urclubs.UrclubsConfiguration
 import com.github.christophpickl.urclubs.fx.partner.PartnerListRequestFXEvent
 import com.github.christophpickl.urclubs.service.sync.FinishedActivitySyncReport
 import com.github.christophpickl.urclubs.service.sync.FinishedActivitySyncer
@@ -70,7 +71,6 @@ class SyncFxController : Controller() {
             } ui { report ->
                 progressDialog.close()
                 fire(SyncResultEvent(report))
-                fire(PartnerListRequestFXEvent)
             }
         }
 
@@ -88,6 +88,9 @@ class SyncFxController : Controller() {
     }
 
     private fun executeSync(): SyncReport {
+        if (UrclubsConfiguration.Development.STUBBED_SYNCER) {
+            return stubbedSync()
+        }
         val partnersReport = partnerSyncer.sync()
         fire(PartnerListRequestFXEvent)
 
@@ -97,6 +100,14 @@ class SyncFxController : Controller() {
         return SyncReport(
             partners = partnersReport,
             finishedActivities = finishedActivitiesReport
+        )
+    }
+
+    private fun stubbedSync(): SyncReport {
+        logg.debug { "stubbedSync()" }
+        return SyncReport(
+            partners = PartnerSyncReport(emptyList(), emptyList()),
+            finishedActivities = FinishedActivitySyncReport(emptyList())
         )
     }
 

@@ -38,6 +38,12 @@ class Styles : Stylesheet() {
         object Colors {
             val interactiveNormal = greyBright
             val interactiveHover = greyVeryBright
+
+            // TODO proper row cols
+            val rowColWhiteEven = c("#3B3843")
+            val rowColWhiteOdd = c("#3B3843")
+            val rowColBlackEven = c("#3B3843")
+            val rowColBlackOdd = c("#3B3843")
         }
     }
 
@@ -165,10 +171,15 @@ class Styles : Stylesheet() {
         comboBox {
             fontWeight = FontWeight.BOLD
             listCell {
-                backgroundColor += greyVeryBright
                 textFill = white
                 fontWeight = FontWeight.BOLD
-                and(hover) {
+                and(even) {
+                    backgroundColor += greyVeryBright
+                }
+                and(odd) {
+                    backgroundColor += greyBright
+                }
+                and(hover) { // order matters!
                     backgroundColor += orange
                 }
             }
@@ -178,6 +189,12 @@ class Styles : Stylesheet() {
         // =============================================================================================================
 
         tableRowCell {
+            and(even) {
+                // backgroundColor += javafx.scene.paint.Color.GREENYELLOW
+            }
+            and(odd) {
+                // backgroundColor += javafx.scene.paint.Color.AQUA
+            }
             and(hover) {
                 backgroundColor += orangeBright
             }
@@ -186,6 +203,9 @@ class Styles : Stylesheet() {
             }
             and(empty) {
                 backgroundColor += white
+                tableCell {
+                    borderColor += box(javafx.scene.paint.Color.WHITE)
+                }
             }
         }
 

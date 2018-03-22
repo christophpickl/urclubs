@@ -52,7 +52,7 @@ class FilterPartnersController : Controller() {
 
 sealed class Filter {
     object NoFilter : Filter() {
-        val all = Predicate<Partner> { true }
+        val all = { _: Partner -> true }
     }
 
     data class SomeFilter(private val predicates: List<FilterPredicate>) : Filter() {
@@ -60,7 +60,7 @@ sealed class Filter {
             assert(predicates.isNotEmpty(), { "At least one predicate must be set, otherwise use NoFilter instead." })
         }
 
-        fun concatPredicates() = Predicate<Partner> { partner ->
+        fun concatPredicates() = { partner: Partner ->
             predicates.all { predicate ->
                 predicate.test(partner)
             }

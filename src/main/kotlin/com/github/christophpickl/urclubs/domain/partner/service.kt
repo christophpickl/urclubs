@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 interface PartnerService {
     fun create(partner: Partner): Partner
-    fun readAll(): List<Partner>
+    fun readAll(includeIgnored: Boolean = false): List<Partner>
     fun read(id: Long): Partner?
     fun findByShortName(shortName: String): Partner?
     fun findByShortNameOrThrow(shortName: String): Partner
@@ -30,9 +30,10 @@ class PartnerServiceImpl @Inject constructor(
         return partnerDao.create(partner.toPartnerDbo()).toPartner()
     }
 
-    override fun readAll(): List<Partner> {
-        log.trace { "readAll()" }
-        return partnerDao.readAll(includeIgnored = false).map { it.toPartner() }
+    override fun readAll(includeIgnored: Boolean): List<Partner> {
+        log.debug(Exception(), { "test" })
+        log.trace { "readAll(includeIgnored=$includeIgnored)" }
+        return partnerDao.readAll(includeIgnored = includeIgnored).map { it.toPartner() }
     }
 
     override fun read(id: Long): Partner? {
@@ -48,7 +49,7 @@ class PartnerServiceImpl @Inject constructor(
     override fun findByShortNameOrThrow(shortName: String): Partner {
         log.trace { "findByShortNameOrThrow(shortName=$shortName)" }
         return findByShortName(shortName)
-                ?: throw IllegalArgumentException("Could not find partner by short name '$shortName'!")
+            ?: throw IllegalArgumentException("Could not find partner by short name '$shortName'!")
     }
 
     override fun update(partner: Partner) {
@@ -63,7 +64,7 @@ class PartnerServiceImpl @Inject constructor(
         val cleanedLocationHtml = locationHtml.replace("&amp;", "&")
         if (!cleanedLocationHtml.contains("<br>")) throw IllegalArgumentException("Expected location HTML to contain a <br>: $locationHtml")
         val split = cleanedLocationHtml.split("<br>")
-        if(split.size != 2) throw IllegalArgumentException("Expected location HTML to contain only a single <br>: $locationHtml")
+        if (split.size != 2) throw IllegalArgumentException("Expected location HTML to contain only a single <br>: $locationHtml")
 
         return partnerDao.searchByNameAndAddress(
             name = split[0],

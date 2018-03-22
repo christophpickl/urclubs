@@ -7,10 +7,8 @@
     1. get mac menubar working
     1. BUG: after initial import, credits left this month is not updated!
     1. render address
-    * dont display short name
     * render favourite+wishlist in table (as icon) + make it a clickable icon in detail (only outlines / filled)
-    * BUG: when partner updaten, dann select springt woanders in table hin
-    * !!! BUG: manchmal funktioniert speichern einfach nicht (wenn woanders hinclicken, dann kein dirty check... changes lost)
+    * !!! BUG: manchmal funktioniert speichern einfach nicht
     1. style: context menu!, scrollbar 
 
 1. immediately after
@@ -52,6 +50,7 @@
 
 ## Med
 
+* wenn woanders hinclicken, dann kein dirty check... changes lost
 * add new properties: 
     * locationNote (render in table next to static location address)
     * add secondary comment for partners (not visible in table but in detail view)

@@ -29,7 +29,6 @@ object UrclubsConfiguration {
 
     val DEVELOPMENT_FAST_SYNC = (false && IS_DEVELOPMENT).also { if (it) log.info { "Using fast sync mode." } }
     val DEVELOPMENT_COLORS = (false && IS_DEVELOPMENT).also { if (it) log.info { "Using colors mode." } }
-    val USE_STUBBED_MYCLUBS = (false && IS_DEVELOPMENT).also { if (it) log.info { "Using stubbed MyClubs API." } }
 
     val CACHE_DIRECTORY = File(HOME_DIRECTORY, "cache")
 
@@ -43,9 +42,13 @@ object UrclubsConfiguration {
         if (it) log.info { "Logs are disabled due to passed -D${SystemProperties.KEY_DIABLE_LOGS}" }
     }
 
+    object Development {
+        val STUBBED_SYNCER = (false && IS_DEVELOPMENT).also { if (it) log.info { "Using stubbed syncer logic." } }
+        val STUBBED_MYCLUBS = (true && IS_DEVELOPMENT).also { if (it) log.info { "Using stubbed MyClubs API." } }
+    }
+
 }
 
-// -Durclubs.email=xxx -Durclubs.password=xxx
 object SystemProperties {
     const val KEY_EMAIL = "urclubs.email"
     const val KEY_PASSWORD = "urclubs.password"
