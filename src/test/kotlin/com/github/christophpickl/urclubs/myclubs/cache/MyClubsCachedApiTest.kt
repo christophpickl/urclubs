@@ -6,6 +6,7 @@ import com.github.christophpickl.urclubs.myclubs.Http
 import com.github.christophpickl.urclubs.myclubs.MyClubsApi
 import com.github.christophpickl.urclubs.myclubs.MyclubsModule
 import com.github.christophpickl.urclubs.myclubs.UserMycJson
+import com.github.christophpickl.urclubs.myclubs.parser.PartnerHtmlModel
 import com.github.christophpickl.urclubs.myclubs.testInstance
 import com.github.christophpickl.urclubs.service.Credentials
 import com.github.christophpickl.urclubs.service.testInstance
@@ -74,6 +75,15 @@ class MyClubsCachedApiTest {
         cachedApi.loggedUser()
 
         verify(delegateApi, times(1)).loggedUser()
+    }
+    fun `partners - two requests should load 2nd from cache`() {
+        val partners = listOf(PartnerHtmlModel.testInstance())
+        whenever(delegateApi.partners()).thenReturn(partners)
+
+        cachedApi.partners()
+        cachedApi.partners()
+
+        verify(delegateApi, times(1)).partners()
     }
 
     fun `clearCaches - two requests and clear cache in between should again return from delegate`() {

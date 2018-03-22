@@ -6,6 +6,12 @@ import com.github.christophpickl.urclubs.myclubs.CourseFilter
 import com.github.christophpickl.urclubs.myclubs.HttpApi
 import com.github.christophpickl.urclubs.myclubs.MyClubsApi
 import com.github.christophpickl.urclubs.myclubs.UserMycJson
+import com.github.christophpickl.urclubs.myclubs.cache.entities.CachedPartnerHtmlModel
+import com.github.christophpickl.urclubs.myclubs.cache.entities.CachedPartnerHtmlModelCopier
+import com.github.christophpickl.urclubs.myclubs.cache.entities.CachedPartnerHtmlModelSerializer
+import com.github.christophpickl.urclubs.myclubs.cache.entities.CachedUserMycJson
+import com.github.christophpickl.urclubs.myclubs.cache.entities.CachedUserMycJsonCopier
+import com.github.christophpickl.urclubs.myclubs.cache.entities.CachedUserMycJsonSerializer
 import com.github.christophpickl.urclubs.myclubs.parser.ActivityHtmlModel
 import com.github.christophpickl.urclubs.myclubs.parser.CourseHtmlModel
 import com.github.christophpickl.urclubs.myclubs.parser.FinishedActivityHtmlModel
@@ -32,11 +38,11 @@ interface MyClubsCacheManager {
 }
 
 data class CacheSpec<T>(
-        val cacheAlias: String,
-        val valueType: Class<T>,
-        val duration: Duration,
-        val serializerType: Class<out Serializer<T>>,
-        val copierType: Class<out Copier<T>>
+    val cacheAlias: String,
+    val valueType: Class<T>,
+    val duration: Duration,
+    val serializerType: Class<out Serializer<T>>,
+    val copierType: Class<out Copier<T>>
 ) {
     val keyType = String::class.java
 }
@@ -47,22 +53,22 @@ data class CacheSpec<T>(
 annotation class CacheFile
 
 class MyClubsCachedApi constructor(
-        private val delegate: MyClubsApi,
-        cacheDirectory: File?,
-        overrideResourcePools: ResourcePools?
+    private val delegate: MyClubsApi,
+    cacheDirectory: File?,
+    overrideResourcePools: ResourcePools?
 ) : MyClubsApi, MyClubsCacheManager {
 
     companion object {
         private val defaultResourcePools = ResourcePoolsBuilder.newResourcePoolsBuilder()
-                .heap(1, MemoryUnit.MB)
-                .offheap(10, MemoryUnit.MB)
-                .disk(50, MemoryUnit.MB, true)
-                .build()
+            .heap(1, MemoryUnit.MB)
+            .offheap(10, MemoryUnit.MB)
+            .disk(50, MemoryUnit.MB, true)
+            .build()
     }
 
     @Inject constructor(
-            @HttpApi delegate: MyClubsApi,
-            @CacheFile cacheDirectory: File
+        @HttpApi delegate: MyClubsApi,
+        @CacheFile cacheDirectory: File
 
     ) : this(delegate, cacheDirectory, null)
 
@@ -72,14 +78,22 @@ class MyClubsCachedApi constructor(
     private val cacheManager: CacheManager
 
     private val userSpec = CacheSpec(
-            cacheAlias = "user",
-            valueType = CachedUserMycJson::class.java,
-            duration = Duration.of(2, DAYS),
-            serializerType = CachedUserMycJsonSerializer::class.java,
-            copierType = CachedUserMycJsonCopier::class.java
+        cacheAlias = "user",
+        valueType = CachedUserMycJson::class.java,
+        duration = Duration.of(5, DAYS),
+        serializerType = CachedUserMycJsonSerializer::class.java,
+        copierType = CachedUserMycJsonCopier::class.java
     )
+    private val partnersSpec = CacheSpec(
+        cacheAlias = "partners",
+        valueType = CachedPartnerHtmlModel::class.java,
+        duration = Duration.of(2, DAYS),
+        serializerType = CachedPartnerHtmlModelSerializer::class.java,
+        copierType = CachedPartnerHtmlModelCopier::class.java
+    )
+
     private val userCacheKey = "userKey"
-    private val cacheSpecs = listOf(userSpec)
+    private val cacheSpecs = listOf<CacheSpec<*>>(userSpec, partnersSpec)
 
     init {
         log.debug { "Init cache" }
@@ -93,14 +107,14 @@ class MyClubsCachedApi constructor(
         cacheSpecs.map { entity ->
             log.debug { "Registering cache for: $entity" }
             builder = builder.withCache(entity.cacheAlias,
-                    CacheConfigurationBuilder.newCacheConfigurationBuilder(
-                            entity.keyType,
-                            entity.valueType,
-                            overrideResourcePools ?: defaultResourcePools
-                    )
-                            .withExpiry(ExpiryPolicyBuilder.timeToLiveExpiration(entity.duration))
-                            .withValueSerializer(entity.serializerType)
-                            .withValueCopier(entity.copierType)
+                CacheConfigurationBuilder.newCacheConfigurationBuilder(
+                    entity.keyType,
+                    entity.valueType,
+                    overrideResourcePools ?: defaultResourcePools
+                )
+                    .withExpiry(ExpiryPolicyBuilder.timeToLiveExpiration(entity.duration))
+                    .withValueSerializer(CachedUserMycJsonSerializer())
+                    .withValueCopier(entity.copierType)
             )
         }
 
@@ -112,7 +126,7 @@ class MyClubsCachedApi constructor(
 
         cacheSpecs.forEach {
             log.trace { "Removing cache: $it" }
-            cacheManager.getFor(userSpec).clear()
+            cacheManager.getFor(it).clear()
         }
     }
 
@@ -122,8 +136,8 @@ class MyClubsCachedApi constructor(
     }
 
     private fun <T> CacheManager.getFor(spec: CacheSpec<T>): Cache<String, T> =
-            getCache(spec.cacheAlias, spec.keyType, spec.valueType)
-                    ?: throw Exception("Could not find cache by: $spec")
+        getCache(spec.cacheAlias, spec.keyType, spec.valueType)
+            ?: throw Exception("Could not find cache by: $spec")
 
     override fun loggedUser(): UserMycJson {
         log.trace { "loggedUser()" }
