@@ -17,10 +17,17 @@ CREATE TABLE PartnerDbo (
   wishlisted   BOOLEAN       NOT NULL,
   PRIMARY KEY (id)
 );
+
 CREATE TABLE PartnerDbo_addresses (
   PartnerDbo_id BIGINT NOT NULL,
   addresses     VARCHAR(255)
 );
+
+CREATE TABLE PartnerDbo_tags (
+  PartnerDbo_id BIGINT NOT NULL,
+  tags          VARCHAR(255)
+);
+
 CREATE TABLE PartnerDbo_finishedActivities (
   PartnerDbo_id BIGINT       NOT NULL,
   date          TIMESTAMP    NOT NULL,
@@ -34,7 +41,10 @@ ALTER TABLE PartnerDbo
   ADD CONSTRAINT PartnerDboConstraintUniqueShortName UNIQUE (shortName);
 
 ALTER TABLE PartnerDbo_addresses
-  ADD CONSTRAINT PartnerDbo_addresses_ConstraintForeignKey FOREIGN KEY (PartnerDbo_id) REFERENCES PartnerDbo
+  ADD CONSTRAINT PartnerDbo_addresses_ConstraintForeignKey FOREIGN KEY (PartnerDbo_id) REFERENCES PartnerDbo;
+
+ALTER TABLE PartnerDbo_tags
+  ADD CONSTRAINT PartnerDbo_tags_ConstraintForeignKey FOREIGN KEY (PartnerDbo_id) REFERENCES PartnerDbo;
 
 ALTER TABLE PartnerDbo_finishedActivities
   ADD CONSTRAINT PartnerDbo_finishedActivities_ConstraintForeignKey FOREIGN KEY (PartnerDbo_id) REFERENCES PartnerDbo;

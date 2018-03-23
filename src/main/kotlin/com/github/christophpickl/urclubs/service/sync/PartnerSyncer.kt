@@ -5,8 +5,8 @@ import com.github.christophpickl.kpotpourri.common.logging.LOG
 import com.github.christophpickl.urclubs.UrclubsConfiguration
 import com.github.christophpickl.urclubs.domain.partner.Category
 import com.github.christophpickl.urclubs.domain.partner.Partner
-import com.github.christophpickl.urclubs.domain.partner.PartnerService
 import com.github.christophpickl.urclubs.domain.partner.PartnerImage
+import com.github.christophpickl.urclubs.domain.partner.PartnerService
 import com.github.christophpickl.urclubs.domain.partner.Rating
 import com.github.christophpickl.urclubs.myclubs.MyClubsApi
 import com.github.christophpickl.urclubs.myclubs.MyclubsUtil
@@ -24,7 +24,7 @@ class PartnerSyncer @Inject constructor(
 
     fun sync(): PartnerSyncReport {
         log.info { "sync()" }
-        val partnersFetched = if(UrclubsConfiguration.Development.FAST_SYNC) myclubs.partners().take(5) else myclubs.partners()
+        val partnersFetched = if (UrclubsConfiguration.Development.FAST_SYNC) myclubs.partners().take(5) else myclubs.partners()
         val partnersStored = partnerService.readAll(includeIgnored = true)
 
         val fetchedById = partnersFetched.associateBy { it.id }
@@ -57,7 +57,8 @@ class PartnerSyncer @Inject constructor(
     private fun Partner.enhance(detailed: PartnerDetailHtmlModel) = copy(
         addresses = detailed.addresses,
         linkPartner = detailed.linkPartnerSite,
-        linkMyclubs = util.createMyclubsPartnerUrl(shortName)
+        linkMyclubs = util.createMyclubsPartnerUrl(shortName),
+        tags = detailed.tags
     )
 }
 
@@ -86,7 +87,6 @@ fun PartnerHtmlModel.toPartner() = Partner(
     name = name,
     note = "",
     shortName = shortName,
-    addresses = emptyList(), // needs additional GET /partner request
     rating = Rating.UNKNOWN,
     category = Category.UNKNOWN,
     maxCredits = Partner.DEFAULT_MAX_CREDITS,
@@ -94,9 +94,12 @@ fun PartnerHtmlModel.toPartner() = Partner(
     favourited = false,
     wishlisted = false,
     ignored = false,
-    // links will be added later on when syncing each partner in detail
+    picture = PartnerImage.DefaultPicture,
+
+    // will be enhanced later on by HTTP detail request
     linkMyclubs = "",
     linkPartner = "",
-    picture = PartnerImage.DefaultPicture,
+    addresses = emptyList(),
+    tags = emptyList(),
     finishedActivities = emptyList()
 )

@@ -18,7 +18,7 @@ object StubbedMyClubsApi : MyClubsApi {
         description = "description1",
         linkPartnerSite = "",
         addresses = listOf("home1"),
-        flags = emptyList(),
+        tags = emptyList(),
         upcomingActivities = emptyList()
     )
 

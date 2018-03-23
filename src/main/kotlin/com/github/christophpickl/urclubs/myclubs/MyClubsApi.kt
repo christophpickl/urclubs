@@ -9,6 +9,7 @@ interface MyClubsApi {
 
     fun loggedUser(): UserMycJson
     fun partners(): List<PartnerHtmlModel>
+    // https://www.myclubs.com/at/de/partner/$shortName
     fun partner(shortName: String): PartnerDetailHtmlModel
     fun finishedActivities(): List<FinishedActivityHtmlModel>
     fun activity(filter: ActivityFilter): ActivityHtmlModel
@@ -20,6 +21,7 @@ interface MyClubsApi {
 }
 
 class MyclubsUtil {
+
     private val baseUrl = "https://www.myclubs.com"
 
     fun createMyclubsPartnerUrl(shortName: String) = "$baseUrl/at/de/partner/$shortName"

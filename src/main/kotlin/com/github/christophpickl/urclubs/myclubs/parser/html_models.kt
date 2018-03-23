@@ -15,7 +15,7 @@ data class PartnerDetailHtmlModel(
     val description: String,
     val linkPartnerSite: String,
     val addresses: List<String>,
-    val flags: List<String>,
+    val tags: List<String>, // "Yoga", "Fitnesskurs"
     val upcomingActivities: List<PartnerDetailActivityHtmlModel>
 ) {
     companion object

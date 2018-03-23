@@ -41,7 +41,7 @@ data class CachedPartnerDetailHtmlModel(
         description = original.description,
         linkPartnerSite = original.linkPartnerSite,
         addresses = original.addresses,
-        flags = original.flags,
+        flags = original.tags,
         upcomingActivities = original.upcomingActivities
     )
 
@@ -51,7 +51,7 @@ data class CachedPartnerDetailHtmlModel(
             description = description!!,
             linkPartnerSite = linkPartnerSite!!,
             addresses = addresses!!,
-            flags = flags!!,
+            tags = flags!!,
             upcomingActivities = upcomingActivities!!
         )
     )

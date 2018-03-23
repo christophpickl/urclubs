@@ -115,9 +115,6 @@ data class PartnerDbo(
     @Column(nullable = false, length = COL_LENGTH_MED, unique = true)
     var shortName: String,
 
-    @ElementCollection
-    var addresses: List<String>,
-
     @Column(nullable = false, length = COL_LENGTH_BIG)
     var note: String,
 
@@ -149,12 +146,18 @@ data class PartnerDbo(
     @Column(nullable = false)
     var ignored: Boolean,
 
-    @Lob
-    @Column(nullable = true, length = ONE_MB)
-    var picture: ByteArray?,
+    @ElementCollection
+    var tags: List<String>,
 
     @ElementCollection
-    var finishedActivities: MutableList<FinishedActivityDbo>
+    var addresses: List<String>,
+
+    @ElementCollection
+    var finishedActivities: MutableList<FinishedActivityDbo>,
+
+    @Lob
+    @Column(nullable = true, length = ONE_MB)
+    var picture: ByteArray?
 
     // dont forget to extend the equals() method when adding new properties!
 
@@ -165,24 +168,25 @@ data class PartnerDbo(
 
     override fun equals(other: Any?): Boolean {
         // @formatter:off
-        if (other !is PartnerDbo) return false
-        if (id           != other.id)           return false
-        if (idMyc        != other.idMyc)        return false
-        if (name         != other.name)         return false
-        if (shortName    != other.shortName)    return false
-        if (addresses    != other.addresses)    return false
-        if (note         != other.note)         return false
-        if (linkMyclubs  != other.linkMyclubs)  return false
-        if (linkPartner  != other.linkPartner)  return false
-        if (maxCredits   != other.maxCredits)   return false
-        if (rating       != other.rating)       return false
-        if (category     != other.category)     return false
-        if (deletedByMyc != other.deletedByMyc) return false
-        if (favourited   != other.favourited)   return false
-        if (wishlisted   != other.wishlisted)   return false
-        if (ignored      != other.ignored)      return false
-        if (!picture.byteArrayEquals(other.picture)) return false
+        if (other !is PartnerDbo)                                             return false
+        if (id           != other.id)                                         return false
+        if (idMyc        != other.idMyc)                                      return false
+        if (name         != other.name)                                       return false
+        if (shortName    != other.shortName)                                  return false
+        if (note         != other.note)                                       return false
+        if (linkMyclubs  != other.linkMyclubs)                                return false
+        if (linkPartner  != other.linkPartner)                                return false
+        if (maxCredits   != other.maxCredits)                                 return false
+        if (rating       != other.rating)                                     return false
+        if (category     != other.category)                                   return false
+        if (deletedByMyc != other.deletedByMyc)                               return false
+        if (favourited   != other.favourited)                                 return false
+        if (wishlisted   != other.wishlisted)                                 return false
+        if (ignored      != other.ignored)                                    return false
+        if (!picture.byteArrayEquals(other.picture))                          return false
         // hibernate bag is messing up the equals method
+        if (addresses.toList()          != other.addresses.toList())          return false
+        if (tags.toList()               != other.tags.toList())               return false
         if (finishedActivities.toList() != other.finishedActivities.toList()) return false
         // @formatter:on
         return true
@@ -200,6 +204,8 @@ data class PartnerDbo(
         if (wishlisted   != other.wishlisted)   wishlisted   = other.wishlisted
         if (deletedByMyc != other.deletedByMyc) deletedByMyc = other.deletedByMyc
         if (ignored      != other.ignored)      ignored      = other.ignored
+        if (addresses    != other.addresses)    addresses    = other.addresses
+        if (tags         != other.tags)         tags         = other.tags
         if (finishedActivities != other.finishedActivities) finishedActivities.apply {
             clear()
             addAll(other.finishedActivities)
@@ -217,6 +223,8 @@ data class PartnerDbo(
         .add("maxCredits", maxCredits)
         .add("favourited", favourited)
         .add("wishlisted", wishlisted)
+        .add("addresses", addresses)
+        .add("tags", tags)
         .add("finishedActivities.size", finishedActivities.size)
         .add("picture-set", picture != null)
         .toString()

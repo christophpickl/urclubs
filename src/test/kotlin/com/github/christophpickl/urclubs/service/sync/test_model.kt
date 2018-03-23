@@ -11,7 +11,6 @@ fun PartnerDbo.Companion.testInstance() = PartnerDbo(
     idMyc = "testIdMyc",
     name = "testName",
     shortName = "testShortName",
-    addresses = listOf("testStreet"),
     note = "testNote",
     linkMyclubs = "http://test.myclubs.at",
     linkPartner = "http://test.partner.at",
@@ -23,5 +22,7 @@ fun PartnerDbo.Companion.testInstance() = PartnerDbo(
     ignored = false,
     wishlisted = true,
     picture = null,
+    addresses = listOf("testStreet"),
+    tags = listOf("testTag"),
     finishedActivities = mutableListOf()
 )

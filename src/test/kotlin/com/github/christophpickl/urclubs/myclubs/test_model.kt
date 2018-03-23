@@ -25,10 +25,10 @@ fun UserMycJson.Companion.testInstance() = UserMycJson(id = "testId", email = "t
 fun ActivityHtmlModel.Companion.testInstance() = ActivityHtmlModel(partnerShortName = "testPartnerShortName", description = "testDescription")
 
 fun PartnerDetailHtmlModel.Companion.testInstance() = PartnerDetailHtmlModel(
-    name = "name",
-    description = "description",
-    linkPartnerSite = "linkPartnerSite",
-    addresses = listOf("addresses"),
-    flags = listOf("flags"),
+    name = "iYoga",
+    description = "some yoga partner",
+    linkPartnerSite = "www.yoga.at",
+    addresses = listOf("Hauptyogastrasse 1"),
+    tags = listOf("Yoga"),
     upcomingActivities = listOf<PartnerDetailActivityHtmlModel>()
 )

@@ -33,6 +33,7 @@ data class Partner(
     val ignored: Boolean, // kind-a delete (don't display at all anymore anywhere, but keep in DB)
     val deletedByMyc: Boolean, // keep in DB still locally
 
+    val tags: List<String>,
     val addresses: List<String>,
     val finishedActivities: List<FinishedActivity>
 ) {
@@ -58,7 +59,6 @@ data class Partner(
             shortName = "",
             name = "",
             note = "",
-            addresses = emptyList(),
             rating = Rating.UNKNOWN,
             maxCredits = DEFAULT_MAX_CREDITS,
             deletedByMyc = false,
@@ -68,8 +68,10 @@ data class Partner(
             category = Category.UNKNOWN,
             linkMyclubs = "",
             linkPartner = "",
-            picture = PartnerImage.DefaultPicture,
-            finishedActivities = emptyList()
+            addresses = emptyList(),
+            tags = emptyList(),
+            finishedActivities = emptyList(),
+            picture = PartnerImage.DefaultPicture
         )
     }
 
@@ -82,7 +84,6 @@ data class Partner(
             copy(
                 shortName = "dummy-ems",
                 name = "Dummy EMS",
-                addresses = listOf("Hauptplatz 1"),
                 note = "my note 1",
                 linkMyclubs = "http://orf.at",
                 linkPartner = "http://google.com",
@@ -91,6 +92,8 @@ data class Partner(
                 maxCredits = 2,
                 favourited = true,
                 wishlisted = true,
+                addresses = listOf("Hauptplatz 1"),
+                tags = listOf("EMS"),
                 finishedActivities = listOf(
                     FinishedActivity("past", LocalDateTime.now().minusMonths(1)),
                     FinishedActivity("current", LocalDateTime.now())
@@ -102,10 +105,11 @@ data class Partner(
             copy(
                 shortName = "yoga",
                 name = "Dr. Yoga",
-                addresses = listOf("Mieterstrasse 127/42, 1010 Wien"),
                 linkMyclubs = "http://derstandard.at",
                 category = Category.YOGA,
                 rating = Rating.GOOD,
+                addresses = listOf("Mieterstrasse 127/42, 1010 Wien"),
+                tags = listOf("Yoga", "Bikram Yoga"),
                 finishedActivities = listOf(
                     FinishedActivity("current1", LocalDateTime.now()),
                     FinishedActivity("current2", LocalDateTime.now()),
@@ -241,7 +245,6 @@ fun Partner.toPartnerDbo() = PartnerDbo(
     name = name,
     note = note,
     shortName = shortName,
-    addresses = addresses,
     rating = rating.toRatingDbo(),
     deletedByMyc = deletedByMyc,
     favourited = favourited,
@@ -249,10 +252,12 @@ fun Partner.toPartnerDbo() = PartnerDbo(
     ignored = ignored,
     category = category.toCategoryDbo(),
     maxCredits = maxCredits.toByte(),
-    picture = picture.saveRepresentation,
     linkMyclubs = linkMyclubs,
     linkPartner = linkPartner,
-    finishedActivities = finishedActivities.map { it.toFinishedActivityDbo() }.toMutableList()
+    addresses = addresses,
+    tags = tags,
+    finishedActivities = finishedActivities.map { it.toFinishedActivityDbo() }.toMutableList(),
+    picture = picture.saveRepresentation
 )
 
 fun Rating.toRatingDbo() = when (this) {
@@ -280,7 +285,6 @@ fun PartnerDbo.toPartner() = Partner(
     shortName = shortName,
     name = name,
     note = note,
-    addresses = addresses,
     rating = rating.toRating(),
     maxCredits = maxCredits.toInt(),
     deletedByMyc = deletedByMyc,
@@ -290,8 +294,10 @@ fun PartnerDbo.toPartner() = Partner(
     category = category.toCategory(),
     linkMyclubs = linkMyclubs,
     linkPartner = linkPartner,
-    picture = PartnerImage.readFromDb(picture),
-    finishedActivities = finishedActivities.map { it.toFinishedActivity() }
+    tags = tags,
+    addresses = addresses,
+    finishedActivities = finishedActivities.map { it.toFinishedActivity() },
+    picture = PartnerImage.readFromDb(picture)
 )
 
 fun RatingDbo?.toRating() = when (this) {

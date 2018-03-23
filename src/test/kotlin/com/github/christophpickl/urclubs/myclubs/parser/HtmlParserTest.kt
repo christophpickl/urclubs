@@ -243,7 +243,7 @@ class HtmlParserTest {
             description = "Some description.",
             linkPartnerSite = "http://www.hotpodyoga.com/at/yoga-classes/vienna/",
             addresses = listOf("Margaretenstraße 70/2/2, 1050 Wien"),
-            flags = listOf("Bikram & Hot Yoga", "Yoga"),
+            tags = listOf("Bikram & Hot Yoga", "Yoga"),
             upcomingActivities = listOf(PartnerDetailActivityHtmlModel(
                 idMyc = "meqR6C5d0m",
                 detailLink = "https://www.myclubs.com/at/de/aktivitaeten/at/wien/meqR6C5d0mc",

@@ -132,10 +132,11 @@ class PartnerDaoImplTest : DatabaseTest() {
             id = 0L,
             idMyc = "idMyc",
             shortName = "shortName",
-            addresses = listOf("address"),
             linkPartner = "linkPartner",
             linkMyclubs = "linkMyclubs",
             picture = null,
+            addresses = listOf("address"),
+            tags = listOf("tag", "willBeRemoved"),
             finishedActivities = mutableListOf()
         )
         save(savedPartner)
@@ -153,7 +154,8 @@ class PartnerDaoImplTest : DatabaseTest() {
             id = savedPartner.id,
             idMyc = savedPartner.idMyc,
             shortName = savedPartner.shortName,
-            addresses = savedPartner.addresses,
+            addresses = listOf("address", "wasAdded"),
+            tags = listOf("tag"),
             linkPartner = savedPartner.linkPartner,
             linkMyclubs = savedPartner.linkMyclubs,
             picture = ByteArray(8, { 1 }),
