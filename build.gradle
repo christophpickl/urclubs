@@ -83,11 +83,10 @@ dependencies {
 
 sourceCompatibility = versionJava
 targetCompatibility = versionJava
-compileKotlin {
-    kotlinOptions.jvmTarget = versionJava.toString()
-}
-compileTestKotlin {
-    kotlinOptions.jvmTarget = versionJava.toString()
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+    kotlinOptions {
+        jvmTarget = versionJava.toString()
+    }
 }
 
 kotlin {
