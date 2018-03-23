@@ -2,17 +2,23 @@ package com.github.christophpickl.urclubs.fx.partner
 
 import com.github.christophpickl.kpotpourri.common.logging.LOG
 import com.github.christophpickl.urclubs.UrclubsConfiguration
-import com.github.christophpickl.urclubs.domain.partner.ImageSize
 import com.github.christophpickl.urclubs.domain.partner.Partner
+import com.github.christophpickl.urclubs.domain.partner.PartnerImageSize
 import com.github.christophpickl.urclubs.domain.partner.Rating
+import com.github.christophpickl.urclubs.fx.ImageId
+import com.github.christophpickl.urclubs.fx.Images
 import com.github.christophpickl.urclubs.fx.Styles
 import com.github.christophpickl.urclubs.fx.partner.detail.PartnerSelectedEvent
 import com.github.christophpickl.urclubs.fx.partner.filter.FilterPartnersView
 import javafx.beans.property.ReadOnlyStringWrapper
+import javafx.geometry.Pos
 import javafx.scene.control.TableColumn
+import javafx.scene.control.TableView
+import javafx.scene.image.Image
 import javafx.scene.input.KeyCode
 import javafx.scene.paint.Color
 import tornadofx.*
+import kotlin.reflect.KProperty1
 
 val Rating.color: Color?
     get() = when (this) {
@@ -23,13 +29,15 @@ val Rating.color: Color?
         Rating.UNKNOWN -> null
     }
 
+val Partner.favouriteImage: Image get() = if (favourited) Images[ImageId.FAVOURITE_FULL] else Images[ImageId.FAVOURITE_OUTLINE]
+val Partner.wishlistedImage: Image get() = if (wishlisted) Images[ImageId.WISHLIST_FULL] else Images[ImageId.WISHLIST_OUTLINE]
+
 class PartnersView : View() {
 
     private val logg = LOG {}
-
-    // https://github.com/edvin/tornadofx/wiki/Utilities
     private val partnersFilter: FilterPartnersView by inject()
     private val currentPartner: CurrentPartnerFx by inject()
+    private val imagePadding = 5
 
     val table = tableview<Partner> {
         addClass(Styles.partnersTable)
@@ -37,10 +45,14 @@ class PartnersView : View() {
             cellFormat {
                 graphic = imageview(rowItem.picture.fxImageLil)
             }
-            fixedWidth(ImageSize.LITTLE.dimension.width)
+            fixedWidth(PartnerImageSize.LITTLE.dimension.width)
         }
 
         column("Name", Partner::name).minWidth(200.0).maxWidth(400.0)
+
+        imageColumn(Partner::favourited) { it.favouriteImage }
+        imageColumn(Partner::wishlisted) { it.wishlistedImage }
+
         column("Category") { features: TableColumn.CellDataFeatures<Partner, String> ->
             ReadOnlyStringWrapper(features.value.category.label)
         }.fixedWidth(100.0)
@@ -100,6 +112,15 @@ class PartnersView : View() {
             }
         }
     }
+
+    private inline fun <reified S, T> TableView<S>.imageColumn(imageProperty: KProperty1<S, T>, crossinline imageExtractor: (S) -> Image): TableColumn<S, T> =
+        column("", imageProperty).apply {
+            fixedWidth(Images.size.width + imagePadding * 2)
+            cellFormat {
+                graphic = imageview { image = imageExtractor(rowItem) }
+                alignment = Pos.CENTER
+            }
+        }
 
     private fun firePartnerSelected(partner: Partner) {
         logg.trace { "firePartnerSelected($partner)" }

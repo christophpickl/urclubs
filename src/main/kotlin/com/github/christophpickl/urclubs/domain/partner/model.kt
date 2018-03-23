@@ -26,7 +26,7 @@ data class Partner(
     val maxCredits: Int,
     val rating: Rating,
     val category: Category,
-    val picture: Picture,
+    val picture: PartnerImage,
 
     val favourited: Boolean,
     val wishlisted: Boolean, // want to go there soon (nevertheless whether i've been there already)
@@ -68,7 +68,7 @@ data class Partner(
             category = Category.UNKNOWN,
             linkMyclubs = "",
             linkPartner = "",
-            picture = Picture.DefaultPicture,
+            picture = PartnerImage.DefaultPicture,
             finishedActivities = emptyList()
         )
     }
@@ -114,11 +114,12 @@ data class Partner(
                 )
             )
         }
-        val mahOk = newDummy {
+        val meh = newDummy {
             copy(
-                shortName = "mah",
-                name = "Maaaah",
+                shortName = "meh",
+                name = "Meeeeh",
                 rating = Rating.OK,
+                favourited = true,
                 finishedActivities = listOf(
                     FinishedActivity("past", LocalDateTime.now().minusMonths(1))
                 )
@@ -136,6 +137,15 @@ data class Partner(
                 shortName = "unknown",
                 name = "Mr Unknown",
                 category = Category.UNKNOWN,
+                rating = Rating.UNKNOWN
+            )
+        }
+        val wannaGo = newDummy {
+            copy(
+                shortName = "wannaGo",
+                name = "Might be Gooood",
+                wishlisted = true,
+                category = Category.WUSHU,
                 rating = Rating.UNKNOWN
             )
         }
@@ -280,7 +290,7 @@ fun PartnerDbo.toPartner() = Partner(
     category = category.toCategory(),
     linkMyclubs = linkMyclubs,
     linkPartner = linkPartner,
-    picture = Picture.readFromDb(picture),
+    picture = PartnerImage.readFromDb(picture),
     finishedActivities = finishedActivities.map { it.toFinishedActivity() }
 )
 

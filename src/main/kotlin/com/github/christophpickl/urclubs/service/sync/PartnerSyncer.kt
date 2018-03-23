@@ -6,7 +6,7 @@ import com.github.christophpickl.urclubs.UrclubsConfiguration
 import com.github.christophpickl.urclubs.domain.partner.Category
 import com.github.christophpickl.urclubs.domain.partner.Partner
 import com.github.christophpickl.urclubs.domain.partner.PartnerService
-import com.github.christophpickl.urclubs.domain.partner.Picture
+import com.github.christophpickl.urclubs.domain.partner.PartnerImage
 import com.github.christophpickl.urclubs.domain.partner.Rating
 import com.github.christophpickl.urclubs.myclubs.MyClubsApi
 import com.github.christophpickl.urclubs.myclubs.MyclubsUtil
@@ -97,6 +97,6 @@ fun PartnerHtmlModel.toPartner() = Partner(
     // links will be added later on when syncing each partner in detail
     linkMyclubs = "",
     linkPartner = "",
-    picture = Picture.DefaultPicture,
+    picture = PartnerImage.DefaultPicture,
     finishedActivities = emptyList()
 )

@@ -17,7 +17,7 @@ class Styles : Stylesheet() {
 
         // SPECIFIC COMPONENTS
         val partnersTable by cssclass()
-        val pictureChooser by cssclass()
+        val showHandOnHover by cssclass()
 
         // GENERAL COMPONENTS
         val mainPanel by cssclass()
@@ -49,7 +49,7 @@ class Styles : Stylesheet() {
 
     init {
 
-        val handOnHover = mixin {
+        val onHoverShowHandCursorMixin = mixin {
             and(hover) {
                 cursor = javafx.scene.Cursor.HAND
             }
@@ -74,8 +74,8 @@ class Styles : Stylesheet() {
             }
         }
 
-        pictureChooser {
-            +handOnHover
+        showHandOnHover {
+            +onHoverShowHandCursorMixin
         }
 
         // FONTS
@@ -138,7 +138,7 @@ class Styles : Stylesheet() {
 
         checkBox {
             textFill = white
-            +handOnHover
+            +onHoverShowHandCursorMixin
             box {
                 +theBigThree
             }

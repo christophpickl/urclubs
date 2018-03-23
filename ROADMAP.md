@@ -2,12 +2,11 @@
 # Grob Plan
 
 1. must do
-    1. myclubs caching
-    1. improve sync progress dialog UI
+    1. FIX: myclubs caching
+    1. improve sync progress dialog UI (show indeterministic progress Bar; NO listener/event thing)
     1. get mac menubar working
     1. BUG: after initial import, credits left this month is not updated!
     1. render address
-    * render favourite+wishlist in table (as icon) + make it a clickable icon in detail (only outlines / filled)
     * !!! BUG: manchmal funktioniert speichern einfach nicht
     1. style: context menu!, scrollbar 
 
@@ -24,8 +23,6 @@
 1. next big step
     1. list upcoming activities
     1. list my booked activities
-    1. resolve: org.hibernate.orm.connections.pooling - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
-    1. resolve o.h.e.j.c.internal.DriverManagerConnectionProviderImpl - Connection leak detected: there are 1 unclosed connections upon shutting down pool jdbc:hsqldb:file:/Users/wu/.urclubs_dev/database/database
 
 # TODOs
 
@@ -50,6 +47,8 @@
 
 ## Med
 
+* resolve: org.hibernate.orm.connections.pooling - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+    * resolve o.h.e.j.c.internal.DriverManagerConnectionProviderImpl - Connection leak detected: there are 1 unclosed connections upon shutting down pool jdbc:hsqldb:file:/Users/wu/.urclubs_dev/database/database
 * wenn woanders hinclicken, dann kein dirty check... changes lost
 * add new properties: 
     * locationNote (render in table next to static location address)
@@ -66,6 +65,7 @@
 * BIZ: sync more Partner details (description, flags, ...)
 * richtext format notes
 * colorize location (=distance) => property Partner.locationRating (rename regular rating to "partnerRating")
+* UI: render checkbox for favourite/wishlist as images
 * UI: finished activities visualize count as "baelkchen"
 
 ## Technical

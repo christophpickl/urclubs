@@ -28,7 +28,7 @@ class PartnerView : View() {
             vbox {
                 alignment = Pos.CENTER
                 imageview().apply {
-                    addClass(Styles.pictureChooser)
+                    addClass(Styles.showHandOnHover)
                     setOnMouseClicked {
                         logg.debug { "Clicked on picture." }
                         fire(ChoosePictureFXEvent(this@PartnerView))

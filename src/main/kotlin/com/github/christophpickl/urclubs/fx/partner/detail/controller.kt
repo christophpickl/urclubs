@@ -3,9 +3,9 @@ package com.github.christophpickl.urclubs.fx.partner.detail
 import com.github.christophpickl.kpotpourri.common.file.humanReadableSize
 import com.github.christophpickl.kpotpourri.common.logging.LOG
 import com.github.christophpickl.urclubs.UrclubsConfiguration
+import com.github.christophpickl.urclubs.domain.partner.PartnerImage
 import com.github.christophpickl.urclubs.domain.partner.PartnerService
 import com.github.christophpickl.urclubs.domain.partner.PartnerUpdatedEvent
-import com.github.christophpickl.urclubs.domain.partner.Picture
 import com.github.christophpickl.urclubs.fx.ApplicationStartedFxEvent
 import com.github.christophpickl.urclubs.fx.partner.CurrentPartnerFx
 import com.github.christophpickl.urclubs.persistence.domain.PartnerDbo
@@ -52,7 +52,7 @@ class PartnerFxController : Controller() {
             val file = choosePictureFile(it.requestor)
             if (file != null) {
                 logg.debug { "Selected new picture: ${file.canonicalPath}" }
-                val picture = Picture.FilePicture(file)
+                val picture = PartnerImage.FilePicture(file)
 
                 if (picture.saveRepresentation.size > PartnerDbo.MAX_PICTURE_BYTES) {
                     alert(

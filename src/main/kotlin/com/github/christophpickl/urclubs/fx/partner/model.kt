@@ -2,7 +2,7 @@ package com.github.christophpickl.urclubs.fx.partner
 
 import com.github.christophpickl.urclubs.domain.partner.Category
 import com.github.christophpickl.urclubs.domain.partner.Partner
-import com.github.christophpickl.urclubs.domain.partner.Picture
+import com.github.christophpickl.urclubs.domain.partner.PartnerImage
 import com.github.christophpickl.urclubs.domain.partner.Rating
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleIntegerProperty
@@ -28,8 +28,8 @@ class CurrentPartnerFx() : ViewModel() {
     val linkMyclubs = SimpleStringProperty()
     val linkPartner = SimpleStringProperty()
 
-    val picture = SimpleObjectProperty<javafx.scene.image.Image>(Picture.DefaultPicture.fxImage)
-    val pictureWrapper = SimpleObjectProperty<Picture>(Picture.DefaultPicture)
+    val picture = SimpleObjectProperty<javafx.scene.image.Image>(PartnerImage.DefaultPicture.fxImage)
+    val pictureWrapper = SimpleObjectProperty<PartnerImage>(PartnerImage.DefaultPicture)
 
     fun toPartner() = original.copy(
         name = name.get(),

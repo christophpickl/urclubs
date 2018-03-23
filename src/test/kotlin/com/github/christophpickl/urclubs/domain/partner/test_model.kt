@@ -19,7 +19,7 @@ fun Partner.Companion.testInstance() = Partner(
     favourited = true,
     ignored = false,
     wishlisted = true,
-    picture = Picture.DefaultPicture,
+    picture = PartnerImage.DefaultPicture,
     finishedActivities = emptyList()
 )
 

@@ -1,25 +1,17 @@
-
+package mains
 import com.github.christophpickl.urclubs.domain.partner.Partner
 import com.github.christophpickl.urclubs.domain.partner.PartnerService
 import com.github.christophpickl.urclubs.fx.Styles
 import com.github.christophpickl.urclubs.fx.partner.CurrentPartnerFx
 import com.github.christophpickl.urclubs.fx.partner.PartnerListFXEvent
 import com.github.christophpickl.urclubs.fx.partner.PartnersFxController
-import com.github.christophpickl.urclubs.fx.partner.detail.PartnerView
 import com.google.inject.AbstractModule
 import com.google.inject.Guice
-import javafx.application.Application
 import javafx.stage.Stage
 import tornadofx.*
 import kotlin.reflect.KClass
 
-val viewClass: KClass<out UIComponent>? =
-    PartnerView::class
-    //MainView::class
-
-fun main(args: Array<String>) {
-    Application.launch(DummyApp::class.java, *args)
-}
+var viewClass: KClass<out UIComponent>? = null
 
 class DummyModule : AbstractModule() {
     override fun configure() {
