@@ -12,6 +12,7 @@ import com.github.christophpickl.urclubs.myclubs.MyClubsApi
 import com.github.christophpickl.urclubs.myclubs.MyclubsUtil
 import com.github.christophpickl.urclubs.myclubs.parser.PartnerDetailHtmlModel
 import com.github.christophpickl.urclubs.myclubs.parser.PartnerHtmlModel
+import com.google.common.annotations.VisibleForTesting
 import javax.inject.Inject
 
 class PartnerSyncer @Inject constructor(
@@ -22,9 +23,22 @@ class PartnerSyncer @Inject constructor(
 
     private val log = LOG {}
 
+    object Guess {
+
+        @VisibleForTesting
+        fun guessCategory(tags: List<String>): Category {
+            val loweredTags = tags.map { it.toLowerCase() }
+            if (loweredTags.anyContains("yoga")) return Category.YOGA
+            if (loweredTags.anyContains("ems")) return Category.EMS
+            return Category.UNKNOWN
+        }
+        private fun List<String>.anyContains(search: String) = any { it.contains(search) }
+    }
+
     fun sync(): PartnerSyncReport {
         log.info { "sync()" }
-        val partnersFetched = if (UrclubsConfiguration.Development.FAST_SYNC) myclubs.partners().take(5) else myclubs.partners()
+
+        val partnersFetched = myclubs.partners().let { if (UrclubsConfiguration.Development.FAST_SYNC) it.take(5) else it }
         val partnersStored = partnerService.readAll(includeIgnored = true)
 
         val fetchedById = partnersFetched.associateBy { it.id }
@@ -43,6 +57,7 @@ class PartnerSyncer @Inject constructor(
             .map { it.copy(deletedByMyc = true) }
             .apply {
                 forEach {
+                    log.trace { "Mark partner as deleted by myclubs: $it" }
                     partnerService.update(it)
                 }
             }.toList()
@@ -58,8 +73,10 @@ class PartnerSyncer @Inject constructor(
         addresses = detailed.addresses,
         linkPartner = detailed.linkPartnerSite,
         linkMyclubs = util.createMyclubsPartnerUrl(shortName),
-        tags = detailed.tags
+        tags = detailed.tags,
+        category = Guess.guessCategory(detailed.tags)
     )
+
 }
 
 

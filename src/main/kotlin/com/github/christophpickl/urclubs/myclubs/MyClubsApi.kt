@@ -21,7 +21,6 @@ interface MyClubsApi {
 }
 
 class MyclubsUtil {
-
     private val baseUrl = "https://www.myclubs.com"
 
     fun createMyclubsPartnerUrl(shortName: String) = "$baseUrl/at/de/partner/$shortName"

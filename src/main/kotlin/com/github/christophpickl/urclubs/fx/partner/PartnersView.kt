@@ -81,7 +81,7 @@ class PartnersView : View() {
 
     override val root = borderpane {
         style {
-            if (UrclubsConfiguration.DEVELOPMENT_COLORS) backgroundColor += Color.AQUA
+            if (UrclubsConfiguration.Development.COLOR_MODE) backgroundColor += Color.AQUA
         }
         top {
             add(partnersFilter)

@@ -1,8 +1,11 @@
 package com.github.christophpickl.urclubs.service.sync
 
+import com.github.christophpickl.urclubs.domain.partner.Category
+import com.github.christophpickl.urclubs.domain.partner.Partner
 import com.github.christophpickl.urclubs.domain.partner.PartnerService
 import com.github.christophpickl.urclubs.myclubs.MyClubsApi
 import com.github.christophpickl.urclubs.myclubs.MyclubsUtil
+import com.github.christophpickl.urclubs.myclubs.parser.PartnerDetailHtmlModel
 import com.github.christophpickl.urclubs.myclubs.parser.PartnerHtmlModel
 import com.github.christophpickl.urclubs.myclubs.testInstance
 import com.nhaarman.mockito_kotlin.mock
@@ -16,9 +19,7 @@ import org.testng.annotations.Test
 @Test
 class PartnerSyncerTest {
 
-    private val partnerMyc = PartnerHtmlModel.testInstance()
-    private val partner = partnerMyc.toPartner()
-    private val insertedPartner = partner.copy(idDbo = 42L)
+    private fun Partner.withIdSet() = copy(idDbo = 42)
 
     private lateinit var myclubs: MyClubsApi
     private lateinit var partnerService: PartnerService
@@ -30,8 +31,31 @@ class PartnerSyncerTest {
     }
 
     fun `Partners Insert - Given empty database and one myclubs partner When sync Then insert and return it`() {
+        val partnerDetail = PartnerDetailHtmlModel.testInstance()
+        val partnerMyc = PartnerHtmlModel.testInstance()
+        val partner = partnerMyc.toPartner().enhance(partnerDetail)
+        val insertedPartner = partner.withIdSet()
+
         whenever(partnerService.readAll()).thenReturn(emptyList())
         whenever(myclubs.partners()).thenReturn(listOf(partnerMyc))
+        whenever(myclubs.partner(partnerMyc.shortName)).thenReturn(partnerDetail)
+        whenever(partnerService.create(partner)).thenReturn(insertedPartner)
+
+        val result = sync()
+
+        verify(partnerService).create(partner)
+        assertThat(result.insertedPartners).containsExactly(insertedPartner)
+    }
+
+    fun `Partners Insert Autodetect Category - Given empty database and one myclubs partner When sync Then insert and return it`() {
+        val partnerDetail = PartnerDetailHtmlModel.testInstance()
+        val partnerMyc = PartnerHtmlModel.testInstance()
+        val partner = partnerMyc.toPartner().enhance(partnerDetail)
+        val insertedPartner = partner.withIdSet()
+
+        whenever(partnerService.readAll()).thenReturn(emptyList())
+        whenever(myclubs.partners()).thenReturn(listOf(partnerMyc))
+        whenever(myclubs.partner(partnerMyc.shortName)).thenReturn(partnerDetail)
         whenever(partnerService.create(partner)).thenReturn(insertedPartner)
 
         val result = sync()
@@ -41,18 +65,25 @@ class PartnerSyncerTest {
     }
 
     fun `Partners Insert - Given partner already in database When sync Then do nothing`() {
-        whenever(partnerService.readAll()).thenReturn(listOf(insertedPartner))
+        val partnerDetail = PartnerDetailHtmlModel.testInstance()
+        val partnerMyc = PartnerHtmlModel.testInstance()
+        val insertedPartner = partnerMyc.toPartner().withIdSet()
+
+        whenever(partnerService.readAll(includeIgnored = true)).thenReturn(listOf(insertedPartner))
         whenever(myclubs.partners()).thenReturn(listOf(partnerMyc))
+        whenever(myclubs.partner(partnerMyc.shortName)).thenReturn(partnerDetail)
 
         val result = sync()
 
-        verify(partnerService).readAll()
+        verify(partnerService).readAll(includeIgnored = true)
         verifyNoMoreInteractions(partnerService)
         assertThat(result.insertedPartners).isEmpty()
     }
 
     fun `Partners Delete - Given partner in database but empty myclubs partner When sync Then delete and return it`() {
-        whenever(partnerService.readAll()).thenReturn(listOf(insertedPartner))
+        val insertedPartner = PartnerHtmlModel.testInstance().toPartner().withIdSet()
+
+        whenever(partnerService.readAll(includeIgnored = true)).thenReturn(listOf(insertedPartner))
         whenever(myclubs.partners()).thenReturn(emptyList())
 
         val result = sync()
@@ -64,4 +95,14 @@ class PartnerSyncerTest {
 
     private fun sync() = PartnerSyncer(myclubs, partnerService, MyclubsUtil()).sync()
 
+    private fun Partner.enhance(detailed: PartnerDetailHtmlModel) = copy(
+        addresses = detailed.addresses,
+        linkPartner = detailed.linkPartnerSite,
+        linkMyclubs = "https://www.myclubs.com/at/de/partner/$shortName",
+        tags = detailed.tags
+    )
+
+    fun `guessCategory - yoga`() {
+        assertThat(PartnerSyncer.guessCategory(listOf("Yoga"))).isEqualTo(Category.YOGA)
+    }
 }

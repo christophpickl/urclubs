@@ -38,6 +38,8 @@ data class Partner(
     val finishedActivities: List<FinishedActivity>
 ) {
 
+    val tagsFormatted: String = tags.joinToString()
+
     val visitsThisMonth: Int
     val creditsLeftThisPeriod: Int
     val totalVisits = finishedActivities.size

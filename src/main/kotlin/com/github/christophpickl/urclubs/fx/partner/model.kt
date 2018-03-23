@@ -15,6 +15,7 @@ class CurrentPartnerFx() : ViewModel() {
     lateinit var original: Partner
 
     val name = SimpleStringProperty()
+    val tags = SimpleStringProperty()
     val note = SimpleStringProperty()
     val category = SimpleObjectProperty(Category.UNKNOWN)
     val rating = SimpleObjectProperty(Rating.UNKNOWN)
@@ -51,6 +52,7 @@ class CurrentPartnerFx() : ViewModel() {
         favourited.set(partner.favourited)
         wishlisted.set(partner.wishlisted)
         maxCredits.set(partner.maxCredits)
+        tags.set(partner.tagsFormatted)
         picture.set(partner.picture.fxImage)
         pictureWrapper.set(partner.picture)
 
