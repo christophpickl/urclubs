@@ -236,6 +236,7 @@ data class PartnerDbo(
 
 enum class RatingDbo {
     UNKNOWN,
+
     BAD,
     OK,
     GOOD,
@@ -243,6 +244,9 @@ enum class RatingDbo {
 }
 
 enum class CategoryDbo {
+    UNKNOWN,
+
+    DANCE,
     EMS,
     GYM,
     YOGA,
@@ -250,5 +254,6 @@ enum class CategoryDbo {
     WORKOUT,
     HEALTH,
     OTHER,
-    UNKNOWN
+    PILATES,
+    WATER,
 }

@@ -38,7 +38,7 @@ data class Partner(
     val finishedActivities: List<FinishedActivity>
 ) {
 
-    val tagsFormatted: String = tags.joinToString()
+    val tagsFormatted: String = if (tags.isEmpty()) "-" else tags.joinToString()
 
     val visitsThisMonth: Int
     val creditsLeftThisPeriod: Int
@@ -213,9 +213,12 @@ enum class Category(
     val label: String
 ) {
     UNKNOWN("-UNKNOWN-"),
+    DANCE("Dance"),
     GYM("Gym"),
     EMS("EMS"),
     HEALTH("Health"),
+    PILATES("Pilates"),
+    WATER("Wasser"),
     WORKOUT("Workout"),
     WUSHU("Wushu"),
     YOGA("Yoga"),
@@ -271,14 +274,18 @@ fun Rating.toRatingDbo() = when (this) {
 }
 
 fun Category.toCategoryDbo() = when (this) {
+    Category.UNKNOWN -> CategoryDbo.UNKNOWN
+
+    Category.DANCE -> CategoryDbo.DANCE
     Category.EMS -> CategoryDbo.EMS
     Category.GYM -> CategoryDbo.GYM
-    Category.YOGA -> CategoryDbo.YOGA
-    Category.WUSHU -> CategoryDbo.WUSHU
-    Category.WORKOUT -> CategoryDbo.WORKOUT
     Category.HEALTH -> CategoryDbo.HEALTH
     Category.OTHER -> CategoryDbo.OTHER
-    Category.UNKNOWN -> CategoryDbo.UNKNOWN
+    Category.PILATES -> CategoryDbo.PILATES
+    Category.WATER -> CategoryDbo.WATER
+    Category.WORKOUT -> CategoryDbo.WORKOUT
+    Category.WUSHU -> CategoryDbo.WUSHU
+    Category.YOGA -> CategoryDbo.YOGA
 }
 
 fun PartnerDbo.toPartner() = Partner(
@@ -312,13 +319,17 @@ fun RatingDbo?.toRating() = when (this) {
 }
 
 fun CategoryDbo?.toCategory() = when (this) {
+    CategoryDbo.UNKNOWN -> Category.UNKNOWN
+
+    CategoryDbo.DANCE -> Category.DANCE
     CategoryDbo.EMS -> Category.EMS
     CategoryDbo.GYM -> Category.GYM
-    CategoryDbo.YOGA -> Category.YOGA
-    CategoryDbo.WUSHU -> Category.WUSHU
-    CategoryDbo.WORKOUT -> Category.WORKOUT
     CategoryDbo.HEALTH -> Category.HEALTH
     CategoryDbo.OTHER -> Category.OTHER
-    CategoryDbo.UNKNOWN -> Category.UNKNOWN
+    CategoryDbo.PILATES -> Category.PILATES
+    CategoryDbo.WATER -> Category.WATER
+    CategoryDbo.WORKOUT -> Category.WORKOUT
+    CategoryDbo.WUSHU -> Category.WUSHU
+    CategoryDbo.YOGA -> Category.YOGA
     null -> Category.UNKNOWN
 }
