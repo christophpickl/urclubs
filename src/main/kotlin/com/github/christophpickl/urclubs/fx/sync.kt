@@ -105,6 +105,7 @@ class SyncFxController : Controller() {
 
     private fun stubbedSync(): SyncReport {
         logg.debug { "stubbedSync()" }
+        Thread.sleep(3 * 1000)
         return SyncReport(
             partners = PartnerSyncReport(emptyList(), emptyList()),
             finishedActivities = FinishedActivitySyncReport(emptyList())

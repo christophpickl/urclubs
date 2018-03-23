@@ -24,16 +24,16 @@ object UrclubsConfiguration {
 
     val DATABASE_DIRECTORY = File(HOME_DIRECTORY, "database")
     val SHOW_SQL = IS_DEVELOPMENT
+
     val DB_STARTUP = DatabaseStartupType.Main
 //    val DB_STARTUP = DatabaseStartupType.PrintSchema
 
-    val DEVELOPMENT_FAST_SYNC = (false && IS_DEVELOPMENT).also { if (it) log.info { "Using fast sync mode." } }
     val DEVELOPMENT_COLORS = (false && IS_DEVELOPMENT).also { if (it) log.info { "Using colors mode." } }
 
     val CACHE_DIRECTORY = File(HOME_DIRECTORY, "cache")
 
     val IS_MAC = (System.getProperty(SystemProperties.KEY_IS_MAC) != null).also { enabled ->
-        if(enabled) log.info("Mac mode (-D${SystemProperties.KEY_IS_MAC}) is enabled.")
+        if (enabled) log.info("Mac mode (-D${SystemProperties.KEY_IS_MAC}) is enabled.")
     }
     val IS_NOT_MAC = !IS_MAC
 
@@ -43,8 +43,14 @@ object UrclubsConfiguration {
     }
 
     object Development {
-        val STUBBED_SYNCER = (false && IS_DEVELOPMENT).also { if (it) log.info { "Using stubbed syncer logic." } }
-        val STUBBED_MYCLUBS = (true && IS_DEVELOPMENT).also { if (it) log.info { "Using stubbed MyClubs API." } }
+        val STUBBED_SYNCER = (false && IS_DEVELOPMENT).also { it.logIfEnabled("Using stubbed syncer logic.") }
+        val STUBBED_MYCLUBS = (false && IS_DEVELOPMENT).also { it.logIfEnabled("Using stubbed MyClubs API.") }
+        val FAST_SYNC = (true && IS_DEVELOPMENT).also { it.logIfEnabled("Using fast sync mode.") }
+        private fun Boolean.logIfEnabled(message: String) {
+            if (this) {
+                log.error { "==DEV==> $message" }
+            }
+        }
     }
 
 }

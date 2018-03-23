@@ -17,7 +17,9 @@ data class PartnerDetailHtmlModel(
     val addresses: List<String>,
     val flags: List<String>,
     val upcomingActivities: List<PartnerDetailActivityHtmlModel>
-)
+) {
+    companion object
+}
 
 data class PartnerDetailActivityHtmlModel(
         val idMyc: String,
@@ -47,7 +49,9 @@ data class InfrastructureHtmlModel(
 data class ActivityHtmlModel(
         val partnerShortName: String,
         val description: String
-)
+) {
+    companion object
+}
 
 data class FinishedActivityHtmlModel(
         val date: LocalDateTime,

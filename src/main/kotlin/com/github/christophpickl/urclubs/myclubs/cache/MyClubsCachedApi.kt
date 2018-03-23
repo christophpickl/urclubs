@@ -2,49 +2,33 @@ package com.github.christophpickl.urclubs.myclubs.cache
 
 import com.github.christophpickl.kpotpourri.common.logging.LOG
 import com.github.christophpickl.urclubs.myclubs.ActivityFilter
-import com.github.christophpickl.urclubs.myclubs.CourseFilter
 import com.github.christophpickl.urclubs.myclubs.HttpApi
 import com.github.christophpickl.urclubs.myclubs.MyClubsApi
 import com.github.christophpickl.urclubs.myclubs.UserMycJson
-import com.github.christophpickl.urclubs.myclubs.cache.entities.CachedPartnerHtmlModel
-import com.github.christophpickl.urclubs.myclubs.cache.entities.CachedPartnerHtmlModelCopier
-import com.github.christophpickl.urclubs.myclubs.cache.entities.CachedPartnerHtmlModelSerializer
-import com.github.christophpickl.urclubs.myclubs.cache.entities.CachedUserMycJson
-import com.github.christophpickl.urclubs.myclubs.cache.entities.CachedUserMycJsonCopier
-import com.github.christophpickl.urclubs.myclubs.cache.entities.CachedUserMycJsonSerializer
+import com.github.christophpickl.urclubs.myclubs.cache.entities.ActivityHtmlModelWrapper
+import com.github.christophpickl.urclubs.myclubs.cache.entities.PartnerDetailHtmlModelWrapper
+import com.github.christophpickl.urclubs.myclubs.cache.entities.activitySpec
+import com.github.christophpickl.urclubs.myclubs.cache.entities.finishedActivitiesSpec
+import com.github.christophpickl.urclubs.myclubs.cache.entities.finishedActivitiesSpecCoordinates
+import com.github.christophpickl.urclubs.myclubs.cache.entities.partnerSpec
+import com.github.christophpickl.urclubs.myclubs.cache.entities.partnersSpec
+import com.github.christophpickl.urclubs.myclubs.cache.entities.partnersSpecCoordinates
+import com.github.christophpickl.urclubs.myclubs.cache.entities.userSpec
+import com.github.christophpickl.urclubs.myclubs.cache.entities.userSpecCoordinates
 import com.github.christophpickl.urclubs.myclubs.parser.ActivityHtmlModel
-import com.github.christophpickl.urclubs.myclubs.parser.CourseHtmlModel
 import com.github.christophpickl.urclubs.myclubs.parser.FinishedActivityHtmlModel
 import com.github.christophpickl.urclubs.myclubs.parser.PartnerDetailHtmlModel
 import com.github.christophpickl.urclubs.myclubs.parser.PartnerHtmlModel
+import com.github.christophpickl.urclubs.service.QuitListener
+import com.github.christophpickl.urclubs.service.QuitManager
 import com.google.inject.BindingAnnotation
-import org.ehcache.Cache
 import org.ehcache.CacheManager
 import org.ehcache.config.ResourcePools
-import org.ehcache.config.builders.CacheConfigurationBuilder
-import org.ehcache.config.builders.CacheManagerBuilder
-import org.ehcache.config.builders.ExpiryPolicyBuilder
-import org.ehcache.config.builders.ResourcePoolsBuilder
-import org.ehcache.config.units.MemoryUnit
-import org.ehcache.spi.copy.Copier
-import org.ehcache.spi.serialization.Serializer
 import java.io.File
-import java.time.Duration
-import java.time.temporal.ChronoUnit.DAYS
 import javax.inject.Inject
 
-interface MyClubsCacheManager {
+interface MyClubsCacheManager : QuitListener {
     fun clearCaches()
-}
-
-data class CacheSpec<T>(
-    val cacheAlias: String,
-    val valueType: Class<T>,
-    val duration: Duration,
-    val serializerType: Class<out Serializer<T>>,
-    val copierType: Class<out Copier<T>>
-) {
-    val keyType = String::class.java
 }
 
 @Retention
@@ -54,121 +38,65 @@ annotation class CacheFile
 
 class MyClubsCachedApi constructor(
     private val delegate: MyClubsApi,
+    quitManager: QuitManager,
     cacheDirectory: File?,
     overrideResourcePools: ResourcePools?
 ) : MyClubsApi, MyClubsCacheManager {
-
-    companion object {
-        private val defaultResourcePools = ResourcePoolsBuilder.newResourcePoolsBuilder()
-            .heap(1, MemoryUnit.MB)
-            .offheap(10, MemoryUnit.MB)
-            .disk(50, MemoryUnit.MB, true)
-            .build()
-    }
-
-    @Inject constructor(
+    @Inject
+    constructor(
         @HttpApi delegate: MyClubsApi,
+        quitManager: QuitManager,
         @CacheFile cacheDirectory: File
 
-    ) : this(delegate, cacheDirectory, null)
+    ) : this(delegate, quitManager, cacheDirectory, null)
 
     private val log = LOG {}
 
-
     private val cacheManager: CacheManager
 
-    private val userSpec = CacheSpec(
-        cacheAlias = "user",
-        valueType = CachedUserMycJson::class.java,
-        duration = Duration.of(5, DAYS),
-        serializerType = CachedUserMycJsonSerializer::class.java,
-        copierType = CachedUserMycJsonCopier::class.java
-    )
-    private val partnersSpec = CacheSpec(
-        cacheAlias = "partners",
-        valueType = CachedPartnerHtmlModel::class.java,
-        duration = Duration.of(2, DAYS),
-        serializerType = CachedPartnerHtmlModelSerializer::class.java,
-        copierType = CachedPartnerHtmlModelCopier::class.java
-    )
-
-    private val userCacheKey = "userKey"
-    private val cacheSpecs = listOf<CacheSpec<*>>(userSpec, partnersSpec)
-
     init {
-        log.debug { "Init cache" }
-        var builder: CacheManagerBuilder<CacheManager> = CacheManagerBuilder.newCacheManagerBuilder()
-        if (cacheDirectory != null) {
-            log.debug { "Setting cache directory to: ${cacheDirectory.canonicalPath}" }
-            @Suppress("UNCHECKED_CAST")
-            builder = builder.with(CacheManagerBuilder.persistence(cacheDirectory)) as CacheManagerBuilder<CacheManager>
-        }
-
-        cacheSpecs.map { entity ->
-            log.debug { "Registering cache for: $entity" }
-            builder = builder.withCache(entity.cacheAlias,
-                CacheConfigurationBuilder.newCacheConfigurationBuilder(
-                    entity.keyType,
-                    entity.valueType,
-                    overrideResourcePools ?: defaultResourcePools
-                )
-                    .withExpiry(ExpiryPolicyBuilder.timeToLiveExpiration(entity.duration))
-                    .withValueSerializer(CachedUserMycJsonSerializer())
-                    .withValueCopier(entity.copierType)
-            )
-        }
-
-        cacheManager = builder.build(true)
+        log.info { "Init cache: cacheDirectory=$cacheDirectory, overrideResourcePools=$overrideResourcePools" }
+        cacheManager = CacheBuilder.build(cacheDirectory, overrideResourcePools)
+        quitManager.addQuitListener(this)
     }
 
     override fun clearCaches() {
         log.info { "clearCaches()" }
 
-        cacheSpecs.forEach {
+        CacheBuilder.cacheSpecs.forEach {
             log.trace { "Removing cache: $it" }
             cacheManager.getFor(it).clear()
         }
     }
 
-    fun closeCache() {
-        log.debug { "closeCache()" }
+    override fun onQuit() {
+        log.debug { "onQuit close cache" }
         cacheManager.close()
     }
 
-    private fun <T> CacheManager.getFor(spec: CacheSpec<T>): Cache<String, T> =
-        getCache(spec.cacheAlias, spec.keyType, spec.valueType)
-            ?: throw Exception("Could not find cache by: $spec")
+    override fun loggedUser(): UserMycJson =
+        cacheManager.getOrPutSingledCache(delegate, userSpec, userSpecCoordinates)
 
-    override fun loggedUser(): UserMycJson {
-        log.trace { "loggedUser()" }
-        val cache = cacheManager.getFor(userSpec)
-        cache.get(userCacheKey)?.let {
-            log.trace { "Cache hit" }
-            return it.toUserMycJson()
-        }
-        val result = delegate.loggedUser()
-        cache.put(userCacheKey, CachedUserMycJson(result))
-        return result
-    }
+    override fun partners(): List<PartnerHtmlModel> =
+        cacheManager.getOrPutSingledCache(delegate, partnersSpec, partnersSpecCoordinates)
 
-    override fun partners(): List<PartnerHtmlModel> {
-        return delegate.partners()
-    }
+    override fun finishedActivities(): List<FinishedActivityHtmlModel> =
+        cacheManager.getOrPutSingledCache(delegate, finishedActivitiesSpec, finishedActivitiesSpecCoordinates)
 
-    override fun partner(shortName: String): PartnerDetailHtmlModel {
-        return delegate.partner(shortName)
-    }
+    override fun partner(shortName: String): PartnerDetailHtmlModel =
+        cacheManager.getOrPutKeyCached(delegate, partnerSpec, keyedCoordinates(
+            cacheKey = shortName,
+            request = shortName,
+            withDelegate = { myclubs -> PartnerDetailHtmlModelWrapper(myclubs.partner(shortName)) }
+        )).wrapped
 
-    override fun courses(filter: CourseFilter): List<CourseHtmlModel> {
-        return delegate.courses(filter)
-    }
+    override fun activity(filter: ActivityFilter): ActivityHtmlModel =
+        cacheManager.getOrPutKeyCached(delegate, activitySpec, keyedCoordinates(
+            cacheKey = filter.cacheKey(),
+            request = filter,
+            withDelegate = { myclubs -> ActivityHtmlModelWrapper(myclubs.activity(filter)) }
+        )).wrapped
 
-    override fun activity(filter: ActivityFilter): ActivityHtmlModel {
-        return delegate.activity(filter)
-    }
-
-    override fun finishedActivities(): List<FinishedActivityHtmlModel> {
-        return delegate.finishedActivities()
-    }
+    private fun ActivityFilter.cacheKey() = activityId // MINOR should be enough, right?!
 
 }

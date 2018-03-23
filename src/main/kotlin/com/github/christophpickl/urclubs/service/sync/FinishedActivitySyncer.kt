@@ -61,7 +61,7 @@ class FinishedActivitySyncer @Inject constructor(
 
     private fun fetchFinishedActivities(): List<EnhancedFinishedActivity> {
         val activities = myclubs.finishedActivities().run {
-            if (UrclubsConfiguration.DEVELOPMENT_FAST_SYNC) take(5) else this
+            if (UrclubsConfiguration.Development.FAST_SYNC) take(5) else this
         }
         return activities.mapNotNull { activity ->
             val partner = partnerService.searchPartner(activity.locationHtml)
@@ -69,7 +69,8 @@ class FinishedActivitySyncer @Inject constructor(
                     log.info { "Ignoring activity (${activity.title}) which is known to be associated by a deleted partner." }
                     return@mapNotNull null
                 } else {
-                    throw Exception("Could not find partner for: $activity")
+                    log.error { "Could not find partner for: $activity" }
+                    return@mapNotNull null
                 }
             EnhancedFinishedActivity(
                 activity = activity,

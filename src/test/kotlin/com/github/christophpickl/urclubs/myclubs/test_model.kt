@@ -1,13 +1,16 @@
 package com.github.christophpickl.urclubs.myclubs
 
+import com.github.christophpickl.urclubs.myclubs.parser.ActivityHtmlModel
 import com.github.christophpickl.urclubs.myclubs.parser.FinishedActivityHtmlModel
+import com.github.christophpickl.urclubs.myclubs.parser.PartnerDetailActivityHtmlModel
+import com.github.christophpickl.urclubs.myclubs.parser.PartnerDetailHtmlModel
 import com.github.christophpickl.urclubs.myclubs.parser.PartnerHtmlModel
 import java.time.LocalDateTime
 
 fun PartnerHtmlModel.Companion.testInstance() = PartnerHtmlModel(
-        id = "testMycId",
-        name = "testTitle",
-        shortName = "testShortName"
+    id = "testMycId",
+    name = "testTitle",
+    shortName = "testShortName"
 )
 
 fun FinishedActivityHtmlModel.Companion.testInstance() = FinishedActivityHtmlModel(
@@ -17,4 +20,15 @@ fun FinishedActivityHtmlModel.Companion.testInstance() = FinishedActivityHtmlMod
     locationHtml = "Yoga<br>Wien"
 )
 
-fun UserMycJson.Companion.testInstance() = UserMycJson(id ="testId", email = "testEmail", firstName = "testFirstName", lastName = "testLastName")
+fun UserMycJson.Companion.testInstance() = UserMycJson(id = "testId", email = "testEmail", firstName = "testFirstName", lastName = "testLastName")
+
+fun ActivityHtmlModel.Companion.testInstance() = ActivityHtmlModel(partnerShortName = "testPartnerShortName", description = "testDescription")
+
+fun PartnerDetailHtmlModel.Companion.testInstance() = PartnerDetailHtmlModel(
+    name = "name",
+    description = "description",
+    linkPartnerSite = "linkPartnerSite",
+    addresses = listOf("addresses"),
+    flags = listOf("flags"),
+    upcomingActivities = listOf<PartnerDetailActivityHtmlModel>()
+)

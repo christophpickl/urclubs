@@ -1,7 +1,6 @@
 package com.github.christophpickl.urclubs.myclubs
 
 import com.github.christophpickl.urclubs.myclubs.parser.ActivityHtmlModel
-import com.github.christophpickl.urclubs.myclubs.parser.CourseHtmlModel
 import com.github.christophpickl.urclubs.myclubs.parser.FinishedActivityHtmlModel
 import com.github.christophpickl.urclubs.myclubs.parser.PartnerDetailHtmlModel
 import com.github.christophpickl.urclubs.myclubs.parser.PartnerHtmlModel
@@ -34,7 +33,7 @@ object StubbedMyClubsApi : MyClubsApi {
 
     override fun partner(shortName: String) = partner1Detail
 
-    override fun courses(filter: CourseFilter) = emptyList<CourseHtmlModel>()
+//    override fun courses(filter: CourseFilter) = emptyList<CourseHtmlModel>()
 
     override fun activity(filter: ActivityFilter) = ActivityHtmlModel(
         partnerShortName = "",

@@ -89,7 +89,7 @@ fun CourseFilter.toFilterMycJson() = FilterMycJson(
 data class ActivityFilter(
         val activityId: String, // "Pf5FowjC0n",
         val timestamp: String, // "1516705200"
-        val type: ActivityType
+        val type: ActivityType // [ Course, Infrastructure ]
 )
 
 fun ActivityType.toActivityTypeMyc() = when (this) {

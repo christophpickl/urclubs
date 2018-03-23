@@ -1,7 +1,27 @@
 package com.github.christophpickl.urclubs.myclubs.cache.entities
 
 import com.github.christophpickl.urclubs.myclubs.UserMycJson
+import com.github.christophpickl.urclubs.myclubs.cache.AbstractCachedSerializer
+import com.github.christophpickl.urclubs.myclubs.cache.CacheSpec
+import com.github.christophpickl.urclubs.myclubs.cache.SingleCacheCoordinates
 import org.ehcache.spi.copy.Copier
+import java.time.Duration
+import java.time.temporal.ChronoUnit
+
+val userSpec: CacheSpec<CachedUserMycJson, UserMycJson> = CacheSpec(
+    cacheAlias = "userAlias",
+    valueType = CachedUserMycJson::class.java,
+    duration = Duration.of(5, ChronoUnit.DAYS),
+    serializerType = CachedUserMycJsonSerializer::class.java,
+    copierType = CachedUserMycJsonCopier::class.java
+)
+
+val userSpecCoordinates = SingleCacheCoordinates(
+    staticKey = "userKey",
+    transToModel = { it.toModel() },
+    fetch = { it.loggedUser() },
+    transToCache = { CachedUserMycJson.byOriginal(it) }
+)
 
 data class CachedUserMycJson(
     val id: String?,
@@ -13,14 +33,16 @@ data class CachedUserMycJson(
     @Suppress("unused") // needed for kryo
     constructor() : this(null, null, null, null)
 
-    constructor(original: UserMycJson) : this(
-        id = original.id,
-        email = original.email,
-        firstName = original.firstName,
-        lastName = original.lastName
-    )
+    companion object {
+        fun byOriginal(original: UserMycJson) = CachedUserMycJson(
+            id = original.id,
+            email = original.email,
+            firstName = original.firstName,
+            lastName = original.lastName
+        )
+    }
 
-    fun toUserMycJson() = UserMycJson(
+    fun toModel() = UserMycJson(
         id = id!!,
         email = email!!,
         firstName = firstName!!,
