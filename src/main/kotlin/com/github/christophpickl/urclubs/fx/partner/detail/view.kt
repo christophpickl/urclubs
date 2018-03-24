@@ -49,6 +49,9 @@ class PartnerView : View() {
                     field("Tags") {
                         label { bind(currentPartner.tags) }
                     }
+                    field("Address") {
+                        label { bind(currentPartner.address) }
+                    }
                     field("Category") {
                         combobox(
                             property = currentPartner.category,

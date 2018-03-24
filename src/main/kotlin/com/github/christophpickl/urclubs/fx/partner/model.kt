@@ -16,6 +16,7 @@ class CurrentPartnerFx() : ViewModel() {
 
     val name = SimpleStringProperty()
     val tags = SimpleStringProperty()
+    val address = SimpleStringProperty()
     val note = SimpleStringProperty()
     val category = SimpleObjectProperty(Category.UNKNOWN)
     val rating = SimpleObjectProperty(Rating.UNKNOWN)
@@ -45,6 +46,8 @@ class CurrentPartnerFx() : ViewModel() {
 
     fun initPartner(partner: Partner) {
         original = partner
+
+        // writable
         name.set(partner.name)
         note.set(partner.note)
         category.set(partner.category)
@@ -52,14 +55,15 @@ class CurrentPartnerFx() : ViewModel() {
         favourited.set(partner.favourited)
         wishlisted.set(partner.wishlisted)
         maxCredits.set(partner.maxCredits)
-        tags.set(partner.tagsFormatted)
-        picture.set(partner.picture.fxImage)
         pictureWrapper.set(partner.picture)
 
+        // read only
+        picture.set(partner.picture.fxImage)
         shortName.set(partner.shortName)
         linkMyclubs.set(partner.linkMyclubs)
         linkPartner.set(partner.linkPartner)
-
+        tags.set(partner.tagsFormatted)
+        address.set(partner.addresses.joinToString("\n"))
         totalVisits.set(partner.finishedActivities.size)
         creditsLeftThisPeriod.set(partner.creditsLeftThisPeriod)
     }

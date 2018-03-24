@@ -17,7 +17,6 @@
     1. !!! BUG: manchmal funktioniert speichern einfach nicht
     1. !! FIX: myclubs caching
     1. ! style: context menu!, scrollbar 
-    1. render address
     1. in partner detail view: add button to artificially increase visit counts (reason: only past 70s are synced :-()
 
 1. Ad One
@@ -58,6 +57,7 @@
 
 ## Med
 
+* for address: make link clickable and go to google maps
 * UI: send notifications via MacOs (e.g. after sync)
 * resolve: org.hibernate.orm.connections.pooling - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
     * resolve o.h.e.j.c.internal.DriverManagerConnectionProviderImpl - Connection leak detected: there are 1 unclosed connections upon shutting down pool jdbc:hsqldb:file:/Users/wu/.urclubs_dev/database/database

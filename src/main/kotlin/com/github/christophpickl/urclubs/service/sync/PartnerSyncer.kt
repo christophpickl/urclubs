@@ -27,10 +27,14 @@ class PartnerSyncer @Inject constructor(
 
         @VisibleForTesting
         fun process(partner: Partner, detailed: PartnerDetailHtmlModel): Partner {
-            return partner.copy(
+            var processed = partner.copy(
                 category = processCategory(detailed),
                 ignored = detailed.tags.contains("Exklusiv für Frauen")
             )
+            if (processed.category == Category.EMS) {
+                processed = processed.copy(maxCredits = Partner.DEFAULT_MAX_CREDITS_EMS)
+            }
+            return processed
         }
 
         private fun processCategory(detailed: PartnerDetailHtmlModel): Category {

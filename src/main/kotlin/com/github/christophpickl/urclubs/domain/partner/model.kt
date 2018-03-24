@@ -54,6 +54,7 @@ data class Partner(
 
     companion object {
         const val DEFAULT_MAX_CREDITS = 4
+        const val DEFAULT_MAX_CREDITS_EMS = 2
 
         fun prototype() = Partner(
             idDbo = 0,
