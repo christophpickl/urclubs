@@ -1,6 +1,5 @@
 package com.github.christophpickl.urclubs.service.sync
 
-import com.github.christophpickl.urclubs.domain.partner.Category
 import com.github.christophpickl.urclubs.domain.partner.Partner
 import com.github.christophpickl.urclubs.domain.partner.PartnerService
 import com.github.christophpickl.urclubs.myclubs.MyClubsApi
@@ -102,7 +101,4 @@ class PartnerSyncerTest {
         tags = detailed.tags
     )
 
-    fun `guessCategory - yoga`() {
-        assertThat(PartnerSyncer.guessCategory(listOf("Yoga"))).isEqualTo(Category.YOGA)
-    }
 }

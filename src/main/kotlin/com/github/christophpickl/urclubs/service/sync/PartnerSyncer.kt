@@ -23,37 +23,6 @@ class PartnerSyncer @Inject constructor(
 
     private val log = LOG {}
 
-    object PostProcessor {
-
-        @VisibleForTesting
-        fun process(partner: Partner, detailed: PartnerDetailHtmlModel): Partner {
-            var processed = partner.copy(
-                category = processCategory(detailed),
-                ignored = detailed.tags.contains("Exklusiv für Frauen")
-            )
-            if (processed.category == Category.EMS) {
-                processed = processed.copy(maxCredits = Partner.DEFAULT_MAX_CREDITS_EMS)
-            }
-            return processed
-        }
-
-        private fun processCategory(detailed: PartnerDetailHtmlModel): Category {
-            val loweredTags = detailed.tags.map { it.toLowerCase() }
-            if (loweredTags.anyContains("fitnessstudio")) return Category.GYM
-            if (loweredTags.anyContains("kampfkunst")) return Category.WUSHU
-            if (loweredTags.anyContains("yoga")) return Category.YOGA
-            if (loweredTags.anyContains("fitnesskurse")) return Category.WORKOUT
-            if (loweredTags.anyContains("ems")) return Category.EMS
-            if (loweredTags.anyContains("boxen")) return Category.WUSHU
-            if (loweredTags.anyContains("wassersport")) return Category.WATER
-            if (loweredTags.anyContains("dance")) return Category.DANCE
-            if (loweredTags.anyContains("pilates")) return Category.PILATES
-            return Category.UNKNOWN
-        }
-
-        private fun List<String>.anyContains(search: String) = any { it.contains(search) }
-    }
-
     fun sync(): PartnerSyncReport {
         log.info { "sync()" }
 
@@ -94,7 +63,7 @@ class PartnerSyncer @Inject constructor(
         linkMyclubs = util.createMyclubsPartnerUrl(shortName),
         tags = detailed.tags
     ).let {
-        PostProcessor.process(it, detailed)
+        PartnerSyncerPostProcessor.process(it, detailed)
     }
 
 }

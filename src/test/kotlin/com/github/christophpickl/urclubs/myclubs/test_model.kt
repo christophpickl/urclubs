@@ -2,7 +2,6 @@ package com.github.christophpickl.urclubs.myclubs
 
 import com.github.christophpickl.urclubs.myclubs.parser.ActivityHtmlModel
 import com.github.christophpickl.urclubs.myclubs.parser.FinishedActivityHtmlModel
-import com.github.christophpickl.urclubs.myclubs.parser.PartnerDetailActivityHtmlModel
 import com.github.christophpickl.urclubs.myclubs.parser.PartnerDetailHtmlModel
 import com.github.christophpickl.urclubs.myclubs.parser.PartnerHtmlModel
 import java.time.LocalDateTime
@@ -25,10 +24,10 @@ fun UserMycJson.Companion.testInstance() = UserMycJson(id = "testId", email = "t
 fun ActivityHtmlModel.Companion.testInstance() = ActivityHtmlModel(partnerShortName = "testPartnerShortName", description = "testDescription")
 
 fun PartnerDetailHtmlModel.Companion.testInstance() = PartnerDetailHtmlModel(
-    name = "iYoga",
-    description = "some yoga partner",
-    linkPartnerSite = "www.yoga.at",
-    addresses = listOf("Hauptyogastrasse 1"),
-    tags = listOf("Yoga"),
-    upcomingActivities = listOf<PartnerDetailActivityHtmlModel>()
+    name = "iTest",
+    description = "some test partner",
+    linkPartnerSite = "www.test.at",
+    addresses = listOf("Hauptteststrasse 1"),
+    tags = listOf("test"),
+    upcomingActivities = listOf()
 )
