@@ -31,7 +31,6 @@ class PartnerServiceImpl @Inject constructor(
     }
 
     override fun readAll(includeIgnored: Boolean): List<Partner> {
-        log.debug(Exception(), { "test" })
         log.trace { "readAll(includeIgnored=$includeIgnored)" }
         return partnerDao.readAll(includeIgnored = includeIgnored).map { it.toPartner() }
     }
