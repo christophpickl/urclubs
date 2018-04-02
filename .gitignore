@@ -1,4 +1,6 @@
 /ignore
+/.idea/
+/*.iml
 
 *.class
 *.log
