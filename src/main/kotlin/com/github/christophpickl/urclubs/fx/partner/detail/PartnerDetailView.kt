@@ -11,47 +11,58 @@ import com.github.christophpickl.urclubs.fx.partner.CurrentPartnerFx
 import javafx.collections.FXCollections
 import javafx.geometry.Orientation
 import javafx.geometry.Pos
+import javafx.geometry.VPos
+import javafx.scene.layout.Priority
 import javafx.util.converter.NumberStringConverter
 import tornadofx.*
 
-
-class ChoosePictureFXEvent(val requestor: View) : FXEvent()
-
-class PartnerView : View() {
-
-    companion object {
-        val WINDOW_WIDTH = 500.0
-    }
+class PartnerDetailView : View() {
 
     private val logg = LOG {}
     private val currentPartner: CurrentPartnerFx by inject()
 
-    override val root = borderpane {
-        addClass(Styles.partnerPanel)
-        top {
-            vbox {
-                alignment = Pos.CENTER
+    override val root = gridpane {
+        addClass(Styles.partnerDetailPanel)
+        style {
+            paddingTop = 20
+        }
+
+        row {
+            vbox(spacing = 10.0) {
+                gridpaneConstraints {
+                    vgrow = Priority.ALWAYS
+                    hgrow = Priority.NEVER
+                    vAlignment = VPos.TOP
+                }
+                alignment = Pos.TOP_LEFT
                 imageview().apply {
                     addClass(Styles.showHandOnHover)
                     setOnMouseClicked {
                         logg.debug { "Clicked on picture." }
-                        fire(ChoosePictureFXEvent(this@PartnerView))
+                        fire(ChoosePictureFXEvent(this@PartnerDetailView))
                     }
                 }.imageProperty().bindBidirectional(currentPartner.picture)
+
+                alignment = Pos.BOTTOM_LEFT
+                button("Save").setOnAction {
+                    logg.trace { "Save button clicked." }
+                    fire(PartnerSaveEvent)
+                }
             }
-        }
-        center {
             form {
+                val formWidth = 300.0
+                prefWidth = formWidth
+                minWidth = formWidth
+                gridpaneConstraints {
+                    vgrow = Priority.ALWAYS
+                    hgrow = Priority.NEVER
+                    vAlignment = VPos.TOP
+                }
                 fieldset(labelPosition = Orientation.HORIZONTAL) {
                     field("Name") {
                         textfield().textProperty().bindBidirectional(currentPartner.name)
                     }
-                    field("Tags") {
-                        label { bind(currentPartner.tags) }
-                    }
-                    field("Address") {
-                        label { bind(currentPartner.address) }
-                    }
+
                     field("Category") {
                         combobox(
                             property = currentPartner.category,
@@ -74,11 +85,7 @@ class PartnerView : View() {
                             }
                         }
                     }
-                    field("Note") {
-                        textarea {
-                            textProperty().bindBidirectional(currentPartner.note)
-                        }
-                    }
+
                     field("Flags") {
                         hbox {
                             spacing = 10.0
@@ -89,6 +96,22 @@ class PartnerView : View() {
                                 bind(currentPartner.wishlisted)
                             }
                         }
+                    }
+                }
+            }
+
+            form {
+                useMaxWidth = true
+                gridpaneConstraints {
+                    vhGrow = Priority.ALWAYS
+                    vAlignment = VPos.TOP
+                }
+                fieldset(labelPosition = Orientation.HORIZONTAL) {
+                    field("Tags") {
+                        label { bind(currentPartner.tags) }
+                    }
+                    field("Address") {
+                        label { bind(currentPartner.address) }
                     }
                     field("Visits") {
                         hbox {
@@ -123,21 +146,21 @@ class PartnerView : View() {
                     }
                 }
             }
-        }
-        bottom {
-            hbox {
-                style {
-//                    padding = box(20.px)
+
+            form {
+                gridpaneConstraints {
+                    vgrow = Priority.ALWAYS
+                    hgrow = Priority.NEVER
+                    vAlignment = VPos.TOP
                 }
-                button("Save").setOnAction {
-                    logg.trace { "Save button clicked." }
-                    fire(PartnerSaveEvent)
+                fieldset(labelPosition = Orientation.HORIZONTAL) {
+                    field {
+                        textarea {
+                            textProperty().bindBidirectional(currentPartner.note)
+                        }
+                    }
                 }
             }
         }
-    }
-
-    init {
-        title = "Partner"
     }
 }

@@ -3,7 +3,6 @@
 
 1. One
     1. Filter
-    1. Single window
 1. Two
     1. Upcoming Activities
     1. GCal
@@ -56,6 +55,8 @@
 
 ## Med
 
+* use calendar component, show 1) gcal and 2) upcoming events (scroll through single days)
+* add translation (EN, DE; changeable via prefs, initially detected by OS lang)
 * for address: make link clickable and go to google maps
 * UI: send notifications via MacOs (e.g. after sync)
 * resolve: org.hibernate.orm.connections.pooling - HHH10001002: Using Hibernate built-in connection pool (not for production use!)

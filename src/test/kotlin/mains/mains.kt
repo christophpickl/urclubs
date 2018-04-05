@@ -38,7 +38,7 @@ class DummyApp : App(
         FX.dicontainer = object : DIContainer {
             override fun <T : Any> getInstance(type: KClass<T>) = guice.getInstance(type.java)
         }
-        // eager load bean
+        // eagerly load bean
         find(PartnersFxController::class)
     }
 
@@ -48,9 +48,15 @@ class DummyApp : App(
         stage.height = 800.0
         stage.centerOnScreen()
 
+        initApplicationState()
+    }
+
+    private fun initApplicationState() {
         find<CurrentPartnerFx>().initPartner(Partner.Dummies.superbEms)
+
         runAsync {
             fire(PartnerListFXEvent(Partner.Dummies.all))
         }
     }
+
 }

@@ -8,6 +8,7 @@ import com.github.christophpickl.urclubs.domain.partner.Rating
 import com.github.christophpickl.urclubs.fx.ImageId
 import com.github.christophpickl.urclubs.fx.Images
 import com.github.christophpickl.urclubs.fx.Styles
+import com.github.christophpickl.urclubs.fx.partner.detail.PartnerDetailView
 import com.github.christophpickl.urclubs.fx.partner.detail.PartnerSelectedEvent
 import com.github.christophpickl.urclubs.fx.partner.filter.FilterPartnersView
 import javafx.beans.property.ReadOnlyStringWrapper
@@ -36,11 +37,13 @@ class PartnersView : View() {
 
     private val logg = LOG {}
     private val partnersFilter: FilterPartnersView by inject()
+    private val partnerDetailView: PartnerDetailView by inject()
     private val currentPartner: CurrentPartnerFx by inject()
     private val imagePadding = 5
 
     val table = tableview<Partner> {
         addClass(Styles.partnersTable)
+
         column("Picture", Partner::picture).apply {
             cellFormat {
                 graphic = imageview(rowItem.picture.fxImageLil)
@@ -88,6 +91,9 @@ class PartnersView : View() {
         }
         center {
             add(table)
+        }
+        bottom {
+            add(partnerDetailView)
         }
     }
 

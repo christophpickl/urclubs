@@ -16,7 +16,6 @@ class PartnersFxController : Controller() {
     private val partnerService: PartnerService by di()
     private val view: PartnersView by inject()
     private val allPartners = FXCollections.observableArrayList<Partner>()!!
-//    private val filteredPartners = FilteredList<Partner>(allPartners)
     private val sortedFilteredPartners = SortedFilteredList<Partner>(allPartners)
 
     init {

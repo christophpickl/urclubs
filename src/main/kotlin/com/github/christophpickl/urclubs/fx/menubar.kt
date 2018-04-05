@@ -61,6 +61,10 @@ class MyMenuBar(
     init {
         useSystemMenuBarProperty().set(true)
         menu("Application") {
+            item("Resync Data").action {
+                controller.doFire(SyncRequestFXEvent)
+            }
+
             item("Clear Caches").action {
                 controller.clearCaches()
             }

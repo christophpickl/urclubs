@@ -21,7 +21,7 @@ class Styles : Stylesheet() {
 
         // GENERAL COMPONENTS
         val mainPanel by cssclass()
-        val partnerPanel by cssclass()
+        val partnerDetailPanel by cssclass()
 
         // FONTS
         val fontOrangeMedium by cssclass()
@@ -64,13 +64,13 @@ class Styles : Stylesheet() {
             padding = box(20.px)
         }
 
-        partnerPanel {
-            padding = box(20.px)
+        partnerDetailPanel {
             label {
                 textFill = white
             }
             field {
-                textFill = white
+                textFill = white // TODO has got no effect!
+//                fontWeight = FontWeight.BOLD
             }
         }
 

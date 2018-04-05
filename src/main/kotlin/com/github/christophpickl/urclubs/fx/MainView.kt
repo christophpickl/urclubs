@@ -9,7 +9,6 @@ import tornadofx.*
 
 class MainView : View() {
 
-    private val bottomView: BottomView by inject()
     private val partnersView: PartnersView by inject()
     private val menuBarController: MenuBarController by inject()
 
@@ -29,9 +28,6 @@ class MainView : View() {
             center {
                 add(partnersView)
             }
-            bottom {
-                add(bottomView)
-            }
         }
     }
 
@@ -39,16 +35,4 @@ class MainView : View() {
         title = "UrClubs" + if (UrclubsConfiguration.IS_DEVELOPMENT) " - DEVELOPMENT" else ""
         fire(PartnerListRequestFXEvent)
     }
-}
-
-class BottomView : View() {
-
-    override val root = hbox {
-        paddingTop = Styles.partnersTableVerticalPadding
-
-        button("Resync Data").action {
-            fire(SyncRequestFXEvent)
-        }
-    }
-
 }

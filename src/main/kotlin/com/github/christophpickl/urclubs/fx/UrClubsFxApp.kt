@@ -3,13 +3,12 @@ package com.github.christophpickl.urclubs.fx
 import com.github.christophpickl.kpotpourri.common.logging.LOG
 import com.github.christophpickl.urclubs.MainModule
 import com.github.christophpickl.urclubs.UrclubsConfiguration
+import com.github.christophpickl.urclubs.fillPrimaryScreen
 import com.github.christophpickl.urclubs.fx.partner.PartnersFxController
 import com.github.christophpickl.urclubs.fx.partner.detail.PartnerFxController
-import com.github.christophpickl.urclubs.fx.partner.detail.PartnerView
 import com.github.christophpickl.urclubs.fx.partner.filter.FilterPartnersController
 import com.github.christophpickl.urclubs.service.QuitManager
 import com.google.inject.Guice
-import javafx.stage.Screen
 import javafx.stage.Stage
 import tornadofx.*
 import kotlin.reflect.KClass
@@ -25,9 +24,6 @@ class UrClubsFxApp : App(
     stylesheet = Styles::class
 ) {
 
-    companion object {
-        val WINDOW_GAP = 10.0
-    }
     private val log = LOG {}
 
     private val guice = Guice.createInjector(MainModule())
@@ -46,14 +42,7 @@ class UrClubsFxApp : App(
 
     override fun start(stage: Stage) {
         super.start(stage)
-        val bounds = Screen.getPrimary().visualBounds
-        val padding = WINDOW_GAP
-
-        stage.x = bounds.minX
-        stage.y = bounds.minY
-        stage.width = bounds.width - PartnerView.WINDOW_WIDTH - padding
-        stage.height = bounds.height
-
+        stage.fillPrimaryScreen()
         fire(ApplicationStartedFxEvent)
     }
 
