@@ -1,8 +1,10 @@
 package com.github.christophpickl.urclubs.domain.partner
 
 import com.github.christophpickl.kpotpourri.common.logging.LOG
+import com.github.christophpickl.urclubs.domain.activity.FinishedActivity
 import com.github.christophpickl.urclubs.persistence.domain.PartnerDao
 import com.google.common.eventbus.EventBus
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 interface PartnerService {
@@ -12,6 +14,7 @@ interface PartnerService {
     fun findByShortName(shortName: String): Partner?
     fun findByShortNameOrThrow(shortName: String): Partner
     fun update(partner: Partner)
+    fun addArtificialFinishedActivity(partner: Partner)
     /**
      * @param locationHtml of format: "PARTNER_NAME<br>PARTNER_ADDRESS"
      */
@@ -24,6 +27,14 @@ class PartnerServiceImpl @Inject constructor(
 ) : PartnerService {
 
     val log = LOG {}
+
+    companion object {
+        val artificialFinishedActivity = FinishedActivity(
+            title = "artificial activity",
+            date = LocalDateTime.parse("2000-01-01T00:00:00")
+        )
+    }
+
 
     override fun create(partner: Partner): Partner {
         log.trace { "create(partner=$partner)" }
@@ -55,6 +66,14 @@ class PartnerServiceImpl @Inject constructor(
         log.trace { "update(partner=$partner)" }
         val updated = partnerDao.update(partner.toPartnerDbo())
         bus.post(PartnerUpdatedEvent(updated.toPartner()))
+    }
+
+    override fun addArtificialFinishedActivity(partner: Partner) {
+        log.trace { "addArtificialFinishedActivity(partner)" }
+
+        update(partner.copy(
+            finishedActivities = partner.finishedActivities.toMutableList().apply { add(artificialFinishedActivity) }
+        ))
     }
 
     override fun searchPartner(locationHtml: String): Partner? {

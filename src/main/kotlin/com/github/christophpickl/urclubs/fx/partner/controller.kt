@@ -32,6 +32,11 @@ class PartnersFxController : Controller() {
             partnerService.update(partner.copy(ignored = true))
         }
 
+        subscribe<AddArtificialFinishedActivityFXEvent> {
+            val partner = it.partner
+            partnerService.addArtificialFinishedActivity(partner)
+        }
+
         subscribe<PartnerListFXEvent> { event ->
             logg.trace { "Received PartnerListEvent (partners.size=${event.partners.size}), updating table items." }
             allPartners.setAll(event.partners)

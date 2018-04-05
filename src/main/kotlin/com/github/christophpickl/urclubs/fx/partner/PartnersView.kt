@@ -79,9 +79,9 @@ class PartnersView : View() {
             item(name = "Ignore Partner") {
                 action { fire(IgnorePartnerFXEvent(selectedItem!!)) }
             }
-//            item(name = "Add Past Activity") {
-//                action { fire(AddPastActivity(selectedItem!!)) }
-//            }
+            item(name = "Add Finished Activity") {
+                action { fire(AddArtificialFinishedActivityFXEvent(selectedItem!!)) }
+            }
         }
     }
 
