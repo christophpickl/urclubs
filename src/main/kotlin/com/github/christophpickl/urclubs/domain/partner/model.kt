@@ -10,6 +10,7 @@ import com.github.christophpickl.urclubs.persistence.domain.CategoryDbo
 import com.github.christophpickl.urclubs.persistence.domain.PartnerDbo
 import com.github.christophpickl.urclubs.persistence.domain.RatingDbo
 import com.google.common.base.MoreObjects
+import java.time.Duration
 import java.time.LocalDateTime
 import java.util.concurrent.atomic.AtomicInteger
 
@@ -43,8 +44,18 @@ data class Partner(
     val visitsThisMonth: Int
     val creditsLeftThisPeriod: Int
     val totalVisits = finishedActivities.size
+    val lastVisitInDays: Int?
 
     init {
+        lastVisitInDays = if (finishedActivities.none { it != FinishedActivity.artificialInstance }) {
+            null
+        } else {
+            Duration.between(
+                finishedActivities.sortedBy { it.date }.last().date,
+                LocalDateTime.now()
+            ).toDays().toInt()
+        }
+
         val now = LocalDateTime.now()
         visitsThisMonth = finishedActivities.filter {
             it.date.year == now.year && it.date.monthValue == now.monthValue

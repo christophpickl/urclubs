@@ -12,7 +12,7 @@ import org.testng.annotations.Test
 class PartnerSyncerPostProcessorTest {
 
     private val notYoga = Category.DANCE
-    private val partner = Partner.testInstance()
+    private val partner = Partner.testInstance
     private val detail = PartnerDetailHtmlModel.testInstance()
 
 

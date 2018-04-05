@@ -72,6 +72,13 @@ class PartnersView : View() {
             ReadOnlyStringWrapper("${partner.creditsLeftThisPeriod}/${partner.maxCredits}")
         }.fixedWidth(60)
         column("Visits", Partner::totalVisits).fixedWidth(48)
+        column("Last V.", Partner::lastVisitInDays).apply {
+            fixedWidth(100.0)
+        }.cellFormat {
+            graphic = hbox {
+                label(rowItem.lastVisitInDaysFormatted)
+            }
+        }
         column("Note", Partner::note)
 
         columnResizePolicy = SmartResize.POLICY
@@ -84,6 +91,13 @@ class PartnersView : View() {
             }
         }
     }
+
+    private val Partner.lastVisitInDaysFormatted
+        get() = when (lastVisitInDays) {
+            null -> "-"
+            0 -> "Today"
+            else -> "$lastVisitInDays Days"
+        }
 
     override val root = borderpane {
         style {

@@ -22,6 +22,7 @@ class DummyModule : AbstractModule() {
             override fun findByShortName(shortName: String): Partner? = null
             override fun findByShortNameOrThrow(shortName: String): Partner = TODO()
             override fun update(partner: Partner) {}
+            override fun addArtificialFinishedActivity(partner: Partner) {}
             override fun searchPartner(locationHtml: String): Partner? = null
         })
     }

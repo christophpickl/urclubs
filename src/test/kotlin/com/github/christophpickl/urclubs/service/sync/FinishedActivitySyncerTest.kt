@@ -26,7 +26,7 @@ class FinishedActivitySyncerTest {
     private val finishedActivityHtml = FinishedActivityHtmlModel.testInstance().copy(title = "fact")
     private val finishedActivity = finishedActivityHtml.toFinishedActivity()
 
-    private val partner = Partner.testInstance().copy(finishedActivities = emptyList())
+    private val partner = Partner.testInstance.copy(finishedActivities = emptyList())
 
     private lateinit var myclubs: MyClubsApi
     private lateinit var activityService: ActivityService

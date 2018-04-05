@@ -1,7 +1,3 @@
-* image should have orange border, on hover change color
-* in table show days since last visit
-- field labels: make em bold
-- on save, give some feedback
 
 # Grob Plan
 
@@ -60,6 +56,7 @@
 
 ## Med
 
+* UX: on save, give some feedback
 * use calendar component, show 1) gcal and 2) upcoming events (scroll through single days)
 * add translation (EN, DE; changeable via prefs, initially detected by OS lang)
 * for address: make link clickable and go to google maps
@@ -73,6 +70,8 @@
 
 ## Low
 
+* UI: field labels: make em bold
+* UX: image should have orange border, on hover change color
 * UI: render checkbox for favourite/wishlist as images
 * richtext format notes
 * colorize location (=distance) => property Partner.locationRating (rename regular rating to "partnerRating")

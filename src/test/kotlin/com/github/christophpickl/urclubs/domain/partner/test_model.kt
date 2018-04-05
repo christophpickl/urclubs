@@ -3,7 +3,8 @@ package com.github.christophpickl.urclubs.domain.partner
 import com.github.christophpickl.urclubs.persistence.domain.FinishedActivityDbo
 import java.time.LocalDateTime
 
-fun Partner.Companion.testInstance() = Partner(
+val Partner.Companion.testInstance
+    get() = Partner(
     idDbo = 0L,
     idMyc = "testIdMyc",
     name = "testName",

@@ -6,7 +6,14 @@ import java.time.LocalDateTime
 data class FinishedActivity(
     val title: String,
     val date: LocalDateTime
-)
+) {
+    companion object {
+        val artificialInstance = FinishedActivity(
+            title = "artificial activity",
+            date = LocalDateTime.parse("2000-01-01T00:00:00")
+        )
+    }
+}
 
 enum class ActivityType {
     Course,
