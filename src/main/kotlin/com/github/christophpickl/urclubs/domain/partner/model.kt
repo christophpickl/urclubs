@@ -260,8 +260,8 @@ fun Partner.toPartnerDbo() = PartnerDbo(
     maxCredits = maxCredits.toByte(),
     linkMyclubs = linkMyclubs,
     linkPartner = linkPartner,
-    addresses = addresses,
-    tags = tags,
+    addresses = addresses.toMutableList(),
+    tags = tags.toMutableList(),
     finishedActivities = finishedActivities.map { it.toFinishedActivityDbo() }.toMutableList(),
     picture = picture.saveRepresentation
 )

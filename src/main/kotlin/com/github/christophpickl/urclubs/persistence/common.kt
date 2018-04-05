@@ -30,11 +30,22 @@ fun <T> EntityManager.persistTransactional(entity: T): T {
     return entity
 }
 
-fun EntityManager.transactional(action: EntityManager.() -> Unit) {
+fun <T> EntityManager.transactional(action: EntityManager.() -> T): T {
     transaction.begin()
-    action(this)
-    transaction.commit()
+    var committed = false
+    try {
+        val result = action(this)
+        transaction.commit()
+        committed = true
+        return result
+    } finally {
+        if (!committed) {
+            transaction.rollback()
+        }
+    }
 }
+
+fun <T> EntityManager.persistAndReturn(entity: T) = entity.also { persist(entity) }
 
 inline fun <reified T> EntityManager.queryList(query: String): List<T> {
     return createQuery(query, T::class.java).resultList

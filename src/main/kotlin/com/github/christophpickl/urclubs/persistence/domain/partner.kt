@@ -10,6 +10,7 @@ import com.github.christophpickl.urclubs.persistence.ONE_MB
 import com.github.christophpickl.urclubs.persistence.deleteAll
 import com.github.christophpickl.urclubs.persistence.ensureNotPersisted
 import com.github.christophpickl.urclubs.persistence.ensurePersisted
+import com.github.christophpickl.urclubs.persistence.persistAndReturn
 import com.github.christophpickl.urclubs.persistence.queryList
 import com.github.christophpickl.urclubs.persistence.transactional
 import com.google.common.base.MoreObjects
@@ -42,7 +43,7 @@ interface PartnerDao {
 }
 
 class PartnerDaoImpl @Inject constructor(
-    private val em: EntityManager
+        private val em: EntityManager
 ) : PartnerDao {
 
     override fun searchByNameAndAddress(name: String, address: String): PartnerDbo? {
@@ -74,7 +75,7 @@ class PartnerDaoImpl @Inject constructor(
     }
 
     override fun read(id: Long): PartnerDbo? =
-        em.find(PartnerDbo::class.java, id)
+            em.find(PartnerDbo::class.java, id)
 
     override fun findByShortName(shortName: String): PartnerDbo? {
         val query = em.createQuery("SELECT p FROM ${PartnerDbo::class.simpleName} p WHERE p.shortName = :shortName", PartnerDbo::class.java)
@@ -89,77 +90,76 @@ class PartnerDaoImpl @Inject constructor(
 
         val persisted = readOrThrow(partner.id)
         persisted.updateBy(partner)
-        em.transactional {
-            persist(persisted)
+
+        return em.transactional {
+            persistAndReturn(persisted)
         }
-        return persisted
     }
 
     private fun readOrThrow(id: Long) =
-        read(id) ?: throw Exception("Partner not found by ID: $id")
+            read(id) ?: throw Exception("Partner not found by ID: $id")
 
 }
 
-
 @Entity
 data class PartnerDbo(
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    override val id: Long,
+        @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+        override val id: Long,
 
-    @Column(nullable = false, length = COL_LENGTH_MED, unique = true)
-    var idMyc: String,
+        @Column(nullable = false, length = COL_LENGTH_MED, unique = true)
+        var idMyc: String,
 
-    @Column(nullable = false, length = COL_LENGTH_MED, unique = false)
-    var name: String,
+        @Column(nullable = false, length = COL_LENGTH_MED, unique = false)
+        var name: String,
 
-    @Column(nullable = false, length = COL_LENGTH_MED, unique = true)
-    var shortName: String,
+        @Column(nullable = false, length = COL_LENGTH_MED, unique = true)
+        var shortName: String,
 
-    @Column(nullable = false, length = COL_LENGTH_BIG)
-    var note: String,
+        @Column(nullable = false, length = COL_LENGTH_BIG)
+        var note: String,
 
-    @Column(nullable = false, length = COL_LENGTH_LIL)
-    var linkMyclubs: String,
+        @Column(nullable = false, length = COL_LENGTH_LIL)
+        var linkMyclubs: String,
 
-    @Column(nullable = false, length = COL_LENGTH_LIL)
-    var linkPartner: String,
+        @Column(nullable = false, length = COL_LENGTH_LIL)
+        var linkPartner: String,
 
-    @Column(nullable = false)
-    var maxCredits: Byte,
+        @Column(nullable = false)
+        var maxCredits: Byte,
 
-    @Column(nullable = false, length = COL_LENGTH_LIL)
-    @Enumerated(EnumType.STRING)
-    var rating: RatingDbo,
+        @Column(nullable = false, length = COL_LENGTH_LIL)
+        @Enumerated(EnumType.STRING)
+        var rating: RatingDbo,
 
-    @Column(nullable = false)
-    var category: CategoryDbo,
+        @Column(nullable = false)
+        var category: CategoryDbo,
 
-    @Column(nullable = false)
-    var deletedByMyc: Boolean,
+        @Column(nullable = false)
+        var deletedByMyc: Boolean,
 
-    @Column(nullable = false)
-    var favourited: Boolean,
+        @Column(nullable = false)
+        var favourited: Boolean,
 
-    @Column(nullable = false)
-    var wishlisted: Boolean,
+        @Column(nullable = false)
+        var wishlisted: Boolean,
 
-    @Column(nullable = false)
-    var ignored: Boolean,
+        @Column(nullable = false)
+        var ignored: Boolean,
 
-    @ElementCollection
-    var tags: List<String>,
+        @ElementCollection
+        var tags: MutableList<String>,
 
-    @ElementCollection
-    var addresses: List<String>,
+        @ElementCollection
+        var addresses: MutableList<String>,
 
-    @ElementCollection
-    var finishedActivities: MutableList<FinishedActivityDbo>,
+        @ElementCollection
+        var finishedActivities: MutableList<FinishedActivityDbo>,
 
-    @Lob
-    @Column(nullable = true, length = ONE_MB)
-    var picture: ByteArray?
+        @Lob
+        @Column(nullable = true, length = ONE_MB)
+        var picture: ByteArray?
 
-    // dont forget to extend the equals() method when adding new properties!
+        // dont forget to extend the equals() method when adding new properties!
 
 ) : HasId {
     companion object {
@@ -204,30 +204,34 @@ data class PartnerDbo(
         if (wishlisted   != other.wishlisted)   wishlisted   = other.wishlisted
         if (deletedByMyc != other.deletedByMyc) deletedByMyc = other.deletedByMyc
         if (ignored      != other.ignored)      ignored      = other.ignored
-        if (addresses    != other.addresses)    addresses    = other.addresses
-        if (tags         != other.tags)         tags         = other.tags
-        if (finishedActivities != other.finishedActivities) finishedActivities.apply {
-            clear()
-            addAll(other.finishedActivities)
-        }
+        addresses.updateByIfNeeded(other.addresses)
+        tags.updateByIfNeeded(other.tags)
+        finishedActivities.updateByIfNeeded(other.finishedActivities)
         if (!picture.byteArrayEquals(other.picture)) picture = other.picture
         // @formatter:on
     }
 
+    private fun <T> MutableList<T>.updateByIfNeeded(other: List<T>) {
+        if (this != other) {
+            clear()
+            addAll(other)
+        }
+    }
+
     override fun toString() = MoreObjects.toStringHelper(this)
-        .add("id", id)
-        .add("idMyc", idMyc)
-        .add("shortName", shortName)
-        .add("rating", rating)
-        .add("category", category)
-        .add("maxCredits", maxCredits)
-        .add("favourited", favourited)
-        .add("wishlisted", wishlisted)
-        .add("addresses", addresses)
-        .add("tags", tags)
-        .add("finishedActivities.size", finishedActivities.size)
-        .add("picture-set", picture != null)
-        .toString()
+            .add("id", id)
+            .add("idMyc", idMyc)
+            .add("shortName", shortName)
+            .add("rating", rating)
+            .add("category", category)
+            .add("maxCredits", maxCredits)
+            .add("favourited", favourited)
+            .add("wishlisted", wishlisted)
+            .add("addresses", addresses)
+            .add("tags", tags)
+            .add("finishedActivities.size", finishedActivities.size)
+            .add("picture-set", picture != null)
+            .toString()
 
     override fun hashCode() = Objects.hashCode(id, name, shortName)
 
