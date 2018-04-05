@@ -22,7 +22,7 @@ fun PartnerDbo.Companion.testInstance() = PartnerDbo(
     ignored = false,
     wishlisted = true,
     picture = null,
-    addresses = listOf("testStreet"),
-    tags = listOf("testTag"),
+    addresses = mutableListOf("testStreet"),
+    tags = mutableListOf("testTag"),
     finishedActivities = mutableListOf()
 )

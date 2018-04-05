@@ -86,7 +86,7 @@ class FinishedActivitySyncerDbTest : DatabaseTest() {
 
         val partner = dao.create(PartnerDbo.testInstance().copy(
             name = partnerName,
-            addresses = listOf(partnerAddress),
+            addresses = mutableListOf(partnerAddress),
             finishedActivities = mutableListOf()
         ))
 

@@ -88,7 +88,7 @@ class PartnerDaoImplTest : DatabaseTest() {
     }
 
     fun `READ - Given partner with 3 addresses When search by name and address Then return not null`() {
-        val partner = save(partner.copy(name = "name", addresses = listOf("address1", "address2", "address3")))
+        val partner = save(partner.copy(name = "name", addresses = mutableListOf("address1", "address2", "address3")))
 
         val found = dao().searchByNameAndAddress(partner.name, partner.addresses[1])
 
@@ -96,7 +96,7 @@ class PartnerDaoImplTest : DatabaseTest() {
     }
 
     fun `READ - Given partner When search by correct name and incorrect address Then return null`() {
-        val partner = save(partner.copy(name = "name", addresses = listOf("address")))
+        val partner = save(partner.copy(name = "name", addresses = mutableListOf("address")))
 
         val found = dao().searchByNameAndAddress(partner.name, "incorrect")
 
@@ -104,7 +104,7 @@ class PartnerDaoImplTest : DatabaseTest() {
     }
 
     fun `READ - Given partner When search by incorrect name and correct address Then return null`() {
-        val partner = save(partner.copy(name = "name", addresses = listOf("address")))
+        val partner = save(partner.copy(name = "name", addresses = mutableListOf("address")))
 
         val found = dao().searchByNameAndAddress("incorrect", partner.addresses[0])
 
@@ -135,8 +135,8 @@ class PartnerDaoImplTest : DatabaseTest() {
             linkPartner = "linkPartner",
             linkMyclubs = "linkMyclubs",
             picture = null,
-            addresses = listOf("address"),
-            tags = listOf("tag", "willBeRemoved"),
+            addresses = mutableListOf("address"),
+            tags = mutableListOf("tag", "willBeRemoved"),
             finishedActivities = mutableListOf()
         )
         save(savedPartner)
@@ -154,8 +154,8 @@ class PartnerDaoImplTest : DatabaseTest() {
             id = savedPartner.id,
             idMyc = savedPartner.idMyc,
             shortName = savedPartner.shortName,
-            addresses = listOf("address", "wasAdded"),
-            tags = listOf("tag"),
+            addresses = mutableListOf("address", "wasAdded"),
+            tags = mutableListOf("tag"),
             linkPartner = savedPartner.linkPartner,
             linkMyclubs = savedPartner.linkMyclubs,
             picture = ByteArray(8, { 1 }),
