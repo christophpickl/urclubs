@@ -20,7 +20,7 @@ class DummyModule : AbstractModule() {
             override fun readAll(includeIgnored: Boolean) = emptyList<Partner>()
             override fun read(id: Long): Partner? = null
             override fun findByShortName(shortName: String): Partner? = null
-            override fun findByShortNameOrThrow(shortName: String): Partner = TODO()
+            override fun findByShortNameOrThrow(shortName: String): Partner = throw UnsupportedOperationException("")
             override fun update(partner: Partner) {}
             override fun addArtificialFinishedActivity(partner: Partner) {}
             override fun searchPartner(locationHtml: String): Partner? = null

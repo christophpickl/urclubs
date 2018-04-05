@@ -7,6 +7,8 @@ import tornadofx.*
 
 // CREDO: hover change color over all interactive fields (buttons, input fields) + style orange
 
+// https://github.com/edvin/tornadofx/tree/master/src/main/resources/tornadofx
+
 class Styles : Stylesheet() {
 
     private val log = LOG {}
@@ -35,17 +37,6 @@ class Styles : Stylesheet() {
         val greyBright = c("#292530")
         val greyDark = c("#231F2A")
 
-
-        object Colors {
-            val interactiveNormal = greyBright
-            val interactiveHover = greyVeryBright
-
-            // TODO proper row cols
-            val rowColWhiteEven = c("#3B3843")
-            val rowColWhiteOdd = c("#3B3843")
-            val rowColBlackEven = c("#3B3843")
-            val rowColBlackOdd = c("#3B3843")
-        }
     }
 
     init {
@@ -58,7 +49,6 @@ class Styles : Stylesheet() {
 
         root {
             backgroundColor += greyDark
-            //  -fx-control-inner-background-alt: -fx-control-inner-background ; disable leftover empty table rows
         }
 
         mainPanel {
@@ -68,10 +58,6 @@ class Styles : Stylesheet() {
         partnerDetailPanel {
             label {
                 textFill = white
-            }
-            field {
-                textFill = white // TODO has got no effect!
-//                fontWeight = FontWeight.BOLD
             }
         }
 

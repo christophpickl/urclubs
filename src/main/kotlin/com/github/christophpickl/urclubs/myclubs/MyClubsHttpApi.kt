@@ -95,7 +95,6 @@ class MyClubsHttpApi @Inject constructor(
         val response = http.execute(HttpPost("$baseApiUrl/activityDetail").apply {
             entity = UrlEncodedFormEntity(listOf(
                     BasicNameValuePair("activityData", filter.activityId),
-                    // TODO maybe passing activityId itself is enough...?
                     BasicNameValuePair("type", filter.type.toActivityTypeMyc().json),
                     BasicNameValuePair("date", filter.timestamp),
                     BasicNameValuePair("country", "at"),

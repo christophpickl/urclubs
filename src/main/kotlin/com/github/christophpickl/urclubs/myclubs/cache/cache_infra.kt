@@ -72,9 +72,8 @@ fun <CACHED, MODEL> CacheManager.getOrPutSingledCache(
 ): MODEL {
     val cache = getFor(spec)
 
-    // TODO change to loglevel trace
     cache.get(coordinates.staticKey)?.let {
-        log.debug { "Cache hit for static cache key '${coordinates.staticKey}'" }
+        log.trace { "Cache hit for static cache key '${coordinates.staticKey}'" }
         return coordinates.transToModel(it)
     }
 

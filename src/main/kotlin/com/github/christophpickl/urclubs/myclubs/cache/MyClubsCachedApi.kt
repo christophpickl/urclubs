@@ -97,6 +97,6 @@ class MyClubsCachedApi constructor(
             withDelegate = { myclubs -> ActivityHtmlModelWrapper(myclubs.activity(filter)) }
         )).wrapped
 
-    private fun ActivityFilter.cacheKey() = activityId // MINOR should be enough, right?!
+    private fun ActivityFilter.cacheKey() = activityId
 
 }

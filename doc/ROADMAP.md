@@ -44,6 +44,7 @@
 
 ## Med
 
+* rethink myclubs API for searching activity (isnt activityID only enough? how does API work?)
 * UI: style: scrollbar
 * UX: on save, give some feedback
 * use calendar component, show 1) gcal and 2) upcoming events (scroll through single days)

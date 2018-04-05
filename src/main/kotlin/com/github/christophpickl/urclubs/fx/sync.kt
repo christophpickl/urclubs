@@ -94,7 +94,6 @@ class SyncFxController : Controller() {
         val partnersReport = partnerSyncer.sync()
         fire(PartnerListRequestFXEvent)
 
-        // MINOR how are exceptions handled here?
         val finishedActivitiesReport = finishedActivitySyncer.sync()
 
         return SyncReport(
