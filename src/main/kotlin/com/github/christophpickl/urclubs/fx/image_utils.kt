@@ -35,10 +35,19 @@ fun Image.scale(dimension: Dimension): Image {
     return SwingFXUtils.toFXImage(bufferedImage, null)
 }
 
-fun Image.toByteArray(): ByteArray {
+fun Image.toByteArray(format: ImageFormat): ByteArray {
     val buffer = SwingFXUtils.fromFXImage(this, null)
     return ByteArrayOutputStream().use {
-        ImageIO.write(buffer, "png", it)
+        ImageIO.write(buffer, format.formatName, it)
         it.toByteArray()
+    }
+}
+
+enum class ImageFormat(val formatName: String) {
+    PNG("png"),
+    JPG("jpg");
+
+    companion object {
+        fun byName(name: String): ImageFormat? = values().firstOrNull { it.formatName == name }
     }
 }

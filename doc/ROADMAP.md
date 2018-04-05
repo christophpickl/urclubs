@@ -3,10 +3,6 @@
 * UI: on change, then table row order changes? by default, if rows are equal, should order by name
 * IDEA: google maps link fuer adresse
 * ? evtl adresse in table rendern?
-* in choose image
-    - dont display hidden items
-    - support JPG (not only PNG)
-    - remember last dir
 * when tag "crosstraining" => if category not set, set to workout
 * name input field 50px breiter 
 
@@ -74,6 +70,7 @@
 
 ## Low
 
+* in choose image file dialogÖ dont display hidden items
 * show number of displayed partners "10/170" based on current filter
 * UI: field labels: make em bold
 * UX: image should have orange border, on hover change color

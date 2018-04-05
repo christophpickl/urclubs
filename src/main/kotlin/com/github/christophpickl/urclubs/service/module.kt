@@ -10,5 +10,6 @@ class ServiceModule : AbstractModule() {
         bind(PartnerSyncer::class.java)
         bind(FinishedActivitySyncer::class.java)
         bind(UpcomingActivitySyncer::class.java)
+        bind(PrefsManager::class.java).asEagerSingleton()
     }
 }

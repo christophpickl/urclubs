@@ -1,5 +1,6 @@
 package com.github.christophpickl.urclubs.domain.partner
 
+import com.github.christophpickl.urclubs.fx.ImageFormat
 import com.github.christophpickl.urclubs.fx.PictureUtil
 import com.github.christophpickl.urclubs.fx.scale
 import com.github.christophpickl.urclubs.fx.toByteArray
@@ -42,8 +43,8 @@ sealed class PartnerImage(val fxImage: Image) {
         override val saveRepresentation = bytes
     }
 
-    class FilePicture(file: File) : PartnerImage(PictureUtil.readFxImageFromFileWithSize(file, PartnerImageSize.BIG.dimension)) {
-        override val saveRepresentation by lazy { fxImage.toByteArray() }
+    class FilePicture(file: File, format: ImageFormat) : PartnerImage(PictureUtil.readFxImageFromFileWithSize(file, PartnerImageSize.BIG.dimension)) {
+        override val saveRepresentation by lazy { fxImage.toByteArray(format) }
     }
 
 }
