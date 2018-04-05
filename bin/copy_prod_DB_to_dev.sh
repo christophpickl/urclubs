@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-SOURCE="/Users/wu/.urclubs/database"
-TARGET="/Users/wu/.urclubs_dev/database"
+SOURCE="$HOME/.urclubs/database"
+TARGET="$HOME/.urclubs_dev/database"
 
 echo "Copying from $SOURCE to $TARGET "
 

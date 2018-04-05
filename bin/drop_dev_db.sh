@@ -1,13 +1,15 @@
 #!/usr/bin/env bash
 
+ROOT_DEV="$HOME/.urclubs_dev"
+
 echo "Deleting ..."
 echo ""
 
-echo "/Users/wu/.urclubs_dev/database"
-rm -rf /Users/wu/.urclubs_dev/database
+echo "rm -rf $ROOT_DEV/database"
+rm -rf ${ROOT_DEV}/database
 
-echo "/Users/wu/.urclubs_dev/cache"
-rm -rf /Users/wu/.urclubs_dev/cache
+echo "rm -rf $ROOT_DEV/cache"
+rm -rf ${ROOT_DEV}/cache
 
 echo ""
 echo "Done."
