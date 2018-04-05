@@ -44,9 +44,12 @@ class PartnerDetailView : View() {
                 }.imageProperty().bindBidirectional(currentPartner.picture)
 
                 alignment = Pos.BOTTOM_LEFT
-                button("Save").setOnAction {
-                    logg.trace { "Save button clicked." }
-                    fire(PartnerSaveEvent)
+                button("Save") {
+                    action {
+                        logg.trace { "Save button clicked." }
+                        fire(RequestPartnerSaveFXEvent)
+                    }
+                    shortcut("Meta+S")
                 }
             }
             form {
@@ -60,7 +63,12 @@ class PartnerDetailView : View() {
                 }
                 fieldset(labelPosition = Orientation.HORIZONTAL) {
                     field("Name") {
-                        textfield().textProperty().bindBidirectional(currentPartner.name)
+                        textfield() {
+                            textProperty().bindBidirectional(currentPartner.name)
+                            style {
+                                fontSize = 18.px
+                            }
+                        }
                     }
 
                     field("Category") {

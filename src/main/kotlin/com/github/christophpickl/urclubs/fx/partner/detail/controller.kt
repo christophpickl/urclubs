@@ -24,7 +24,7 @@ class PartnerFxController : Controller() {
     init {
 //        subscribe<PartnerSelectedEvent> { _ ->
 //        }
-        subscribe<PartnerSaveEvent> {
+        subscribe<RequestPartnerSaveFXEvent> {
             service.update(currentPartner.toPartner())
         }
         subscribe<ChoosePictureFXEvent> {

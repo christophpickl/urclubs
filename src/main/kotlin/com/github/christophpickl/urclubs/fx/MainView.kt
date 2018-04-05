@@ -6,7 +6,6 @@ import com.github.christophpickl.urclubs.fx.partner.PartnersView
 import javafx.scene.layout.Priority
 import tornadofx.*
 
-
 class MainView : View() {
 
     private val partnersView: PartnersView by inject()
@@ -35,4 +34,5 @@ class MainView : View() {
         title = "UrClubs" + if (UrclubsConfiguration.IS_DEVELOPMENT) " - DEVELOPMENT" else ""
         fire(PartnerListRequestFXEvent)
     }
+
 }

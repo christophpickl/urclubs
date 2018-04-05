@@ -1,3 +1,7 @@
+* image should have orange border, on hover change color
+* in table show days since last visit
+- field labels: make em bold
+- on save, give some feedback
 
 # Grob Plan
 

@@ -9,7 +9,7 @@ import com.github.christophpickl.urclubs.fx.ImageId
 import com.github.christophpickl.urclubs.fx.Images
 import com.github.christophpickl.urclubs.fx.Styles
 import com.github.christophpickl.urclubs.fx.partner.detail.PartnerDetailView
-import com.github.christophpickl.urclubs.fx.partner.detail.PartnerSelectedEvent
+import com.github.christophpickl.urclubs.fx.partner.detail.PartnerSelectedFXEvent
 import com.github.christophpickl.urclubs.fx.partner.filter.FilterPartnersView
 import javafx.beans.property.ReadOnlyStringWrapper
 import javafx.geometry.Pos
@@ -134,7 +134,7 @@ class PartnersView : View() {
     private fun firePartnerSelected(partner: Partner) {
         logg.trace { "firePartnerSelected($partner)" }
         currentPartner.initPartner(partner)
-        fire(PartnerSelectedEvent(partner))
+        fire(PartnerSelectedFXEvent(partner))
     }
 
 }
