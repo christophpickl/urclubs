@@ -1,38 +1,24 @@
 
 # Grob Plan
 
-1. One
-    1. Filter
-1. Two
-    1. Upcoming Activities
-    1. GCal
-1. Three
-    1. Book Activities
-    1. Recommend Activities
-    1. show save confirm dialog on changes (detect dirty view) 
+1. Filter Partners
+1. Upcoming Activities (Fetch+Filter)
+1. GCal Integration
+1. Book Activities
 
-# TODOs
+# Detailed Plan
 
-1. Pre One
-    1. !! FIX: myclubs caching
-    1. ! style: scrollbar 
-    1. in partner detail view: add button to artificially increase visit counts (reason: only past 70s are synced :-()
-
-1. Ad One
-    1. ! UI: improve sync progress dialog UI (show indeterministic progress Bar; NO listener/event thing)
-    1. UI: get mac menubar working
-    1. UI: incorporate partner detail view into main window (get rid of additional window)
-    1. enhance search:
-        * rating (is bigger/lower/equals)
-        * remainingCredits/totalVisits (lower, equal, bigger, not)
-        * improved search: think about how to "smart filter" => predefined queries (SQL?)
-    1. proper exception handling
-    1. splash screen doesnt go away
-
-1. Ad Two
-    1. UI: ad partner table fill FULL colored rows based on rating
-    1. UI: colorize remaining credits (green-red much-few)
-    1. show number of displayed partners "10/170" based on current filter
+1. enhance search:
+    * rating (is bigger/lower/equals)
+    * remainingCredits/totalVisits (lower, equal, bigger, not)
+    * improved search: think about how to "smart filter" => predefined queries (SQL?)
+1. !! FIX: myclubs caching
+1. ! UI: improve sync progress dialog UI (show indeterministic progress Bar; NO listener/event thing)
+1. UI: get mac menubar working
+1. UI: incorporate partner detail view into main window (get rid of additional window)
+1. splash screen doesnt go away
+1. UI: ad partner table fill FULL colored rows based on rating
+1. UI: colorize remaining credits (green-red much-few)
 
 ## Big Ideas
 
@@ -47,6 +33,8 @@
 
 ## High
 
+1. proper exception handling
+* show save confirm dialog on changes (detect dirty view)
 * BIZ: sync more Partner details (description, ...)
 * add new properties: 
     * locationNote (render in table next to static location address)
@@ -56,6 +44,7 @@
 
 ## Med
 
+* UI: style: scrollbar
 * UX: on save, give some feedback
 * use calendar component, show 1) gcal and 2) upcoming events (scroll through single days)
 * add translation (EN, DE; changeable via prefs, initially detected by OS lang)
@@ -70,6 +59,7 @@
 
 ## Low
 
+* show number of displayed partners "10/170" based on current filter
 * UI: field labels: make em bold
 * UX: image should have orange border, on hover change color
 * UI: render checkbox for favourite/wishlist as images
