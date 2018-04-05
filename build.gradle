@@ -1,14 +1,6 @@
-import org.apache.tools.ant.filters.ReplaceTokens
-
-import java.text.SimpleDateFormat
-
 buildscript {
-    ext {
-        versionKotlin = "1.2.31"
-        versionGuice = "4.2.0"
-        versionJava = "1.8"
-        versionKPotpourri = "1.10"
-    }
+    apply from: "$rootDir/gradle/versions.gradle"
+
     repositories {
         mavenCentral()
         jcenter()
@@ -34,6 +26,9 @@ ext {
     myMainClassName = "com.github.christophpickl.urclubs.UrClubs"
     myAppName = "UrClubs"
 }
+
+apply from: "$rootDir/gradle/packaging.gradle"
+apply from: "$rootDir/gradle/version.gradle"
 
 // =====================================================================================================================
 // DEPENDENCIES
@@ -106,64 +101,4 @@ todo {
     todoPattern = "//[\\t\\s]*(FIXME|TODO) (.*)"
     failIfFound = true
     fileExtensions = ["kt"]
-}
-
-// =====================================================================================================================
-// VERSION NUMBER
-// =====================================================================================================================
-
-task loadUrclubsVersion {
-    Properties props = new Properties()
-    File propsFile = new File("version.properties")
-    props.load(propsFile.newDataInputStream())
-    version = props['version']
-    println "[URCLUBS] Version: " + version
-}
-
-processResources.dependsOn loadUrclubsVersion
-
-processResources {
-    from('src/main/resources') {
-        include '**/metainf.properties'
-        filter ReplaceTokens, tokens: [
-                "application.version": version,
-                "built.date"         : new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date())
-        ]
-    }
-}
-
-// =====================================================================================================================
-// PACKAGING MAC
-// =====================================================================================================================
-
-// travis lacks hdiutil binary, so only enabled by explicit sysproperty
-if (System.properties.getProperty("urclubs.enableMacBundle") == "true") {
-    println "[URCLUBS] enabling mac bundle"
-    apply plugin: "edu.sc.seis.macAppBundle"
-
-    macAppBundle {
-        appName = myAppName
-        dmgName = myAppName + "-" + version
-
-        mainClassName = myMainClassName
-        icon = "src/main/buildMac/logo.icns"
-        jvmVersion = "1.8+"
-
-        javaProperties.put("apple.laf.useScreenMenuBar", "true")
-        javaProperties.put("urclubs.isMacApp", "true")
-        if (System.properties.getProperty("urclubs.production") == "true") {
-            println "[URCLUBS] macApp going to be PROD mode"
-            javaProperties.put("urclubs.production", "true")
-        } else {
-            println "[URCLUBS] macApp going to be DEV mode"
-        }
-        javaExtras.put("-splash:\$APP_ROOT/Contents/Resources/splashscreen.jpg", null)
-    }
-
-    //noinspection GroovyAssignabilityCheck
-    task copySplashscreenForMacApp(type: Copy) {
-        from 'src/main/buildMac/splashscreen.jpg'
-        into "build/macApp/${myAppName}.app/Contents/Resources"
-    }
-    createApp.dependsOn copySplashscreenForMacApp
 }

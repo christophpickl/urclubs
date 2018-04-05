@@ -1,0 +1,6 @@
+ext {
+    versionKotlin = "1.2.31"
+    versionGuice = "4.2.0"
+    versionJava = "1.8"
+    versionKPotpourri = "1.10"
+}

@@ -1,0 +1,26 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+import java.text.SimpleDateFormat
+
+// =====================================================================================================================
+// VERSION NUMBER
+// =====================================================================================================================
+
+task loadUrclubsVersion {
+    Properties props = new Properties()
+    File propsFile = new File("version.properties")
+    props.load(propsFile.newDataInputStream())
+    version = props['version']
+    println "[URCLUBS] Version: " + version
+}
+
+processResources.dependsOn loadUrclubsVersion
+
+processResources {
+    from('src/main/resources') {
+        include '**/metainf.properties'
+        filter ReplaceTokens, tokens: [
+                "application.version": version,
+                "built.date"         : new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date())
+        ]
+    }
+}

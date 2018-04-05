@@ -1,0 +1,36 @@
+
+// =====================================================================================================================
+// PACKAGING MAC
+// =====================================================================================================================
+
+// travis lacks hdiutil binary, so only enabled by explicit sysproperty
+if (System.properties.getProperty("urclubs.enableMacBundle") == "true") {
+    println "[URCLUBS] enabling mac bundle"
+    apply plugin: "edu.sc.seis.macAppBundle"
+
+    macAppBundle {
+        appName = myAppName
+        dmgName = myAppName + "-" + version
+
+        mainClassName = myMainClassName
+        icon = "src/main/buildMac/logo.icns"
+        jvmVersion = "1.8+"
+
+        javaProperties.put("apple.laf.useScreenMenuBar", "true")
+        javaProperties.put("urclubs.isMacApp", "true")
+        if (System.properties.getProperty("urclubs.production") == "true") {
+            println "[URCLUBS] macApp going to be PROD mode"
+            javaProperties.put("urclubs.production", "true")
+        } else {
+            println "[URCLUBS] macApp going to be DEV mode"
+        }
+        javaExtras.put("-splash:\$APP_ROOT/Contents/Resources/splashscreen.jpg", null)
+    }
+
+    //noinspection GroovyAssignabilityCheck
+    task copySplashscreenForMacApp(type: Copy) {
+        from 'src/main/buildMac/splashscreen.jpg'
+        into "build/macApp/${myAppName}.app/Contents/Resources"
+    }
+    createApp.dependsOn copySplashscreenForMacApp
+}
