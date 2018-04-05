@@ -1,4 +1,15 @@
 
+* UI: change hover table color; selected light orange, und hover noch lighter machen
+* UI: on change, then table row order changes? by default, if rows are equal, should order by name
+* IDEA: google maps link fuer adresse
+* ? evtl adresse in table rendern?
+* in choose image
+    - dont display hidden items
+    - support JPG (not only PNG)
+    - remember last dir
+* when tag "crosstraining" => if category not set, set to workout
+* name input field 50px breiter 
+
 # Grob Plan
 
 1. Filter Partners
@@ -8,15 +19,18 @@
 
 # Detailed Plan
 
-1. enhance search:
+## Must
+
+1. !! FIX: myclubs caching
+1. !! FILTER:
+    * only wishlist/favourit
     * rating (is bigger/lower/equals)
     * remainingCredits/totalVisits (lower, equal, bigger, not)
-    * improved search: think about how to "smart filter" => predefined queries (SQL?)
-1. !! FIX: myclubs caching
-1. ! UI: improve sync progress dialog UI (show indeterministic progress Bar; NO listener/event thing)
-1. UI: get mac menubar working
-1. UI: incorporate partner detail view into main window (get rid of additional window)
-1. splash screen doesnt go away
+    * think about how to "smart filter" => predefined queries (SQL?)
+1. ! when sync is done, request focus for confirm panel
+1. ! splash screen doesnt go away
+1. ! UI: get mac menubar working
+1. UI: improve sync progress dialog UI (show indeterministic progress Bar; NO listener/event thing)
 1. UI: ad partner table fill FULL colored rows based on rating
 1. UI: colorize remaining credits (green-red much-few)
 
@@ -40,7 +54,7 @@
     * locationNote (render in table next to static location address)
     * add secondary comment for partners (not visible in table but in detail view)
 * global notes
-* support MacMenuBar (handle QuitEvent, outsource menu items into system's Application item)
+* support MacMenuBar events (quit, about, prefs)
 
 ## Med
 
