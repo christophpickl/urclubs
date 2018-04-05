@@ -79,6 +79,9 @@ class PartnersView : View() {
                 label(rowItem.lastVisitInDaysFormatted)
             }
         }
+        column("Address") { features: TableColumn.CellDataFeatures<Partner, String> ->
+            ReadOnlyStringWrapper(features.value.addresses.firstOrNull() ?: "")
+        }
         column("Note", Partner::note)
 
         columnResizePolicy = SmartResize.POLICY
@@ -137,13 +140,13 @@ class PartnersView : View() {
     }
 
     private inline fun <reified S, T> TableView<S>.imageColumn(imageProperty: KProperty1<S, T>, crossinline imageExtractor: (S) -> Image): TableColumn<S, T> =
-        column("", imageProperty).apply {
-            fixedWidth(Images.size.width + imagePadding * 2)
-            cellFormat {
-                graphic = imageview { image = imageExtractor(rowItem) }
-                alignment = Pos.CENTER
+            column("", imageProperty).apply {
+                fixedWidth(Images.size.width + imagePadding * 2)
+                cellFormat {
+                    graphic = imageview { image = imageExtractor(rowItem) }
+                    alignment = Pos.CENTER
+                }
             }
-        }
 
     private fun firePartnerSelected(partner: Partner) {
         logg.trace { "firePartnerSelected($partner)" }

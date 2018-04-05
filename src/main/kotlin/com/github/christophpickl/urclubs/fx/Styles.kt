@@ -2,6 +2,8 @@ package com.github.christophpickl.urclubs.fx
 
 import com.github.christophpickl.kpotpourri.common.logging.LOG
 import javafx.scene.layout.BorderStrokeStyle
+import javafx.scene.paint.Color.FLORALWHITE
+import javafx.scene.paint.Color.WHITE
 import javafx.scene.text.FontWeight
 import tornadofx.*
 
@@ -32,6 +34,7 @@ class Styles : Stylesheet() {
         // COLORS
         val orange = c("#F2412E")
         val orangeBright = c("#F28775")
+        val orangeBrighter = c("#FFA689")
         val white = c("#FFFFFF")
         val greyVeryBright = c("#3B3843")
         val greyBright = c("#292530")
@@ -198,22 +201,16 @@ class Styles : Stylesheet() {
         // =============================================================================================================
 
         tableRowCell {
-            and(even) {
-                // backgroundColor += javafx.scene.paint.Color.GREENYELLOW
-            }
-            and(odd) {
-                // backgroundColor += javafx.scene.paint.Color.AQUA
-            }
             and(hover) {
-                backgroundColor += orangeBright
+                backgroundColor += orangeBrighter
             }
             and(selected) {
-                backgroundColor += orange
+                backgroundColor += orangeBright
             }
             and(empty) {
                 backgroundColor += white
                 tableCell {
-                    borderColor += box(javafx.scene.paint.Color.WHITE)
+                    borderColor += box(WHITE)
                 }
             }
         }

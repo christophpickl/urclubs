@@ -72,3 +72,17 @@
 * in order to know which activities to propose (when "strict time filter" is enabled) because of availability
 * create gcal entry automatically with all necessary metadata and URLs in description
     * for those with booking: first enter with "xxx ???" and then remove "???" when confirmed
+
+
+# Thoughts
+
+* i want to go to EMS
+    * i know when approx i want to go
+    * i need to have enough credits
+    * only specific studios, the ones i like/already liked/visited (maybe also "unvisted" down below)
+
+* i want to mark an activity as "todo"
+    * later on i want to scroll through that list
+    
+* i want to mark some partners/activities as top favourite
+    * later on i want to re-visit those

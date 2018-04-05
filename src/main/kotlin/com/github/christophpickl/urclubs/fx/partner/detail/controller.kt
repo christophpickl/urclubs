@@ -6,6 +6,7 @@ import com.github.christophpickl.urclubs.domain.partner.PartnerImage
 import com.github.christophpickl.urclubs.domain.partner.PartnerService
 import com.github.christophpickl.urclubs.domain.partner.PartnerUpdatedEvent
 import com.github.christophpickl.urclubs.fx.ImageFormat
+import com.github.christophpickl.urclubs.fx.OpenWebsiteFXEvent
 import com.github.christophpickl.urclubs.fx.partner.CurrentPartnerFx
 import com.github.christophpickl.urclubs.persistence.domain.PartnerDbo
 import com.github.christophpickl.urclubs.service.PrefsManager
@@ -15,6 +16,7 @@ import javafx.scene.control.Alert
 import javafx.stage.FileChooser
 import tornadofx.*
 import java.io.File
+import java.net.URLEncoder
 import java.util.prefs.Preferences
 
 class PartnerFxController : Controller() {
@@ -29,8 +31,11 @@ class PartnerFxController : Controller() {
     init {
         prefs = PartnerFxControllerPreferences(prefsManager.newPrefs(javaClass))
 
-//        subscribe<PartnerSelectedEvent> { _ ->
-//        }
+        subscribe<OpenAddressFXEvent> {
+            val encodedAddress = URLEncoder.encode(it.address, "UTF-8")
+            fire(OpenWebsiteFXEvent(url = "https://www.google.com/maps/search/?api=1&query=$encodedAddress"))
+        }
+
         subscribe<RequestPartnerSaveFXEvent> {
             service.update(currentPartner.toPartner())
         }

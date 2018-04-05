@@ -1,10 +1,8 @@
 
 * UI: change hover table color; selected light orange, und hover noch lighter machen
 * UI: on change, then table row order changes? by default, if rows are equal, should order by name
-* IDEA: google maps link fuer adresse
-* ? evtl adresse in table rendern?
 * when tag "crosstraining" => if category not set, set to workout
-* name input field 50px breiter 
+* change table vertical borders color
 
 # Grob Plan
 

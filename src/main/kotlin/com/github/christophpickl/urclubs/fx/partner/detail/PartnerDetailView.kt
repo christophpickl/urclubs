@@ -20,6 +20,7 @@ class PartnerDetailView : View() {
 
     private val logg = LOG {}
     private val currentPartner: CurrentPartnerFx by inject()
+    private val widthOfFormContainingName = 350.0
 
     override val root = gridpane {
         addClass(Styles.partnerDetailPanel)
@@ -53,9 +54,8 @@ class PartnerDetailView : View() {
                 }
             }
             form {
-                val formWidth = 300.0
-                prefWidth = formWidth
-                minWidth = formWidth
+                prefWidth = widthOfFormContainingName
+                minWidth = widthOfFormContainingName
                 gridpaneConstraints {
                     vgrow = Priority.ALWAYS
                     hgrow = Priority.NEVER
@@ -119,7 +119,11 @@ class PartnerDetailView : View() {
                         label { bind(currentPartner.tags) }
                     }
                     field("Address") {
-                        label { bind(currentPartner.address) }
+                        hyperlink {
+                            textProperty().bind(currentPartner.address)
+                            enableWhen { currentPartner.address.isNotEmpty }
+                            setOnAction { fire(OpenAddressFXEvent(address = currentPartner.original.addresses.first())) }
+                        }
                     }
                     field("Visits") {
                         hbox {

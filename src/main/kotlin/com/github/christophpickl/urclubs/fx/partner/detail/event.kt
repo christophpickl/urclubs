@@ -10,3 +10,5 @@ object RequestPartnerSaveFXEvent : FXEvent()
 class PartnerUpdatedFXEvent(val partner: Partner) : FXEvent()
 
 class ChoosePictureFXEvent(val requestor: View) : FXEvent()
+
+class OpenAddressFXEvent(val address: String) : FXEvent()
