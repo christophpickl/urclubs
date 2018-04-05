@@ -1,8 +1,8 @@
 package com.github.christophpickl.urclubs.domain.partner
 
-import com.github.christophpickl.urclubs.HasOrder
-import com.github.christophpickl.urclubs.OrderedEnumCompanion
-import com.github.christophpickl.urclubs.OrderedEnumCompanion2
+import com.github.christophpickl.urclubs.domain.HasOrder
+import com.github.christophpickl.urclubs.domain.OrderedEnumCompanion
+import com.github.christophpickl.urclubs.domain.OrderedEnumCompanion2
 import com.github.christophpickl.urclubs.domain.activity.FinishedActivity
 import com.github.christophpickl.urclubs.domain.activity.toFinishedActivity
 import com.github.christophpickl.urclubs.domain.activity.toFinishedActivityDbo

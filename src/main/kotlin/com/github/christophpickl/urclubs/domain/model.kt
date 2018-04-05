@@ -1,4 +1,4 @@
-package com.github.christophpickl.urclubs
+package com.github.christophpickl.urclubs.domain
 
 interface HasOrder {
     val order: Int

@@ -29,8 +29,4 @@ class MainModule : AbstractModule() {
         install(ServiceModule())
     }
 
-//    @Provides
-//    @Singleton
-//    fun provideFoo() = Foo()
-
 }

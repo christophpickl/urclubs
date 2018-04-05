@@ -14,7 +14,6 @@
 # TODOs
 
 1. Pre One
-    1. !!! BUG: manchmal funktioniert speichern einfach nicht
     1. !! FIX: myclubs caching
     1. ! style: context menu!, scrollbar 
     1. in partner detail view: add button to artificially increase visit counts (reason: only past 70s are synced :-()
