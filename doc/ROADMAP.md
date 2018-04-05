@@ -9,12 +9,13 @@
 1. Three
     1. Book Activities
     1. Recommend Activities
+    1. show save confirm dialog on changes (detect dirty view) 
 
 # TODOs
 
 1. Pre One
     1. !! FIX: myclubs caching
-    1. ! style: context menu!, scrollbar 
+    1. ! style: scrollbar 
     1. in partner detail view: add button to artificially increase visit counts (reason: only past 70s are synced :-()
 
 1. Ad One

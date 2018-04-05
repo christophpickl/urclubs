@@ -35,6 +35,7 @@ class Styles : Stylesheet() {
         val greyBright = c("#292530")
         val greyDark = c("#231F2A")
 
+
         object Colors {
             val interactiveNormal = greyBright
             val interactiveHover = greyVeryBright
@@ -115,10 +116,31 @@ class Styles : Stylesheet() {
             }
         }
 
+        val evenOddGrey = mixin {
+            and(even) {
+                backgroundColor += greyVeryBright
+            }
+            and(odd) {
+                backgroundColor += greyBright
+            }
+        }
+
         val theBigThree = mixin {
             +flat
             +orangeBorder
             +backgroundHoverColors
+        }
+
+        contextMenu {
+            backgroundColor += greyDark
+            menuItem {
+                and(hover) {
+                    backgroundColor += orange
+                }
+                label {
+                    textFill = white
+                }
+            }
         }
 
         textArea {
@@ -179,7 +201,8 @@ class Styles : Stylesheet() {
                 and(odd) {
                     backgroundColor += greyBright
                 }
-                and(hover) { // order matters!
+                and(hover) {
+                    // order matters!
                     backgroundColor += orange
                 }
             }

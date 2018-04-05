@@ -76,9 +76,12 @@ class PartnersView : View() {
 
         columnResizePolicy = SmartResize.POLICY
         contextmenu {
-            item(name = "Ignore") {
+            item(name = "Ignore Partner") {
                 action { fire(IgnorePartnerFXEvent(selectedItem!!)) }
             }
+//            item(name = "Add Past Activity") {
+//                action { fire(AddPastActivity(selectedItem!!)) }
+//            }
         }
     }
 
