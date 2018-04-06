@@ -59,7 +59,6 @@ class MyMenuBar(
 ) : MenuBar() {
 
     init {
-        isUseSystemMenuBar = true
         menu("Application") {
             item("About").action {
                 controller.doFire(ShowAboutFXEvent)
