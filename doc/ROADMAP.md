@@ -1,8 +1,8 @@
 
-* UI: change hover table color; selected light orange, und hover noch lighter machen
 * UI: on change, then table row order changes? by default, if rows are equal, should order by name
 * when tag "crosstraining" => if category not set, set to workout
 * change table vertical borders color
+* rating as rendered star icons
 
 # Grob Plan
 
@@ -41,7 +41,7 @@
 
 ## High
 
-1. proper exception handling
+* proper exception handling
 * show save confirm dialog on changes (detect dirty view)
 * BIZ: sync more Partner details (description, ...)
 * add new properties: 
@@ -52,6 +52,7 @@
 
 ## Med
 
+* Categories themselves can be rated
 * rethink myclubs API for searching activity (isnt activityID only enough? how does API work?)
 * UI: style: scrollbar
 * UX: on save, give some feedback
