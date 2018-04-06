@@ -98,7 +98,7 @@ class HtmlParser {
                 name = doc.safeSelectFirst("div.storyhl > h1").text(),
                 description = doc.safeSelectFirst("p.partner__intro__info__text").text(),
                 addresses = doc.select("a.partner__places__list__item").map { it.text() },
-                linkPartnerSite = doc.safeSelectFirst("a.partner__intro__info__data__web").attr("href"),
+            linkPartnerSite = doc.safeSelectFirst("a.partner__intro__info__data__web").attr("href").trim(),
                 tags = doc.select("div.tags--small > span.tags__tag").map { it.text() },
                 upcomingActivities = parsePartnerUpcomingActivities(doc.select("div.category__upcoming__content"))
         )
