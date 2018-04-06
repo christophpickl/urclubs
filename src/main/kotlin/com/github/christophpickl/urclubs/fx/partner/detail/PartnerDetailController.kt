@@ -20,18 +20,19 @@ import java.io.File
 import java.net.URLEncoder
 import java.util.prefs.Preferences
 
-class PartnerFxController : Controller() {
+class PartnerDetailController : Controller() {
 
     private val logg = LOG {}
     private val service: PartnerService by di()
     private val prefsManager: PrefsManager by di()
-    private val prefs: PartnerFxControllerPreferences
+    private val prefs: PartnerDetailPreferences
     private val detailView: PartnerDetailView by inject()
     private val bus: EventBus by di()
     private val currentPartner: CurrentPartnerFx by inject()
 
     init {
-        prefs = PartnerFxControllerPreferences(prefsManager.newPrefs(javaClass))
+        bus.register(this)
+        prefs = PartnerDetailPreferences(prefsManager.newPrefs(javaClass))
 
         subscribe<OpenAddressFXEvent> {
             val encodedAddress = URLEncoder.encode(it.address, "UTF-8")
@@ -63,7 +64,6 @@ class PartnerFxController : Controller() {
                 }
             }
         }
-        bus.register(this)
 
         currentPartner.addresses.addListener(ListChangeListener<String> {
             println("change: ${it.list}")
@@ -95,7 +95,7 @@ class PartnerFxController : Controller() {
 }
 
 
-private class PartnerFxControllerPreferences(private val pref: Preferences) {
+private class PartnerDetailPreferences(private val pref: Preferences) {
 
     var choosenPath: String
         get() = pref.get("choosenPath", System.getProperty("user.home"))
