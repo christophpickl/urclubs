@@ -1,7 +1,6 @@
 
 * UI: on change, then table row order changes? by default, if rows are equal, should order by name
 * Caused by: java.net.URISyntaxException: Illegal character in path at index 25: http://www.lenokyoga.com/ 
-* new category: Sport (tennis, etc)
 * how to get older events from myclubs api?
 
 # Grob Plan

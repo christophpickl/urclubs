@@ -260,5 +260,6 @@ enum class CategoryDbo {
     HEALTH,
     OTHER,
     PILATES,
+    SPORT,
     WATER,
 }
