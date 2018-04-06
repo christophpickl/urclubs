@@ -3,6 +3,10 @@
 * when tag "crosstraining" => if category not set, set to workout
 * change table vertical borders color
 * rating as rendered star icons
+* addresses should be ignorable
+* Caused by: java.net.URISyntaxException: Illegal character in path at index 25: http://www.lenokyoga.com/ 
+* new category: Sport (tennis, etc)
+* how to get older events from myclubs api?
 
 # Grob Plan
 
@@ -15,18 +19,19 @@
 
 ## Must
 
-1. !! FIX: myclubs caching
-1. !! FILTER:
+* !! FIX: myclubs caching
+* proper exception handling
+* !! FILTER:
     * only wishlist/favourit
     * rating (is bigger/lower/equals)
     * remainingCredits/totalVisits (lower, equal, bigger, not)
     * think about how to "smart filter" => predefined queries (SQL?)
-1. ! when sync is done, request focus for confirm panel
-1. ! splash screen doesnt go away
-1. ! UI: get mac menubar working
-1. UI: improve sync progress dialog UI (show indeterministic progress Bar; NO listener/event thing)
-1. UI: ad partner table fill FULL colored rows based on rating
-1. UI: colorize remaining credits (green-red much-few)
+* ! when sync is done, request focus for confirm panel
+* ! splash screen doesnt go away
+* ! UI: get mac menubar working
+* UI: improve sync progress dialog UI (show indeterministic progress Bar; NO listener/event thing)
+* UI: ad partner table fill FULL colored rows based on rating
+* UI: colorize remaining credits (green-red much-few)
 
 ## Big Ideas
 
@@ -41,7 +46,6 @@
 
 ## High
 
-* proper exception handling
 * show save confirm dialog on changes (detect dirty view)
 * BIZ: sync more Partner details (description, ...)
 * add new properties: 

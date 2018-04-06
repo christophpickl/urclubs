@@ -11,7 +11,7 @@ object PartnerSyncerPostProcessor {
     fun process(partner: Partner, detailed: PartnerDetailHtmlModel): Partner {
         var processed = partner.copy(
             category = processCategory(detailed),
-            ignored = detailed.tags.contains("Exklusiv für Frauen")
+            ignored = detailed.tags.contains("Exklusiv für Frauen") // TODO i don't think that ALL courses are only for women... soo.... execute SQL in PROD DB and change
         )
         if (processed.category == Category.EMS) {
             processed = processed.copy(maxCredits = Partner.DEFAULT_MAX_CREDITS_EMS)
