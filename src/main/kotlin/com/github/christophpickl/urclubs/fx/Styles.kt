@@ -2,7 +2,6 @@ package com.github.christophpickl.urclubs.fx
 
 import com.github.christophpickl.kpotpourri.common.logging.LOG
 import javafx.scene.layout.BorderStrokeStyle
-import javafx.scene.paint.Color.FLORALWHITE
 import javafx.scene.paint.Color.WHITE
 import javafx.scene.text.FontWeight
 import tornadofx.*
@@ -105,14 +104,14 @@ class Styles : Stylesheet() {
             }
         }
 
-        val evenOddGrey = mixin {
-            and(even) {
-                backgroundColor += greyVeryBright
-            }
-            and(odd) {
-                backgroundColor += greyBright
-            }
-        }
+//        val evenOddGrey = mixin {
+//            and(even) {
+//                backgroundColor += greyVeryBright
+//            }
+//            and(odd) {
+//                backgroundColor += greyBright
+//            }
+//        }
 
         val theBigThree = mixin {
             +flat

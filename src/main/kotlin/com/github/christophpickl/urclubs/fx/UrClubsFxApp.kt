@@ -11,6 +11,7 @@ import com.github.christophpickl.urclubs.service.QuitManager
 import com.google.inject.Guice
 import javafx.stage.Stage
 import tornadofx.*
+import java.awt.SplashScreen
 import kotlin.reflect.KClass
 
 // official page ... https://github.com/edvin/tornadofx
@@ -41,6 +42,11 @@ class UrClubsFxApp : App(
     }
 
     override fun start(stage: Stage) {
+        SplashScreen.getSplashScreen()?.let {
+            log.debug { "Close splash screen." }
+            it.close()
+        }
+
         super.start(stage)
         stage.fillPrimaryScreen()
         fire(ApplicationStartedFxEvent)

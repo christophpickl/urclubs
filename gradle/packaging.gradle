@@ -18,11 +18,12 @@ if (System.properties.getProperty("urclubs.enableMacBundle") == "true") {
 
         javaProperties.put("apple.laf.useScreenMenuBar", "true")
         javaProperties.put("urclubs.isMacApp", "true")
+
         if (System.properties.getProperty("urclubs.production") == "true") {
-            println "[URCLUBS] macApp going to be PROD mode"
+            println "[URCLUBS] macApp is going to be in PROD mode!"
             javaProperties.put("urclubs.production", "true")
         } else {
-            println "[URCLUBS] macApp going to be DEV mode"
+            println "[URCLUBS] macApp is going to be in DEV mode"
         }
         javaExtras.put("-splash:\$APP_ROOT/Contents/Resources/splashscreen.jpg", null)
     }

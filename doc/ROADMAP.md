@@ -1,8 +1,4 @@
 
-* UI: on change, then table row order changes? by default, if rows are equal, should order by name
-* Caused by: java.net.URISyntaxException: Illegal character in path at index 25: http://www.lenokyoga.com/ 
-* how to get older events from myclubs api?
-
 # Grob Plan
 
 1. Filter Partners
@@ -22,7 +18,6 @@
     * remainingCredits/totalVisits (lower, equal, bigger, not)
     * think about how to "smart filter" => predefined queries (SQL?)
 * ! when sync is done, request focus for confirm panel
-* ! splash screen doesnt go away
 * ! UI: get mac menubar working
 * UI: improve sync progress dialog UI (show indeterministic progress Bar; NO listener/event thing)
 * UI: ad partner table fill FULL colored rows based on rating
@@ -41,6 +36,7 @@
 
 ## High
 
+* UI: on change, then table row order changes? by default, if rows are equal, should order by name
 * show save confirm dialog on changes (detect dirty view)
 * BIZ: sync more Partner details (description, ...)
 * add new properties: 
@@ -70,6 +66,7 @@
 
 ## Low
 
+* how to get older events from myclubs api?
 * in choose image file dialogÖ dont display hidden items
 * show number of displayed partners "10/170" based on current filter
 * UI: field labels: make em bold

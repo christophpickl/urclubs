@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-./gradlew clean build loadUrclubsVersion createApp -Durclubs.enableMacBundle=true
+./gradlew loadUrclubsVersion createApp -Durclubs.enableMacBundle=true -x test
 
 #open build/macApp/
 
