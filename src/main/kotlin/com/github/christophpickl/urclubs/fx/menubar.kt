@@ -61,17 +61,18 @@ class MyMenuBar(
     init {
         useSystemMenuBarProperty().set(true)
         menu("Application") {
-            item("Resync Data").action {
-                controller.doFire(SyncRequestFXEvent)
-            }
-
-            item("Clear Caches").action {
-                controller.clearCaches()
-            }
             item("About").action {
                 controller.doFire(ShowAboutFXEvent)
             }
+            separator()
+            item("Resync Data").action {
+                controller.doFire(SyncRequestFXEvent)
+            }
+            item("Clear Caches").action {
+                controller.clearCaches()
+            }
             if (UrclubsConfiguration.IS_NOT_MAC) {
+                separator()
                 item("Quit").action {
                     controller.doFire(QuitFXEvent)
                 }
