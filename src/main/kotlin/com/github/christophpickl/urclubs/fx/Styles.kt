@@ -32,6 +32,8 @@ class Styles : Stylesheet() {
 
         // COLORS
         val orange = c("#F2412E")
+        val red = c("#FF0000")
+        val green = c("#00FF00")
         val orangeBright = c("#F28775")
         val orangeBrighter = c("#FFA689")
         val white = c("#FFFFFF")

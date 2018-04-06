@@ -1,6 +1,7 @@
 package com.github.christophpickl.urclubs.fx.partner.filter
 
 import com.github.christophpickl.urclubs.domain.partner.Category
+import com.github.christophpickl.urclubs.domain.partner.Partner
 
 sealed class CategoryFilter {
 
@@ -23,4 +24,9 @@ sealed class CategoryFilter {
             }
     }
 
+}
+
+data class CategoryFilterPredicate(private val categoryFilter: CategoryFilter.EnumCategory) : FilterPredicate {
+    override fun test(t: Partner) =
+        t.category == categoryFilter.category
 }

@@ -26,14 +26,21 @@ class FilterPartnersController : Controller() {
             logg.trace { "Category filter changed to: ${view.category.selectedItem}" }
             filter()
         }
+        view.visits.predicateProperty.addListener { _ ->
+            logg.trace { "Visits filter changed" }
+            filter()
+        }
     }
 
     private fun filter() {
         val filterName = view.nameField.text
         val categoryFilter = view.category.selectedItem!!
+        val visitsPredicate = view.visits.predicateProperty.get()
 
         if (filterName.isEmpty() &&
-            categoryFilter == CategoryFilter.AnyCategory) {
+            categoryFilter == CategoryFilter.AnyCategory &&
+            visitsPredicate == VisitsInputParser.anyPredicate
+        ) {
             logg.debug { "Resetting filter." }
             fire(ApplyFilterFXEvent.noFilter())
             return
@@ -45,6 +52,9 @@ class FilterPartnersController : Controller() {
         }
         if (categoryFilter is CategoryFilter.EnumCategory) {
             predicates += CategoryFilterPredicate(categoryFilter)
+        }
+        if (visitsPredicate != VisitsInputParser.anyPredicate) {
+            predicates += visitsPredicate
         }
         fire(ApplyFilterFXEvent(Filter.SomeFilter(predicates)))
     }
@@ -74,9 +84,4 @@ interface FilterPredicate : Predicate<Partner>
 private data class NameFilterPredicate(private val filterName: String) : FilterPredicate {
     override fun test(t: Partner) =
         t.name.contains(filterName, ignoreCase = true)
-}
-
-private data class CategoryFilterPredicate(private val categoryFilter: CategoryFilter.EnumCategory) : FilterPredicate {
-    override fun test(t: Partner) =
-        t.category == categoryFilter.category
 }
