@@ -1,8 +1,6 @@
 
+* addresses should be ignorable/removable
 * UI: on change, then table row order changes? by default, if rows are equal, should order by name
-* change table vertical borders color
-* rating as rendered star icons
-* addresses should be ignorable
 * Caused by: java.net.URISyntaxException: Illegal character in path at index 25: http://www.lenokyoga.com/ 
 * new category: Sport (tennis, etc)
 * how to get older events from myclubs api?
@@ -55,6 +53,7 @@
 
 ## Med
 
+* UI: rating as rendered star icons
 * Categories themselves can be rated
 * rethink myclubs API for searching activity (isnt activityID only enough? how does API work?)
 * UI: style: scrollbar
@@ -69,6 +68,7 @@
 * @parseCourses: parse proper time ???
 * BIZ: support activity types: fixed-time, book-now, drop-in
     * @parseInfrastructure: "Book Now", "Drop In" => used to infer type (OPEN, RESERVATION_NEEDED => show phone number)
+* UI change table vertical borders color
 
 ## Low
 

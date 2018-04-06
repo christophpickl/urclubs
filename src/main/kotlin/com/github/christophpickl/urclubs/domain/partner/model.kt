@@ -14,8 +14,7 @@ import java.time.Duration
 import java.time.LocalDateTime
 import java.util.concurrent.atomic.AtomicInteger
 
-data class
-Partner(
+data class Partner(
         val idDbo: Long,
         val idMyc: String, // "JYSvEcpVCR"
 
@@ -149,6 +148,7 @@ Partner(
             copy(
                     shortName = "bad",
                     name = "Bad Ass",
+                addresses = listOf("doublette", "doublette"),
                     rating = Rating.BAD
             )
         }
