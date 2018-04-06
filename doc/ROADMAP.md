@@ -1,6 +1,5 @@
 
 * UI: on change, then table row order changes? by default, if rows are equal, should order by name
-* when tag "crosstraining" => if category not set, set to workout
 * change table vertical borders color
 * rating as rendered star icons
 * addresses should be ignorable

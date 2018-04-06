@@ -7,6 +7,19 @@ import com.google.common.annotations.VisibleForTesting
 
 object PartnerSyncerPostProcessor {
 
+    private val knownTagsToCategory = linkedMapOf(
+        "fitnessstudio" to Category.GYM,
+        "kampfkunst" to Category.WUSHU,
+        "yoga" to Category.YOGA,
+        "fitnesskurse" to Category.WORKOUT,
+        "ems" to Category.EMS,
+        "boxen" to Category.WUSHU,
+        "wassersport" to Category.WATER,
+        "dance" to Category.DANCE,
+        "pilates" to Category.PILATES,
+        "crosstraining" to Category.WORKOUT
+    )
+
     @VisibleForTesting
     fun process(partner: Partner, detailed: PartnerDetailHtmlModel): Partner {
         var processed = partner.copy(
@@ -21,16 +34,9 @@ object PartnerSyncerPostProcessor {
 
     private fun processCategory(detailed: PartnerDetailHtmlModel): Category {
         val loweredTags = detailed.tags.map { it.toLowerCase() }
-        if (loweredTags.anyContains("fitnessstudio")) return Category.GYM
-        if (loweredTags.anyContains("kampfkunst")) return Category.WUSHU
-        if (loweredTags.anyContains("yoga")) return Category.YOGA
-        if (loweredTags.anyContains("fitnesskurse")) return Category.WORKOUT
-        if (loweredTags.anyContains("ems")) return Category.EMS
-        if (loweredTags.anyContains("boxen")) return Category.WUSHU
-        if (loweredTags.anyContains("wassersport")) return Category.WATER
-        if (loweredTags.anyContains("dance")) return Category.DANCE
-        if (loweredTags.anyContains("pilates")) return Category.PILATES
-        return Category.UNKNOWN
+        return knownTagsToCategory.entries.firstOrNull {
+            loweredTags.anyContains(it.key)
+        }?.value ?: Category.UNKNOWN
     }
 
     private fun List<String>.anyContains(search: String) = any { it.contains(search) }
