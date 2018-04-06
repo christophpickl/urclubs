@@ -1,6 +1,7 @@
 /ignore
 /.idea/
 /*.iml
+/build/
 
 *.class
 *.log
