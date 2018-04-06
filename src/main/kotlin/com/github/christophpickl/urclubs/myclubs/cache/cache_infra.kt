@@ -42,7 +42,8 @@ object CacheBuilder {
         }
 
         cacheSpecs.map {
-            @Suppress("UNCHECKED_CAST") it as CacheSpec<Any, Any>
+            @Suppress("UNCHECKED_CAST")
+            it as CacheSpec<Any, Any>
         }.map { entity: CacheSpec<Any, Any> ->
             log.debug { "Registering cache for: $entity" }
             builder = builder.withCache(entity.cacheAlias,
