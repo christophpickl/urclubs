@@ -1,11 +1,13 @@
-[![Kotlin](https://img.shields.io/badge/kotlin-1.2.21-blue.svg)](http://kotlinlang.org)
+[![Kotlin](https://img.shields.io/badge/kotlin-1.2.31-blue.svg)](http://kotlinlang.org)
 [![Travis](https://img.shields.io/travis/christophpickl/urclubs.svg)](https://travis-ci.org/christophpickl/urclubs)
 
 # UrClubs
 
 UrClubs is a 3rd party client for the most famous [MyClubs](https://www.myclubs) sports platform.
 
-See [requirements page](doc/requirements.html) for what this client has to offer additionally to the original website/apps.
+![Application Screenshot](https://raw.githubusercontent.com/christophpickl/urclubs/master/doc/img/screenshot_v5.png "Application Screenshot")
+
+See [requirements page](https://github.com/christophpickl/urclubs/blob/master/doc/REQUIREMENTS.md) for what this client has to offer additionally to the original website/apps.
 
 ## Disclaimer
 
