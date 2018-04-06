@@ -13,6 +13,7 @@ import javafx.geometry.Orientation
 import javafx.geometry.Pos
 import javafx.geometry.VPos
 import javafx.scene.layout.Priority
+import javafx.scene.layout.VBox
 import javafx.util.converter.NumberStringConverter
 import tornadofx.*
 
@@ -21,6 +22,8 @@ class PartnerDetailView : View() {
     private val logg = LOG {}
     private val currentPartner: CurrentPartnerFx by inject()
     private val widthOfFormContainingName = 350.0
+
+    val addressesBox = VBox()
 
     override val root = gridpane {
         addClass(Styles.partnerDetailPanel)
@@ -119,11 +122,7 @@ class PartnerDetailView : View() {
                         label { bind(currentPartner.tags) }
                     }
                     field("Address") {
-                        hyperlink {
-                            textProperty().bind(currentPartner.address)
-                            enableWhen { currentPartner.address.isNotEmpty }
-                            setOnAction { fire(OpenAddressFXEvent(address = currentPartner.original.addresses.first())) }
-                        }
+                        add(addressesBox)
                     }
                     field("Visits") {
                         hbox {

@@ -12,6 +12,7 @@ import com.github.christophpickl.urclubs.persistence.domain.PartnerDbo
 import com.github.christophpickl.urclubs.service.PrefsManager
 import com.google.common.eventbus.EventBus
 import com.google.common.eventbus.Subscribe
+import javafx.collections.ListChangeListener
 import javafx.scene.control.Alert
 import javafx.stage.FileChooser
 import tornadofx.*
@@ -25,6 +26,7 @@ class PartnerFxController : Controller() {
     private val service: PartnerService by di()
     private val prefsManager: PrefsManager by di()
     private val prefs: PartnerFxControllerPreferences
+    private val detailView: PartnerDetailView by inject()
     private val bus: EventBus by di()
     private val currentPartner: CurrentPartnerFx by inject()
 
@@ -62,6 +64,19 @@ class PartnerFxController : Controller() {
             }
         }
         bus.register(this)
+
+        currentPartner.addresses.addListener(ListChangeListener<String> {
+            println("change: ${it.list}")
+            detailView.addressesBox.clear()
+            it.list.forEach { newAddress ->
+                detailView.addressesBox.add(
+                    javafx.scene.control.Hyperlink().apply {
+                        textProperty().set(newAddress)
+                        setOnAction { fire(OpenAddressFXEvent(address = newAddress)) }
+                    }
+                )
+            }
+        })
     }
 
     private fun choosePictureFile(requestor: View): File? = FileChooser().apply {
