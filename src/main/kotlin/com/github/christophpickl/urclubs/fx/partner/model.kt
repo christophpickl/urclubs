@@ -5,12 +5,11 @@ import com.github.christophpickl.urclubs.domain.partner.Category
 import com.github.christophpickl.urclubs.domain.partner.Partner
 import com.github.christophpickl.urclubs.domain.partner.PartnerImage
 import com.github.christophpickl.urclubs.domain.partner.Rating
-import javafx.beans.property.ReadOnlyListWrapper
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleIntegerProperty
+import javafx.beans.property.SimpleListProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.beans.property.SimpleStringProperty
-import javafx.collections.FXCollections
 import tornadofx.*
 
 class CurrentPartnerFx() : ViewModel() {
@@ -21,7 +20,7 @@ class CurrentPartnerFx() : ViewModel() {
 
     val name = SimpleStringProperty()
     val tags = SimpleStringProperty()
-    val addresses = ReadOnlyListWrapper<String>()
+    val addresses = SimpleListProperty<String>()
     val note = SimpleStringProperty()
     val category = SimpleObjectProperty(Category.UNKNOWN)
     val rating = SimpleObjectProperty(Rating.UNKNOWN)
@@ -69,7 +68,7 @@ class CurrentPartnerFx() : ViewModel() {
         linkMyclubs.set(partner.linkMyclubs)
         linkPartner.set(partner.linkPartner)
         tags.set(partner.tagsFormatted)
-        addresses.set(FXCollections.observableList(partner.addresses))
+        addresses.set(partner.addresses.observable())
         totalVisits.set(partner.finishedActivities.size)
         creditsLeftThisPeriod.set(partner.creditsLeftThisPeriod)
     }

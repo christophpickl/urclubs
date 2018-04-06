@@ -23,40 +23,53 @@ import java.util.prefs.Preferences
 class PartnerDetailController : Controller() {
 
     private val logg = LOG {}
-    private val service: PartnerService by di()
-    private val prefsManager: PrefsManager by di()
-    private val prefs: PartnerDetailPreferences
-    private val detailView: PartnerDetailView by inject()
+
     private val bus: EventBus by di()
+    private val partnerService: PartnerService by di()
+    private val prefsManager: PrefsManager by di()
+
+    private val detailView: PartnerDetailView by inject()
     private val currentPartner: CurrentPartnerFx by inject()
+
+    private val prefs: PartnerDetailPreferences
 
     init {
         bus.register(this)
         prefs = PartnerDetailPreferences(prefsManager.newPrefs(javaClass))
 
         subscribe<OpenAddressFXEvent> {
+            logg.debug { "on OpenAddressFXEvent()" }
             val encodedAddress = URLEncoder.encode(it.address, "UTF-8")
             fire(OpenWebsiteFXEvent(url = "https://www.google.com/maps/search/?api=1&query=$encodedAddress"))
         }
 
+        subscribe<RemoveAddressFXEvent> { e ->
+            logg.debug { "on RemoveAddressFXEvent()" }
+            partnerService.update(currentPartner.toPartner().let { partner ->
+                partner.copy(addresses = partner.addresses.toMutableList().apply { remove(e.address) })
+            })
+        }
+
         subscribe<RequestPartnerSaveFXEvent> {
-            service.update(currentPartner.toPartner())
+            logg.debug { "on RequestPartnerSaveFXEvent()" }
+            partnerService.update(currentPartner.toPartner())
         }
 
         subscribe<ChoosePictureFXEvent> {
+            logg.debug { "on ChoosePictureFXEvent()" }
             val file = choosePictureFile(it.requestor)
             if (file != null) {
                 prefs.choosenPath = file.parent
                 logg.debug { "Selected new picture: ${file.canonicalPath}" }
                 val format = ImageFormat.byName(file.extension.toLowerCase())
-                        ?: throw Exception("Invalid file extension for: ${file.name} (supported: ${ImageFormat.values().joinToString()})")
+                    ?: throw Exception("Invalid file extension for: ${file.name} (supported: ${ImageFormat.values().joinToString()})")
                 val picture = PartnerImage.FilePicture(file, format)
 
                 if (picture.saveRepresentation.size > PartnerDbo.MAX_PICTURE_BYTES) {
                     alert(
-                            type = Alert.AlertType.ERROR,
-                            header = "Invalid Picture",
-                            content = "Too big file! ${file.humanReadableSize} but max 1MB."
+                        type = Alert.AlertType.ERROR,
+                        header = "Invalid Picture",
+                        content = "Too big file! ${file.humanReadableSize} but max 1MB."
                     )
                 } else {
                     currentPartner.pictureWrapper.set(picture)
@@ -66,13 +79,21 @@ class PartnerDetailController : Controller() {
         }
 
         currentPartner.addresses.addListener(ListChangeListener<String> {
-            println("change: ${it.list}")
+            logg.debug { "on address change()" }
             detailView.addressesBox.clear()
             it.list.forEach { newAddress ->
                 detailView.addressesBox.add(
                     javafx.scene.control.Hyperlink().apply {
                         textProperty().set(newAddress)
                         setOnAction { fire(OpenAddressFXEvent(address = newAddress)) }
+                        contextmenu {
+                            item(name = "Open in Browser") {
+                                setOnAction { fire(OpenAddressFXEvent(address = newAddress)) }
+                            }
+                            item(name = "Remove Address") {
+                                setOnAction { fire(RemoveAddressFXEvent(address = newAddress)) }
+                            }
+                        }
                     }
                 )
             }
@@ -85,11 +106,11 @@ class PartnerDetailController : Controller() {
         extensionFilters.add(FileChooser.ExtensionFilter("Images", "*.png", "*.jpg", "*.jpeg"))
     }.showOpenDialog(requestor.currentWindow)
 
-
     @Subscribe
     fun onPartnerUpdatedEvent(event: PartnerUpdatedEvent) {
         logg.debug { "onPartnerUpdatedEvent() redispatching guice event as javafx event" }
         fire(PartnerUpdatedFXEvent(event.partner))
+        currentPartner.addresses.set(event.partner.addresses.observable())
     }
 
 }

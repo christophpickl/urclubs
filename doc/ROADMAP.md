@@ -1,5 +1,4 @@
 
-* addresses should be ignorable/removable
 * UI: on change, then table row order changes? by default, if rows are equal, should order by name
 * Caused by: java.net.URISyntaxException: Illegal character in path at index 25: http://www.lenokyoga.com/ 
 * new category: Sport (tennis, etc)
