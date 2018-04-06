@@ -11,13 +11,15 @@ class MainView : View() {
     private val partnersView: PartnersView by inject()
     private val menuBarController: MenuBarController by inject()
 
-    override val root = vbox {
+    override val root = borderpane {
         addClass(Styles.mainPanel)
         style {
             if (UrclubsConfiguration.Development.COLOR_MODE) backgroundColor += javafx.scene.paint.Color.GREENYELLOW
         }
 
-        add(MyMenuBar(menuBarController))
+        top {
+            add(MyMenuBar(menuBarController))
+        }
 
         borderpane {
             vgrow = Priority.ALWAYS

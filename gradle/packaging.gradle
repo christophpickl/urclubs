@@ -14,9 +14,8 @@ if (System.properties.getProperty("urclubs.enableMacBundle") == "true") {
 
         mainClassName = myMainClassName
         icon = "src/main/buildMac/logo.icns"
-        jvmVersion = "1.8+"
+        jvmVersion = "1.8"
 
-        javaProperties.put("apple.laf.useScreenMenuBar", "true")
         javaProperties.put("urclubs.isMacApp", "true")
 
         if (System.properties.getProperty("urclubs.production") == "true") {
