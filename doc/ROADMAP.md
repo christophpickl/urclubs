@@ -18,10 +18,10 @@
     * remainingCredits/totalVisits (lower, equal, bigger, not)
     * think about how to "smart filter" => predefined queries (SQL?)
 * ! when sync is done, request focus for confirm panel
-* ! UI: get mac menubar working
 * UI: improve sync progress dialog UI (show indeterministic progress Bar; NO listener/event thing)
 * UI: ad partner table fill FULL colored rows based on rating
 * UI: colorize remaining credits (green-red much-few)
+* UI: get mac menubar working ... javafx and macapp bundle dont play well together :-/ 
 
 ## Big Ideas
 

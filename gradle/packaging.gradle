@@ -17,7 +17,7 @@ if (System.properties.getProperty("urclubs.enableMacBundle") == "true") {
         jvmVersion = "1.8"
 
         javaProperties.put("urclubs.isMacApp", "true")
-
+        javaProperties.put("apple.laf.useScreenMenuBar", "true") // TODO does this work?
         if (System.properties.getProperty("urclubs.production") == "true") {
             println "[URCLUBS] macApp is going to be in PROD mode!"
             javaProperties.put("urclubs.production", "true")
@@ -27,10 +27,10 @@ if (System.properties.getProperty("urclubs.enableMacBundle") == "true") {
         javaExtras.put("-splash:\$APP_ROOT/Contents/Resources/splashscreen.jpg", null)
     }
 
-    //noinspection GroovyAssignabilityCheck
     task copySplashscreenForMacApp(type: Copy) {
         from 'src/main/buildMac/splashscreen.jpg'
         into "build/macApp/${myAppName}.app/Contents/Resources"
     }
+
     createApp.dependsOn copySplashscreenForMacApp
 }
