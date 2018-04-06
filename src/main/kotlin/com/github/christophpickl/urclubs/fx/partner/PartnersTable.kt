@@ -31,11 +31,13 @@ class PartnersTable : TableView<Partner>() {
         column("Name", Partner::name).minWidth(200.0).maxWidth(400.0)
 
         imageColumn(Partner::favourited) { it.favouriteImage }
+
         imageColumn(Partner::wishlisted) { it.wishlistedImage }
 
         column("Category") { features: TableColumn.CellDataFeatures<Partner, String> ->
             ReadOnlyStringWrapper(features.value.category.label)
         }.fixedWidth(100.0)
+
         column("Rating", Partner::rating).cellFormat {
             graphic = hbox {
                 label(rowItem.rating.label)
@@ -44,11 +46,14 @@ class PartnersTable : TableView<Partner>() {
                 }
             }
         }
+
         column("Credits") { features: TableColumn.CellDataFeatures<Partner, String> ->
             val partner = features.value
             ReadOnlyStringWrapper("${partner.creditsLeftThisPeriod}/${partner.maxCredits}")
         }.fixedWidth(60)
-        column("Visits", Partner::totalVisits).fixedWidth(48)
+
+        column("Visits", Partner::totalVisits).fixedWidth(52)
+
         column("Last V.", Partner::lastVisitInDays).apply {
             fixedWidth(100.0)
         }.cellFormat {
@@ -56,9 +61,11 @@ class PartnersTable : TableView<Partner>() {
                 label(rowItem.lastVisitInDaysFormatted)
             }
         }
+
         column("Address") { features: TableColumn.CellDataFeatures<Partner, String> ->
             ReadOnlyStringWrapper(features.value.addresses.firstOrNull() ?: "")
         }
+
         column("Note", Partner::note)
 
         columnResizePolicy = SmartResize.POLICY
