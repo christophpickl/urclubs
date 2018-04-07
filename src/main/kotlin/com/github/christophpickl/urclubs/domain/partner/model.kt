@@ -224,6 +224,11 @@ enum class Rating(
     BAD("Bad", 0, 130);
 
     object Ordered : OrderedEnumCompanion<Rating>(Rating.values())
+
+    companion object {
+        val maxIntValue = SUPERB.intValue
+        val minIntValue = UNKNOWN.intValue
+    }
 }
 
 enum class Category(

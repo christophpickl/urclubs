@@ -13,7 +13,7 @@ import org.testng.annotations.Test
 @Test
 class IntScriptParserTest {
 
-    private val extractFromPartner = { it: Partner -> it.totalVisits }
+    private val extractTotalVisitsFromPartner = { it: Partner -> it.totalVisits }
 
     fun `Given empty '' Then return any predicate`() {
         assertThat(parse("")).isAnyPredicate()
@@ -84,15 +84,53 @@ class IntScriptParserTest {
         assertInvalid("=a")
     }
 
-    private inline fun withPredicate(input: String, func: FilterPredicate.() -> Unit) {
-        val predicate = parse(input)
+    fun `Given minValue of 2`() {
+        val parser = parser(IntScriptParserConfig.empty.copy(minValue = 2))
 
-        assertThat(predicate).isNotNull
-        func(predicate!!)
+        assertThat(parser.parse("")).isAnyPredicate()
+        assertThat(parser.parse("1")).isNull()
+        assertThat(parser.parse(">1")).isNotNull
+        assertThat(parser.parse("2")).isNotNull
+        assertThat(parser.parse("=2")).isNotNull
+        assertThat(parser.parse("3")).isNotNull
+        assertThat(parser.parse("<3")).isNotNull
+
+        assertThat(parser.parse("<2")).isNull() // invalid operator
     }
 
-    private fun assertInvalid(input: String) {
-        val predicate = parse(input)
+    fun `Given maxValue of 2`() {
+        val parser = parser(IntScriptParserConfig.empty.copy(maxValue = 2))
+
+        assertThat(parser.parse("")).isAnyPredicate()
+        assertThat(parser.parse("1")).isNotNull
+        assertThat(parser.parse(">1")).isNotNull
+        assertThat(parser.parse("2")).isNotNull
+        assertThat(parser.parse("!2")).isNotNull
+        assertThat(parser.parse("3")).isNull()
+        assertThat(parser.parse("<3")).isNotNull
+
+        assertThat(parser.parse(">2")).isNull() // invalid operator
+    }
+
+    // domain
+
+    private fun parser(config: IntScriptParserConfig = IntScriptParserConfig.empty) = IntScriptParser(
+        intExtractor = extractTotalVisitsFromPartner,
+        config = config
+    )
+
+    private fun parse(input: String, config: IntScriptParserConfig = IntScriptParserConfig.empty) = parser().parse(input)
+
+    private fun partner(visits: Int) = Partner.testInstance.copy(finishedActivities = IntRange(1, visits).map { FinishedActivity.testInstance })
+
+    // test infra
+
+    private fun <T> PredicateAssert<T>.isAnyPredicate() {
+        isSameAs(Filter.anyPredicate)
+    }
+
+    private fun assertInvalid(input: String, config: IntScriptParserConfig = IntScriptParserConfig.empty) {
+        val predicate = parse(input, config)
 
         assertThat(predicate).isNull()
     }
@@ -101,12 +139,11 @@ class IntScriptParserTest {
         assertThat(test(partner(visits))).isEqualTo(expected)
     }
 
-    private fun partner(visits: Int) = Partner.testInstance.copy(finishedActivities = IntRange(1, visits).map { FinishedActivity.testInstance })
+    private inline fun withPredicate(input: String, func: FilterPredicate.() -> Unit) {
+        val predicate = parse(input)
 
-    private fun parse(input: String) = IntScriptParser(extractFromPartner).parse(input)
-
-    private fun <T> PredicateAssert<T>.isAnyPredicate() {
-        isSameAs(Filter.anyPredicate)
+        assertThat(predicate).isNotNull
+        func(predicate!!)
     }
 
 }

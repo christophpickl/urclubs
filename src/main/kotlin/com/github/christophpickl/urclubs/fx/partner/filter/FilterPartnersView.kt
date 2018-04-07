@@ -1,10 +1,13 @@
 package com.github.christophpickl.urclubs.fx.partner.filter
 
+import com.github.christophpickl.urclubs.domain.partner.Rating
 import com.github.christophpickl.urclubs.fx.Styles
 import com.github.christophpickl.urclubs.fx.demoLaunchJavaFx
 import com.github.christophpickl.urclubs.fx.partner.filter.flags.FavouritedFilterButton
 import com.github.christophpickl.urclubs.fx.partner.filter.flags.WishlistedFilterButton
 import com.github.christophpickl.urclubs.fx.partner.filter.script.FilterScriptField
+import com.github.christophpickl.urclubs.fx.partner.filter.script.IntScriptParser
+import com.github.christophpickl.urclubs.fx.partner.filter.script.IntScriptParserConfig
 import tornadofx.*
 
 class FilterPartnersView : View() {
@@ -32,11 +35,14 @@ class FilterPartnersView : View() {
         selectionModel.select(CategoryFilter.AnyCategory)
     }
 
-    val visits = FilterScriptField({ totalVisits }).apply {
+    val visits = FilterScriptField(IntScriptParser({ totalVisits })).apply {
         promptText = "Any"
     }
 
-    val rating = FilterScriptField({ rating.intValue }).apply {
+    val rating = FilterScriptField(IntScriptParser({ rating.intValue }, IntScriptParserConfig.empty.copy(
+        minValue = Rating.minIntValue,
+        maxValue = Rating.maxIntValue
+    ))).apply {
         promptText = "Any"
     }
 
