@@ -1,8 +1,12 @@
 
 # Grob Plan
 
-1. Upcoming Activities (Fetch+Filter)
-    * persisted as stand alone entities (OneMany and ManyOne
+1. Upcoming Activities
+    * implement myclubs fetch/parser logic
+    * implement sync logic
+        - persisted as stand alone entities (OneMany and ManyOne)
+    * implement UI list/table
+    * implement filter
     * BUT: when fetch for partners, always only fetch future activities (not those happened in past)
 1. GCal Integration
     * create dates (prefilled metadata)
