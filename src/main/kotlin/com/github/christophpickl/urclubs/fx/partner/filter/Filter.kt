@@ -5,6 +5,12 @@ import java.util.function.Predicate
 
 sealed class Filter {
 
+    companion object {
+        val anyPredicate = object : FilterPredicate {
+            override fun test(t: Partner) = true
+        }
+    }
+
     object NoFilter : Filter() {
         val all = { _: Partner -> true }
     }
@@ -23,6 +29,10 @@ sealed class Filter {
 }
 
 interface FilterPredicate : Predicate<Partner>
+
+data class SimpleFilterPredicate(private val check: (Partner) -> Boolean) : FilterPredicate {
+    override fun test(partner: Partner) = check(partner)
+}
 
 interface FilterSpec {
     val isIrrelevant: Boolean

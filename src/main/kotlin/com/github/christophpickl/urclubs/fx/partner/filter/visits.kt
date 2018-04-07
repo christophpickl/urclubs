@@ -1,14 +1,13 @@
 package com.github.christophpickl.urclubs.fx.partner.filter
 
 import com.github.christophpickl.kpotpourri.common.logging.LOG
-import com.github.christophpickl.urclubs.domain.partner.Partner
 
 class VisitsFilterSpec(private val view: FilterPartnersView) : FilterSpec {
 
     private val log = LOG {}
     private val visitsPredicate get() = view.visits.predicateProperty.get()
 
-    override val isIrrelevant: Boolean get() = visitsPredicate == VisitsInputParser.anyPredicate
+    override val isIrrelevant: Boolean get() = visitsPredicate == Filter.anyPredicate
 
     override fun register(trigger: FilterTrigger) {
         view.visits.predicateProperty.addListener { _ ->
@@ -18,7 +17,7 @@ class VisitsFilterSpec(private val view: FilterPartnersView) : FilterSpec {
     }
 
     override fun addToPredicates(predicates: MutableList<FilterPredicate>) {
-        if (visitsPredicate != null && visitsPredicate != VisitsInputParser.anyPredicate) {
+        if (visitsPredicate != null && visitsPredicate != Filter.anyPredicate) {
             predicates += visitsPredicate
         }
     }
@@ -28,19 +27,18 @@ class VisitsFilterSpec(private val view: FilterPartnersView) : FilterSpec {
 object VisitsInputParser {
 
     private val log = LOG {}
-    val anyPredicate = VisitFilterPredicate({ true })
 
-    fun parse(rawInput: String): VisitFilterPredicate? {
+    fun parse(rawInput: String): FilterPredicate? {
         log.trace { "parse(rawInput='$rawInput')" }
 
         val input = rawInput.replace(" ", "")
         if (input.isEmpty()) {
-            return anyPredicate
+            return Filter.anyPredicate
         }
         try {
             evalScript(input, "=") { filter, value -> filter == value }?.let { return it }
-            input.toIntOrNull()?.let { return VisitFilterPredicate { testee -> it == testee } }
-            evalScript(input, "!=") { filter, value -> filter != value }?.let { return it }
+            input.toIntOrNull()?.let { inputInt -> return SimpleFilterPredicate { testee -> inputInt == testee.totalVisits } }
+            evalScript(input, "!") { filter, value -> filter != value }?.let { return it }
 
             evalScript(input, ">=") { filter, value -> filter >= value }?.let { return it }
             evalScript(input, ">") { filter, value -> filter > value }?.let { return it }
@@ -53,20 +51,16 @@ object VisitsInputParser {
         return null
     }
 
-    private fun evalScript(input: String, pattern: String, test: (Int, Int) -> Boolean): VisitFilterPredicate? {
+    private fun evalScript(input: String, pattern: String, test: (Int, Int) -> Boolean): FilterPredicate? {
         if (!input.startsWith(pattern)) {
             return null
         }
-        val leftOver = input.substring(pattern.length)
-        if (leftOver.isEmpty()) {
+        val inputAfterPattern = input.substring(pattern.length)
+        if (inputAfterPattern.isEmpty()) {
             return null
         }
-        val leftOverInt = leftOver.toIntOrNull() ?: return null
-        return VisitFilterPredicate({ testee -> test(testee, leftOverInt) })
+        val inputInt = inputAfterPattern.toIntOrNull() ?: return null
+        return SimpleFilterPredicate({ testee -> test(testee.totalVisits, inputInt) })
     }
 
-}
-
-data class VisitFilterPredicate(private val check: (Int) -> Boolean) : FilterPredicate {
-    override fun test(t: Partner) = check(t.totalVisits)
 }

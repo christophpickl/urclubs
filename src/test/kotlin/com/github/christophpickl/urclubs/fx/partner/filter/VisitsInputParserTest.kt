@@ -33,8 +33,8 @@ class VisitsInputParserTest {
         }
     }
 
-    fun `Given '!= 0'`() {
-        withPredicate("!= 0") {
+    fun `Given '! 0'`() {
+        withPredicate("! 0") {
             assertPredicateMatches(0, false)
             assertPredicateMatches(1, true)
         }
@@ -80,7 +80,7 @@ class VisitsInputParserTest {
         assertInvalid("=a")
     }
 
-    private inline fun withPredicate(input: String, func: VisitFilterPredicate.() -> Unit) {
+    private inline fun withPredicate(input: String, func: FilterPredicate.() -> Unit) {
         val predicate = VisitsInputParser.parse(input)
 
         assertThat(predicate).isNotNull
@@ -93,15 +93,14 @@ class VisitsInputParserTest {
         assertThat(predicate).isNull()
     }
 
-    private fun VisitFilterPredicate.assertPredicateMatches(visits: Int, expected: Boolean) {
+    private fun FilterPredicate.assertPredicateMatches(visits: Int, expected: Boolean) {
         assertThat(test(partner(visits))).isEqualTo(expected)
     }
 
     private fun partner(visits: Int) = Partner.testInstance.copy(finishedActivities = IntRange(1, visits).map { FinishedActivity.testInstance })
 
     private fun <T> PredicateAssert<T>.isAnyPredicate() {
-        isSameAs(VisitsInputParser.anyPredicate)
+        isSameAs(Filter.anyPredicate)
     }
 
 }
-

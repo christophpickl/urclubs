@@ -24,7 +24,7 @@ class FilterScriptField() : javafx.scene.control.TextField() {
     }
 
     private val log = LOG {}
-    val predicateProperty = SimpleObjectProperty<VisitFilterPredicate>()
+    val predicateProperty = SimpleObjectProperty<FilterPredicate>()
 
     init {
         onEscape {

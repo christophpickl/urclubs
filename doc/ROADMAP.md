@@ -4,10 +4,7 @@
 # Grob Plan
 
 1. Filter Partners
-    * creds left
     * rating
-    * favo
-    * wished
     * when enter search text, not only look for 'name' but + note + addresses (+ link?)
 1. Upcoming Activities (Fetch+Filter)
     * persisted as stand alone entities (OneMany and ManyOne
@@ -62,6 +59,7 @@
 
 ## Med
 
+* NOPE YET: filter by credits left
 * UI: rating as rendered star icons
 * rethink myclubs API for searching activity (isnt activityID only enough? how does API work?)
 * UX: on successfully saved, give some feedback (blink/flash)
