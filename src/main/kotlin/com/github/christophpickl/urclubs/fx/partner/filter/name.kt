@@ -2,7 +2,7 @@ package com.github.christophpickl.urclubs.fx.partner.filter
 
 import com.github.christophpickl.kpotpourri.common.logging.LOG
 import com.github.christophpickl.urclubs.domain.partner.Partner
-import javafx.scene.input.KeyCode
+import com.github.christophpickl.urclubs.onEscape
 
 class NameFilterSpec(private val view: FilterPartnersView) : FilterSpec {
 
@@ -18,11 +18,9 @@ class NameFilterSpec(private val view: FilterPartnersView) : FilterSpec {
     }
 
     override fun register(trigger: FilterTrigger) {
-        view.nameField.setOnKeyPressed { e ->
-            if (e.code == KeyCode.ESCAPE) {
-                log.trace { "Escape hit, resetting name filter." }
-                view.nameField.text = ""
-            }
+        view.nameField.onEscape {
+            log.trace { "Escape hit, resetting name filter." }
+            view.nameField.text = ""
         }
 
         view.nameField.textProperty().addListener { _ ->

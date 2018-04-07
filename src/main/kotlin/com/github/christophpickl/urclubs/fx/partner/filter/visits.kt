@@ -27,39 +27,42 @@ class VisitsFilterSpec(private val view: FilterPartnersView) : FilterSpec {
 
 object VisitsInputParser {
 
-    val anyScript = "any"
+    private val log = LOG {}
     val anyPredicate = VisitFilterPredicate({ true })
 
-    fun parse(input: String): VisitFilterPredicate? {
-        val trimmed = input.replace(" ", "")
-        if (trimmed == anyScript) {
+    fun parse(rawInput: String): VisitFilterPredicate? {
+        log.trace { "parse(rawInput='$rawInput')" }
+
+        val input = rawInput.replace(" ", "")
+        if (input.isEmpty()) {
             return anyPredicate
         }
         try {
-            evalScript(trimmed, "=") { filter, value -> filter == value }?.let { return it }
-            evalScript(trimmed, "!=") { filter, value -> filter != value }?.let { return it }
+            evalScript(input, "=") { filter, value -> filter == value }?.let { return it }
+            input.toIntOrNull()?.let { return VisitFilterPredicate { testee -> it == testee } }
+            evalScript(input, "!=") { filter, value -> filter != value }?.let { return it }
 
-            evalScript(trimmed, ">=") { filter, value -> filter >= value }?.let { return it }
-            evalScript(trimmed, ">") { filter, value -> filter > value }?.let { return it }
+            evalScript(input, ">=") { filter, value -> filter >= value }?.let { return it }
+            evalScript(input, ">") { filter, value -> filter > value }?.let { return it }
 
-            evalScript(trimmed, "<=") { filter, value -> filter <= value }?.let { return it }
-            evalScript(trimmed, "<") { filter, value -> filter < value }?.let { return it }
+            evalScript(input, "<=") { filter, value -> filter <= value }?.let { return it }
+            evalScript(input, "<") { filter, value -> filter < value }?.let { return it }
         } catch (e: Exception) {
             return null
         }
         return null
     }
 
-    private fun evalScript(trimmed: String, pattern: String, test: (Int, Int) -> Boolean): VisitFilterPredicate? {
-        if (!trimmed.startsWith(pattern)) {
+    private fun evalScript(input: String, pattern: String, test: (Int, Int) -> Boolean): VisitFilterPredicate? {
+        if (!input.startsWith(pattern)) {
             return null
         }
-        val leftOver = trimmed.substring(pattern.length)
+        val leftOver = input.substring(pattern.length)
         if (leftOver.isEmpty()) {
             return null
         }
         val leftOverInt = leftOver.toIntOrNull() ?: return null
-        return VisitFilterPredicate({ test(it, leftOverInt) })
+        return VisitFilterPredicate({ testee -> test(testee, leftOverInt) })
     }
 
 }

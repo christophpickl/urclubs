@@ -1,7 +1,9 @@
 package com.github.christophpickl.urclubs.fx.partner.filter
 
+import com.github.christophpickl.kpotpourri.common.logging.LOG
 import com.github.christophpickl.urclubs.fx.Styles
 import com.github.christophpickl.urclubs.fx.demoLaunchJavaFx
+import com.github.christophpickl.urclubs.onEscape
 import javafx.beans.property.SimpleObjectProperty
 import javafx.scene.control.ListCell
 import tornadofx.*
@@ -18,24 +20,29 @@ fun main(args: Array<String>) {
 
 class FilterScriptField() : javafx.scene.control.TextField() {
 
+    private val log = LOG {}
     val predicateProperty = SimpleObjectProperty<VisitFilterPredicate>()
 
     init {
-        // TODO on press ESC set to 'any'
+        onEscape {
+            log.trace { "Escape hit, resetting visits filter." }
+            if (text != "") {
+                text = ""
+            }
+        }
         textProperty().addListener { _ ->
             val predicate = VisitsInputParser.parse(text)
             if (predicate == null) {
                 style {
-                    borderColor += box(Styles.red)
+                    backgroundColor += Styles.redDark
                 }
             } else {
                 predicateProperty.set(predicate)
                 style {
-                    borderColor += box(Styles.green)
+                    backgroundColor += Styles.greyDark
                 }
             }
         }
-        text = VisitsInputParser.anyScript
     }
 }
 

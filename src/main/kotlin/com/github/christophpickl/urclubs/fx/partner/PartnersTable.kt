@@ -21,7 +21,7 @@ class PartnersTable : TableView<Partner>() {
     init {
         addClass(Styles.partnersTable)
 
-        column("Picture", Partner::picture).apply {
+        column("", Partner::picture).apply {
             cellFormat {
                 graphic = imageview(rowItem.picture.fxImageLil)
             }

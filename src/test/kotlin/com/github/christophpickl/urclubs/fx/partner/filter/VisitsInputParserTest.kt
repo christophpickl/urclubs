@@ -5,21 +5,29 @@ import com.github.christophpickl.urclubs.domain.activity.testInstance
 import com.github.christophpickl.urclubs.domain.partner.Partner
 import com.github.christophpickl.urclubs.domain.partner.testInstance
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.PredicateAssert
 import org.testng.annotations.Test
 
 @Test
 class VisitsInputParserTest {
 
-    fun `Given empty '' Then return null`() {
-        assertThat(VisitsInputParser.parse("")).isNull()
+    fun `Given empty '' Then return any predicate`() {
+        assertThat(VisitsInputParser.parse("")).isAnyPredicate()
     }
 
-    fun `Given 'any' Then return any predicate`() {
-        assertThat(VisitsInputParser.parse("any")).isSameAs(VisitsInputParser.anyPredicate)
+    fun `Given whitespace ' ' Then return any predicate`() {
+        assertThat(VisitsInputParser.parse(" ")).isAnyPredicate()
     }
 
     fun `Given '= 0'`() {
         withPredicate("= 0") {
+            assertPredicateMatches(0, true)
+            assertPredicateMatches(1, false)
+        }
+    }
+
+    fun `Given only '0' same as '= 0'`() {
+        withPredicate("0") {
             assertPredicateMatches(0, true)
             assertPredicateMatches(1, false)
         }
@@ -91,4 +99,9 @@ class VisitsInputParserTest {
 
     private fun partner(visits: Int) = Partner.testInstance.copy(finishedActivities = IntRange(1, visits).map { FinishedActivity.testInstance })
 
+    private fun <T> PredicateAssert<T>.isAnyPredicate() {
+        isSameAs(VisitsInputParser.anyPredicate)
+    }
+
 }
+
