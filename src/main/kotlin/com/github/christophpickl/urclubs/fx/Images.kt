@@ -19,7 +19,7 @@ object Images {
         }
     }
 
-    operator fun get(id: ImageId) = imagesMap[id]!!
+    operator fun get(id: ImageId): Image = imagesMap[id]!!
 
     private fun loadImage(id: ImageId): Image {
         log.debug { "loadImage(id=$id)" }

@@ -3,7 +3,6 @@ package com.github.christophpickl.urclubs.fx.partner.filter
 import com.github.christophpickl.urclubs.domain.partner.Partner
 import java.util.function.Predicate
 
-
 sealed class Filter {
 
     object NoFilter : Filter() {

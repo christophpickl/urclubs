@@ -20,6 +20,7 @@
 
 ## Must
 
+* UI: icons for categories (in table, in combobox)
 * !! FIX: myclubs caching
 * ! proper exception handling
 * when sync is done, request focus for confirm panel
@@ -68,6 +69,7 @@
 ## Low
 
 * go through: https://github.com/edvin/tornadofx-samples
+* read javafx tutorial: https://docs.oracle.com/javafx/2/ui_controls/overview.htm
 * create custom about dialog (Stage class, reuse for mac and non-mac)
 * code quality: https://app.codacy.com
 * UI: style: scrollbar

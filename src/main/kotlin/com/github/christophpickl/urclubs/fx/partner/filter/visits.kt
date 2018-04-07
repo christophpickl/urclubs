@@ -18,7 +18,7 @@ class VisitsFilterSpec(private val view: FilterPartnersView) : FilterSpec {
     }
 
     override fun addToPredicates(predicates: MutableList<FilterPredicate>) {
-        if (visitsPredicate != VisitsInputParser.anyPredicate) {
+        if (visitsPredicate != null && visitsPredicate != VisitsInputParser.anyPredicate) {
             predicates += visitsPredicate
         }
     }

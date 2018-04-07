@@ -1,6 +1,8 @@
 package com.github.christophpickl.urclubs.fx.partner.filter
 
 import com.github.christophpickl.kpotpourri.common.logging.LOG
+import com.github.christophpickl.urclubs.fx.partner.filter.flags.FavouritedFilterSpec
+import com.github.christophpickl.urclubs.fx.partner.filter.flags.WishlistedFilterSpec
 import tornadofx.*
 
 class FilterPartnersController : Controller(), FilterTrigger {
@@ -10,7 +12,9 @@ class FilterPartnersController : Controller(), FilterTrigger {
     private val filters = listOf(
         NameFilterSpec(view),
         CategoryFilterSpec(view),
-        VisitsFilterSpec(view)
+        VisitsFilterSpec(view),
+        FavouritedFilterSpec(view),
+        WishlistedFilterSpec(view)
         // ... add more here ...
     )
 
@@ -28,7 +32,10 @@ class FilterPartnersController : Controller(), FilterTrigger {
         }
 
         val predicates = mutableListOf<FilterPredicate>()
-        filters.forEach { it.addToPredicates(predicates) }
+        filters.forEach {
+            it.addToPredicates(predicates)
+        }
+        logg.trace { "Filter by ${predicates.size} predicate(s)." }
         fire(ApplyFilterFXEvent(Filter.SomeFilter(predicates)))
     }
 

@@ -3,6 +3,7 @@ package com.github.christophpickl.urclubs.fx.partner.filter
 import com.github.christophpickl.kpotpourri.common.logging.LOG
 import com.github.christophpickl.urclubs.domain.partner.Category
 import com.github.christophpickl.urclubs.domain.partner.Partner
+import javafx.scene.control.ListCell
 import tornadofx.*
 
 class CategoryFilterSpec(private val view: FilterPartnersView) : FilterSpec {
@@ -13,7 +14,6 @@ class CategoryFilterSpec(private val view: FilterPartnersView) : FilterSpec {
     override val isIrrelevant: Boolean get() = categoryFilter == CategoryFilter.AnyCategory
 
     override fun register(trigger: FilterTrigger) {
-
         view.category.selectionModel.selectedItemProperty().addListener { _ ->
             log.trace { "Category filter changed to: ${view.category.selectedItem}" }
             trigger.filter()
@@ -26,8 +26,8 @@ class CategoryFilterSpec(private val view: FilterPartnersView) : FilterSpec {
             predicates += CategoryFilterPredicate(filter)
         }
     }
-
 }
+
 sealed class CategoryFilter {
 
     abstract val label: String
@@ -54,4 +54,11 @@ sealed class CategoryFilter {
 private data class CategoryFilterPredicate(private val categoryFilter: CategoryFilter.EnumCategory) : FilterPredicate {
     override fun test(t: Partner) =
         t.category == categoryFilter.category
+}
+
+class CategoryFilterCell : ListCell<CategoryFilter>() {
+    override fun updateItem(item: CategoryFilter?, empty: Boolean) {
+        super.updateItem(item, empty)
+        text = item?.label
+    }
 }
