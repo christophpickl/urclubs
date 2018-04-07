@@ -45,7 +45,8 @@ class CurrentPartnerFx() : ViewModel() {
         favourited = favourited.get(),
         wishlisted = wishlisted.get(),
         maxCredits = maxCredits.get(),
-        picture = pictureWrapper.get()
+        picture = pictureWrapper.get(),
+        addresses = addresses.get().toList()
     )
 
     fun initPartner(partner: Partner) {

@@ -46,7 +46,8 @@ class PartnerDetailController : Controller() {
         subscribe<RemoveAddressFXEvent> { e ->
             logg.debug { "on RemoveAddressFXEvent()" }
             partnerService.update(currentPartner.toPartner().let { partner ->
-                partner.copy(addresses = partner.addresses.toMutableList().apply { remove(e.address) })
+                val removed = partner.addresses.toMutableList().apply { remove(e.address) }
+                partner.copy(addresses = removed)
             })
         }
 

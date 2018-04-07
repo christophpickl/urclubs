@@ -327,8 +327,8 @@ fun PartnerDbo.toPartner() = Partner(
     category = category.toCategory(),
     linkMyclubs = linkMyclubs,
     linkPartner = linkPartner,
-    tags = tags,
-    addresses = addresses,
+    tags = tags.toList(),
+    addresses = addresses.toList(),
     finishedActivities = finishedActivities.map { it.toFinishedActivity() },
     picture = PartnerImage.readFromDb(picture)
 )

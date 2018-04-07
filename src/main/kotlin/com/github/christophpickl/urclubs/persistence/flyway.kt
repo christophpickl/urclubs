@@ -36,7 +36,7 @@ class FlywayManager(
                 throw dbLockException ?: e
             }
         }
-        log.debug("Good luck, DB migration was successfull.")
+        log.debug("DB migration was successfull.")
     }
 
     private fun buildFlyway() = Flyway().apply {
