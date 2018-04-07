@@ -14,6 +14,8 @@ import java.time.Duration
 import java.time.LocalDateTime
 import java.util.concurrent.atomic.AtomicInteger
 
+typealias PartnerIntExtractor = Partner.() -> Int
+
 data class Partner(
     val idDbo: Long,
     val idMyc: String, // "JYSvEcpVCR"
@@ -212,13 +214,14 @@ data class Partner(
 
 enum class Rating(
     val label: String,
+    val intValue: Int,
     override val order: Int
 ) : HasOrder {
-    UNKNOWN("-UNKNOWN-", 0),
-    SUPERB("Superb", 100),
-    GOOD("Good", 110),
-    OK("Ok", 120),
-    BAD("Bad", 130);
+    UNKNOWN("-UNKNOWN-", -1, 0),
+    SUPERB("Superb", 3, 100),
+    GOOD("Good", 2, 110),
+    OK("Ok", 1, 120),
+    BAD("Bad", 0, 130);
 
     object Ordered : OrderedEnumCompanion<Rating>(Rating.values())
 }

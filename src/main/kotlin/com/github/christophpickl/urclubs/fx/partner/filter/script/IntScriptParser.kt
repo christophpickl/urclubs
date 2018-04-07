@@ -1,13 +1,13 @@
 package com.github.christophpickl.urclubs.fx.partner.filter.script
 
 import com.github.christophpickl.kpotpourri.common.logging.LOG
-import com.github.christophpickl.urclubs.domain.partner.Partner
+import com.github.christophpickl.urclubs.domain.partner.PartnerIntExtractor
 import com.github.christophpickl.urclubs.fx.partner.filter.Filter
 import com.github.christophpickl.urclubs.fx.partner.filter.FilterPredicate
 import com.github.christophpickl.urclubs.fx.partner.filter.SimpleFilterPredicate
 
 class IntScriptParser(
-    private val intExtractor: Partner.() -> Int
+    private val intExtractor: PartnerIntExtractor
 ) {
 
     private val log = LOG {}

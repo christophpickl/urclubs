@@ -32,7 +32,11 @@ class FilterPartnersView : View() {
         selectionModel.select(CategoryFilter.AnyCategory)
     }
 
-    val visits = FilterScriptField().apply {
+    val visits = FilterScriptField({ totalVisits }).apply {
+        promptText = "Any"
+    }
+
+    val rating = FilterScriptField({ rating.intValue }).apply {
         promptText = "Any"
     }
 
@@ -51,8 +55,8 @@ class FilterPartnersView : View() {
         label(text = " Visits: ").addClass(Styles.fontWhiteMedium)
         add(visits)
 
-//        label(text = " CredsLeft: ").addClass(Styles.fontWhiteMedium)
-//        label(text = " Rating: ").addClass(Styles.fontWhiteMedium)
+        label(text = " Rating: ").addClass(Styles.fontWhiteMedium)
+        add(rating)
 
         add(favouritedFilterButton)
         add(wishlistedFilterButton)

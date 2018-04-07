@@ -1,6 +1,7 @@
 package com.github.christophpickl.urclubs.fx.partner.filter
 
 import com.github.christophpickl.urclubs.domain.partner.Partner
+import com.github.christophpickl.urclubs.fx.partner.filter.script.FilterScriptField
 import java.util.function.Predicate
 
 sealed class Filter {
@@ -34,12 +35,35 @@ data class SimpleFilterPredicate(private val check: (Partner) -> Boolean) : Filt
     override fun test(partner: Partner) = check(partner)
 }
 
+interface FilterTrigger {
+    fun filter()
+}
+
 interface FilterSpec {
     val isIrrelevant: Boolean
     fun register(trigger: FilterTrigger)
     fun addToPredicates(predicates: MutableList<FilterPredicate>)
 }
 
-interface FilterTrigger {
-    fun filter()
+
+abstract class FilterScriptFieldSpec(
+    private val field: FilterScriptField
+) : FilterSpec {
+
+    private val predicate get() = field.predicateProperty.get()
+
+    override val isIrrelevant: Boolean get() = predicate == Filter.anyPredicate
+
+    override fun register(trigger: FilterTrigger) {
+        field.predicateProperty.addListener { _ ->
+            trigger.filter()
+        }
+    }
+
+    override fun addToPredicates(predicates: MutableList<FilterPredicate>) {
+        if (predicate != null && predicate != Filter.anyPredicate) {
+            predicates += predicate
+        }
+    }
 }
+

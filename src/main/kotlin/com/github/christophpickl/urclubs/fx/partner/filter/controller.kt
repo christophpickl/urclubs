@@ -14,7 +14,8 @@ class FilterPartnersController : Controller(), FilterTrigger {
         CategoryFilterSpec(view),
         VisitsFilterSpec(view),
         FavouritedFilterSpec(view),
-        WishlistedFilterSpec(view)
+        WishlistedFilterSpec(view),
+        RatingFilterSpec(view)
         // ... add more here ...
     )
 
