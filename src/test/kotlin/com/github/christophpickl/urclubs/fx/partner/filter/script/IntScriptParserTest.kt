@@ -95,7 +95,9 @@ class IntScriptParserTest {
         assertThat(parser.parse("3")).isNotNull
         assertThat(parser.parse("<3")).isNotNull
 
-        assertThat(parser.parse("<2")).isNull() // invalid operator
+        // invalid operator
+        assertThat(parser.parse("<=2")).isNull()
+        assertThat(parser.parse("<2")).isNull()
     }
 
     fun `Given maxValue of 2`() {
@@ -109,7 +111,10 @@ class IntScriptParserTest {
         assertThat(parser.parse("3")).isNull()
         assertThat(parser.parse("<3")).isNotNull
 
-        assertThat(parser.parse(">2")).isNull() // invalid operator
+        // invalid operator
+        assertThat(parser.parse(">=2")).isNull()
+        assertThat(parser.parse(">2")).isNull()
+        assertThat(parser.parse("<=3")).isNull()
     }
 
     // domain
