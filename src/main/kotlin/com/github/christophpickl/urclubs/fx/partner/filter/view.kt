@@ -1,28 +1,19 @@
 package com.github.christophpickl.urclubs.fx.partner.filter
 
 import com.github.christophpickl.urclubs.fx.Styles
-import javafx.application.Application
+import com.github.christophpickl.urclubs.fx.demoLaunchJavaFx
 import javafx.beans.property.SimpleObjectProperty
 import javafx.scene.control.ListCell
 import tornadofx.*
 
-
 fun main(args: Array<String>) {
-    class DemoView : View() {
-        override val root = vbox {
-            add(FilterScriptField().apply {
-                predicateProperty.addListener { _ ->
-                    println("change: ${predicateProperty.get()}")
-                }
-            })
+    demoLaunchJavaFx {
+        FilterScriptField().apply {
+            predicateProperty.addListener { _ ->
+                println("change: ${predicateProperty.get()}")
+            }
         }
     }
-
-    class DemoApp : App(
-        primaryView = DemoView::class,
-        stylesheet = Styles::class
-    )
-    Application.launch(DemoApp::class.java, *args)
 }
 
 class FilterScriptField() : javafx.scene.control.TextField() {

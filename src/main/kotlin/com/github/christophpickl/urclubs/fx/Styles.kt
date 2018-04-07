@@ -1,6 +1,5 @@
 package com.github.christophpickl.urclubs.fx
 
-import com.github.christophpickl.kpotpourri.common.logging.LOG
 import javafx.scene.layout.BorderStrokeStyle
 import javafx.scene.paint.Color.WHITE
 import javafx.scene.text.FontWeight
@@ -10,9 +9,19 @@ import tornadofx.*
 
 // https://github.com/edvin/tornadofx/tree/master/src/main/resources/tornadofx
 
-class Styles : Stylesheet() {
+fun main(args: Array<String>) {
+    demoLaunchJavaFx {
+        button("Right click me") {
+            contextmenu {
+                item("Foo")
+                item("Bar")
+                item("Basss")
+            }
+        }
+    }
+}
 
-    private val log = LOG {}
+class Styles : Stylesheet() {
 
     companion object {
 
@@ -40,7 +49,6 @@ class Styles : Stylesheet() {
         val greyVeryBright = c("#3B3843")
         val greyBright = c("#292530")
         val greyDark = c("#231F2A")
-
     }
 
     init {
@@ -122,13 +130,22 @@ class Styles : Stylesheet() {
         }
 
         contextMenu {
-            backgroundColor += greyDark
+            backgroundColor += greyVeryBright
             menuItem {
                 and(hover) {
                     backgroundColor += orange
+                    label {
+                        textFill = white
+                    }
+                }
+                and(focused) {
+                    backgroundColor += orange
+                    label {
+                        textFill = white
+                    }
                 }
                 label {
-                    textFill = white
+                    textFill = orange
                 }
             }
         }

@@ -1,6 +1,29 @@
 package com.github.christophpickl.urclubs.fx.partner.filter
 
+import com.github.christophpickl.kpotpourri.common.logging.LOG
 import com.github.christophpickl.urclubs.domain.partner.Partner
+
+class VisitsFilterSpec(private val view: FilterPartnersView) : FilterSpec {
+
+    private val log = LOG {}
+    private val visitsPredicate get() = view.visits.predicateProperty.get()
+
+    override val isIrrelevant: Boolean get() = visitsPredicate == VisitsInputParser.anyPredicate
+
+    override fun register(trigger: FilterTrigger) {
+        view.visits.predicateProperty.addListener { _ ->
+            log.trace { "Visits filter changed" }
+            trigger.filter()
+        }
+    }
+
+    override fun addToPredicates(predicates: MutableList<FilterPredicate>) {
+        if (visitsPredicate != VisitsInputParser.anyPredicate) {
+            predicates += visitsPredicate
+        }
+    }
+
+}
 
 object VisitsInputParser {
 
