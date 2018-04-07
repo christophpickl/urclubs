@@ -1,11 +1,6 @@
 
-    https://docs.oracle.com/javafx/2/api/javafx/scene/doc-files/cssref.html
-
 # Grob Plan
 
-1. Filter Partners
-    * rating
-    * when enter search text, not only look for 'name' but + note + addresses (+ link?)
 1. Upcoming Activities (Fetch+Filter)
     * persisted as stand alone entities (OneMany and ManyOne
     * BUT: when fetch for partners, always only fetch future activities (not those happened in past)
@@ -47,6 +42,7 @@
 
 ## High
 
+* when enter search text, not only look for 'name' but + note + addresses (+ link?)
 * UI: on change, then table row order changes? by default, if rows are equal, should order by name
 * show save confirm dialog on changes (detect dirty view)
 * BIZ: sync more Partner details (description, ...)
@@ -69,8 +65,6 @@
 ## Low
 
 * always show vertical scrollbar in partners table
-* go through: https://github.com/edvin/tornadofx-samples
-* read javafx tutorial: https://docs.oracle.com/javafx/2/ui_controls/overview.htm
 * create custom about dialog (Stage class, reuse for mac and non-mac)
 * code quality: https://app.codacy.com
 * UI: style: scrollbar

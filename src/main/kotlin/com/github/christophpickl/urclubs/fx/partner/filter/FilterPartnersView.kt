@@ -64,9 +64,9 @@ class FilterPartnersView : View() {
         label(text = " Rating: ").addClass(Styles.fontWhiteMedium)
         add(rating)
 
-        label(text = "  ")
+        label(text = "    ")
         add(favouritedFilterButton)
-        label(text = " ")
+        label(text = "  ")
         add(wishlistedFilterButton)
     }
 
