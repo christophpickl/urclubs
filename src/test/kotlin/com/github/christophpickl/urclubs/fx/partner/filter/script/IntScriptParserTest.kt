@@ -1,22 +1,26 @@
-package com.github.christophpickl.urclubs.fx.partner.filter
+package com.github.christophpickl.urclubs.fx.partner.filter.script
 
 import com.github.christophpickl.urclubs.domain.activity.FinishedActivity
 import com.github.christophpickl.urclubs.domain.activity.testInstance
 import com.github.christophpickl.urclubs.domain.partner.Partner
 import com.github.christophpickl.urclubs.domain.partner.testInstance
+import com.github.christophpickl.urclubs.fx.partner.filter.Filter
+import com.github.christophpickl.urclubs.fx.partner.filter.FilterPredicate
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.PredicateAssert
 import org.testng.annotations.Test
 
 @Test
-class VisitsInputParserTest {
+class IntScriptParserTest {
+
+    private val extractFromPartner = { it: Partner -> it.totalVisits }
 
     fun `Given empty '' Then return any predicate`() {
-        assertThat(VisitsInputParser.parse("")).isAnyPredicate()
+        assertThat(parse("")).isAnyPredicate()
     }
 
     fun `Given whitespace ' ' Then return any predicate`() {
-        assertThat(VisitsInputParser.parse(" ")).isAnyPredicate()
+        assertThat(parse(" ")).isAnyPredicate()
     }
 
     fun `Given '= 0'`() {
@@ -81,14 +85,14 @@ class VisitsInputParserTest {
     }
 
     private inline fun withPredicate(input: String, func: FilterPredicate.() -> Unit) {
-        val predicate = VisitsInputParser.parse(input)
+        val predicate = parse(input)
 
         assertThat(predicate).isNotNull
         func(predicate!!)
     }
 
     private fun assertInvalid(input: String) {
-        val predicate = VisitsInputParser.parse(input)
+        val predicate = parse(input)
 
         assertThat(predicate).isNull()
     }
@@ -98,6 +102,8 @@ class VisitsInputParserTest {
     }
 
     private fun partner(visits: Int) = Partner.testInstance.copy(finishedActivities = IntRange(1, visits).map { FinishedActivity.testInstance })
+
+    private fun parse(input: String) = IntScriptParser(extractFromPartner).parse(input)
 
     private fun <T> PredicateAssert<T>.isAnyPredicate() {
         isSameAs(Filter.anyPredicate)

@@ -4,6 +4,7 @@ import com.github.christophpickl.urclubs.fx.Styles
 import com.github.christophpickl.urclubs.fx.demoLaunchJavaFx
 import com.github.christophpickl.urclubs.fx.partner.filter.flags.FavouritedFilterButton
 import com.github.christophpickl.urclubs.fx.partner.filter.flags.WishlistedFilterButton
+import com.github.christophpickl.urclubs.fx.partner.filter.script.FilterScriptField
 import tornadofx.*
 
 class FilterPartnersView : View() {
