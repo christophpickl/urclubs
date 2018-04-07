@@ -42,18 +42,19 @@ class UrClubsFxApp : App(
     }
 
     override fun start(stage: Stage) {
+        super.start(stage)
+
         SplashScreen.getSplashScreen()?.let {
             log.debug { "Close splash screen." }
             it.close()
         }
 
-        super.start(stage)
         stage.fillPrimaryScreen()
         fire(ApplicationStartedFxEvent)
     }
 
-    override fun stop() { // <= Platform.exit()
-        log.debug { "stop()" }
+    override fun stop() {
+        log.debug { "stop() <= Platform.exit()" }
         guice.getInstance(QuitManager::class.java).publishQuitEvent()
         super.stop()
     }

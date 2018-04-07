@@ -59,11 +59,18 @@ class MyMenuBar(
 ) : MenuBar() {
 
     init {
-        menu("Application") {
-            item("About").action {
-                controller.doFire(ShowAboutFXEvent)
+        if (UrclubsConfiguration.IS_MAC) {
+            menu("IGNORED") {
+                item("will be in app")
             }
-            separator()
+        }
+        menu("Application") {
+            if (UrclubsConfiguration.IS_NOT_MAC) {
+                item("About").action {
+                    controller.doFire(ShowAboutFXEvent)
+                }
+                separator()
+            }
             item("Resync Data").action {
                 controller.doFire(SyncRequestFXEvent)
             }

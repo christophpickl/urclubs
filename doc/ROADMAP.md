@@ -67,6 +67,8 @@
 
 ## Low
 
+* create custom about dialog (Stage class, reuse for mac and non-mac)
+* code quality: https://app.codacy.com
 * UI: style: scrollbar
 * UI: send notifications via MacOs (e.g. after sync)
 * resolve: org.hibernate.orm.connections.pooling - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
