@@ -2,12 +2,15 @@ package com.github.christophpickl.urclubs.myclubs.cache
 
 import com.github.christophpickl.kpotpourri.common.logging.LOG
 import com.github.christophpickl.urclubs.myclubs.ActivityFilter
+import com.github.christophpickl.urclubs.myclubs.CourseFilter
 import com.github.christophpickl.urclubs.myclubs.HttpApi
 import com.github.christophpickl.urclubs.myclubs.MyClubsApi
 import com.github.christophpickl.urclubs.myclubs.UserMycJson
 import com.github.christophpickl.urclubs.myclubs.cache.entities.ActivityHtmlModelWrapper
+import com.github.christophpickl.urclubs.myclubs.cache.entities.CoursesHtmlModelWrapper
 import com.github.christophpickl.urclubs.myclubs.cache.entities.PartnerDetailHtmlModelWrapper
 import com.github.christophpickl.urclubs.myclubs.cache.entities.activitySpec
+import com.github.christophpickl.urclubs.myclubs.cache.entities.coursesSpec
 import com.github.christophpickl.urclubs.myclubs.cache.entities.finishedActivitiesSpec
 import com.github.christophpickl.urclubs.myclubs.cache.entities.finishedActivitiesSpecCoordinates
 import com.github.christophpickl.urclubs.myclubs.cache.entities.partnerSpec
@@ -16,6 +19,7 @@ import com.github.christophpickl.urclubs.myclubs.cache.entities.partnersSpecCoor
 import com.github.christophpickl.urclubs.myclubs.cache.entities.userSpec
 import com.github.christophpickl.urclubs.myclubs.cache.entities.userSpecCoordinates
 import com.github.christophpickl.urclubs.myclubs.parser.ActivityHtmlModel
+import com.github.christophpickl.urclubs.myclubs.parser.CourseHtmlModel
 import com.github.christophpickl.urclubs.myclubs.parser.FinishedActivityHtmlModel
 import com.github.christophpickl.urclubs.myclubs.parser.PartnerDetailHtmlModel
 import com.github.christophpickl.urclubs.myclubs.parser.PartnerHtmlModel
@@ -25,6 +29,7 @@ import com.google.inject.BindingAnnotation
 import org.ehcache.CacheManager
 import org.ehcache.config.ResourcePools
 import java.io.File
+import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 interface MyClubsCacheManager : QuitListener {
@@ -52,6 +57,7 @@ class MyClubsCachedApi constructor(
 
     private val log = LOG {}
 
+    private val cacheKeyDateTimeFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
     private val cacheManager: CacheManager
 
     init {
@@ -80,6 +86,14 @@ class MyClubsCachedApi constructor(
     override fun partners(): List<PartnerHtmlModel> =
         cacheManager.getOrPutSingledCache(delegate, partnersSpec, partnersSpecCoordinates)
 
+    override fun courses(filter: CourseFilter): List<CourseHtmlModel> =
+        cacheManager.getOrPutKeyCached(delegate, coursesSpec, keyedCoordinates(
+            cacheKey = filter.cacheKey(),
+            request = filter,
+            withDelegate = { myclubs -> CoursesHtmlModelWrapper(myclubs.courses(filter)) }
+        )).wrapped
+
+
     override fun finishedActivities(): List<FinishedActivityHtmlModel> =
         cacheManager.getOrPutSingledCache(delegate, finishedActivitiesSpec, finishedActivitiesSpecCoordinates)
 
@@ -98,5 +112,8 @@ class MyClubsCachedApi constructor(
         )).wrapped
 
     private fun ActivityFilter.cacheKey() = activityId
+
+    private fun CourseFilter.cacheKey() =
+        "${start.format(cacheKeyDateTimeFormat)}--${end.format(cacheKeyDateTimeFormat)}"
 
 }

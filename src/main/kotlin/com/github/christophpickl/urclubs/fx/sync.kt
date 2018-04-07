@@ -7,6 +7,7 @@ import com.github.christophpickl.urclubs.service.sync.FinishedActivitySyncReport
 import com.github.christophpickl.urclubs.service.sync.FinishedActivitySyncer
 import com.github.christophpickl.urclubs.service.sync.PartnerSyncReport
 import com.github.christophpickl.urclubs.service.sync.PartnerSyncer
+import com.github.christophpickl.urclubs.service.sync.UpcomingActivitySyncReport
 import com.github.christophpickl.urclubs.service.sync.UpcomingActivitySyncer
 import javafx.scene.control.ButtonType
 import javafx.stage.Modality
@@ -95,10 +96,12 @@ class SyncFxController : Controller() {
         fire(PartnerListRequestFXEvent)
 
         val finishedActivitiesReport = finishedActivitySyncer.sync()
+        val upcomingActivitiesReport = upcomingActivitySyncer.sync()
 
         return SyncReport(
             partners = partnersReport,
-            finishedActivities = finishedActivitiesReport
+            finishedActivities = finishedActivitiesReport,
+            upcomingActivities = upcomingActivitiesReport
         )
     }
 
@@ -107,7 +110,8 @@ class SyncFxController : Controller() {
         Thread.sleep(3 * 1000)
         return SyncReport(
             partners = PartnerSyncReport(emptyList(), emptyList()),
-            finishedActivities = FinishedActivitySyncReport(emptyList())
+            finishedActivities = FinishedActivitySyncReport(emptyList()),
+            upcomingActivities = UpcomingActivitySyncReport("")
         )
     }
 
@@ -115,5 +119,6 @@ class SyncFxController : Controller() {
 
 data class SyncReport(
     val partners: PartnerSyncReport,
-    val finishedActivities: FinishedActivitySyncReport
+    val finishedActivities: FinishedActivitySyncReport,
+    val upcomingActivities: UpcomingActivitySyncReport
 )

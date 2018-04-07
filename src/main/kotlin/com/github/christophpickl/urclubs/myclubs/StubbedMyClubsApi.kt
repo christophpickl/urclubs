@@ -1,18 +1,19 @@
 package com.github.christophpickl.urclubs.myclubs
 
 import com.github.christophpickl.urclubs.myclubs.parser.ActivityHtmlModel
+import com.github.christophpickl.urclubs.myclubs.parser.CourseHtmlModel
 import com.github.christophpickl.urclubs.myclubs.parser.FinishedActivityHtmlModel
 import com.github.christophpickl.urclubs.myclubs.parser.PartnerDetailHtmlModel
 import com.github.christophpickl.urclubs.myclubs.parser.PartnerHtmlModel
 import java.time.LocalDateTime
 
 object StubbedMyClubsApi : MyClubsApi {
-
     private val partner1 = PartnerHtmlModel(
         id = "id1",
         shortName = "short1",
         name = "name1"
     )
+
     private val partner1Detail = PartnerDetailHtmlModel(
         name = partner1.name,
         description = "description1",
@@ -21,7 +22,6 @@ object StubbedMyClubsApi : MyClubsApi {
         tags = emptyList(),
         upcomingActivities = emptyList()
     )
-
     override fun loggedUser() = UserMycJson(
         id = "id",
         email = "email@home.at",
@@ -33,7 +33,7 @@ object StubbedMyClubsApi : MyClubsApi {
 
     override fun partner(shortName: String) = partner1Detail
 
-//    override fun courses(filter: CourseFilter) = emptyList<CourseHtmlModel>()
+    override fun courses(filter: CourseFilter) = emptyList<CourseHtmlModel>()
 
     override fun activity(filter: ActivityFilter) = ActivityHtmlModel(
         partnerShortName = "",

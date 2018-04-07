@@ -3,6 +3,7 @@ package com.github.christophpickl.urclubs.myclubs.cache
 import com.github.christophpickl.kpotpourri.common.logging.LOG
 import com.github.christophpickl.urclubs.myclubs.MyClubsApi
 import com.github.christophpickl.urclubs.myclubs.cache.entities.activitySpec
+import com.github.christophpickl.urclubs.myclubs.cache.entities.coursesSpec
 import com.github.christophpickl.urclubs.myclubs.cache.entities.finishedActivitiesSpec
 import com.github.christophpickl.urclubs.myclubs.cache.entities.partnerSpec
 import com.github.christophpickl.urclubs.myclubs.cache.entities.partnersSpec
@@ -22,7 +23,13 @@ private val log = LOG {}
 object CacheBuilder {
 
     val cacheSpecs = listOf<CacheSpec<*, *>>(
-        userSpec, partnersSpec, partnerSpec, finishedActivitiesSpec, activitySpec
+        userSpec,
+        partnersSpec,
+        partnerSpec,
+        finishedActivitiesSpec,
+        activitySpec,
+        coursesSpec
+        // ... add more here ...
     )
 
     private fun defaultResourcePools() = ResourcePoolsBuilder.newResourcePoolsBuilder()

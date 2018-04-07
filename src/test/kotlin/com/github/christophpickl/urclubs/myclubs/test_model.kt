@@ -1,6 +1,7 @@
 package com.github.christophpickl.urclubs.myclubs
 
 import com.github.christophpickl.urclubs.myclubs.parser.ActivityHtmlModel
+import com.github.christophpickl.urclubs.myclubs.parser.CourseHtmlModel
 import com.github.christophpickl.urclubs.myclubs.parser.FinishedActivityHtmlModel
 import com.github.christophpickl.urclubs.myclubs.parser.PartnerDetailHtmlModel
 import com.github.christophpickl.urclubs.myclubs.parser.PartnerHtmlModel
@@ -31,3 +32,13 @@ fun PartnerDetailHtmlModel.Companion.testInstance() = PartnerDetailHtmlModel(
     tags = listOf("test"),
     upcomingActivities = listOf()
 )
+
+val CourseHtmlModel.Companion.testInstance
+    get() = CourseHtmlModel(
+        id = "testId",
+        timestamp = "testTimestamp",
+        time = "testTime",
+        title = "testTitle",
+        partner = "testPartner",
+        category = "testCategory"
+    )
