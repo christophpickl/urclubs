@@ -9,8 +9,14 @@ import javafx.scene.layout.Priority
 import tornadofx.*
 import java.util.Locale
 
-
 class MainView : View() {
+
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            demo2LaunchJavaFx(MainView::class)
+        }
+    }
 
     private val partnersView: PartnersView by inject()
     private val menuBarController: MenuBarController by inject()

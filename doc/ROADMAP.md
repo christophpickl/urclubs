@@ -67,6 +67,7 @@
 
 ## Low
 
+* go through: https://github.com/edvin/tornadofx-samples
 * create custom about dialog (Stage class, reuse for mac and non-mac)
 * code quality: https://app.codacy.com
 * UI: style: scrollbar
