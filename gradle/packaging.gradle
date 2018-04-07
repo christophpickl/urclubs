@@ -24,13 +24,5 @@ if (System.properties.getProperty("urclubs.enableMacBundle") == "true") {
         } else {
             println "[URCLUBS] macApp is going to be in DEV mode"
         }
-//        javaExtras.put("-splash:\$APP_ROOT/Contents/Resources/splashscreen.jpg", null)
     }
-
-    task copySplashscreenForMacApp(type: Copy) {
-        from 'src/main/buildMac/splashscreen.jpg'
-        into "build/macApp/${myAppName}.app/Contents/Resources"
-    }
-
-    createApp.dependsOn copySplashscreenForMacApp
 }
