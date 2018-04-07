@@ -1,4 +1,6 @@
 
+    https://docs.oracle.com/javafx/2/api/javafx/scene/doc-files/cssref.html
+
 # Grob Plan
 
 1. Filter Partners
@@ -68,6 +70,7 @@
 
 ## Low
 
+* always show vertical scrollbar in partners table
 * go through: https://github.com/edvin/tornadofx-samples
 * read javafx tutorial: https://docs.oracle.com/javafx/2/ui_controls/overview.htm
 * create custom about dialog (Stage class, reuse for mac and non-mac)
