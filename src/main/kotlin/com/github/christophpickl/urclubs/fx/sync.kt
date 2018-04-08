@@ -111,7 +111,7 @@ class SyncFxController : Controller() {
         return SyncReport(
             partners = PartnerSyncReport(emptyList(), emptyList()),
             finishedActivities = FinishedActivitySyncReport(emptyList()),
-            upcomingActivities = UpcomingActivitySyncReport("")
+            upcomingActivities = UpcomingActivitySyncReport(emptyList())
         )
     }
 
