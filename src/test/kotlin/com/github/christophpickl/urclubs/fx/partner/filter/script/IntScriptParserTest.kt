@@ -124,7 +124,7 @@ class IntScriptParserTest {
         config = config
     )
 
-    private fun parse(input: String, config: IntScriptParserConfig = IntScriptParserConfig.empty) = parser().parse(input)
+    private fun parse(input: String, config: IntScriptParserConfig = IntScriptParserConfig.empty) = parser(config).parse(input)
 
     private fun partner(visits: Int) = Partner.testInstance.copy(finishedActivities = IntRange(1, visits).map { FinishedActivity.testInstance })
 
