@@ -22,7 +22,7 @@ private val log = LOG {}
 
 object CacheBuilder {
 
-    val cacheSpecs = listOf<CacheSpec<*, *>>(
+    val cacheSpecs = listOf<CacheSpec<*>>(
         userSpec,
         partnersSpec,
         partnerSpec,
@@ -50,12 +50,12 @@ object CacheBuilder {
 
         cacheSpecs.map {
             @Suppress("UNCHECKED_CAST")
-            it as CacheSpec<Any, Any>
-        }.map { entity: CacheSpec<Any, Any> ->
+            it as CacheSpec<Any>
+        }.map { entity: CacheSpec<Any> ->
             log.debug { "Registering cache for: $entity" }
             builder = builder.withCache(entity.cacheAlias,
                 CacheConfigurationBuilder.newCacheConfigurationBuilder(
-                    entity.keyType,
+                    String::class.java,
                     entity.valueType,
                     overrideResourcePools ?: defaultResourcePools()
                 )
@@ -69,24 +69,24 @@ object CacheBuilder {
     }
 }
 
-fun <CACHE, MODEL> CacheManager.lookupCache(spec: CacheSpec<CACHE, MODEL>): Cache<String, CACHE> =
-    getCache(spec.cacheAlias, spec.keyType, spec.valueType)
+fun <CACHE> CacheManager.lookupCache(spec: CacheSpec<CACHE>): Cache<String, CACHE> =
+    getCache(spec.cacheAlias, String::class.java, spec.valueType)
         ?: throw Exception("Could not find cache by: $spec (registered in list of cache specs??)")
 
 fun <CACHED, MODEL> CacheManager.getOrPutKeyCached(
     delegate: MyClubsApi,
-    spec: CacheSpec<CACHED, MODEL>,
+    spec: CacheSpec<CACHED>,
     coordinates: CacheCoordinates<CACHED, MODEL>
 ): MODEL {
     val cache = lookupCache(spec)
-    log.trace { "Found cache ($cache) for given spec ($spec) => using cache key: ${coordinates.cacheKey}" }
+    log.trace { "$this - Found cache ($cache) for given spec ($spec) => using cache key: ${coordinates.cacheKey}" }
 
     cache.get(coordinates.cacheKey)?.let {
         log.debug { "Cache hit for cache key: '${coordinates.cacheKey}'" }
         return coordinates.toModelTransformer(it)
     }
 
-    log.debug { "$this Cache miss. Store in '${spec.cacheAlias}' with key '${coordinates.cacheKey}'" }
+    log.debug { "Cache miss. Store in '${spec.cacheAlias}' with key '${coordinates.cacheKey}'" }
     val result = coordinates.fetchModel(delegate)
     cache.put(coordinates.cacheKey, coordinates.toCachedTransformer(result))
     return result

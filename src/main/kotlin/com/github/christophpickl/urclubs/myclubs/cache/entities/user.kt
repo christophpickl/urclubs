@@ -8,7 +8,7 @@ import org.ehcache.spi.copy.Copier
 import java.time.Duration
 import java.time.temporal.ChronoUnit
 
-val userSpec: CacheSpec<CachedUserMycJson, UserMycJson> = CacheSpec(
+val userSpec: CacheSpec<CachedUserMycJson> = CacheSpec(
     cacheAlias = "userAlias",
     valueType = CachedUserMycJson::class.java,
     duration = Duration.of(5, ChronoUnit.DAYS),
@@ -16,7 +16,7 @@ val userSpec: CacheSpec<CachedUserMycJson, UserMycJson> = CacheSpec(
     copierType = CachedUserMycJsonCopier::class.java
 )
 
-val userSpecCoordinates = CacheCoordinates(
+val userCoordinates = CacheCoordinates(
     cacheKey = "userKey",
     fetchModel = { it.loggedUser() },
     toModelTransformer = { it.toModel() },

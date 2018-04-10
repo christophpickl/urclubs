@@ -11,13 +11,12 @@ import com.github.christophpickl.urclubs.myclubs.cache.entities.CoursesHtmlModel
 import com.github.christophpickl.urclubs.myclubs.cache.entities.PartnerDetailHtmlModelWrapper
 import com.github.christophpickl.urclubs.myclubs.cache.entities.activitySpec
 import com.github.christophpickl.urclubs.myclubs.cache.entities.coursesSpec
+import com.github.christophpickl.urclubs.myclubs.cache.entities.finishedActivitiesCoordinates
 import com.github.christophpickl.urclubs.myclubs.cache.entities.finishedActivitiesSpec
-import com.github.christophpickl.urclubs.myclubs.cache.entities.finishedActivitiesSpecCoordinates
 import com.github.christophpickl.urclubs.myclubs.cache.entities.partnerSpec
 import com.github.christophpickl.urclubs.myclubs.cache.entities.partnersSpec
-import com.github.christophpickl.urclubs.myclubs.cache.entities.partnersSpecCoordinates
+import com.github.christophpickl.urclubs.myclubs.cache.entities.userCoordinates
 import com.github.christophpickl.urclubs.myclubs.cache.entities.userSpec
-import com.github.christophpickl.urclubs.myclubs.cache.entities.userSpecCoordinates
 import com.github.christophpickl.urclubs.myclubs.parser.ActivityHtmlModel
 import com.github.christophpickl.urclubs.myclubs.parser.CourseHtmlModel
 import com.github.christophpickl.urclubs.myclubs.parser.FinishedActivityHtmlModel
@@ -28,6 +27,7 @@ import com.github.christophpickl.urclubs.service.QuitManager
 import com.google.inject.BindingAnnotation
 import org.ehcache.CacheManager
 import org.ehcache.config.ResourcePools
+import tornadofx.DefaultErrorHandler.Companion.filter
 import java.io.File
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
@@ -82,30 +82,40 @@ class MyClubsCachedApi constructor(
     }
 
     override fun loggedUser(): UserMycJson =
-        cacheManager.getOrPutKeyCached(delegate, userSpec, userSpecCoordinates)
+        cacheManager.getOrPutKeyCached(delegate, userSpec, userCoordinates)
 
     override fun partners(): List<PartnerHtmlModel> {
         log.debug { "partners()" }
-        return cacheManager.getOrPutKeyCached(delegate, partnersSpec, partnersSpecCoordinates)
+        return cacheManager.getOrPutKeyCached(delegate, partnersSpec, buildCacheCoordinatesBySuperModel(
+            cacheKey = filter.cacheKey(),
+            fetchModel = { myclubs -> CoursesHtmlModelWrapper(myclubs.courses(filter)) }
+        )).wrapped
+//            CacheCoordinates(
+//            cacheKey = "partnersKey",
+//            fetchModel = { it.partners() },
+//            toModelTransformer = { it.toModel() },
+//            toCachedTransformer = { CachedPartnersHtmlModel.byOriginal(it) }
+//        ))
+//        return cacheManager.getOrPutKeyCached(delegate, partnersSpec, partnersCoordinates)
     }
 
     override fun courses(filter: CourseFilter): List<CourseHtmlModel> =
-        cacheManager.getOrPutKeyCached(delegate, coursesSpec, keyedCoordinates(
+        cacheManager.getOrPutKeyCached(delegate, coursesSpec, buildCacheCoordinatesBySuperModel(
             cacheKey = filter.cacheKey(),
             fetchModel = { myclubs -> CoursesHtmlModelWrapper(myclubs.courses(filter)) }
         )).wrapped
 
     override fun finishedActivities(): List<FinishedActivityHtmlModel> =
-        cacheManager.getOrPutKeyCached(delegate, finishedActivitiesSpec, finishedActivitiesSpecCoordinates)
+        cacheManager.getOrPutKeyCached(delegate, finishedActivitiesSpec, finishedActivitiesCoordinates)
 
     override fun partner(shortName: String): PartnerDetailHtmlModel =
-        cacheManager.getOrPutKeyCached(delegate, partnerSpec, keyedCoordinates(
+        cacheManager.getOrPutKeyCached(delegate, partnerSpec, buildCacheCoordinatesBySuperModel(
             cacheKey = shortName,
             fetchModel = { myclubs -> PartnerDetailHtmlModelWrapper(myclubs.partner(shortName)) }
         )).wrapped
 
     override fun activity(filter: ActivityFilter): ActivityHtmlModel =
-        cacheManager.getOrPutKeyCached(delegate, activitySpec, keyedCoordinates(
+        cacheManager.getOrPutKeyCached(delegate, activitySpec, buildCacheCoordinatesBySuperModel(
             cacheKey = filter.cacheKey(),
             fetchModel = { myclubs -> ActivityHtmlModelWrapper(myclubs.activity(filter)) }
         )).wrapped

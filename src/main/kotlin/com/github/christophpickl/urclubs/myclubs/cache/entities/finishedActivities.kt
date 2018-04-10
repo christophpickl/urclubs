@@ -9,14 +9,14 @@ import java.time.Duration
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 
-val finishedActivitiesSpec: CacheSpec<CachedFinishedActivitiesHtmlModel, List<FinishedActivityHtmlModel>> = CacheSpec(
+val finishedActivitiesSpec: CacheSpec<CachedFinishedActivitiesHtmlModel> = CacheSpec(
     cacheAlias = "finishedActivitesAlias",
     valueType = CachedFinishedActivitiesHtmlModel::class.java,
     duration = Duration.of(4, ChronoUnit.HOURS),
     serializerType = CachedFinishedActivitiesHtmlModelSerializer::class.java,
     copierType = CachedFinishedActivitiesHtmlModelCopier::class.java
 )
-val finishedActivitiesSpecCoordinates = CacheCoordinates(
+val finishedActivitiesCoordinates = CacheCoordinates(
     cacheKey = "finishedActivitesKey",
     toModelTransformer = { it.toModel() },
     fetchModel = { it.finishedActivities() },

@@ -32,7 +32,7 @@ abstract class AbstractCachedSerializer<T>(@Suppress("UNUSED_PARAMETER") loader:
     protected abstract val objectType: Class<T>
 }
 
-fun <CACHED : ToModelable<MODEL>, MODEL : ToCacheable<CACHED>> keyedCoordinates(
+fun <CACHED : ToModelable<MODEL>, MODEL : ToCacheable<CACHED>> buildCacheCoordinatesBySuperModel(
     cacheKey: String, fetchModel: (MyClubsApi) -> MODEL
 ) = CacheCoordinates(
     cacheKey = cacheKey,
@@ -41,15 +41,13 @@ fun <CACHED : ToModelable<MODEL>, MODEL : ToCacheable<CACHED>> keyedCoordinates(
     toCachedTransformer = { it.toCache() }
 )
 
-data class CacheSpec<CACHED, MODEL>(
+data class CacheSpec<CACHED>(
     val cacheAlias: String,
     val valueType: Class<CACHED>,
     val duration: Duration,
     val serializerType: Class<out Serializer<CACHED>>,
     val copierType: Class<out Copier<CACHED>>
-) {
-    val keyType = String::class.java
-}
+)
 
 data class CacheCoordinates<CACHED, MODEL>(
     val cacheKey: String,

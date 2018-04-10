@@ -8,7 +8,7 @@ import org.ehcache.spi.copy.Copier
 import java.time.Duration
 import java.time.temporal.ChronoUnit
 
-val partnersSpec: CacheSpec<CachedPartnersHtmlModel, List<PartnerHtmlModel>> = CacheSpec(
+val partnersSpec: CacheSpec<CachedPartnersHtmlModel> = CacheSpec(
     cacheAlias = "partnersAlias",
     valueType = CachedPartnersHtmlModel::class.java,
     duration = Duration.of(2, ChronoUnit.DAYS),
@@ -16,7 +16,7 @@ val partnersSpec: CacheSpec<CachedPartnersHtmlModel, List<PartnerHtmlModel>> = C
     copierType = CachedPartnersHtmlModelCopier::class.java
 )
 
-val partnersSpecCoordinates = CacheCoordinates(
+val partnersCoordinates = CacheCoordinates(
     cacheKey = "partnersKey",
     fetchModel = { it.partners() },
     toModelTransformer = { it.toModel() },

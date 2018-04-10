@@ -13,7 +13,7 @@ import java.time.Duration
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 
-val partnerSpec = CacheSpec<CachedPartnerDetailHtmlModel, PartnerDetailHtmlModelWrapper>(
+val partnerSpec = CacheSpec(
     cacheAlias = "partnerAlias",
     valueType = CachedPartnerDetailHtmlModel::class.java,
     duration = Duration.of(2, ChronoUnit.DAYS),
