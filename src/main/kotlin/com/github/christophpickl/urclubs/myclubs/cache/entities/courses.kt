@@ -17,15 +17,6 @@ val coursesSpec: CacheSpec<CachedCoursesHtmlModel> = CacheSpec(
     copierType = CachedCoursesHtmlModelCopier::class.java
 )
 
-class CachedCoursesHtmlModelSerializer(loader: ClassLoader) : AbstractCachedSerializer<CachedCoursesHtmlModel>(loader) {
-    override val objectType = CachedCoursesHtmlModel::class.java
-}
-
-class CachedCoursesHtmlModelCopier : Copier<CachedCoursesHtmlModel> {
-    override fun copyForRead(obj: CachedCoursesHtmlModel) = obj.copy()
-    override fun copyForWrite(obj: CachedCoursesHtmlModel) = obj.copy()
-}
-
 data class CoursesHtmlModelWrapper(
     val wrapped: List<CourseHtmlModel>
 ) : ToCacheable<CachedCoursesHtmlModel> {
@@ -48,7 +39,6 @@ data class CachedCoursesHtmlModel(
         CoursesHtmlModelWrapper(courses!!.map { it.toModel() })
 
 }
-
 
 data class CachedCourseHtmlModel(
     val id: String?,
@@ -80,4 +70,13 @@ data class CachedCourseHtmlModel(
         partner = partner!!,
         category = category!!
     )
+}
+
+class CachedCoursesHtmlModelSerializer(loader: ClassLoader) : AbstractCachedSerializer<CachedCoursesHtmlModel>(loader) {
+    override val objectType = CachedCoursesHtmlModel::class.java
+}
+
+class CachedCoursesHtmlModelCopier : Copier<CachedCoursesHtmlModel> {
+    override fun copyForRead(obj: CachedCoursesHtmlModel) = obj.copy()
+    override fun copyForWrite(obj: CachedCoursesHtmlModel) = obj.copy()
 }

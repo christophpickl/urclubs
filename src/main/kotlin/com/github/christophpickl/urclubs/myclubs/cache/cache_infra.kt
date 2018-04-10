@@ -39,7 +39,6 @@ object CacheBuilder {
         .build()
 
     fun build(cacheDirectory: File?, overrideResourcePools: ResourcePools?): CacheManager {
-
         var builder: CacheManagerBuilder<CacheManager> = CacheManagerBuilder.newCacheManagerBuilder()
 
         if (cacheDirectory != null) {

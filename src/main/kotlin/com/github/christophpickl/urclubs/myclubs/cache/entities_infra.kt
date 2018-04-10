@@ -11,10 +11,12 @@ import java.nio.ByteBuffer
 import java.time.Duration
 
 // http://www.ehcache.org/blog/2016/05/12/ehcache3-serializers.html#third-party-serializers
-abstract class AbstractCachedSerializer<T>(@Suppress("UNUSED_PARAMETER") loader: ClassLoader? = null) : Serializer<T> {
+abstract class AbstractCachedSerializer<T>(
+    @Suppress("UNUSED_PARAMETER") loader: ClassLoader? = null,
+    private val bufferSize: Int = 1024 * 10
+) : Serializer<T> {
 
     private val kryo = Kryo()
-    private val bufferSize = 4096
 
     override fun serialize(obj: T): ByteBuffer {
         val output = Output(bufferSize)

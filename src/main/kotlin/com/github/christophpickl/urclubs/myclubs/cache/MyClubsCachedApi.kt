@@ -9,6 +9,7 @@ import com.github.christophpickl.urclubs.myclubs.UserMycJson
 import com.github.christophpickl.urclubs.myclubs.cache.entities.ActivityHtmlModelWrapper
 import com.github.christophpickl.urclubs.myclubs.cache.entities.CoursesHtmlModelWrapper
 import com.github.christophpickl.urclubs.myclubs.cache.entities.PartnerDetailHtmlModelWrapper
+import com.github.christophpickl.urclubs.myclubs.cache.entities.PartnersHtmlModelWrapper
 import com.github.christophpickl.urclubs.myclubs.cache.entities.activitySpec
 import com.github.christophpickl.urclubs.myclubs.cache.entities.coursesSpec
 import com.github.christophpickl.urclubs.myclubs.cache.entities.finishedActivitiesCoordinates
@@ -27,7 +28,6 @@ import com.github.christophpickl.urclubs.service.QuitManager
 import com.google.inject.BindingAnnotation
 import org.ehcache.CacheManager
 import org.ehcache.config.ResourcePools
-import tornadofx.DefaultErrorHandler.Companion.filter
 import java.io.File
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
@@ -64,6 +64,9 @@ class MyClubsCachedApi constructor(
     init {
         log.info { "Init cache: cacheDirectory=$cacheDirectory, overrideResourcePools=$overrideResourcePools" }
         cacheManager = CacheBuilder.build(cacheDirectory, overrideResourcePools)
+//        cacheManager.observable<Any>("put").addListener { it ->
+//            println("put: $it")
+//        }
         quitManager.addQuitListener(this)
     }
 
@@ -87,16 +90,9 @@ class MyClubsCachedApi constructor(
     override fun partners(): List<PartnerHtmlModel> {
         log.debug { "partners()" }
         return cacheManager.getOrPutKeyCached(delegate, partnersSpec, buildCacheCoordinatesBySuperModel(
-            cacheKey = filter.cacheKey(),
-            fetchModel = { myclubs -> CoursesHtmlModelWrapper(myclubs.courses(filter)) }
+            cacheKey = "partnersKey",
+            fetchModel = { myclubs -> PartnersHtmlModelWrapper(myclubs.partners()) }
         )).wrapped
-//            CacheCoordinates(
-//            cacheKey = "partnersKey",
-//            fetchModel = { it.partners() },
-//            toModelTransformer = { it.toModel() },
-//            toCachedTransformer = { CachedPartnersHtmlModel.byOriginal(it) }
-//        ))
-//        return cacheManager.getOrPutKeyCached(delegate, partnersSpec, partnersCoordinates)
     }
 
     override fun courses(filter: CourseFilter): List<CourseHtmlModel> =
