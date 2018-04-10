@@ -79,25 +79,29 @@ class PartnerDetailController : Controller() {
             }
         }
 
-        currentPartner.addresses.addListener(ListChangeListener<String> {
-            logg.debug { "on address change()" }
+        currentPartner.addresses.addListener(ListChangeListener<String> { change ->
 
-            detailView.addressesBox.clear()
-            it.list.forEach { newAddress ->
-                detailView.addressesBox.add(
-                    javafx.scene.control.Hyperlink().apply {
-                        textProperty().set(newAddress)
-                        setOnAction { fire(OpenAddressFXEvent(address = newAddress)) }
-                        contextmenu {
-                            item(name = "Open in Browser") {
-                                setOnAction { fire(OpenAddressFXEvent(address = newAddress)) }
-                            }
-                            item(name = "Remove Address") {
-                                setOnAction { fire(RemoveAddressFXEvent(address = newAddress)) }
+            runAsync {
+                // lol
+            } ui {
+                logg.debug { "on address change()" }
+                detailView.addressesBox.clear()
+                change.list.forEach { newAddress ->
+                    detailView.addressesBox.add(
+                        javafx.scene.control.Hyperlink().apply {
+                            textProperty().set(newAddress)
+                            setOnAction { fire(OpenAddressFXEvent(address = newAddress)) }
+                            contextmenu {
+                                item(name = "Open in Browser") {
+                                    setOnAction { fire(OpenAddressFXEvent(address = newAddress)) }
+                                }
+                                item(name = "Remove Address") {
+                                    setOnAction { fire(RemoveAddressFXEvent(address = newAddress)) }
+                                }
                             }
                         }
-                    }
-                )
+                    )
+                }
             }
         })
     }

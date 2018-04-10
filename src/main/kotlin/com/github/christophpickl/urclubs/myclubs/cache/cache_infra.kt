@@ -69,42 +69,25 @@ object CacheBuilder {
     }
 }
 
-fun <CACHE, MODEL> CacheManager.getFor(spec: CacheSpec<CACHE, MODEL>): Cache<String, CACHE> =
+fun <CACHE, MODEL> CacheManager.lookupCache(spec: CacheSpec<CACHE, MODEL>): Cache<String, CACHE> =
     getCache(spec.cacheAlias, spec.keyType, spec.valueType)
         ?: throw Exception("Could not find cache by: $spec (registered in list of cache specs??)")
 
-fun <CACHED, MODEL> CacheManager.getOrPutSingledCache(
+fun <CACHED, MODEL> CacheManager.getOrPutKeyCached(
     delegate: MyClubsApi,
     spec: CacheSpec<CACHED, MODEL>,
-    coordinates: SingleCacheCoordinates<CACHED, MODEL>
+    coordinates: CacheCoordinates<CACHED, MODEL>
 ): MODEL {
-    val cache = getFor(spec)
-
-    cache.get(coordinates.staticKey)?.let {
-        log.trace { "Cache hit for static cache key '${coordinates.staticKey}'" }
-        return coordinates.transToModel(it)
-    }
-
-    log.debug { "$this Cache miss. Store in '${spec.cacheAlias}' with key '${coordinates.staticKey}'" }
-    val result = coordinates.fetch(delegate)
-    cache.put(coordinates.staticKey, coordinates.transToCache(result))
-    return result
-}
-
-fun <CACHED, MODEL, REQUEST> CacheManager.getOrPutKeyCached(
-    delegate: MyClubsApi,
-    spec: CacheSpec<CACHED, MODEL>,
-    coordinates: KeyedCacheCoordinates<CACHED, MODEL, REQUEST>
-): MODEL {
-    val cache = getFor(spec)
+    val cache = lookupCache(spec)
     log.trace { "Found cache ($cache) for given spec ($spec) => using cache key: ${coordinates.cacheKey}" }
+
     cache.get(coordinates.cacheKey)?.let {
         log.debug { "Cache hit for cache key: '${coordinates.cacheKey}'" }
-        return coordinates.toModel(it)
+        return coordinates.toModelTransformer(it)
     }
 
     log.debug { "$this Cache miss. Store in '${spec.cacheAlias}' with key '${coordinates.cacheKey}'" }
-    val result = coordinates.withDelegate(delegate)
-    cache.put(coordinates.cacheKey, coordinates.toCache(result))
+    val result = coordinates.fetchModel(delegate)
+    cache.put(coordinates.cacheKey, coordinates.toCachedTransformer(result))
     return result
 }

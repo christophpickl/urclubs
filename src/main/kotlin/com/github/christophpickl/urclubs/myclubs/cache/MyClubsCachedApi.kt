@@ -72,44 +72,42 @@ class MyClubsCachedApi constructor(
 
         CacheBuilder.cacheSpecs.forEach {
             log.trace { "Removing cache: $it" }
-            cacheManager.getFor(it).clear()
+            cacheManager.lookupCache(it).clear()
         }
     }
 
     override fun onQuit() {
-        log.debug { "onQuit() close cache" }
+        log.debug { "onQuit() ... close cache" }
         cacheManager.close()
     }
 
     override fun loggedUser(): UserMycJson =
-        cacheManager.getOrPutSingledCache(delegate, userSpec, userSpecCoordinates)
+        cacheManager.getOrPutKeyCached(delegate, userSpec, userSpecCoordinates)
 
-    override fun partners(): List<PartnerHtmlModel> =
-        cacheManager.getOrPutSingledCache(delegate, partnersSpec, partnersSpecCoordinates)
+    override fun partners(): List<PartnerHtmlModel> {
+        log.debug { "partners()" }
+        return cacheManager.getOrPutKeyCached(delegate, partnersSpec, partnersSpecCoordinates)
+    }
 
     override fun courses(filter: CourseFilter): List<CourseHtmlModel> =
         cacheManager.getOrPutKeyCached(delegate, coursesSpec, keyedCoordinates(
             cacheKey = filter.cacheKey(),
-            request = filter,
-            withDelegate = { myclubs -> CoursesHtmlModelWrapper(myclubs.courses(filter)) }
+            fetchModel = { myclubs -> CoursesHtmlModelWrapper(myclubs.courses(filter)) }
         )).wrapped
 
-
     override fun finishedActivities(): List<FinishedActivityHtmlModel> =
-        cacheManager.getOrPutSingledCache(delegate, finishedActivitiesSpec, finishedActivitiesSpecCoordinates)
+        cacheManager.getOrPutKeyCached(delegate, finishedActivitiesSpec, finishedActivitiesSpecCoordinates)
 
     override fun partner(shortName: String): PartnerDetailHtmlModel =
         cacheManager.getOrPutKeyCached(delegate, partnerSpec, keyedCoordinates(
             cacheKey = shortName,
-            request = shortName,
-            withDelegate = { myclubs -> PartnerDetailHtmlModelWrapper(myclubs.partner(shortName)) }
+            fetchModel = { myclubs -> PartnerDetailHtmlModelWrapper(myclubs.partner(shortName)) }
         )).wrapped
 
     override fun activity(filter: ActivityFilter): ActivityHtmlModel =
         cacheManager.getOrPutKeyCached(delegate, activitySpec, keyedCoordinates(
             cacheKey = filter.cacheKey(),
-            request = filter,
-            withDelegate = { myclubs -> ActivityHtmlModelWrapper(myclubs.activity(filter)) }
+            fetchModel = { myclubs -> ActivityHtmlModelWrapper(myclubs.activity(filter)) }
         )).wrapped
 
     private fun ActivityFilter.cacheKey() = activityId

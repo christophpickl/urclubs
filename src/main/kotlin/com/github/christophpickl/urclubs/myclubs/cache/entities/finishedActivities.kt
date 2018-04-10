@@ -1,8 +1,8 @@
 package com.github.christophpickl.urclubs.myclubs.cache.entities
 
 import com.github.christophpickl.urclubs.myclubs.cache.AbstractCachedSerializer
+import com.github.christophpickl.urclubs.myclubs.cache.CacheCoordinates
 import com.github.christophpickl.urclubs.myclubs.cache.CacheSpec
-import com.github.christophpickl.urclubs.myclubs.cache.SingleCacheCoordinates
 import com.github.christophpickl.urclubs.myclubs.parser.FinishedActivityHtmlModel
 import org.ehcache.spi.copy.Copier
 import java.time.Duration
@@ -16,11 +16,11 @@ val finishedActivitiesSpec: CacheSpec<CachedFinishedActivitiesHtmlModel, List<Fi
     serializerType = CachedFinishedActivitiesHtmlModelSerializer::class.java,
     copierType = CachedFinishedActivitiesHtmlModelCopier::class.java
 )
-val finishedActivitiesSpecCoordinates = SingleCacheCoordinates(
-    staticKey = "finishedActivitesKey",
-    transToModel = { it.toModel() },
-    fetch = { it.finishedActivities() },
-    transToCache = { CachedFinishedActivitiesHtmlModel.byOriginal(it) }
+val finishedActivitiesSpecCoordinates = CacheCoordinates(
+    cacheKey = "finishedActivitesKey",
+    toModelTransformer = { it.toModel() },
+    fetchModel = { it.finishedActivities() },
+    toCachedTransformer = { CachedFinishedActivitiesHtmlModel.byOriginal(it) }
 )
 
 data class CachedFinishedActivitiesHtmlModel(

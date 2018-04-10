@@ -2,8 +2,8 @@ package com.github.christophpickl.urclubs.myclubs.cache.entities
 
 import com.github.christophpickl.urclubs.myclubs.UserMycJson
 import com.github.christophpickl.urclubs.myclubs.cache.AbstractCachedSerializer
+import com.github.christophpickl.urclubs.myclubs.cache.CacheCoordinates
 import com.github.christophpickl.urclubs.myclubs.cache.CacheSpec
-import com.github.christophpickl.urclubs.myclubs.cache.SingleCacheCoordinates
 import org.ehcache.spi.copy.Copier
 import java.time.Duration
 import java.time.temporal.ChronoUnit
@@ -16,11 +16,11 @@ val userSpec: CacheSpec<CachedUserMycJson, UserMycJson> = CacheSpec(
     copierType = CachedUserMycJsonCopier::class.java
 )
 
-val userSpecCoordinates = SingleCacheCoordinates(
-    staticKey = "userKey",
-    transToModel = { it.toModel() },
-    fetch = { it.loggedUser() },
-    transToCache = { CachedUserMycJson.byOriginal(it) }
+val userSpecCoordinates = CacheCoordinates(
+    cacheKey = "userKey",
+    fetchModel = { it.loggedUser() },
+    toModelTransformer = { it.toModel() },
+    toCachedTransformer = { CachedUserMycJson.byOriginal(it) }
 )
 
 data class CachedUserMycJson(

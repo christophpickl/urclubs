@@ -32,14 +32,13 @@ abstract class AbstractCachedSerializer<T>(@Suppress("UNUSED_PARAMETER") loader:
     protected abstract val objectType: Class<T>
 }
 
-fun <CACHED : ToModelable<MODEL>, MODEL : ToCacheable<CACHED>, REQUEST> keyedCoordinates(
-    cacheKey: String, request: REQUEST, withDelegate: (MyClubsApi) -> MODEL
-) = KeyedCacheCoordinates<CACHED, MODEL, REQUEST>(
+fun <CACHED : ToModelable<MODEL>, MODEL : ToCacheable<CACHED>> keyedCoordinates(
+    cacheKey: String, fetchModel: (MyClubsApi) -> MODEL
+) = CacheCoordinates(
     cacheKey = cacheKey,
-    request = request,
-    withDelegate = withDelegate,
-    toModel = { it.toModel() },
-    toCache = { it.toCache() }
+    fetchModel = fetchModel,
+    toModelTransformer = { it.toModel() },
+    toCachedTransformer = { it.toCache() }
 )
 
 data class CacheSpec<CACHED, MODEL>(
@@ -52,19 +51,11 @@ data class CacheSpec<CACHED, MODEL>(
     val keyType = String::class.java
 }
 
-data class SingleCacheCoordinates<CACHED, MODEL>(
-    val staticKey: String,
-    val transToModel: (CACHED) -> MODEL,
-    val fetch: (MyClubsApi) -> MODEL,
-    val transToCache: (MODEL) -> CACHED
-)
-
-data class KeyedCacheCoordinates<CACHED, MODEL, REQUEST>(
+data class CacheCoordinates<CACHED, MODEL>(
     val cacheKey: String,
-    val request: REQUEST,
-    val toModel: (CACHED) -> MODEL,
-    val toCache: (MODEL) -> CACHED,
-    val withDelegate: (MyClubsApi) -> MODEL
+    val toModelTransformer: (CACHED) -> MODEL,
+    val toCachedTransformer: (MODEL) -> CACHED,
+    val fetchModel: (MyClubsApi) -> MODEL
 )
 
 interface ToModelable <M> {

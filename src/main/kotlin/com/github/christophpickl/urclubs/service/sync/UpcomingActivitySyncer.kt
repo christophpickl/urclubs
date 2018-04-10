@@ -31,6 +31,7 @@ class UpcomingActivitySyncer @Inject constructor(
         // FIXME compute diff of fetched / stored + insert
         val inserted = emptyList<UpcomingActivity>()
 
+        log.info { "sync() DONE" }
         return UpcomingActivitySyncReport(inserted)
     }
     // 2: OR get upcoming via partner

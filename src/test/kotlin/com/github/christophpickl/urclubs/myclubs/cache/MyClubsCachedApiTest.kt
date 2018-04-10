@@ -61,7 +61,7 @@ class MyClubsCachedApiTest {
             delegate = delegateApi,
             quitManager = QuitManager(),
             overrideResourcePools = testResourcePool,
-            cacheDirectory = null
+            cacheDirectory = File("delme_cache")
         )
     }
 

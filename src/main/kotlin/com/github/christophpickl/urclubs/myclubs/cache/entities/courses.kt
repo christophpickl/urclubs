@@ -35,11 +35,11 @@ data class CoursesHtmlModelWrapper(
 data class CachedCoursesHtmlModel(
     val courses: List<CachedCourseHtmlModel>?
 ) : ToModelable<CoursesHtmlModelWrapper> {
+
     @Suppress("unused") // needed for kryo
     constructor() : this(null)
 
     companion object {
-
         fun byOriginal(original: List<CourseHtmlModel>) =
             CachedCoursesHtmlModel(courses = original.map { CachedCourseHtmlModel.byOriginal(it) })
     }

@@ -1,8 +1,8 @@
 package com.github.christophpickl.urclubs.myclubs.cache.entities
 
 import com.github.christophpickl.urclubs.myclubs.cache.AbstractCachedSerializer
+import com.github.christophpickl.urclubs.myclubs.cache.CacheCoordinates
 import com.github.christophpickl.urclubs.myclubs.cache.CacheSpec
-import com.github.christophpickl.urclubs.myclubs.cache.SingleCacheCoordinates
 import com.github.christophpickl.urclubs.myclubs.parser.PartnerHtmlModel
 import org.ehcache.spi.copy.Copier
 import java.time.Duration
@@ -16,11 +16,11 @@ val partnersSpec: CacheSpec<CachedPartnersHtmlModel, List<PartnerHtmlModel>> = C
     copierType = CachedPartnersHtmlModelCopier::class.java
 )
 
-val partnersSpecCoordinates = SingleCacheCoordinates(
-    staticKey = "partnersKey",
-    transToModel = { it.toModel() },
-    fetch = { it.partners() },
-    transToCache = { CachedPartnersHtmlModel.byOriginal(it) }
+val partnersSpecCoordinates = CacheCoordinates(
+    cacheKey = "partnersKey",
+    fetchModel = { it.partners() },
+    toModelTransformer = { it.toModel() },
+    toCachedTransformer = { CachedPartnersHtmlModel.byOriginal(it) }
 )
 
 data class CachedPartnersHtmlModel(
