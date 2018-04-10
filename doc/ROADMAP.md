@@ -1,3 +1,6 @@
+* BUG: 21:51:35.276 ERROR [tornadofx-thread-1              ] c.g.c.urclubs.service.sync.FinishedActivitySyncer - Could not find partner for: FinishedActivityHtmlModel(date=2017-12-06T16:40, category=Kampfkunst, title=Wing Chun, locationHtml=Center 6<br>Kurzgasse 6, 1060 Wien)
+* ! BUG: adresse loeschen funkt nicht gscheit bei dubletten
+* wenn textfield, text zu lang und "..." rendered => tooltip mit vollem text zeigen
 
 # Grob Plan
 

@@ -97,7 +97,7 @@ fun <CACHED, MODEL, REQUEST> CacheManager.getOrPutKeyCached(
     coordinates: KeyedCacheCoordinates<CACHED, MODEL, REQUEST>
 ): MODEL {
     val cache = getFor(spec)
-
+    log.trace { "Found cache ($cache) for given spec ($spec) => using cache key: ${coordinates.cacheKey}" }
     cache.get(coordinates.cacheKey)?.let {
         log.debug { "Cache hit for cache key: '${coordinates.cacheKey}'" }
         return coordinates.toModel(it)

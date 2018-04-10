@@ -81,6 +81,7 @@ class PartnerDetailController : Controller() {
 
         currentPartner.addresses.addListener(ListChangeListener<String> {
             logg.debug { "on address change()" }
+
             detailView.addressesBox.clear()
             it.list.forEach { newAddress ->
                 detailView.addressesBox.add(

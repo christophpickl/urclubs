@@ -32,7 +32,7 @@ import java.io.File
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
-interface MyClubsCacheManager : QuitListener {
+interface MyClubsCacheManager {
     fun clearCaches()
 }
 
@@ -46,7 +46,8 @@ class MyClubsCachedApi constructor(
     quitManager: QuitManager,
     cacheDirectory: File?,
     overrideResourcePools: ResourcePools?
-) : MyClubsApi, MyClubsCacheManager {
+) : MyClubsApi, MyClubsCacheManager, QuitListener {
+
     @Inject
     constructor(
         @HttpApi delegate: MyClubsApi,
@@ -76,7 +77,7 @@ class MyClubsCachedApi constructor(
     }
 
     override fun onQuit() {
-        log.debug { "onQuit close cache" }
+        log.debug { "onQuit() close cache" }
         cacheManager.close()
     }
 
