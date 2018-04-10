@@ -64,9 +64,6 @@ class MyClubsCachedApi constructor(
     init {
         log.info { "Init cache: cacheDirectory=$cacheDirectory, overrideResourcePools=$overrideResourcePools" }
         cacheManager = CacheBuilder.build(cacheDirectory, overrideResourcePools)
-//        cacheManager.observable<Any>("put").addListener { it ->
-//            println("put: $it")
-//        }
         quitManager.addQuitListener(this)
     }
 

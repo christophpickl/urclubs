@@ -23,7 +23,6 @@
 ## Must
 
 * UI: icons for categories (in table, in combobox)
-* !! FIX: myclubs caching
 * ! proper exception handling
 * when sync is done, request focus for confirm panel
 * UI: improve sync progress dialog UI (show indeterministic progress Bar; NO listener/event thing)
