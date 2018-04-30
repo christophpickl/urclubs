@@ -2,13 +2,14 @@ package com.github.christophpickl.urclubs.myclubs.cache.entities
 
 import com.github.christophpickl.urclubs.myclubs.cache.AbstractCachedSerializer
 import com.github.christophpickl.urclubs.myclubs.cache.CacheSpec
-import com.github.christophpickl.urclubs.myclubs.cache.SingleCacheCoordinates
+import com.github.christophpickl.urclubs.myclubs.cache.ToCacheable
+import com.github.christophpickl.urclubs.myclubs.cache.ToModelable
 import com.github.christophpickl.urclubs.myclubs.parser.PartnerHtmlModel
 import org.ehcache.spi.copy.Copier
 import java.time.Duration
 import java.time.temporal.ChronoUnit
 
-val partnersSpec: CacheSpec<CachedPartnersHtmlModel, List<PartnerHtmlModel>> = CacheSpec(
+val partnersSpec: CacheSpec<CachedPartnersHtmlModel> = CacheSpec(
     cacheAlias = "partnersAlias",
     valueType = CachedPartnersHtmlModel::class.java,
     duration = Duration.of(2, ChronoUnit.DAYS),
@@ -16,16 +17,16 @@ val partnersSpec: CacheSpec<CachedPartnersHtmlModel, List<PartnerHtmlModel>> = C
     copierType = CachedPartnersHtmlModelCopier::class.java
 )
 
-val partnersSpecCoordinates = SingleCacheCoordinates(
-    staticKey = "partnersKey",
-    transToModel = { it.toModel() },
-    fetch = { it.partners() },
-    transToCache = { CachedPartnersHtmlModel.byOriginal(it) }
-)
+data class PartnersHtmlModelWrapper(
+    val wrapped: List<PartnerHtmlModel>
+) : ToCacheable<CachedPartnersHtmlModel> {
+    override fun toCache() = CachedPartnersHtmlModel.byOriginal(wrapped)
+}
 
 data class CachedPartnersHtmlModel(
     val partners: List<CachedPartnerHtmlModel>?
-) {
+) : ToModelable<PartnersHtmlModelWrapper> {
+
     @Suppress("unused") // needed for kryo
     constructor() : this(null)
 
@@ -34,7 +35,8 @@ data class CachedPartnersHtmlModel(
             CachedPartnersHtmlModel(partners = original.map { CachedPartnerHtmlModel.byOriginal(it) })
     }
 
-    fun toModel() = partners!!.map { it.toModel() }
+    override fun toModel() =
+        PartnersHtmlModelWrapper(partners!!.map { it.toModel() })
 
 }
 
@@ -61,7 +63,10 @@ data class CachedPartnerHtmlModel(
     )
 }
 
-class CachedPartnersHtmlModelSerializer(loader: ClassLoader) : AbstractCachedSerializer<CachedPartnersHtmlModel>(loader) {
+class CachedPartnersHtmlModelSerializer(loader: ClassLoader) : AbstractCachedSerializer<CachedPartnersHtmlModel>(
+    loader = loader,
+    bufferSize = 1024 * 64
+) {
     override val objectType = CachedPartnersHtmlModel::class.java
 }
 

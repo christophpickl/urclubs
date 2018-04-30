@@ -5,7 +5,7 @@ import com.github.christophpickl.urclubs.MainModule
 import com.github.christophpickl.urclubs.UrclubsConfiguration
 import com.github.christophpickl.urclubs.fillPrimaryScreen
 import com.github.christophpickl.urclubs.fx.partner.PartnersFxController
-import com.github.christophpickl.urclubs.fx.partner.detail.PartnerFxController
+import com.github.christophpickl.urclubs.fx.partner.detail.PartnerDetailController
 import com.github.christophpickl.urclubs.fx.partner.filter.FilterPartnersController
 import com.github.christophpickl.urclubs.service.QuitManager
 import com.google.inject.Guice
@@ -46,15 +46,15 @@ class UrClubsFxApp : App(
         fire(ApplicationStartedFxEvent)
     }
 
-    override fun stop() { // <= Platform.exit()
-        log.debug { "stop()" }
+    override fun stop() {
+        log.debug { "stop() <= Platform.exit()" }
         guice.getInstance(QuitManager::class.java).publishQuitEvent()
         super.stop()
     }
 
     private fun registerEagerSingletons() {
         find(PartnersFxController::class)
-        find(PartnerFxController::class)
+        find(PartnerDetailController::class)
         find(SyncFxController::class)
         find(FilterPartnersController::class)
         find(BrowseWebsiteController::class)

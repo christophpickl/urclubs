@@ -1,82 +1,43 @@
 package com.github.christophpickl.urclubs.fx.partner.filter
 
 import com.github.christophpickl.kpotpourri.common.logging.LOG
-import com.github.christophpickl.urclubs.domain.partner.Partner
-import javafx.scene.input.KeyCode
+import com.github.christophpickl.urclubs.fx.partner.filter.flags.FavouritedFilterSpec
+import com.github.christophpickl.urclubs.fx.partner.filter.flags.WishlistedFilterSpec
 import tornadofx.*
-import java.util.function.Predicate
 
-class FilterPartnersController : Controller() {
+class FilterPartnersController : Controller(), FilterTrigger {
 
     private val logg = LOG {}
     private val view: FilterPartnersView by inject()
+    private val filters = listOf(
+        NameFilterSpec(view),
+        CategoryFilterSpec(view),
+        VisitsFilterSpec(view),
+        FavouritedFilterSpec(view),
+        WishlistedFilterSpec(view),
+        RatingFilterSpec(view)
+        // ... add more here ...
+    )
 
     init {
-        view.nameField.setOnKeyPressed { e ->
-            if (e.code == KeyCode.ESCAPE) {
-                logg.trace { "Escape hit, resetting name filter." }
-                view.nameField.text = ""
-            }
-        }
-        view.nameField.textProperty().addListener { _ ->
-            logg.trace { "Name filter changed to: '${view.nameField.text}'" }
-            filter()
-        }
-        view.category.selectionModel.selectedItemProperty().addListener { _ ->
-            logg.trace { "Category filter changed to: ${view.category.selectedItem}" }
-            filter()
+        filters.forEach { filter ->
+            filter.register(this)
         }
     }
 
-    private fun filter() {
-        val filterName = view.nameField.text
-        val categoryFilter = view.category.selectedItem!!
-
-        if (filterName.isEmpty() &&
-            categoryFilter == CategoryFilter.AnyCategory) {
-            logg.debug { "Resetting filter." }
+    override fun filter() {
+        if (filters.all { it.isIrrelevant }) {
+            logg.debug { "Resetting filter as all filters are set to irrelevant." }
             fire(ApplyFilterFXEvent.noFilter())
             return
         }
 
         val predicates = mutableListOf<FilterPredicate>()
-        if (filterName.isNotEmpty()) {
-            predicates += NameFilterPredicate(filterName)
+        filters.forEach {
+            it.addToPredicates(predicates)
         }
-        if (categoryFilter is CategoryFilter.EnumCategory) {
-            predicates += CategoryFilterPredicate(categoryFilter)
-        }
+        logg.trace { "Filter by ${predicates.size} predicate(s)." }
         fire(ApplyFilterFXEvent(Filter.SomeFilter(predicates)))
     }
-}
 
-sealed class Filter {
-    object NoFilter : Filter() {
-        val all = { _: Partner -> true }
-    }
-
-    data class SomeFilter(private val predicates: List<FilterPredicate>) : Filter() {
-        init {
-            assert(predicates.isNotEmpty(), { "At least one predicate must be set, otherwise use NoFilter instead." })
-        }
-
-        fun concatPredicates() = { partner: Partner ->
-            predicates.all { predicate ->
-                predicate.test(partner)
-            }
-        }
-
-    }
-}
-
-interface FilterPredicate : Predicate<Partner>
-
-private data class NameFilterPredicate(private val filterName: String) : FilterPredicate {
-    override fun test(t: Partner) =
-        t.name.contains(filterName, ignoreCase = true)
-}
-
-private data class CategoryFilterPredicate(private val categoryFilter: CategoryFilter.EnumCategory) : FilterPredicate {
-    override fun test(t: Partner) =
-        t.category == categoryFilter.category
 }

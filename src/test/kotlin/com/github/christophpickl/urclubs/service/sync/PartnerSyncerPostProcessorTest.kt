@@ -15,7 +15,6 @@ class PartnerSyncerPostProcessorTest {
     private val partner = Partner.testInstance
     private val detail = PartnerDetailHtmlModel.testInstance()
 
-
     fun `Given tags containing yoga Then cateogry should be overwritten to yoga`() {
         val processed = PartnerSyncerPostProcessor.process(
             partner.copy(category = notYoga),

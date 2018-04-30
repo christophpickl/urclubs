@@ -7,8 +7,14 @@ import com.github.christophpickl.urclubs.service.sync.FinishedActivitySyncReport
 import com.github.christophpickl.urclubs.service.sync.FinishedActivitySyncer
 import com.github.christophpickl.urclubs.service.sync.PartnerSyncReport
 import com.github.christophpickl.urclubs.service.sync.PartnerSyncer
+import com.github.christophpickl.urclubs.service.sync.UpcomingActivitySyncReport
 import com.github.christophpickl.urclubs.service.sync.UpcomingActivitySyncer
+import javafx.geometry.HPos
+import javafx.geometry.Pos
+import javafx.geometry.VPos
+import javafx.scene.Scene
 import javafx.scene.control.ButtonType
+import javafx.scene.paint.Color
 import javafx.stage.Modality
 import javafx.stage.Stage
 import javafx.stage.StageStyle
@@ -25,11 +31,8 @@ class ProgressDialog(
     private val displayedMessage: String
 ) {
     private val dialog = Stage(StageStyle.UNDECORATED)
-    private val root = javafx.scene.Group()
-    private val mainPane = javafx.scene.layout.BorderPane()
     private val width: Double = 330.0
     private val height: Double = 120.0
-    private val scene = javafx.scene.Scene(root, width, height, javafx.scene.paint.Color.WHITE);
 
     init {
         dialog.initModality(Modality.WINDOW_MODAL)
@@ -38,12 +41,29 @@ class ProgressDialog(
     }
 
     fun show() {
-        root.children.add(mainPane)
-        mainPane.top = javafx.scene.control.Label(displayedMessage)
-        dialog.scene = scene
+        val root = javafx.scene.layout.BorderPane().apply {
+            style {
+                padding = box(10.px)
+                hAlignment = HPos.CENTER
+                vAlignment = VPos.CENTER
+                if (UrclubsConfiguration.Development.COLOR_MODE) {
+                    backgroundColor += Styles.green
+                }
+            }
+            center {
+                vbox {
+                    alignment = Pos.CENTER
+                    spacing = 5.0
+
+                    label(text = displayedMessage)
+                    progressindicator {
+                        progress = -1.0 // make it indeterministic
+                    }
+                }
+            }
+        }
+        dialog.scene = Scene(root, width, height, Color.WHITE);
         dialog.show()
-        // Gets notified when task ended, but BEFORE result value is attributed. Using the observable list above is recommended.
-//        dialog.setOnHiding {}
     }
 
     fun close() {
@@ -78,9 +98,10 @@ class SyncFxController : Controller() {
             information(
                 title = "Sync Report",
                 header = "Sync completed successfully",
-                content = "Partners inserted: ${event.syncReport.partners.insertedPartners.size}, " +
-                    "deleted: ${event.syncReport.partners.deletedPartners.size}\n" +
-                    "Past activities inserted: ${event.syncReport.finishedActivities.inserted.size}",
+                content =
+                "Partners inserted: ${event.syncReport.partners.insertedPartners.size}\n" +
+                    "Partners deleted: ${event.syncReport.partners.deletedPartners.size}\n" +
+                    "Finished activities inserted: ${event.syncReport.finishedActivities.inserted.size}",
                 buttons = *arrayOf(ButtonType.OK)
                 // owner = ... main window reference?!
             )
@@ -91,14 +112,17 @@ class SyncFxController : Controller() {
         if (UrclubsConfiguration.Development.STUBBED_SYNCER) {
             return stubbedSync()
         }
+
         val partnersReport = partnerSyncer.sync()
         fire(PartnerListRequestFXEvent)
 
         val finishedActivitiesReport = finishedActivitySyncer.sync()
+        val upcomingActivitiesReport = upcomingActivitySyncer.sync()
 
         return SyncReport(
             partners = partnersReport,
-            finishedActivities = finishedActivitiesReport
+            finishedActivities = finishedActivitiesReport,
+            upcomingActivities = upcomingActivitiesReport
         )
     }
 
@@ -107,7 +131,8 @@ class SyncFxController : Controller() {
         Thread.sleep(3 * 1000)
         return SyncReport(
             partners = PartnerSyncReport(emptyList(), emptyList()),
-            finishedActivities = FinishedActivitySyncReport(emptyList())
+            finishedActivities = FinishedActivitySyncReport(emptyList()),
+            upcomingActivities = UpcomingActivitySyncReport(emptyList())
         )
     }
 
@@ -115,5 +140,6 @@ class SyncFxController : Controller() {
 
 data class SyncReport(
     val partners: PartnerSyncReport,
-    val finishedActivities: FinishedActivitySyncReport
+    val finishedActivities: FinishedActivitySyncReport,
+    val upcomingActivities: UpcomingActivitySyncReport
 )

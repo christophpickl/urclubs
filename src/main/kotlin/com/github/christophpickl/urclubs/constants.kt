@@ -38,7 +38,7 @@ object UrclubsConfiguration {
 
     val DB_STARTUP = DatabaseStartupType.Main
 //    val DB_STARTUP = DatabaseStartupType.PrintSchema
-    val SHOW_SQL = IS_DEVELOPMENT
+val SHOW_SQL = IS_DEVELOPMENT && false
 
     // LOGS
     // -----------------------------------------------------------------------------------------------------------------

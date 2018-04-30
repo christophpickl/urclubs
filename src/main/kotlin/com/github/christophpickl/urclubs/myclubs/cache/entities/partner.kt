@@ -1,3 +1,5 @@
+@file:Suppress("MemberVisibilityCanBePrivate")
+
 package com.github.christophpickl.urclubs.myclubs.cache.entities
 
 import com.github.christophpickl.urclubs.myclubs.cache.AbstractCachedSerializer
@@ -8,9 +10,10 @@ import com.github.christophpickl.urclubs.myclubs.parser.PartnerDetailActivityHtm
 import com.github.christophpickl.urclubs.myclubs.parser.PartnerDetailHtmlModel
 import org.ehcache.spi.copy.Copier
 import java.time.Duration
+import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 
-val partnerSpec = CacheSpec<CachedPartnerDetailHtmlModel, PartnerDetailHtmlModelWrapper>(
+val partnerSpec = CacheSpec(
     cacheAlias = "partnerAlias",
     valueType = CachedPartnerDetailHtmlModel::class.java,
     duration = Duration.of(2, ChronoUnit.DAYS),
@@ -30,7 +33,7 @@ data class CachedPartnerDetailHtmlModel(
     val linkPartnerSite: String?,
     val addresses: List<String>?,
     val flags: List<String>?,
-    val upcomingActivities: List<PartnerDetailActivityHtmlModel>?
+    val upcomingActivities: List<CachedPartnerDetailActivityHtmlModel>?
 ) : ToModelable<PartnerDetailHtmlModelWrapper> {
 
     @Suppress("unused") // needed for kryo
@@ -42,7 +45,7 @@ data class CachedPartnerDetailHtmlModel(
         linkPartnerSite = original.linkPartnerSite,
         addresses = original.addresses,
         flags = original.tags,
-        upcomingActivities = original.upcomingActivities
+        upcomingActivities = original.upcomingActivities.map { CachedPartnerDetailActivityHtmlModel.byModel(it) }
     )
 
     override fun toModel() = PartnerDetailHtmlModelWrapper(
@@ -52,9 +55,39 @@ data class CachedPartnerDetailHtmlModel(
             linkPartnerSite = linkPartnerSite!!,
             addresses = addresses!!,
             tags = flags!!,
-            upcomingActivities = upcomingActivities!!
+            upcomingActivities = upcomingActivities!!.map { it.toModel() }
         )
     )
+}
+
+class CachedPartnerDetailActivityHtmlModel(
+    val idMyc: String?,
+    val detailLink: String?,
+    val date: LocalDateTime?,
+    val title: String?,
+    val address: String?
+) : ToModelable<PartnerDetailActivityHtmlModel> {
+
+    companion object {
+        fun byModel(original: PartnerDetailActivityHtmlModel) = CachedPartnerDetailActivityHtmlModel(
+            idMyc = original.idMyc,
+            detailLink = original.detailLink,
+            date = original.date,
+            title = original.title,
+            address = original.address
+        )
+    }
+
+    override fun toModel() = PartnerDetailActivityHtmlModel(
+        idMyc = idMyc!!,
+        detailLink = detailLink!!,
+        date = date!!,
+        title = title!!,
+        address = address!!
+    )
+
+    @Suppress("unused") // needed for kryo
+    constructor() : this(null, null, null, null, null)
 }
 
 class CachedPartnerDetailHtmlModelSerializer(loader: ClassLoader? = null) : AbstractCachedSerializer<CachedPartnerDetailHtmlModel>(loader) {

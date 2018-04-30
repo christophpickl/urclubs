@@ -11,7 +11,7 @@ buildscript {
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$versionKotlin"
         classpath "org.jetbrains.kotlin:kotlin-noarg:$versionKotlin"
-        classpath "gradle.plugin.edu.sc.seis:macAppBundle:2.1.8"
+        classpath "gradle.plugin.edu.sc.seis:macAppBundle:2.2.1"
         classpath "com.autoscout24.gradle:gradle-todo-plugin:1.0"
         // needed by todoPlugin (as of missing org/apache/commons/io/FilenameUtils)
         classpath "commons-io:commons-io:2.6"
@@ -49,6 +49,7 @@ dependencies {
 
     // VIEW
     compile "no.tornado:tornadofx:1.7.14"
+    compile "de.codecentric.centerdevice:centerdevice-nsmenufx:2.1.6"
 
     // HTTP, HTML, JSON
     compile "org.apache.httpcomponents:httpclient:4.5.4"
@@ -98,7 +99,8 @@ repositories {
 }
 
 todo {
-    todoPattern = "//[\\t\\s]*(FIXME|TODO) (.*)"
+    todoPattern = "//[\\t\\s]*(FIXME) (.*)"
+    //todoPattern = "//[\\t\\s]*(FIXME|TODO) (.*)"
     failIfFound = true
     fileExtensions = ["kt"]
 }

@@ -5,6 +5,7 @@ import com.github.christophpickl.urclubs.domain.partner.PartnerService
 import com.github.christophpickl.urclubs.myclubs.MyClubsApi
 import com.github.christophpickl.urclubs.service.sync.FinishedActivitySyncer
 import com.github.christophpickl.urclubs.service.sync.PartnerSyncer
+import com.github.christophpickl.urclubs.service.sync.UpcomingActivitySyncer
 import com.google.common.eventbus.EventBus
 import com.google.inject.AbstractModule
 import com.google.inject.Guice
@@ -17,6 +18,7 @@ class CliApp @Inject constructor(
     private val partnerService: PartnerService,
     private val bus: EventBus,
     private val courseEnhancer: CourseEnhancer,
+    private val upcomingActivitySyncer: UpcomingActivitySyncer,
     private val quitManager: QuitManager
 ) {
     fun start() {
@@ -26,11 +28,15 @@ class CliApp @Inject constructor(
     }
 
     private fun playground() {
-        // FinishedActivityHtmlModel(date=2017-10-16T16:19, category=EMS, title=EMS-Training,
-        // locationHtml=Bodystreet Convalere<br>Ungargasse 46, 1030 Wien)
+//        myclubs.courses(CourseFilter(
+//            start = LocalDateTime.now().withHour(12),
+//            end = LocalDateTime.now().withHour(23)
+//        )).prettyPrint()
+
+        upcomingActivitySyncer.sync()
 
 //        partnerService.readAll().prettyPrint()
-        println(finishedActivitySyncer.sync())
+//        println(finishedActivitySyncer.sync())
 //        println(partnerSyncer.sync())
     }
 
@@ -45,18 +51,15 @@ object CliAppStarter {
     fun main(args: Array<String>) {
         val guice = Guice.createInjector(
             MainModule(),
-            CliModule(args)
+            CliModule()
         )
         val app = guice.getInstance(CliApp::class.java)
         app.start()
     }
 }
 
-class CliModule(private val args: Array<String>) : AbstractModule() {
+class CliModule : AbstractModule() {
     override fun configure() {
-        bind(Credentials::class.java).toProvider(PropertiesFileCredentialsProvider())
-
         bind(CliApp::class.java)
     }
-
 }

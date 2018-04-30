@@ -4,11 +4,13 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.github.christophpickl.kpotpourri.common.logging.LOG
 import com.github.christophpickl.urclubs.domain.activity.ActivityType
 import com.github.christophpickl.urclubs.myclubs.ActivityFilter
+import com.github.christophpickl.urclubs.myclubs.CourseFilter
 import com.github.christophpickl.urclubs.myclubs.Http
 import com.github.christophpickl.urclubs.myclubs.MyClubsApi
 import com.github.christophpickl.urclubs.myclubs.MyclubsModule
 import com.github.christophpickl.urclubs.myclubs.UserMycJson
 import com.github.christophpickl.urclubs.myclubs.parser.ActivityHtmlModel
+import com.github.christophpickl.urclubs.myclubs.parser.CourseHtmlModel
 import com.github.christophpickl.urclubs.myclubs.parser.FinishedActivityHtmlModel
 import com.github.christophpickl.urclubs.myclubs.parser.PartnerDetailHtmlModel
 import com.github.christophpickl.urclubs.myclubs.parser.PartnerHtmlModel
@@ -36,6 +38,7 @@ import org.testng.annotations.AfterMethod
 import org.testng.annotations.BeforeMethod
 import org.testng.annotations.Test
 import java.io.File
+import java.time.LocalDateTime
 import java.util.Date
 import kotlin.reflect.KFunction1
 
@@ -58,7 +61,7 @@ class MyClubsCachedApiTest {
             delegate = delegateApi,
             quitManager = QuitManager(),
             overrideResourcePools = testResourcePool,
-            cacheDirectory = null
+            cacheDirectory = null // File("delme_cache")
         )
     }
 
@@ -137,6 +140,21 @@ class MyClubsCachedApiTest {
         verify(delegateApi, times(1)).partner(shortName2)
         assertThat(given1).isEqualTo(result1)
         assertThat(given2).isEqualTo(result2)
+    }
+
+    fun `courses - two requests with same filter should cache first`() {
+        val date1 = LocalDateTime.parse("2000-12-31T09:00:00")
+        val date2 = LocalDateTime.parse("2000-12-31T12:00:00")
+        val filter = CourseFilter(start = date1, end = date2)
+        val given = listOf(CourseHtmlModel.testInstance)
+        whenever(delegateApi.courses(filter)).thenReturn(given)
+
+        val result1 = cachedApi.courses(filter)
+        val result2 = cachedApi.courses(filter)
+
+        verify(delegateApi, times(1)).courses(filter)
+        assertThat(result1).isEqualTo(given)
+        assertThat(result2).isEqualTo(given)
     }
 
     private fun <G> assertCacheStores(given: G, cachedMethod: KFunction1<MyClubsApi, G>) {

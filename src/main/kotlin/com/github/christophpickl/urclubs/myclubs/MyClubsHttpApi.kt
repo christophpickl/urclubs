@@ -5,6 +5,7 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.github.christophpickl.kpotpourri.common.logging.LOG
 import com.github.christophpickl.urclubs.myclubs.parser.ActivityHtmlModel
+import com.github.christophpickl.urclubs.myclubs.parser.CourseHtmlModel
 import com.github.christophpickl.urclubs.myclubs.parser.FinishedActivityHtmlModel
 import com.github.christophpickl.urclubs.myclubs.parser.HtmlParser
 import com.github.christophpickl.urclubs.myclubs.parser.PartnerDetailHtmlModel
@@ -32,9 +33,10 @@ class MyClubsHttpApi @Inject constructor(
 ) : MyClubsApi {
 
     private val log = LOG {}
-
     private val baseUrl = "https://www.myclubs.com"
     private val baseApiUrl = "$baseUrl/api"
+    private val filterCountry = "at"
+    private val filterLanguage = "de"
     private val jackson = jacksonObjectMapper().apply {
         disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
     }
@@ -71,22 +73,22 @@ class MyClubsHttpApi @Inject constructor(
         return partners
     }
 
-//    override fun courses(filter: CourseFilter): List<CourseHtmlModel> {
-//        log.info { "courses(filter=$filter)" }
-//        loginIfNecessary()
-//
-//        val response = http.execute(HttpPost("$baseApiUrl/activities-list-response").apply {
-//            entity = UrlEncodedFormEntity(listOf(
-//                    BasicNameValuePair("filters", jackson.writeValueAsString(filter.toFilterMycJson())),
-//                    BasicNameValuePair("country", "at"),
-//                    BasicNameValuePair("language", "de")
-//            ))
-//        })
-//        val json = jackson.readValue<ActivitiesMycJson>(response.body)
-//        val courses = parser.parseCourses(json.coursesHtml)
-//        log.trace { "Found ${courses.size} courses." }
-//        return courses
-//    }
+    override fun courses(filter: CourseFilter): List<CourseHtmlModel> {
+        log.info { "courses(filter=$filter)" }
+        loginIfNecessary()
+
+        val response = http.execute(HttpPost("$baseApiUrl/activities-list-response").apply {
+            entity = UrlEncodedFormEntity(listOf(
+                BasicNameValuePair("filters", jackson.writeValueAsString(filter.toFilterMycJson())),
+                BasicNameValuePair("country", filterCountry),
+                BasicNameValuePair("language", filterLanguage)
+            ))
+        })
+        val json = jackson.readValue<ActivitiesMycJson>(response.body)
+        val courses = parser.parseCourses(json.coursesHtml)
+        log.trace { "Found ${courses.size} courses." }
+        return courses
+    }
 
     override fun activity(filter: ActivityFilter): ActivityHtmlModel {
         log.info { "activity(filter=$filter)" }

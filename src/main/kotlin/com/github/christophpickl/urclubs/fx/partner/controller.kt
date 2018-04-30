@@ -27,24 +27,26 @@ class PartnersFxController : Controller() {
             fire(PartnerListFXEvent(partners))
         }
 
-        subscribe<IgnorePartnerFXEvent> {
-            val partner = it.partner
+        subscribe<IgnorePartnerFXEvent> { event ->
+            logg.trace { "on IgnorePartnerFXEvent()" }
+            val partner = event.partner
             partnerService.update(partner.copy(ignored = true))
         }
 
-        subscribe<AddArtificialFinishedActivityFXEvent> {
-            val partner = it.partner
+        subscribe<AddArtificialFinishedActivityFXEvent> { event ->
+            logg.trace { "on AddArtificialFinishedActivityFXEvent()" }
+            val partner = event.partner
             partnerService.addArtificialFinishedActivity(partner)
         }
 
         subscribe<PartnerListFXEvent> { event ->
-            logg.trace { "Received PartnerListEvent (partners.size=${event.partners.size}), updating table items." }
+            logg.trace { "on PartnerListFXEvent(event.partners.size=${event.partners.size}), updating table items." }
             allPartners.setAll(event.partners)
         }
 
         subscribe<PartnerUpdatedFXEvent> { event ->
+            logg.trace { "on PartnerUpdatedFXEvent(event.partner=${event.partner})" }
             val updatedPartner = event.partner
-            logg.trace { "Updating partner in table: $updatedPartner" }
             val indexInModel = allPartners.indexOfFirst { it.idDbo == updatedPartner.idDbo }
             if (indexInModel == -1) throw IllegalStateException("Could not find updated partner in table: $updatedPartner")
             allPartners[indexInModel] = updatedPartner
@@ -52,8 +54,8 @@ class PartnersFxController : Controller() {
         }
 
         subscribe<ApplyFilterFXEvent> { event ->
+            logg.debug { "on ApplyFilterFXEvent(event.filter=${event.filter})" }
             val filter = event.filter
-            logg.debug { "Apply filter: $filter" }
             when (filter) {
                 is Filter.NoFilter -> sortedFilteredPartners.predicate = filter.all
                 is Filter.SomeFilter -> sortedFilteredPartners.predicate = filter.concatPredicates()

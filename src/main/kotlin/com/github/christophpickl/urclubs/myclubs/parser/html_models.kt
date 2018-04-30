@@ -36,7 +36,9 @@ data class CourseHtmlModel(
         val title: String,
         val partner: String,
         val category: String
-)
+) {
+    companion object
+}
 
 data class InfrastructureHtmlModel(
         val id: String,

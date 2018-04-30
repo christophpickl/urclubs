@@ -1,22 +1,26 @@
 package com.github.christophpickl.urclubs.fx.partner
 
+import com.github.christophpickl.kpotpourri.common.logging.LOG
 import com.github.christophpickl.urclubs.domain.partner.Category
 import com.github.christophpickl.urclubs.domain.partner.Partner
 import com.github.christophpickl.urclubs.domain.partner.PartnerImage
 import com.github.christophpickl.urclubs.domain.partner.Rating
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleIntegerProperty
+import javafx.beans.property.SimpleListProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.beans.property.SimpleStringProperty
 import tornadofx.*
 
 class CurrentPartnerFx() : ViewModel() {
 
+    private val logg = LOG {}
+
     lateinit var original: Partner
 
     val name = SimpleStringProperty()
     val tags = SimpleStringProperty()
-    val address = SimpleStringProperty()
+    val addresses = SimpleListProperty<String>()
     val note = SimpleStringProperty()
     val category = SimpleObjectProperty(Category.UNKNOWN)
     val rating = SimpleObjectProperty(Rating.UNKNOWN)
@@ -41,10 +45,12 @@ class CurrentPartnerFx() : ViewModel() {
         favourited = favourited.get(),
         wishlisted = wishlisted.get(),
         maxCredits = maxCredits.get(),
-        picture = pictureWrapper.get()
+        picture = pictureWrapper.get(),
+        addresses = addresses.get().toList()
     )
 
     fun initPartner(partner: Partner) {
+        logg.debug { "initPartner(partner=$partner)" }
         original = partner
 
         // writable
@@ -63,7 +69,7 @@ class CurrentPartnerFx() : ViewModel() {
         linkMyclubs.set(partner.linkMyclubs)
         linkPartner.set(partner.linkPartner)
         tags.set(partner.tagsFormatted)
-        address.set(partner.addresses.joinToString("\n"))
+        addresses.set(partner.addresses.observable())
         totalVisits.set(partner.finishedActivities.size)
         creditsLeftThisPeriod.set(partner.creditsLeftThisPeriod)
     }

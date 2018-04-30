@@ -9,7 +9,7 @@ import org.ehcache.spi.copy.Copier
 import java.time.Duration
 import java.time.temporal.ChronoUnit
 
-val activitySpec = CacheSpec<CachedActivityHtmlModel, ActivityHtmlModelWrapper>(
+val activitySpec = CacheSpec(
     cacheAlias = "activityAlias",
     valueType = CachedActivityHtmlModel::class.java,
     duration = Duration.of(2, ChronoUnit.DAYS),

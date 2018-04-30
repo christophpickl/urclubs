@@ -3,23 +3,16 @@ package com.github.christophpickl.urclubs.fx.partner
 import com.github.christophpickl.kpotpourri.common.logging.LOG
 import com.github.christophpickl.urclubs.UrclubsConfiguration
 import com.github.christophpickl.urclubs.domain.partner.Partner
-import com.github.christophpickl.urclubs.domain.partner.PartnerImageSize
 import com.github.christophpickl.urclubs.domain.partner.Rating
 import com.github.christophpickl.urclubs.fx.ImageId
 import com.github.christophpickl.urclubs.fx.Images
-import com.github.christophpickl.urclubs.fx.Styles
 import com.github.christophpickl.urclubs.fx.partner.detail.PartnerDetailView
 import com.github.christophpickl.urclubs.fx.partner.detail.PartnerSelectedFXEvent
 import com.github.christophpickl.urclubs.fx.partner.filter.FilterPartnersView
-import javafx.beans.property.ReadOnlyStringWrapper
-import javafx.geometry.Pos
-import javafx.scene.control.TableColumn
-import javafx.scene.control.TableView
 import javafx.scene.image.Image
 import javafx.scene.input.KeyCode
 import javafx.scene.paint.Color
 import tornadofx.*
-import kotlin.reflect.KProperty1
 
 val Rating.color: Color?
     get() = when (this) {
@@ -39,52 +32,8 @@ class PartnersView : View() {
     private val partnersFilter: FilterPartnersView by inject()
     private val partnerDetailView: PartnerDetailView by inject()
     private val currentPartner: CurrentPartnerFx by inject()
-    private val imagePadding = 5
 
-    val table = tableview<Partner> {
-        addClass(Styles.partnersTable)
-
-        column("Picture", Partner::picture).apply {
-            cellFormat {
-                graphic = imageview(rowItem.picture.fxImageLil)
-            }
-            fixedWidth(PartnerImageSize.LITTLE.dimension.width)
-        }
-
-        column("Name", Partner::name).minWidth(200.0).maxWidth(400.0)
-
-        imageColumn(Partner::favourited) { it.favouriteImage }
-        imageColumn(Partner::wishlisted) { it.wishlistedImage }
-
-        column("Category") { features: TableColumn.CellDataFeatures<Partner, String> ->
-            ReadOnlyStringWrapper(features.value.category.label)
-        }.fixedWidth(100.0)
-        column("Rating", Partner::rating).cellFormat {
-            graphic = hbox {
-                label(rowItem.rating.label)
-                style {
-                    backgroundColor += if (rowItem.rating.color != null) rowItem.rating.color!! else Color.GRAY
-                }
-            }
-        }
-        column("Credits") { features: TableColumn.CellDataFeatures<Partner, String> ->
-            val partner = features.value
-            ReadOnlyStringWrapper("${partner.creditsLeftThisPeriod}/${partner.maxCredits}")
-        }.fixedWidth(60)
-        column("Visits", Partner::totalVisits).fixedWidth(48)
-        column("Last V.", Partner::lastVisitInDays).apply {
-            fixedWidth(100.0)
-        }.cellFormat {
-            graphic = hbox {
-                label(rowItem.lastVisitInDaysFormatted)
-            }
-        }
-        column("Address") { features: TableColumn.CellDataFeatures<Partner, String> ->
-            ReadOnlyStringWrapper(features.value.addresses.firstOrNull() ?: "")
-        }
-        column("Note", Partner::note)
-
-        columnResizePolicy = SmartResize.POLICY
+    val table = PartnersTable().apply {
         contextmenu {
             item(name = "Ignore Partner") {
                 action { fire(IgnorePartnerFXEvent(selectedItem!!)) }
@@ -94,13 +43,6 @@ class PartnersView : View() {
             }
         }
     }
-
-    private val Partner.lastVisitInDaysFormatted
-        get() = when (lastVisitInDays) {
-            null -> "-"
-            0 -> "Today"
-            else -> "$lastVisitInDays Days"
-        }
 
     override val root = borderpane {
         style {
@@ -138,15 +80,6 @@ class PartnersView : View() {
             }
         }
     }
-
-    private inline fun <reified S, T> TableView<S>.imageColumn(imageProperty: KProperty1<S, T>, crossinline imageExtractor: (S) -> Image): TableColumn<S, T> =
-            column("", imageProperty).apply {
-                fixedWidth(Images.size.width + imagePadding * 2)
-                cellFormat {
-                    graphic = imageview { image = imageExtractor(rowItem) }
-                    alignment = Pos.CENTER
-                }
-            }
 
     private fun firePartnerSelected(partner: Partner) {
         logg.trace { "firePartnerSelected($partner)" }

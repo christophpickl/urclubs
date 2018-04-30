@@ -1,26 +1,26 @@
 package com.github.christophpickl.urclubs.myclubs.cache.entities
 
 import com.github.christophpickl.urclubs.myclubs.cache.AbstractCachedSerializer
+import com.github.christophpickl.urclubs.myclubs.cache.CacheCoordinates
 import com.github.christophpickl.urclubs.myclubs.cache.CacheSpec
-import com.github.christophpickl.urclubs.myclubs.cache.SingleCacheCoordinates
 import com.github.christophpickl.urclubs.myclubs.parser.FinishedActivityHtmlModel
 import org.ehcache.spi.copy.Copier
 import java.time.Duration
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 
-val finishedActivitiesSpec: CacheSpec<CachedFinishedActivitiesHtmlModel, List<FinishedActivityHtmlModel>> = CacheSpec(
+val finishedActivitiesSpec: CacheSpec<CachedFinishedActivitiesHtmlModel> = CacheSpec(
     cacheAlias = "finishedActivitesAlias",
     valueType = CachedFinishedActivitiesHtmlModel::class.java,
     duration = Duration.of(4, ChronoUnit.HOURS),
     serializerType = CachedFinishedActivitiesHtmlModelSerializer::class.java,
     copierType = CachedFinishedActivitiesHtmlModelCopier::class.java
 )
-val finishedActivitiesSpecCoordinates = SingleCacheCoordinates(
-    staticKey = "finishedActivitesKey",
-    transToModel = { it.toModel() },
-    fetch = { it.finishedActivities() },
-    transToCache = { CachedFinishedActivitiesHtmlModel.byOriginal(it) }
+val finishedActivitiesCoordinates = CacheCoordinates(
+    cacheKey = "finishedActivitesKey",
+    toModelTransformer = { it.toModel() },
+    fetchModel = { it.finishedActivities() },
+    toCachedTransformer = { CachedFinishedActivitiesHtmlModel.byOriginal(it) }
 )
 
 data class CachedFinishedActivitiesHtmlModel(

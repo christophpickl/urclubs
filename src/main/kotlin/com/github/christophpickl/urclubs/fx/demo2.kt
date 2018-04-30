@@ -1,19 +1,23 @@
-package mains
+package com.github.christophpickl.urclubs.fx
+
 import com.github.christophpickl.urclubs.domain.partner.Partner
 import com.github.christophpickl.urclubs.domain.partner.PartnerService
-import com.github.christophpickl.urclubs.fx.Styles
 import com.github.christophpickl.urclubs.fx.partner.CurrentPartnerFx
 import com.github.christophpickl.urclubs.fx.partner.PartnerListFXEvent
 import com.github.christophpickl.urclubs.fx.partner.PartnersFxController
 import com.google.inject.AbstractModule
 import com.google.inject.Guice
+import javafx.application.Application
 import javafx.stage.Stage
 import tornadofx.*
 import kotlin.reflect.KClass
 
-var viewClass: KClass<out UIComponent>? = null
+fun demo2LaunchJavaFx(viewClass: KClass<out View>) {
+    Demo2App.viewClass = viewClass
+    Application.launch(Demo2App::class.java)
+}
 
-class DummyModule : AbstractModule() {
+class Demo2Module : AbstractModule() {
     override fun configure() {
         bind(PartnerService::class.java).toInstance(object : PartnerService {
             override fun create(partner: Partner) = partner
@@ -28,14 +32,18 @@ class DummyModule : AbstractModule() {
     }
 }
 
-class DummyApp : App(
+class Demo2App : App(
     primaryView = viewClass,
     stylesheet = Styles::class
 ) {
+    companion object {
+        var viewClass: KClass<out UIComponent>? = null
+    }
+
     init {
         reloadStylesheetsOnFocus()
 
-        val guice = Guice.createInjector(DummyModule())
+        val guice = Guice.createInjector(Demo2Module())
         FX.dicontainer = object : DIContainer {
             override fun <T : Any> getInstance(type: KClass<T>) = guice.getInstance(type.java)
         }

@@ -2,4 +2,4 @@
 
 echo "Run tests ..."
 
-./gradlew clean test check
+./gradlew clean test

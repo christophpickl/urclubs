@@ -15,6 +15,11 @@ data class FinishedActivity(
     }
 }
 
+data class UpcomingActivity(
+    val title: String,
+    val date: LocalDateTime
+)
+
 enum class ActivityType {
     Course,
     Infrastructure
