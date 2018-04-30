@@ -107,12 +107,13 @@ todo {
 
 test {
     useTestNG() {
-        // excludeGroups "system"
+         excludeGroups "system"
     }
 }
 
 task systemTest(type: Test, dependsOn: "test") {
     useTestNG() {
+        excludeGroups ""
         includeGroups "system"
     }
 }
