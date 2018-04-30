@@ -104,3 +104,15 @@ todo {
     failIfFound = true
     fileExtensions = ["kt"]
 }
+
+test {
+    useTestNG() {
+        // excludeGroups "system"
+    }
+}
+
+task systemTest(type: Test, dependsOn: "test") {
+    useTestNG() {
+        includeGroups "system"
+    }
+}
