@@ -15,7 +15,7 @@ sealed class AsyncResult<T> {
 
 private val log = LOG {}
 
-private fun <T> defaultOnAny(result: AsyncResult<T>) {
+private fun <T> defaultOnAny(@Suppress("UNUSED_PARAMETER") result: AsyncResult<T>) {
     // do nothing
 }
 
