@@ -154,14 +154,40 @@ class MyClubsHttpApi @Inject constructor(
             ))
         })
 
-        val body = response.body
-        if (body != "success") {
+        val loginResponse = parseLoginResponse(response.body)
+        if (loginResponse.state != "success") {
             log.warn { "Response:\n$response" }
-            log.warn { "Response body:\n$body" }
-            throw Exception("Login failed!")
+            log.warn { "Response body:\n${response.body}" }
+            throw LoginException("Login failed (state: ${loginResponse.state})!")
         }
         loggedIn = true
 
     }
 
+    private fun parseLoginResponse(response: String): LoginResponse {
+        if (response == "fail") {
+            return LoginResponse.Failed
+        }
+        val parts = response.split("|||")
+        // success|||dtEkYdhGIF|||79|||UNLIMITED
+        return LoginResponse(
+                state = parts[0],
+                id = parts[1],
+                number = parts[2].toInt(),
+                productType= parts[3]
+        )
+    }
+}
+
+class LoginException(message: String) : Exception(message)
+
+private data class LoginResponse(
+        val state: String, // success
+        val id: String, // dtEkYdhGIF
+        val number: Int, // 79
+        val productType: String // UNLIMITED
+) {
+    companion object {
+        val Failed = LoginResponse(state = "fail", id = "", number = -1, productType = "")
+    }
 }
