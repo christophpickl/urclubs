@@ -27,8 +27,8 @@ class SyncResultEvent(val syncReport: SyncReport) : FXEvent()
 
 // see: http://blog.carl.pro/2016/05/modal-jaxafx-progress-indicator-running-in-background/
 class ProgressDialog(
-    private val owner: Window,
-    private val displayedMessage: String
+        private val owner: Window,
+        private val displayedMessage: String
 ) {
     private val dialog = Stage(StageStyle.UNDECORATED)
     private val width: Double = 330.0
@@ -86,24 +86,25 @@ class SyncFxController : Controller() {
             val progressDialog = ProgressDialog(primaryStage, "Sync in progress ...")
             progressDialog.show()
 
-            runAsync {
+            runAsyncSafely(
+                    onAny = { progressDialog.close() },
+                    onSuccess = { report -> fire(SyncResultEvent(report)) },
+                    dialogContent = FailDialogContent(title = "Resync Data", header = "Resyncing data from MyClubs failed!")
+            ) {
                 executeSync()
-            } ui { report ->
-                progressDialog.close()
-                fire(SyncResultEvent(report))
             }
         }
 
         subscribe<SyncResultEvent> { event ->
             information(
-                title = "Sync Report",
-                header = "Sync completed successfully",
-                content =
-                "Partners inserted: ${event.syncReport.partners.insertedPartners.size}\n" +
-                    "Partners deleted: ${event.syncReport.partners.deletedPartners.size}\n" +
-                    "Finished activities inserted: ${event.syncReport.finishedActivities.inserted.size}",
-                buttons = *arrayOf(ButtonType.OK)
-                // owner = ... main window reference?!
+                    title = "Sync Report",
+                    header = "Sync completed successfully",
+                    content =
+                    "Partners inserted: ${event.syncReport.partners.insertedPartners.size}\n" +
+                            "Partners deleted: ${event.syncReport.partners.deletedPartners.size}\n" +
+                            "Finished activities inserted: ${event.syncReport.finishedActivities.inserted.size}",
+                    buttons = *arrayOf(ButtonType.OK)
+                    // owner = ... main window reference?!
             )
         }
     }
@@ -120,9 +121,9 @@ class SyncFxController : Controller() {
         val upcomingActivitiesReport = upcomingActivitySyncer.sync()
 
         return SyncReport(
-            partners = partnersReport,
-            finishedActivities = finishedActivitiesReport,
-            upcomingActivities = upcomingActivitiesReport
+                partners = partnersReport,
+                finishedActivities = finishedActivitiesReport,
+                upcomingActivities = upcomingActivitiesReport
         )
     }
 
@@ -130,16 +131,16 @@ class SyncFxController : Controller() {
         logg.debug { "stubbedSync()" }
         Thread.sleep(3 * 1000)
         return SyncReport(
-            partners = PartnerSyncReport(emptyList(), emptyList()),
-            finishedActivities = FinishedActivitySyncReport(emptyList()),
-            upcomingActivities = UpcomingActivitySyncReport(emptyList())
+                partners = PartnerSyncReport(emptyList(), emptyList()),
+                finishedActivities = FinishedActivitySyncReport(emptyList()),
+                upcomingActivities = UpcomingActivitySyncReport(emptyList())
         )
     }
 
 }
 
 data class SyncReport(
-    val partners: PartnerSyncReport,
-    val finishedActivities: FinishedActivitySyncReport,
-    val upcomingActivities: UpcomingActivitySyncReport
+        val partners: PartnerSyncReport,
+        val finishedActivities: FinishedActivitySyncReport,
+        val upcomingActivities: UpcomingActivitySyncReport
 )
