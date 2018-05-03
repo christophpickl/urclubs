@@ -39,7 +39,7 @@ import org.testng.annotations.BeforeMethod
 import org.testng.annotations.Test
 import java.io.File
 import java.time.LocalDateTime
-import java.util.Date
+import java.util.*
 import kotlin.reflect.KFunction1
 
 private val testResourcePool = ResourcePoolsBuilder.newResourcePoolsBuilder()
@@ -186,7 +186,7 @@ class MyClubsCachedApiGuiceTest {
 
     fun `When load partners two times Then only one HTTP call was made for login and one for partners`() {
         val http = mock<Http>()
-        val loginResponse = mockResponse("success")
+        val loginResponse = mockResponse("success|||someId|||42|||UNLIMITED")
         val userResponse = mockResponse(UserMycJson.testInstance())
         whenever(http.execute(any())).thenReturn(loginResponse, userResponse)
         val guice = Guice.createInjector(Modules.override(MyclubsModule()).with(TestModule(http)))

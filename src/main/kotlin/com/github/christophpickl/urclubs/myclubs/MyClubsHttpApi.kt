@@ -169,6 +169,9 @@ class MyClubsHttpApi @Inject constructor(
             return LoginResponse.Failed
         }
         val parts = response.split("|||")
+        if (parts.size != 4) {
+            throw IllegalArgumentException("Expected response to contain 4 elements separated by |||. But was: [$response]")
+        }
         // success|||dtEkYdhGIF|||79|||UNLIMITED
         return LoginResponse(
                 state = parts[0],
