@@ -219,7 +219,7 @@ class HtmlParserTest {
             date = LocalDateTime.parse("2018-01-10T16:00:00"),
             category = "EMS",
             title = "EMS-Training",
-            locationHtml = "Bodystreet Convalere    <br>Taborstraße 33, 1020 Wien"
+            locationHtml = "Bodystreet Convalere<br>Taborstraße 33, 1020 Wien"
         ))
         assertThat(activities[1]).isEqualTo(FinishedActivityHtmlModel(
             date = LocalDateTime.parse("2018-01-10T08:00:00"),

@@ -41,7 +41,7 @@ verifyConfirm "Continue with release?"
 
 echo "version=$NEXT_VERSION" > ${VERSION_FILE}
 
-BUILD_COMMAND="./gradlew clean checkTodo test check build loadUrclubsVersion createApp -Durclubs.production=true -Durclubs.enableMacBundle=true"
+BUILD_COMMAND="./gradlew clean checkTodo test systemTest check build loadUrclubsVersion createApp -Durclubs.production=true -Durclubs.enableMacBundle=true"
 echo ""
 echo ">> $BUILD_COMMAND"
 eval ${BUILD_COMMAND}

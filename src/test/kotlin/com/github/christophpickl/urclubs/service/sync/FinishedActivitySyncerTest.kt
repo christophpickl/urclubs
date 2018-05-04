@@ -27,7 +27,7 @@ class FinishedActivitySyncerTest {
     private val finishedActivityHtml = FinishedActivityHtmlModel.testInstance().copy(title = "fact")
     private val finishedActivity = finishedActivityHtml.toFinishedActivity()
 
-    private val partner = Partner.testInstance.copy(finishedActivities = emptyList())
+    private val partner = Partner.testInstance.copy(idDbo = 42, finishedActivities = emptyList())
 
     private lateinit var myclubs: MyClubsApi
     private lateinit var activityService: ActivityService
@@ -45,6 +45,7 @@ class FinishedActivitySyncerTest {
     fun `Given single finished activity from myclubs When sync Then one activity should have been inserted`() {
         whenever(myclubs.finishedActivities()).thenReturn(listOf(finishedActivityHtml))
         whenever(partnerService.searchPartner(finishedActivityHtml.locationHtml)).thenReturn(partner)
+        whenever(partnerService.read(partner.idDbo)).thenReturn(partner)
         whenever(activityService.readAllFinished()).thenReturn(emptyList())
 
         val report = syncer.sync()

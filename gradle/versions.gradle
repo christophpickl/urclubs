@@ -1,5 +1,5 @@
 ext {
-    versionKotlin = "1.2.31"
+    versionKotlin = "1.2.40"
     versionJava = "1.8"
 
     versionGuice = "4.2.0"
