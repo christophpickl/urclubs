@@ -81,7 +81,7 @@ private val filterDateFormat = DateTimeFormatter.ofPattern("dd.MM.yyyy")
 private val filterTimeFormat = DateTimeFormatter.ofPattern("HH:mm")
 
 fun CourseFilter.toFilterMycJson() = FilterMycJson(
-        date = listOf(filterDateFormat.format(start)),
+    date = listOf(filterDateFormat.format(start)), // FIXME we need to support for future days!
         time = listOf(filterTimeFormat.format(start), filterTimeFormat.format(end)),
         type = listOf(ActivityTypeMyc.Course)
 )

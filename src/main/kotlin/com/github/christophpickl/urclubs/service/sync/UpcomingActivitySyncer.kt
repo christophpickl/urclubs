@@ -26,9 +26,15 @@ class UpcomingActivitySyncer @Inject constructor(
         )
         log.debug { "Courses filter: $filter" }
         val fetchedCourses = myclubs.courses(filter)
-        val storedCourses = activityService.readUpcoming(filter.start, filter.end)
+        val storedActivities = activityService.readUpcoming(filter.start, filter.end)
 
-        // FIXME compute diff of fetched / stored + insert
+        // FIXME compute diff of (fetched VS stored)
+        // + match with proper partner
+        // + insert
+//        fetchedCourses.map {
+//            search partner: it.partner
+//        }
+
         val inserted = emptyList<UpcomingActivity>()
 
         log.info { "sync() DONE" }

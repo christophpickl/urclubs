@@ -9,6 +9,7 @@ import com.github.christophpickl.urclubs.testInfra.singleEntryIsEqualToIgnoringG
 import org.assertj.core.api.Assertions.assertThat
 import org.testng.annotations.BeforeMethod
 import org.testng.annotations.Test
+import javax.persistence.EntityManager
 
 @Test
 class PartnerDaoImplTest : DatabaseTest() {
@@ -21,22 +22,22 @@ class PartnerDaoImplTest : DatabaseTest() {
 
     @BeforeMethod
     fun createData() {
-        partner = PartnerDbo.testInstance()
-        partner1 = PartnerDbo.testInstance().copy(idMyc = "myc1")
-        partner2 = PartnerDbo.testInstance().copy(idMyc = "myc2")
+        partner = PartnerDbo.testInstance
+        partner1 = PartnerDbo.testInstance.copy(idMyc = "myc1")
+        partner2 = PartnerDbo.testInstance.copy(idMyc = "myc2")
         partnerWithFinishedActivities = partner.copy(finishedActivities = mutableListOf(FinishedActivityDbo.testInstance()))
     }
 
     fun `CREATE - When insert partner Then expect partner to be inserted in database`() {
         dao().create(partner)
 
-        assertThat(fetchAll()).singleEntryIsEqualToIgnoringGivenProps(partner, PartnerDbo::id)
+        assertThat(em.fetchPartnerDbo()).singleEntryIsEqualToIgnoringGivenProps(partner, PartnerDbo::id)
     }
 
     fun `CREATE - When insert partner with finished activities Then expect activities to be inserted in database`() {
         dao().create(partnerWithFinishedActivities)
 
-        assertThat(fetchAll()).singleEntryIsEqualToIgnoringGivenProps(partnerWithFinishedActivities, PartnerDbo::id)
+        assertThat(em.fetchPartnerDbo()).singleEntryIsEqualToIgnoringGivenProps(partnerWithFinishedActivities, PartnerDbo::id)
     }
 
     fun `READ - Given a partner is stored When fetch all partners Then that partner is returned`() {
@@ -164,7 +165,7 @@ class PartnerDaoImplTest : DatabaseTest() {
 
         dao().update(updatedPartner)
 
-        assertThatSingleElement(fetchAll(), updatedPartner)
+        assertThatSingleElement(em.fetchPartnerDbo(), updatedPartner)
     }
 
     private fun save(partner: PartnerDbo): PartnerDbo {
@@ -174,9 +175,9 @@ class PartnerDaoImplTest : DatabaseTest() {
         return partner
     }
 
-    private fun fetchAll() =
-        em.createQuery("SELECT p FROM PartnerDbo p", PartnerDbo::class.java).resultList
-
     private fun dao() = PartnerDaoImpl(em)
 
 }
+
+fun EntityManager.fetchPartnerDbo() =
+    createQuery("SELECT p FROM PartnerDbo p", PartnerDbo::class.java).resultList

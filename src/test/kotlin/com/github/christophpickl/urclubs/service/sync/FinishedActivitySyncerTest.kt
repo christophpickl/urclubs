@@ -12,6 +12,7 @@ import com.github.christophpickl.urclubs.myclubs.parser.FinishedActivityHtmlMode
 import com.github.christophpickl.urclubs.myclubs.testInstance
 import com.github.christophpickl.urclubs.persistence.domain.PartnerDaoImpl
 import com.github.christophpickl.urclubs.persistence.domain.PartnerDbo
+import com.github.christophpickl.urclubs.persistence.domain.UpcomingActivityDaoImpl
 import com.github.christophpickl.urclubs.testInfra.DatabaseTest
 import com.google.common.eventbus.EventBus
 import com.nhaarman.mockito_kotlin.mock
@@ -80,11 +81,11 @@ class FinishedActivitySyncerDbTest : DatabaseTest() {
         whenever(myclubs.finishedActivities()).thenReturn(listOf(activityHtml1, activityHtml2))
 
         val dao = PartnerDaoImpl(em)
-        val activityService = ActivityServiceImpl(em)
+        val activityService = ActivityServiceImpl(em, UpcomingActivityDaoImpl(em))
         val partnerService = PartnerServiceImpl(dao, bus)
         val syncer = FinishedActivitySyncer(myclubs, activityService, partnerService)
 
-        val partner = dao.create(PartnerDbo.testInstance().copy(
+        val partner = dao.create(PartnerDbo.testInstance.copy(
             name = partnerName,
             addresses = mutableListOf(partnerAddress),
             finishedActivities = mutableListOf()

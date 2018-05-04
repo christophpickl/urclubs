@@ -6,7 +6,8 @@ import com.github.christophpickl.urclubs.persistence.domain.PartnerDbo
 import com.github.christophpickl.urclubs.persistence.domain.RatingDbo
 
 
-fun PartnerDbo.Companion.testInstance() = PartnerDbo(
+val PartnerDbo.Companion.testInstance
+    get() = PartnerDbo(
     id = 0L,
     idMyc = "testIdMyc",
     name = "testName",
