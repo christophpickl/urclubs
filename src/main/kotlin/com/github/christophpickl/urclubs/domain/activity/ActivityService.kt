@@ -33,7 +33,7 @@ class ActivityServiceImpl @Inject constructor(
     }
 
     override fun readUpcoming(start: LocalDateTime, end: LocalDateTime): List<UpcomingActivity> {
-        // FIXME implement me
+        // !!!!!! implement me
         return emptyList()
     }
 

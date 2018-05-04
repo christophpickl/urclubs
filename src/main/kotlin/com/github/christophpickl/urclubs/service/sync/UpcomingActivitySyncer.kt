@@ -28,7 +28,7 @@ class UpcomingActivitySyncer @Inject constructor(
         val fetchedCourses = myclubs.courses(filter)
         val storedCourses = activityService.readUpcoming(filter.start, filter.end)
 
-        // FIXME compute diff of fetched / stored + insert
+        // !!!!!!!!!!!!!! compute diff of fetched / stored + insert
         val inserted = emptyList<UpcomingActivity>()
 
         log.info { "sync() DONE" }
