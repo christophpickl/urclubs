@@ -40,7 +40,7 @@ class ActivityServiceImpl @Inject constructor(
     }
 
     override fun createUpcoming(activities: List<UpcomingActivity>): List<UpcomingActivity> {
-        // !!! somehow match activity DBO with partner DBO
+        // FIXME somehow match activity DBO with partner DBO
 //        return upcomingDao.create(activities.map { it.toUpcomingActivityDbo() }).map { it.toUpcomingActivity() }
         return emptyList()
     }
