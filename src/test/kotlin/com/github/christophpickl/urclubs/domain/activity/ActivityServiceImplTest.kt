@@ -13,7 +13,7 @@ import org.testng.annotations.Test
 @Test(groups = ["database"])
 class ActivityServiceImplTest : DatabaseTest() {
 
-    private val service = ActivityServiceImpl(em, UpcomingActivityDaoImpl(em))
+    private val service by lazy { ActivityServiceImpl(em, UpcomingActivityDaoImpl(em)) }
     private val finishedActivityDbo = FinishedActivityDbo.testInstance
 
     fun `Given a single partner with a single finished activity When read all finished activities Then return that single element`() {
