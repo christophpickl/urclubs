@@ -13,17 +13,23 @@ import org.testng.annotations.Test
 @Test(groups = ["database"])
 class ActivityServiceImplTest : DatabaseTest() {
 
+    private val service = ActivityServiceImpl(em, UpcomingActivityDaoImpl(em))
+    private val finishedActivityDbo = FinishedActivityDbo.testInstance
+
     fun `Given a single partner with a single finished activity When read all finished activities Then return that single element`() {
-        val finishedActivity = FinishedActivityDbo.testInstance()
+        savePartnerWithFinishedActivies(finishedActivityDbo)
+
+        val actual = service.readAllFinished()
+
+        assertThatSingleElement(actual, finishedActivityDbo.toFinishedActivity())
+    }
+
+    private fun savePartnerWithFinishedActivies(vararg activities: FinishedActivityDbo) {
         em.transactional {
             persist(PartnerDbo.testInstance.copy(
-                finishedActivities = mutableListOf(finishedActivity)
+                finishedActivities = activities.toMutableList()
             ))
         }
-
-        val actual = ActivityServiceImpl(em, UpcomingActivityDaoImpl(em)).readAllFinished()
-
-        assertThatSingleElement(actual, finishedActivity.toFinishedActivity())
     }
 
 }

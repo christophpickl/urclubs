@@ -25,7 +25,7 @@ class PartnerDaoImplTest : DatabaseTest() {
         partner = PartnerDbo.testInstance
         partner1 = PartnerDbo.testInstance.copy(idMyc = "myc1")
         partner2 = PartnerDbo.testInstance.copy(idMyc = "myc2")
-        partnerWithFinishedActivities = partner.copy(finishedActivities = mutableListOf(FinishedActivityDbo.testInstance()))
+        partnerWithFinishedActivities = partner.copy(finishedActivities = mutableListOf(FinishedActivityDbo.testInstance))
     }
 
     fun `CREATE - When insert partner Then expect partner to be inserted in database`() {
@@ -160,7 +160,7 @@ class PartnerDaoImplTest : DatabaseTest() {
             linkPartner = savedPartner.linkPartner,
             linkMyclubs = savedPartner.linkMyclubs,
             picture = ByteArray(8, { 1 }),
-            finishedActivities = mutableListOf(FinishedActivityDbo.testInstance())
+            finishedActivities = mutableListOf(FinishedActivityDbo.testInstance)
         )
 
         dao().update(updatedPartner)
