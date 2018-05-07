@@ -7,43 +7,43 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 data class UserMycJson(
-        @JsonProperty("user_id")
-        val id: String,
-        @JsonProperty("email")
-        val email: String,
-        @JsonProperty("firstname")
-        val firstName: String,
-        @JsonProperty("lastname")
-        val lastName: String
+    @JsonProperty("user_id")
+    val id: String,
+    @JsonProperty("email")
+    val email: String,
+    @JsonProperty("firstname")
+    val firstName: String,
+    @JsonProperty("lastname")
+    val lastName: String
 ) {
     companion object
 }
 
 data class ActivitiesMycJson(
-        // boundingBox
-        // currentRegion
-        // pins
-        @JsonProperty("courses")
-        val coursesHtml: String,
-        @JsonProperty("infrastructures")
-        val infrastructuresHtml: String
+    // boundingBox
+    // currentRegion
+    // pins
+    @JsonProperty("courses")
+    val coursesHtml: String,
+    @JsonProperty("infrastructures")
+    val infrastructuresHtml: String
 )
 
 
 data class FilterMycJson(
-        val categories: List<String> = emptyList(),
-        val date: List<String>,
-        val time: List<String>,
-        val favourite: Boolean = false,
-        val city: String = "wien",
-        val partner: String = "",
-        val type: List<ActivityTypeMyc> = ActivityTypeMyc.all
+    val categories: List<String> = emptyList(),
+    val date: List<String>,
+    val time: List<String>,
+    val favourite: Boolean = false,
+    val city: String = "wien",
+    val partner: String = "",
+    val type: List<ActivityTypeMyc> = ActivityTypeMyc.all
 ) {
     companion object
 }
 
 enum class ActivityTypeMyc(
-        @get:JsonValue val json: String
+    @get:JsonValue val json: String
 ) {
 
     Course("course"),
@@ -58,13 +58,13 @@ enum class ActivityTypeMyc(
         }
 
         fun byJson(search: String) = typesByJson[search]
-                ?: throw IllegalArgumentException("Unknown activity type '$search'!")
+            ?: throw IllegalArgumentException("Unknown activity type '$search'!")
     }
 }
 
 data class CourseFilter(
-        val start: LocalDateTime,
-        val end: LocalDateTime
+    val start: LocalDateTime,
+    val end: LocalDateTime
 ) {
     init {
         if (start.isAfter(end)) {
@@ -82,14 +82,14 @@ private val filterTimeFormat = DateTimeFormatter.ofPattern("HH:mm")
 
 fun CourseFilter.toFilterMycJson() = FilterMycJson(
     date = listOf(filterDateFormat.format(start)), // FIXME we need to support for future days!
-        time = listOf(filterTimeFormat.format(start), filterTimeFormat.format(end)),
-        type = listOf(ActivityTypeMyc.Course)
+    time = listOf(filterTimeFormat.format(start), filterTimeFormat.format(end)),
+    type = listOf(ActivityTypeMyc.Course)
 )
 
 data class ActivityFilter(
-        val activityId: String, // "Pf5FowjC0n",
-        val timestamp: String, // "1516705200"
-        val type: ActivityType // [ Course, Infrastructure ]
+    val activityId: String, // "Pf5FowjC0n",
+    val timestamp: String, // "1516705200"
+    val type: ActivityType // [ Course, Infrastructure ]
 )
 
 fun ActivityType.toActivityTypeMyc() = when (this) {
