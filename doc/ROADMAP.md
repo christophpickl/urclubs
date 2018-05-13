@@ -4,6 +4,7 @@
 * ! BUG: adresse loeschen funkt nicht gscheit bei dubletten
 * wenn textfield, text zu lang und "..." rendered => tooltip mit vollem text zeigen
 * partner creation data einfuehren, sortierbar in UI machen als column (wenn neuer partner synced, sofort identifizieren koennen)
+* regelmaessig auf platte die DB syncen (wegen dropbox sync)
 
 # Grob Plan
 
