@@ -25,7 +25,8 @@ val Partner.Companion.testInstance
     picture = PartnerImage.DefaultPicture
 )
 
-fun FinishedActivityDbo.Companion.testInstance() = FinishedActivityDbo(
+val FinishedActivityDbo.Companion.testInstance
+    get() = FinishedActivityDbo(
     title = "testTitle",
     date = LocalDateTime.parse("2000-12-31T09:00:00")
 )

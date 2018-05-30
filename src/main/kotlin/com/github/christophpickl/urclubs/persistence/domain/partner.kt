@@ -31,6 +31,7 @@ fun EntityManager.deleteAllPartners() {
     createNativeQuery("DELETE FROM PartnerDbo_addresses").executeUpdate()
     createNativeQuery("DELETE FROM PartnerDbo_tags").executeUpdate()
     createNativeQuery("DELETE FROM PartnerDbo_finishedActivities").executeUpdate()
+    deleteAll<UpcomingActivityDbo>()
     deleteAll<PartnerDbo>()
 }
 

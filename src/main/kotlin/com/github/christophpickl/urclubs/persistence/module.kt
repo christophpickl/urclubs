@@ -2,6 +2,10 @@ package com.github.christophpickl.urclubs.persistence
 
 import com.github.christophpickl.kpotpourri.common.logging.LOG
 import com.github.christophpickl.urclubs.UrclubsConfiguration
+import com.github.christophpickl.urclubs.persistence.domain.PartnerDao
+import com.github.christophpickl.urclubs.persistence.domain.PartnerDaoImpl
+import com.github.christophpickl.urclubs.persistence.domain.UpcomingActivityDao
+import com.github.christophpickl.urclubs.persistence.domain.UpcomingActivityDaoImpl
 import com.github.christophpickl.urclubs.service.UrClubsLogConfigurer
 import com.google.inject.AbstractModule
 import com.google.inject.BindingAnnotation
@@ -58,11 +62,15 @@ class PersistenceModule(definedDatabaseUrl: String? = null) : AbstractModule() {
 
     override fun configure() {
         log.info { "Configuring JPA with URL: '$databaseUrl'" }
-        log.info { "Properties: $persistenceProperties" }
+        log.info { "Persistence properties: $persistenceProperties" }
         install(JpaPersistModule(persistenceUnitName).properties(persistenceProperties))
         bind(DbInitializer::class.java).asEagerSingleton()
         bind(DbExitializer::class.java).asEagerSingleton()
         bindConstant().annotatedWith(DatabaseUrl::class.java).to(databaseUrl)
+
+
+        bind(PartnerDao::class.java).to(PartnerDaoImpl::class.java)
+        bind(UpcomingActivityDao::class.java).to(UpcomingActivityDaoImpl::class.java)
     }
 
 }

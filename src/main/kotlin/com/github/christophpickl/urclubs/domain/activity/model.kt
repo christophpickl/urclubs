@@ -16,8 +16,13 @@ data class FinishedActivity(
 }
 
 data class UpcomingActivity(
+    val idDbo: Long,
+    // FIXME add more props
+    // val idMyc: String,
+    // val partner: Partner
     val title: String,
     val date: LocalDateTime
+    // val category: String ???
 )
 
 enum class ActivityType {

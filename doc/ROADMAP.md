@@ -1,8 +1,13 @@
+* !!! upcoming activities; suche ermoeglichen (zb "acro yoga")
 * BUG: 21:51:35.276 ERROR [tornadofx-thread-1              ] c.g.c.urclubs.service.sync.FinishedActivitySyncer - Could not find partner for: FinishedActivityHtmlModel(date=2017-12-06T16:40, category=Kampfkunst, title=Wing Chun, locationHtml=Center 6<br>Kurzgasse 6, 1060 Wien)
+*  global notes feld machen. 
 * verify bugfix: when new finished activity, then partner updated, then changing addresses should happen on FX thread
 * ! BUG: adresse loeschen funkt nicht gscheit bei dubletten
 * wenn textfield, text zu lang und "..." rendered => tooltip mit vollem text zeigen
 * sync report: possibility to open full report (which partners got inserted/deleted, etc...)
+* partner creation data einfuehren, sortierbar in UI machen als column (wenn neuer partner synced, sofort identifizieren koennen)
+* regelmaessig auf platte die DB syncen (wegen dropbox sync)
+
 # Grob Plan
 
 1. Upcoming Activities
