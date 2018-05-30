@@ -2,7 +2,7 @@
 * verify bugfix: when new finished activity, then partner updated, then changing addresses should happen on FX thread
 * ! BUG: adresse loeschen funkt nicht gscheit bei dubletten
 * wenn textfield, text zu lang und "..." rendered => tooltip mit vollem text zeigen
-
+* sync report: possibility to open full report (which partners got inserted/deleted, etc...)
 # Grob Plan
 
 1. Upcoming Activities
