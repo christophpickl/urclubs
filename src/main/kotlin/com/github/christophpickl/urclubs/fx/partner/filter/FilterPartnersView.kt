@@ -44,6 +44,7 @@ class FilterPartnersView : View() {
         maxValue = Rating.maxIntValue
     ))).apply {
         promptText = "Any"
+        tooltip(Rating.values().joinToString("\n") { "${it.intValue} for ${it.label}" })
     }
 
     val favouritedFilterButton = FavouritedFilterButton()
