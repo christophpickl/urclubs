@@ -17,7 +17,7 @@ data class FinishedActivity(
 
 data class UpcomingActivity(
     val idDbo: Long,
-    // FIXME add more props
+    // TODO !!! add more props
     // val idMyc: String,
     // val partner: Partner
     val title: String,
