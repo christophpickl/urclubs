@@ -17,7 +17,7 @@ object StubbedMyClubsApi : MyClubsApi {
     private val partner1Detail = PartnerDetailHtmlModel(
         name = partner1.name,
         description = "description1",
-        linkPartnerSite = "",
+        linkPartnerSite = null,
         addresses = listOf("home1"),
         tags = emptyList(),
         upcomingActivities = emptyList()

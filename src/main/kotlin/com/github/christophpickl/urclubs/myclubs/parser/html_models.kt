@@ -13,7 +13,7 @@ data class PartnerHtmlModel(
 data class PartnerDetailHtmlModel(
     val name: String,
     val description: String,
-    val linkPartnerSite: String,
+    val linkPartnerSite: String?,
     val addresses: List<String>,
     val tags: List<String>, // "Yoga", "Fitnesskurs"
     val upcomingActivities: List<PartnerDetailActivityHtmlModel>

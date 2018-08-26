@@ -19,7 +19,7 @@ data class Partner(
     val name: String, // "Triller CrossFit"
     val note: String,
     val linkMyclubs: String,
-    val linkPartner: String,
+    val linkPartner: String?,
 
     val maxCredits: Int,
     val rating: Rating,
@@ -78,7 +78,7 @@ data class Partner(
             ignored = false,
             category = Category.UNKNOWN,
             linkMyclubs = "",
-            linkPartner = "",
+            linkPartner = null,
             addresses = emptyList(),
             tags = emptyList(),
             finishedActivities = emptyList(),

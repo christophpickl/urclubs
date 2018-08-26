@@ -123,8 +123,8 @@ data class PartnerDbo(
         @Column(nullable = false, length = COL_LENGTH_LIL)
         var linkMyclubs: String,
 
-        @Column(nullable = false, length = COL_LENGTH_LIL)
-        var linkPartner: String,
+        @Column(nullable = true, length = COL_LENGTH_LIL)
+        var linkPartner: String?,
 
         @Column(nullable = false)
         var maxCredits: Byte,

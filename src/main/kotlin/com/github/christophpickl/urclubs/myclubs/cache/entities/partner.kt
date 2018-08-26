@@ -52,7 +52,7 @@ data class CachedPartnerDetailHtmlModel(
         PartnerDetailHtmlModel(
             name = name!!,
             description = description!!,
-            linkPartnerSite = linkPartnerSite!!,
+            linkPartnerSite = linkPartnerSite,
             addresses = addresses!!,
             tags = flags!!,
             upcomingActivities = upcomingActivities!!.map { it.toModel() }

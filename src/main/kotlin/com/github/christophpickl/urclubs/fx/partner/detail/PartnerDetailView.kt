@@ -146,11 +146,12 @@ class PartnerDetailView : View() {
                                 enableWhen { currentPartner.linkMyclubs.isNotEmpty }
                                 setOnAction { fire(OpenWebsiteFXEvent(url = currentPartner.original.linkMyclubs)) }
                             }
+
                             hyperlink {
                                 textProperty().bind(currentPartner.linkPartner)
                                 tooltip { textProperty().bind(currentPartner.linkPartner) }
-                                enableWhen { currentPartner.linkPartner.isNotEmpty }
-                                setOnAction { fire(OpenWebsiteFXEvent(url = currentPartner.original.linkPartner)) }
+                                enableWhen { currentPartner.linkPartner.isNotNull }
+                                setOnAction { fire(OpenWebsiteFXEvent(url = currentPartner.original.linkPartner ?: "")) }
                             }
                         }
                     }

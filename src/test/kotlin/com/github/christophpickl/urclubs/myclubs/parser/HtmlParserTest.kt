@@ -286,6 +286,12 @@ class HtmlParserTest {
 
     }
 
+    fun `parsePartner - parse vienna outdoor fitness training response`() {
+        val partner = HtmlParser().parsePartner(readResponse("partner.without_webaddress.html"))
+
+        assertThat(partner.linkPartnerSite).isNull()
+    }
+
     fun `parseDateFromUpcomingActivityTitle`() {
         mapOf(
             "Heute, 27.01.2018" to LocalDate.parse("2018-01-27"),

@@ -12,7 +12,6 @@ import com.github.christophpickl.urclubs.myclubs.MyClubsApi
 import com.github.christophpickl.urclubs.myclubs.MyclubsUtil
 import com.github.christophpickl.urclubs.myclubs.parser.PartnerDetailHtmlModel
 import com.github.christophpickl.urclubs.myclubs.parser.PartnerHtmlModel
-import com.google.common.annotations.VisibleForTesting
 import javax.inject.Inject
 
 class PartnerSyncer @Inject constructor(
@@ -104,7 +103,7 @@ fun PartnerHtmlModel.toPartner() = Partner(
 
     // will be enhanced later on by HTTP detail request
     linkMyclubs = "",
-    linkPartner = "",
+    linkPartner = null,
     addresses = emptyList(),
     tags = emptyList(),
     finishedActivities = emptyList()
