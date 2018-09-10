@@ -74,7 +74,7 @@ class PartnerDaoImpl @Inject constructor(
     override fun readAll(includeIgnored: Boolean): List<PartnerDbo> {
         log.debug { "readAll(includeIgnored=$includeIgnored)" }
         val whereIgnored = if (includeIgnored) "" else " AND ${PartnerDbo::ignored.name} = $includeIgnored"
-        return em.queryList("SELECT p FROM ${PartnerDbo::class.simpleName} p WHERE ${PartnerDbo::dateDeleted.name} != NULL" + whereIgnored)
+        return em.queryList("SELECT p FROM ${PartnerDbo::class.simpleName} p WHERE ${PartnerDbo::dateDeleted.name} IS NULL" + whereIgnored)
     }
 
     override fun read(id: Long): PartnerDbo? =
