@@ -1,5 +1,7 @@
 package com.github.christophpickl.urclubs.persistence
 
+import java.sql.Timestamp
+import java.time.LocalDateTime
 import javax.persistence.EntityManager
 
 const val COL_LENGTH_LIL = 128
@@ -60,3 +62,5 @@ inline fun <reified T : Any> EntityManager.deleteAll() {
     val delete = createCriteriaDeleteAll<T>()
     createQuery(delete).executeUpdate()
 }
+
+fun LocalDateTime.toTimestamp() = Timestamp.valueOf(this)

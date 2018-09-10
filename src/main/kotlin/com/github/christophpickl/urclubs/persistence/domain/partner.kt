@@ -15,6 +15,7 @@ import com.github.christophpickl.urclubs.persistence.queryList
 import com.github.christophpickl.urclubs.persistence.transactional
 import com.google.common.base.MoreObjects
 import com.google.common.base.Objects
+import java.sql.Timestamp
 import javax.inject.Inject
 import javax.persistence.Column
 import javax.persistence.ElementCollection
@@ -73,7 +74,7 @@ class PartnerDaoImpl @Inject constructor(
     override fun readAll(includeIgnored: Boolean): List<PartnerDbo> {
         log.debug { "readAll(includeIgnored=$includeIgnored)" }
         val whereIgnored = if (includeIgnored) "" else " AND ${PartnerDbo::ignored.name} = $includeIgnored"
-        return em.queryList("SELECT p FROM ${PartnerDbo::class.simpleName} p WHERE ${PartnerDbo::deletedByMyc.name} = false" + whereIgnored)
+        return em.queryList("SELECT p FROM ${PartnerDbo::class.simpleName} p WHERE ${PartnerDbo::dateDeleted.name} != NULL" + whereIgnored)
     }
 
     override fun read(id: Long): PartnerDbo? =
@@ -137,7 +138,10 @@ data class PartnerDbo(
         var category: CategoryDbo,
 
         @Column(nullable = false)
-        var deletedByMyc: Boolean,
+        var dateInserted: Timestamp,
+
+        @Column(nullable = true)
+        var dateDeleted: Timestamp?,
 
         @Column(nullable = false)
         var favourited: Boolean,
@@ -181,7 +185,8 @@ data class PartnerDbo(
         if (maxCredits   != other.maxCredits)                                 return false
         if (rating       != other.rating)                                     return false
         if (category     != other.category)                                   return false
-        if (deletedByMyc != other.deletedByMyc)                               return false
+        if (dateInserted != other.dateInserted)                               return false
+        if (dateDeleted  != other.dateDeleted)                                return false
         if (favourited   != other.favourited)                                 return false
         if (wishlisted   != other.wishlisted)                                 return false
         if (ignored      != other.ignored)                                    return false
@@ -204,7 +209,8 @@ data class PartnerDbo(
         if (note         != other.note)         note         = other.note
         if (favourited   != other.favourited)   favourited   = other.favourited
         if (wishlisted   != other.wishlisted)   wishlisted   = other.wishlisted
-        if (deletedByMyc != other.deletedByMyc) deletedByMyc = other.deletedByMyc
+        if (dateInserted != other.dateInserted) dateInserted = other.dateInserted
+        if (dateDeleted  != other.dateDeleted)  dateDeleted  = other.dateDeleted
         if (ignored      != other.ignored)      ignored      = other.ignored
         addresses.updateByIfNeeded(other.addresses)
         tags.updateByIfNeeded(other.tags)

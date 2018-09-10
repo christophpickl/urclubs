@@ -4,6 +4,8 @@ import com.github.christophpickl.urclubs.domain.partner.Partner
 import com.github.christophpickl.urclubs.persistence.domain.CategoryDbo
 import com.github.christophpickl.urclubs.persistence.domain.PartnerDbo
 import com.github.christophpickl.urclubs.persistence.domain.RatingDbo
+import com.github.christophpickl.urclubs.persistence.toTimestamp
+import java.time.LocalDateTime
 
 
 val PartnerDbo.Companion.testInstance
@@ -18,7 +20,8 @@ val PartnerDbo.Companion.testInstance
     rating = RatingDbo.UNKNOWN,
     category = CategoryDbo.EMS,
     maxCredits = Partner.DEFAULT_MAX_CREDITS.toByte(),
-    deletedByMyc = false,
+    dateInserted = LocalDateTime.now().toTimestamp(),
+    dateDeleted = null,
     favourited = true,
     ignored = false,
     wishlisted = true,

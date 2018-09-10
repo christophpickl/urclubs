@@ -29,7 +29,8 @@ data class Partner(
     val favourited: Boolean,
     val wishlisted: Boolean, // want to go there soon (nevertheless whether i've been there already)
     val ignored: Boolean, // kind-a delete (don't display at all anymore anywhere, but keep in DB)
-    val deletedByMyc: Boolean, // keep in DB still locally
+    val dateInserted: LocalDateTime,
+    val dateDeleted: LocalDateTime?,
 
     val tags: List<String>,
     val addresses: List<String>,
@@ -72,7 +73,8 @@ data class Partner(
             note = "",
             rating = Rating.UNKNOWN,
             maxCredits = DEFAULT_MAX_CREDITS,
-            deletedByMyc = false,
+            dateInserted = LocalDateTime.now(),
+            dateDeleted = null,
             favourited = false,
             wishlisted = false,
             ignored = false,
@@ -197,7 +199,8 @@ data class Partner(
         .add("maxCredits", maxCredits)
         .add("favourited", favourited)
         .add("wishlisted", wishlisted)
-        .add("deletedByMyc", deletedByMyc)
+        .add("dateInserted", dateInserted)
+        .add("dateDeleted", dateDeleted)
         .add("addresses", addresses)
         .add("ignored", ignored)
         .add("finishedActivities.size", finishedActivities.size)

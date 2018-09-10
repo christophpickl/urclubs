@@ -1,6 +1,7 @@
 package com.github.christophpickl.urclubs.persistence.domain
 
 import com.github.christophpickl.urclubs.domain.partner.testInstance
+import com.github.christophpickl.urclubs.persistence.toTimestamp
 import com.github.christophpickl.urclubs.persistence.transactional
 import com.github.christophpickl.urclubs.service.sync.testInstance
 import com.github.christophpickl.urclubs.testInfra.DatabaseTest
@@ -9,6 +10,7 @@ import com.github.christophpickl.urclubs.testInfra.singleEntryIsEqualToIgnoringG
 import org.assertj.core.api.Assertions.assertThat
 import org.testng.annotations.BeforeMethod
 import org.testng.annotations.Test
+import java.time.LocalDateTime
 import javax.persistence.EntityManager
 
 @Test
@@ -19,6 +21,11 @@ class PartnerDaoImplTest : DatabaseTest() {
     private lateinit var partner1: PartnerDbo
     private lateinit var partner2: PartnerDbo
     private lateinit var partnerWithFinishedActivities: PartnerDbo
+
+    private val timestamp1 = LocalDateTime.now().toTimestamp()
+    private val timestamp2 = LocalDateTime.now().plusDays(1).toTimestamp()
+    private val timestamp3 = LocalDateTime.now().plusDays(2).toTimestamp()
+    private val timestamp4 = LocalDateTime.now().plusDays(3).toTimestamp()
 
     @BeforeMethod
     fun createData() {
@@ -49,7 +56,7 @@ class PartnerDaoImplTest : DatabaseTest() {
     }
 
     fun `READ - Given deleted partner When fetch all partners Then nothing is returned`() {
-        save(partner.copy(deletedByMyc = true))
+        save(partner.copy(dateDeleted = LocalDateTime.now().toTimestamp()))
 
         val partners = dao().readAll(includeIgnored = true)
 
@@ -124,12 +131,12 @@ class PartnerDaoImplTest : DatabaseTest() {
             note = "note",
             rating = RatingDbo.GOOD,
             category = CategoryDbo.GYM,
-            deletedByMyc = true,
+            dateInserted = timestamp1,
+            dateDeleted = timestamp2,
             favourited = true,
             wishlisted = true,
             ignored = true,
             maxCredits = 1,
-
             id = 0L,
             idMyc = "idMyc",
             shortName = "shortName",
@@ -146,7 +153,8 @@ class PartnerDaoImplTest : DatabaseTest() {
             note = "note2",
             rating = RatingDbo.BAD,
             category = CategoryDbo.EMS,
-            deletedByMyc = false,
+            dateInserted = timestamp3,
+            dateDeleted = timestamp4,
             favourited = false,
             wishlisted = false,
             ignored = false,

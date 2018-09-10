@@ -11,5 +11,6 @@ class ServiceModule : AbstractModule() {
         bind(FinishedActivitySyncer::class.java)
         bind(UpcomingActivitySyncer::class.java)
         bind(PrefsManager::class.java).asEagerSingleton()
+        bind(Clock::class.java).to(RealClock::class.java).asEagerSingleton()
     }
 }

@@ -12,18 +12,22 @@ import com.github.christophpickl.urclubs.myclubs.MyClubsApi
 import com.github.christophpickl.urclubs.myclubs.MyclubsUtil
 import com.github.christophpickl.urclubs.myclubs.parser.PartnerDetailHtmlModel
 import com.github.christophpickl.urclubs.myclubs.parser.PartnerHtmlModel
+import com.github.christophpickl.urclubs.service.Clock
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 class PartnerSyncer @Inject constructor(
     private val myclubs: MyClubsApi,
     private val partnerService: PartnerService,
-    private val util: MyclubsUtil
+    private val util: MyclubsUtil,
+    private val clock: Clock
 ) {
 
     private val log = LOG {}
 
     fun sync(): PartnerSyncReport {
         log.info { "sync()" }
+        val now = clock.now()
 
         val partnersFetched = myclubs.partners().let { if (UrclubsConfiguration.Development.FAST_SYNC) it.take(5) else it }
         val partnersStored = partnerService.readAll(includeIgnored = true)
@@ -34,17 +38,17 @@ class PartnerSyncer @Inject constructor(
         val storedIds = storedById.keys
 
         val insertedPartners = fetchedById.minus(storedIds).values.map { partnerMyc ->
-            val rawPartner = partnerMyc.toPartner()
+            val rawPartner = partnerMyc.toPartner(dateInserted = now)
             val detailPartner = myclubs.partner(rawPartner.shortName)
             val partner = rawPartner.enhance(detailPartner)
             partnerService.create(partner)
         }
 
         val deletedPartners = storedById.minus(fetchedIds).values
-            .map { it.copy(deletedByMyc = true) }
+            .map { it.copy(dateDeleted = now) }
             .apply {
                 forEach {
-                    log.trace { "Mark partner as deleted by myclubs: $it" }
+                    log.trace { "Marking partner as deleted by myclubs: $it" }
                     partnerService.update(it)
                 }
             }.toList()
@@ -86,7 +90,7 @@ ${deletedPartners.toPrettyString()}
 
 }
 
-fun PartnerHtmlModel.toPartner() = Partner(
+fun PartnerHtmlModel.toPartner(dateInserted: LocalDateTime) = Partner(
     idDbo = 0L,
     idMyc = id,
     name = name,
@@ -95,7 +99,8 @@ fun PartnerHtmlModel.toPartner() = Partner(
     rating = Rating.UNKNOWN,
     category = Category.UNKNOWN,
     maxCredits = Partner.DEFAULT_MAX_CREDITS,
-    deletedByMyc = false,
+    dateInserted = dateInserted,
+    dateDeleted = null,
     favourited = false,
     wishlisted = false,
     ignored = false,

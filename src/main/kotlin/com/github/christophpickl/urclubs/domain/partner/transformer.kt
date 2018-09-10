@@ -5,6 +5,7 @@ import com.github.christophpickl.urclubs.domain.activity.toFinishedActivityDbo
 import com.github.christophpickl.urclubs.persistence.domain.CategoryDbo
 import com.github.christophpickl.urclubs.persistence.domain.PartnerDbo
 import com.github.christophpickl.urclubs.persistence.domain.RatingDbo
+import com.github.christophpickl.urclubs.persistence.toTimestamp
 
 fun Partner.toPartnerDbo() = PartnerDbo(
     id = idDbo,
@@ -13,7 +14,8 @@ fun Partner.toPartnerDbo() = PartnerDbo(
     note = note,
     shortName = shortName,
     rating = rating.toRatingDbo(),
-    deletedByMyc = deletedByMyc,
+    dateInserted = dateInserted.toTimestamp(),
+    dateDeleted = dateDeleted?.toTimestamp(),
     favourited = favourited,
     wishlisted = wishlisted,
     ignored = ignored,
@@ -59,7 +61,8 @@ fun PartnerDbo.toPartner() = Partner(
     note = note,
     rating = rating.toRating(),
     maxCredits = maxCredits.toInt(),
-    deletedByMyc = deletedByMyc,
+    dateInserted = dateInserted.toLocalDateTime(),
+    dateDeleted = dateDeleted?.toLocalDateTime(),
     favourited = favourited,
     wishlisted = wishlisted,
     ignored = ignored,

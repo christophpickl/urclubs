@@ -51,8 +51,8 @@ val SHOW_SQL = IS_DEVELOPMENT && false
     // -----------------------------------------------------------------------------------------------------------------
 
     object Development {
-        val STUBBED_SYNCER = (false && IS_DEVELOPMENT).also { it.logIfEnabled("Using stubbed syncer logic.") }
-        val STUBBED_MYCLUBS = (false && IS_DEVELOPMENT).also { it.logIfEnabled("Using stubbed MyClubs API.") }
+        val STUBBED_SYNCER = (true && IS_DEVELOPMENT).also { it.logIfEnabled("Using stubbed syncer logic.") }
+        val STUBBED_MYCLUBS = (true && IS_DEVELOPMENT).also { it.logIfEnabled("Using stubbed MyClubs API.") }
         val FAST_SYNC = (false && IS_DEVELOPMENT).also { it.logIfEnabled("Using fast sync mode.") }
         val COLOR_MODE = (false && IS_DEVELOPMENT).also { if (it) log.info { "Using colors mode." } }
 

@@ -1,6 +1,7 @@
 package com.github.christophpickl.urclubs.persistence
 
 import com.github.christophpickl.kpotpourri.common.logging.LOG
+import com.google.common.annotations.VisibleForTesting
 import org.flywaydb.core.Flyway
 import org.flywaydb.core.api.FlywayException
 import org.flywaydb.core.api.MigrationInfo
@@ -39,7 +40,7 @@ class FlywayManager(
         log.debug("DB migration was successfull.")
     }
 
-    private fun buildFlyway() = Flyway().apply {
+    @VisibleForTesting fun buildFlyway() = Flyway().apply {
         setLocations(migrationLocation)
         dataSource = ds
         val myCallback = object : BaseFlywayCallback() {

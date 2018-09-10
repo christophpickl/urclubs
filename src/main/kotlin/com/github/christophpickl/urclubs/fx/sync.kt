@@ -2,6 +2,9 @@ package com.github.christophpickl.urclubs.fx
 
 import com.github.christophpickl.kpotpourri.common.logging.LOG
 import com.github.christophpickl.urclubs.UrclubsConfiguration
+import com.github.christophpickl.urclubs.domain.activity.FinishedActivity
+import com.github.christophpickl.urclubs.domain.activity.UpcomingActivity
+import com.github.christophpickl.urclubs.domain.partner.Partner
 import com.github.christophpickl.urclubs.fx.partner.PartnerListRequestFXEvent
 import com.github.christophpickl.urclubs.service.sync.FinishedActivitySyncReport
 import com.github.christophpickl.urclubs.service.sync.FinishedActivitySyncer
@@ -14,12 +17,17 @@ import javafx.geometry.Pos
 import javafx.geometry.VPos
 import javafx.scene.Scene
 import javafx.scene.control.ButtonType
+import javafx.scene.control.Dialog
+import javafx.scene.control.TextArea
+import javafx.scene.layout.BorderPane
 import javafx.scene.paint.Color
 import javafx.stage.Modality
 import javafx.stage.Stage
 import javafx.stage.StageStyle
+import javafx.stage.StageStyle.UNDECORATED
 import javafx.stage.Window
 import tornadofx.*
+import java.time.LocalDateTime
 
 object SyncRequestFXEvent : FXEvent()
 
@@ -72,6 +80,56 @@ class ProgressDialog(
 
 }
 
+class SyncReportDialog() : Dialog<ButtonType>() {
+
+    private lateinit var textArea: TextArea
+
+    init {
+        val root = BorderPane()
+        with(root) {
+            style {
+                padding = box(20.px)
+            }
+            center {
+                vbox(10.0) {
+                    alignment = Pos.CENTER
+                    textArea = textarea {
+                        isEditable = false
+                    }
+                    button("Close") {
+                        action {
+                            result = ButtonType.CLOSE
+                            close()
+                        }
+                    }
+                }
+            }
+        }
+        initStyle(UNDECORATED) // MINOR UI: can't figure out how to support the window's close button ;)
+        dialogPane.content = root
+        title = "Sync Report"
+    }
+
+    fun updateView(event: SyncResultEvent) {
+        val sb = StringBuilder()
+        sb.append("Partners inserted (${event.syncReport.partners.insertedPartners.size}):\n")
+        event.syncReport.partners.insertedPartners.forEach {
+            sb.append("- ${it.name}\n")
+        }
+        sb.append("\n")
+        sb.append("Partners deleted (${event.syncReport.partners.deletedPartners.size}):\n")
+        event.syncReport.partners.deletedPartners.forEach {
+            sb.append("- ${it.name}\n")
+        }
+        sb.append("\n")
+        sb.append("Finished activities inserted (${event.syncReport.finishedActivities.inserted.size}):\n")
+        event.syncReport.finishedActivities.inserted.forEach {
+            sb.append("- ${it.title}\n")
+        }
+        textArea.text = sb.toString()
+    }
+}
+
 class SyncFxController : Controller() {
 
     private val logg = LOG {}
@@ -96,16 +154,10 @@ class SyncFxController : Controller() {
         }
 
         subscribe<SyncResultEvent> { event ->
-            information(
-                    title = "Sync Report",
-                    header = "Sync completed successfully",
-                    content =
-                    "Partners inserted: ${event.syncReport.partners.insertedPartners.size}\n" +
-                            "Partners deleted: ${event.syncReport.partners.deletedPartners.size}\n" +
-                            "Finished activities inserted: ${event.syncReport.finishedActivities.inserted.size}",
-                    buttons = *arrayOf(ButtonType.OK)
-                    // owner = ... main window reference?!
-            )
+            SyncReportDialog().apply {
+                updateView(event)
+                show()
+            }
         }
     }
 
@@ -131,9 +183,16 @@ class SyncFxController : Controller() {
         logg.debug { "stubbedSync()" }
         Thread.sleep(3 * 1000)
         return SyncReport(
-                partners = PartnerSyncReport(emptyList(), emptyList()),
-                finishedActivities = FinishedActivitySyncReport(emptyList()),
-                upcomingActivities = UpcomingActivitySyncReport(emptyList())
+                partners = PartnerSyncReport(
+                        insertedPartners = listOf(Partner.prototype().copy(name = "Inserted Partner 1")),
+                        deletedPartners = listOf(Partner.prototype().copy(name = "Deleted Partner 1"))
+                ),
+                finishedActivities = FinishedActivitySyncReport(
+                        inserted = listOf(FinishedActivity.artificialInstance)
+                ),
+                upcomingActivities = UpcomingActivitySyncReport(
+                        inserted = listOf(UpcomingActivity(1, "some title", LocalDateTime.now()))
+                )
         )
     }
 
