@@ -25,6 +25,7 @@ class PartnersFxController : Controller() {
             logg.debug { "on PartnerListRequestFXEvent" }
             val partners = partnerService.readAll()
             fire(PartnerListFXEvent(partners))
+            view.numberOfDisplayedPartners(partners.size)
         }
 
         subscribe<IgnorePartnerFXEvent> { event ->
@@ -60,6 +61,7 @@ class PartnersFxController : Controller() {
                 is Filter.NoFilter -> sortedFilteredPartners.predicate = filter.all
                 is Filter.SomeFilter -> sortedFilteredPartners.predicate = filter.concatPredicates()
             }
+            view.numberOfDisplayedPartners(sortedFilteredPartners.size)
         }
     }
 

@@ -6,9 +6,11 @@ import com.github.christophpickl.urclubs.domain.partner.Partner
 import com.github.christophpickl.urclubs.domain.partner.Rating
 import com.github.christophpickl.urclubs.fx.ImageId
 import com.github.christophpickl.urclubs.fx.Images
+import com.github.christophpickl.urclubs.fx.Styles
 import com.github.christophpickl.urclubs.fx.partner.detail.PartnerDetailView
 import com.github.christophpickl.urclubs.fx.partner.detail.PartnerSelectedFXEvent
 import com.github.christophpickl.urclubs.fx.partner.filter.FilterPartnersView
+import javafx.scene.control.Label
 import javafx.scene.image.Image
 import javafx.scene.input.KeyCode
 import javafx.scene.paint.Color
@@ -32,6 +34,7 @@ class PartnersView : View() {
     private val partnersFilter: FilterPartnersView by inject()
     private val partnerDetailView: PartnerDetailView by inject()
     private val currentPartner: CurrentPartnerFx by inject()
+    private lateinit var displayedPartnersLabel: Label
 
     val table = PartnersTable().apply {
         contextmenu {
@@ -52,7 +55,17 @@ class PartnersView : View() {
             add(partnersFilter)
         }
         center {
-            add(table)
+            borderpane {
+                center { add(table) }
+                bottom {
+                    displayedPartnersLabel = label {
+                        style {
+                            textFill = Styles.white
+                            fontSize = 8.pt
+                        }
+                    }
+                }
+            }
         }
         bottom {
             add(partnerDetailView)
@@ -79,6 +92,10 @@ class PartnersView : View() {
                 }
             }
         }
+    }
+
+    fun numberOfDisplayedPartners(number: Int) {
+        displayedPartnersLabel.text = "Displaying $number partner${if (number == 1) "" else "s"}"
     }
 
     private fun firePartnerSelected(partner: Partner) {
