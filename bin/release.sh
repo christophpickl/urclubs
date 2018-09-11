@@ -20,7 +20,7 @@ verifyConfirm() {
     read CONFIRM_INPUT
     if [ "$CONFIRM_INPUT" != "y" ]; then
         echo "Aborted."
-        exit 0
+        exit 4
     fi
 }
 
@@ -41,7 +41,7 @@ verifyConfirm "Continue with release?"
 
 echo "version=$NEXT_VERSION" > ${VERSION_FILE}
 
-BUILD_COMMAND="./gradlew clean checkTodo test systemTest check build loadUrclubsVersion createApp -Durclubs.environment=prod -Durclubs.enableMacBundle=true"
+BUILD_COMMAND="./gradlew clean checkTodo test systemTest check build loadUrclubsVersion createDmg -Durclubs.environment=prod -Durclubs.enableMacBundle=true"
 echo ""
 echo ">> $BUILD_COMMAND"
 eval ${BUILD_COMMAND}
@@ -57,4 +57,4 @@ safeEval "git tag $NEXT_VERSION"
 safeEval "git push"
 safeEval "git push origin --tags"
 
-safeEval "open build/macApp/"
+exit 0

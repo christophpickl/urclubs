@@ -44,6 +44,8 @@ dependencies {
     compile "io.github.microutils:kotlin-logging:1.4.9"
     compile "com.github.christophpickl.kpotpourri:common4k:$versionKPotpourri"
     compile "com.github.christophpickl.kpotpourri:logback4k:$versionKPotpourri"
+    compile "com.github.christophpickl.kpotpourri:github4k:$versionKPotpourri"
+    testCompile "com.github.christophpickl.kpotpourri:release4k:$versionKPotpourri"
     compile "com.google.inject:guice:$versionGuice"
     compile "com.natpryce:konfig:1.6.1.0"
 
@@ -107,7 +109,7 @@ todo {
 
 test {
     useTestNG() {
-         excludeGroups "system"
+        excludeGroups "system"
     }
 }
 
