@@ -23,11 +23,9 @@ class PartnersFxController : Controller() {
 
         subscribe<PartnerListRequestFXEvent> {
             logg.debug { "on PartnerListRequestFXEvent" }
-            runAsync {
-                val partners = partnerService.readAll()
-                fire(PartnerListFXEvent(partners))
-                partners
-            } ui { partners ->
+            val partners = partnerService.readAll()
+            fire(PartnerListFXEvent(partners))
+            runAsync {} ui {
                 view.numberOfDisplayedPartners(partners.size)
             }
         }
@@ -60,12 +58,13 @@ class PartnersFxController : Controller() {
 
         subscribe<ApplyFilterFXEvent> { event ->
             logg.debug { "on ApplyFilterFXEvent(event.filter=${event.filter})" }
+            val filter = event.filter
+            when (filter) {
+                is Filter.NoFilter -> sortedFilteredPartners.predicate = filter.all
+                is Filter.SomeFilter -> sortedFilteredPartners.predicate = filter.concatPredicates()
+            }
             runAsync {
-                val filter = event.filter
-                when (filter) {
-                    is Filter.NoFilter -> sortedFilteredPartners.predicate = filter.all
-                    is Filter.SomeFilter -> sortedFilteredPartners.predicate = filter.concatPredicates()
-                }
+                // moving the filter part in here makes the macAPP crash (stack overflow!) => com.sun.glass.ui.mac.MacAccessible.NSAccessibilityPostNotification
             } ui {
                 view.numberOfDisplayedPartners(sortedFilteredPartners.size)
             }
