@@ -23,9 +23,13 @@ class PartnersFxController : Controller() {
 
         subscribe<PartnerListRequestFXEvent> {
             logg.debug { "on PartnerListRequestFXEvent" }
-            val partners = partnerService.readAll()
-            fire(PartnerListFXEvent(partners))
-            view.numberOfDisplayedPartners(partners.size)
+            runAsync {
+                val partners = partnerService.readAll()
+                fire(PartnerListFXEvent(partners))
+                partners
+            } ui { partners ->
+                view.numberOfDisplayedPartners(partners.size)
+            }
         }
 
         subscribe<IgnorePartnerFXEvent> { event ->
