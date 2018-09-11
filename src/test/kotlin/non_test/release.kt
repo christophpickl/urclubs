@@ -1,6 +1,7 @@
 package non_test
 
 import ch.qos.logback.classic.Level
+import com.github.christophpickl.kpotpourri.common.process.ProcessExecuterImpl
 import com.github.christophpickl.kpotpourri.github.AssetUpload
 import com.github.christophpickl.kpotpourri.github.CreateReleaseRequest
 import com.github.christophpickl.kpotpourri.github.RepositoryConfig
@@ -17,7 +18,7 @@ fun main(args: Array<String>) {
     println("Urclubs Release - START")
     println()
 
-//    ProcessExecuterImpl().execute("bash", "bin/release.sh", File("."))
+    ProcessExecuterImpl().execute("bash", "bin/release.sh", File("."))
 
     val version = readVersion()
     uploadGithub(version)
