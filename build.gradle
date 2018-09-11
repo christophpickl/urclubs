@@ -27,8 +27,8 @@ ext {
     myAppName = "UrClubs"
 }
 
+apply from: "$rootDir/gradle/version.gradle" // attention: needs to get BEFORE packaging.gradle because of setting the version :)
 apply from: "$rootDir/gradle/packaging.gradle"
-apply from: "$rootDir/gradle/version.gradle"
 
 // =====================================================================================================================
 // DEPENDENCIES
