@@ -56,12 +56,15 @@ class PartnersFxController : Controller() {
 
         subscribe<ApplyFilterFXEvent> { event ->
             logg.debug { "on ApplyFilterFXEvent(event.filter=${event.filter})" }
-            val filter = event.filter
-            when (filter) {
-                is Filter.NoFilter -> sortedFilteredPartners.predicate = filter.all
-                is Filter.SomeFilter -> sortedFilteredPartners.predicate = filter.concatPredicates()
+            runAsync {
+                val filter = event.filter
+                when (filter) {
+                    is Filter.NoFilter -> sortedFilteredPartners.predicate = filter.all
+                    is Filter.SomeFilter -> sortedFilteredPartners.predicate = filter.concatPredicates()
+                }
+            } ui {
+                view.numberOfDisplayedPartners(sortedFilteredPartners.size)
             }
-            view.numberOfDisplayedPartners(sortedFilteredPartners.size)
         }
     }
 
