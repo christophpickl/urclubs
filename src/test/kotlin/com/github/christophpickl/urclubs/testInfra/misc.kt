@@ -1,9 +1,21 @@
 package com.github.christophpickl.urclubs.testInfra
 
 import com.fasterxml.jackson.databind.node.ArrayNode
+import com.github.christophpickl.urclubs.Environment
+import com.github.christophpickl.urclubs.UrclubsConfiguration
 import org.testng.ITestContext
 import org.testng.ITestListener
 import org.testng.ITestResult
+import org.testng.annotations.BeforeSuite
+import org.testng.annotations.Test
+
+@Test
+class SetupEnvironmentNonTest {
+    @BeforeSuite
+    fun `init environment to TEST`() {
+        UrclubsConfiguration.environment = Environment.TEST
+    }
+}
 
 fun ArrayNode.textValues() = elements().asSequence().map { it.textValue() }.toList()
 

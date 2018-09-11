@@ -17,9 +17,9 @@ if (System.properties.getProperty("urclubs.enableMacBundle") == "true") {
         jvmVersion = "1.8"
 
         javaProperties.put("urclubs.isMacApp", "true")
-        if (System.properties.getProperty("urclubs.production") == "true") {
+        if (System.properties.getProperty("urclubs.environment") == "prod") {
             println "[URCLUBS] macApp is going to be in PROD mode!"
-            javaProperties.put("urclubs.production", "true")
+            javaProperties.put("urclubs.environment", "prod")
         } else {
             println "[URCLUBS] macApp is going to be in DEV mode"
         }

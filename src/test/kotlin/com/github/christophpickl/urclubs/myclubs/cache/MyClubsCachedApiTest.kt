@@ -39,7 +39,7 @@ import org.testng.annotations.BeforeMethod
 import org.testng.annotations.Test
 import java.io.File
 import java.time.LocalDateTime
-import java.util.*
+import java.util.Date
 import kotlin.reflect.KFunction1
 
 private val testResourcePool = ResourcePoolsBuilder.newResourcePoolsBuilder()
